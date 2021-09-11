@@ -1,0 +1,37 @@
+#!/bin/bash
+
+function get_brightness {
+  xbacklight -get | cut -d '.' -f 1
+}
+
+function notification() {
+    icon="$HOME/.local/share/icons/Qogir-dark/16/panel/gpm-brightness-lcd.svg"
+    brightness=$(sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g')
+
+    if [[ $1 == 1 ]]
+    then
+        brightness=$(expr $brightness + 10)
+    elif [[ $1 == -1 ]]
+    then
+        brightness=$(expr $brightness - 10)
+    fi
+
+    bar=$(seq -s "─" 0 $((brightness / 3)) | sed 's/[0-9]//g')
+    dunstify -i "$icon" -r 5555 -u normal " $bar"
+}
+
+case $1 in
+  up)
+    notification 1
+    #sudo ddcutil setvcp 10 + 10
+    ;;
+  down)
+    notification -1
+    #sudo ddcutil setvcp 10 - 10
+    ;;
+  set)
+    #sudo ddcutil setvcp 10 $2
+    notification
+    ;;
+esac
+

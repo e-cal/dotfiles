@@ -1,0 +1,94 @@
+shell:
+    program: /usr/bin/fish
+    args:
+        - --login
+
+window:
+    padding:
+        x: 5
+        y: 5
+
+scrolling:
+    history: 5000
+
+selection:
+    save_to_clipboard: true
+    background: "#EEFFFF"
+    text: "#EEFFFF"
+
+mouse:
+    hide_when_typing: true
+
+font:
+    size: 10.0
+    offset:
+        y: 1
+    normal:
+        family: FiraCode Nerd Font
+        style: Regular
+
+special:
+    background: "#212121"
+    foreground: "#EEFFFF"
+
+colors:
+    color0: "#212121"
+    color1: "#F07178"
+    color2: "#C3E88D"
+    color3: "#FFCB6B"
+    color4: "#82AAFF"
+    color5: "#C792EA"
+    color6: "#89DDFF"
+    color7: "#EEFFFF"
+    color8: "#4A4A4A"
+    color9: "#F07178"
+    color10: "#C3E88D"
+    color11: "#FFA570"
+    color12: "#82AAFF"
+    color13: "#C792EA"
+    color14: "#89DDFF"
+    color15: "#FFFFFF"
+
+    cursor:
+        cursor: "#BEC2C5"
+        text: "#212121"
+
+    selection:
+        text: "#EEFFFF"
+        background: "#EEFFFF"
+
+# Key bindings
+
+key_bindings:
+    - { key: V, mods: Control|Shift, action: Paste }
+    #- { key: C, mods: Control|Shift, action: Copy }
+    - { key: Insert, mods: Shift, action: PasteSelection }
+    - { key: Key0, mods: Control, action: ResetFontSize }
+    # - { key: Equals, mods: Control, action: IncreaseFontSize }
+    - { key: Equals, mods: Control, action: ReceiveChar }
+    - { key: Plus, mods: Control, action: IncreaseFontSize }
+    # - { key: Plus, mods: Control, action: ReceiveChar }
+    - { key: Minus, mods: Control, action: DecreaseFontSize }
+    # - { key: Minus, mods: Control, action: ReceiveChar }
+
+    - { key: Paste, action: Paste }
+    - { key: Copy, action: Copy }
+    - { key: L, mods: Control, action: ReceiveChar }
+    #- { key: L, mods: Control, action: ClearLogNotice }
+    #- { key: L, mods: Control, chars: "\x0c" }
+    - { key: PageUp, mods: Shift, action: ScrollPageUp, mode: ~Alt }
+    - { key: PageDown, mods: Shift, action: ScrollPageDown, mode: ~Alt }
+    - { key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt }
+    - { key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt }
+
+    # - { key: E, mods: Control, chars: "\x04" } # EOF
+    # - { key: Return, mods: Control, chars: "\x1b\x65" }
+
+    - { key: Escape, mods: Alt, action: toggleViMode } # M-Esc -> Vi mode
+
+    # - { key: Tab, mods: Alt, chars: "\x1b\x5b\x31\x3b\x32\x50" } # f13
+    - { key: Tab, mods: Alt, chars: "\x14" } # M-TAB -> C-T
+
+
+    # TMUX Keybindings
+    # - { key: Space, mods: Control, chars: "\x02" } # C-Space -> C-B
