@@ -1,0 +1,9 @@
+[user]
+	email = ecallanan04@gmail.com
+	name = ecal
+[credential]
+	helper = store
+[init]
+	defaultBranch = main
+[alias]
+    tree = log --graph --decorate --pretty=oneline --abbrev-commit

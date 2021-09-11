@@ -1,0 +1,23 @@
+#!/bin/bash
+
+rofi -show drun -config $HOME/.config/rofi/topbar.rasi
+
+# Launch Rofi
+#rofi -no-lazy-grab -show drun \
+#-display-drun "Search " -drun-display-format "{name}" \
+#-hide-scrollbar true \
+#-bw 0 \
+#-lines 10 \
+#-line-padding 10 \
+#-padding 4 \
+#-width 30 \
+#-xoffset 50 -yoffset 5 \
+#-location 1 \
+#-columns 1 \
+#-show-icons -icon-theme "Papirus" \
+#-font "BreezeSans 12" \
+#-color-enabled true \
+#-color-window "$BACKGROUND,$BORDER,$SEPARATOR" \
+#-color-normal "$BACKGROUND_ALT,$FOREGROUND,$BACKGROUND_ALT,$HIGHLIGHT_BACKGROUND,$HIGHLIGHT_FOREGROUND" \
+#-color-active "$BACKGROUND,$MAGENTA,$BACKGROUND_ALT,$HIGHLIGHT_BACKGROUND,$HIGHLIGHT_FOREGROUND" \
+#-color-urgent "$BACKGROUND,$YELLOW,$BACKGROUND_ALT,$HIGHLIGHT_BACKGROUND,$HIGHLIGHT_FOREGROUND"
