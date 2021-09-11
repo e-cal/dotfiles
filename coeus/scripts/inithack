@@ -1,0 +1,27 @@
+#!/bin/bash
+
+function setip() {
+    xsel -ib <<< "set IP"
+    xdotool key Control+Shift+V
+    xdotool key Up
+    xdotool key space
+}
+
+xdotool key Control+space
+xdotool key s
+xdotool key Control+space
+xdotool key Shift+j
+xdotool key Control+space
+xdotool key Shift+j
+xsel -ib <<< "v README.md"
+sleep 0.2
+xdotool key Control+Shift+V
+sleep 0.2
+xdotool key Return
+xdotool key Control+space
+xdotool key k
+xdotool key Control+space
+xdotool key n
+setip
+xdotool key Shift+Left
+setip

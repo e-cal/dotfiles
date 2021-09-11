@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -z "$(ls -A $HOME/kbd/vdrive)" ]
+then
+    sudo mount /dev/sdc $HOME/kbd/vdrive
+fi
+
+cp $HOME/kbd/dvorak.bak ~/kbd/dvorak
+cat $HOME/kbd/edits >> $HOME/kbd/dvorak
+
+sudo cp $HOME/kbd/edits $HOME/kbd/vdrive/layouts/layout1.txt
+sudo cp $HOME/kbd/dvorak $HOME/kbd/vdrive/layouts/layout2.txt
+
+sudo umount $HOME/kbd/vdrive

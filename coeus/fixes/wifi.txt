@@ -1,0 +1,6 @@
+nmcli radio wifi on
+nmcli device wifi connect SSID password PASS
+nmcli con delete SSID
+sudo systemctl restart NetworkManager
+nmcli device wifi list
+nmcli device list

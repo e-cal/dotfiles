@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cp ~/kbd/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak
+setxkbmap code-dvorak

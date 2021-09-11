@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+p=`acpi | awk '{print $4}' | sed 's/%,//g'`
+c=`acpi | awk '{print $3}' | sed 's/,//g'`
+
+if [ $p -le 10 -a $c != 'Charging' ]
+then
+		exit 0
+fi
+
+exit 1

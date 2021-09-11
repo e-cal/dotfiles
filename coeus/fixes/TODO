@@ -1,0 +1,4 @@
+- Customize GRUB
+- Add plymouth animation
+- Add display manager (SDDM, see EFLinux)
+- Make curl setup command

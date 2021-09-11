@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if ! xdotool search --name "notion" windowactivate --sync; then
+    firefox --new-window notion.so
+    sleep 0.5
+    xdotool key F11
+fi
+

@@ -1,0 +1,22 @@
+#!/bin/bash
+sleep 0.08
+xdotool key super+Return
+sleep 0.6
+xsel -ib <<< "sudo openvpn $HOME/hack/thm/ecal.ovpn"
+xdotool key Control+Shift+V
+xdotool key super+Shift+3
+xdotool key super+1
+
+if [[ -n $1 ]]
+then
+    if [ ! -d $HOME/hack/thm/$1 ]
+    then
+        mkdir $HOME/hack/thm/$1
+        wait $!
+    fi
+    cd $HOME/hack/thm/$1
+    tmux new -s hack
+else
+    xsel -ib <<< "cd $HOME/hack/thm"
+    xdotool key Control+Shift+V
+fi

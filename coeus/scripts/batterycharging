@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+c=`acpi | awk '{print $3}' | sed 's/,//g'`
+
+if [ $c == 'Charging' -o $c == 'Full' ]
+then
+		exit 0
+fi
+exit 1

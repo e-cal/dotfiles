@@ -1,0 +1,14 @@
+Replace: 
+    - public-user: the username of the person whose repo you are forking
+    - public-repo: the repo you are cloning
+    - you: your username
+    - your-repo: the name of your private repo
+
+make private-repo (set to private) on github
+commands:
+git clone --bare https://github.com/public-user/public-repo
+cd public-repo.git
+git push --mirror https://github.com/you/your-repo.git
+cd ..
+rm -rf public-repo.git
+git clone https://github.com/you/your-repo.git

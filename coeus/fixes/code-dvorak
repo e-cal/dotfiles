@@ -1,0 +1,2 @@
+copy the layout file to `/usr/share/X11/xkb/symbols/code-dvorak` and do `setxkbmap code-dvorak`
+file: https://github.com/ThePrimeagen/keyboards/blob/master/ubuntu/real-prog-dvorak

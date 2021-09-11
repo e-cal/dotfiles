@@ -6,6 +6,7 @@ SETUVAR --export KAGGLE_CONFIG_DIR:/home/ecal/projects/kaggle
 SETUVAR --export LC_ALL:en_US\x2eUTF\x2d8
 SETUVAR --export LC_CTYPE:en_US\x2eUTF\x2d8
 SETUVAR --export --path PATH:/home/ecal/scripts\x1e/usr/local/sbin\x1e/usr/local/bin\x1e/usr/bin\x1e/usr/bin/site_perl\x1e/usr/bin/vendor_perl\x1e/usr/bin/core_perl\x1e/var/lib/snapd/snap/bin
+SETUVAR --export STOW_DIR:/home/ecal/\x2edotfiles
 SETUVAR --export VIRTUALFISH_HOME:/home/ecal/python/\x2evirtualenvs
 SETUVAR --export VISUAL:/usr/bin/nvim
 SETUVAR __fish_initialized:3100

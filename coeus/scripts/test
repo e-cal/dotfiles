@@ -1,0 +1,43 @@
+#!/bin/bash
+# echo "Press any key to continue"
+# while [ true ] ; do
+# read -t 3 -n 1 -s -r
+# if [ $? = 0 ] ; then
+# exit ;
+# else
+# echo "waiting for the keypress"
+# fi
+# done
+
+# input=false
+# while [ $input=false ]; do
+# read -rsn1 input
+# if [ "$input" = "a" ]; then
+#     echo "hello world"
+# fi
+# done
+# echo "done"
+
+# while true; do
+#     read -rsn1 input
+#     if [ $? = 0 ]; then
+#         echo "\vec $input"
+#         exit
+#     fi
+# done
+
+trap control_c SIGINT
+
+control_c()
+{
+    stty sane
+}
+stty -icanon time 0 min 0
+while true; do
+    read input
+
+    if ["$input" = "a"]; then
+        echo "hello world"
+    fi
+done
+stty sane

@@ -1,0 +1,5 @@
+systemctl status postgres.service
+sudo systemctl enable postgresql.service
+sudo systemctl start postgresql.service
+[postgres] psql -d msf
+[postgress] pg_ctl -D /var/lib/postgres/data -l logfile start

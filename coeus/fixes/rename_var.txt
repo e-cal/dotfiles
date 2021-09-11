@@ -1,0 +1,4 @@
+gd
+*
+cgn
+. or :%norm.

@@ -1,0 +1,15 @@
+<leader>gs - show git status
+
+= on unstaged file - show conflicts
+dv on unstaged file - open 3 buffers: a, result, b
+:diffget //2 - accept conflict on left
+:diffget //3 - accept conflict on right
+
+ctrl+w o - close all windows other than the one you are on
+
+staged file is "ours", unstaged is "theirs"
+shift+x on "theirs" - allow merge to overwrite that file (s to stage)
+x on "ours" - reject merge changes
+cc - commit
+gI - add file to gitignore
+

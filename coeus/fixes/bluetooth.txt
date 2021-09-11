@@ -1,0 +1,4 @@
+sudo systemctl start bluetooth
+rfkill list
+sudp rfkill unblock all
+bluetoothctl power on
