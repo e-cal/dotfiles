@@ -1,7 +1,5 @@
 shell:
-    program: /usr/bin/fish
-    args:
-        - --login
+    program: /usr/bin/xonsh
 
 window:
     padding:

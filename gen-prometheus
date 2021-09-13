@@ -1,3 +1,3 @@
 #!/bin/bash
 
-stow --target=prometheus/ coeus/ --ignore='alacritty.yml' --ignore='brightness'
+stow --target=prometheus/ coeus/ --ignore='alacritty.yml' --ignore='brightness' --ignore='rc.xsh'
