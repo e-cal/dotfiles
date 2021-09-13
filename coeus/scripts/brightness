@@ -1,12 +1,10 @@
 #!/bin/bash
 
-function get_brightness {
-  xbacklight -get | cut -d '.' -f 1
-}
+monitor=`sudo ddcutil detect | grep DEL -B 2 | head -n 1 | awk '{print $3}' | tail -c 3`
+brightness=`sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g'`
 
 function notification() {
     icon="$HOME/.local/share/icons/Qogir-dark/16/panel/gpm-brightness-lcd.svg"
-    brightness=$(sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g')
 
     if [[ $1 == 1 ]]
     then
@@ -23,14 +21,14 @@ function notification() {
 case $1 in
   up)
     notification 1
-    sudo ddcutil setvcp 10 + 10
+    sudo ddcutil --bus $monitor setvcp 10 + 10
     ;;
   down)
     notification -1
-    sudo ddcutil setvcp 10 - 10
+    sudo ddcutil --bus $monitor  setvcp 10 - 10
     ;;
   set)
-    sudo ddcutil setvcp 10 $2
+    sudo ddcutil --bus $monitor setvcp 10 $2
     notification
     ;;
 esac

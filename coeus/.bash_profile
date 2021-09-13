@@ -40,7 +40,7 @@ export FZF_DEFAULT_COMMAND='rg -l ""'
 
 # Autostart xorg
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  startx "$XDG_CONFIG_HOME"/X11/xinitrc
+    startx "$XDG_CONFIG_HOME"/X11/xinitrc
 fi
 
 export NVM_DIR="$HOME/.local/share/nvm"
