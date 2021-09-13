@@ -161,16 +161,13 @@ myManageHook = composeAll
     [resource  =? "desktop_window"  --> doIgnore
 
     -- float
-    , className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , className =? "feh"            --> doFloat
-    , className =? "Gpick"          --> doFloat
-    , className =? "MATLAB R2020b - academic use" --> doFloat
     , role      =? "pop-up"         --> doFloat -- most popups
     , role      =? "AlarmWindow"    --> doFloat -- thunderbird calendar
     , role      =? "GtkFileChooserDialog" --> doFloat
+    , className =? "MATLAB R2020b - academic use" --> doFloat
     , className =? "Nemo"           --> doFloat
     , className =? "Nitrogen"       --> doFloat
+    , className =? "flameshot"      --> doFloat
 
     -- shift to workspace
     , className =? "Slack"          --> doShift "4"
@@ -263,8 +260,8 @@ myKeys = [
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
     , ("M-s", spawn "focus-spotify") -- Spotify
     , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu.sh") -- Powermenu
-    -- , ("M-S-s", spawn "flameshot gui") -- Screenshot GUI
-    , ("M-S-s", spawn "sc -r -c ~/images") -- Screenshot GUI
+    , ("M-S-s", spawn "flameshot gui") -- Screenshot GUI
+    -- , ("M-S-s", spawn "sc -r -c ~/images")
     , ("M1-S-s", spawn "flameshot full -p ~/screenshots") -- Screenshot
     , ("M-S-m", spawn "thunderbird")
     , ("M-t", spawn "teams")
