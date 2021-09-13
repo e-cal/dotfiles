@@ -3,6 +3,7 @@ export PATH=$HOME/.local/bin:$HOME/scripts:$PATH
 
 # XDG path spec
 export XDG_CONFIG_HOME=~/.config
+export CONFIG=$XDG_CONFIG_HOME
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
 
@@ -34,9 +35,6 @@ export npm_config_nodedir="$XDG_DATA_HOME"/node
 
 # Other env variables
 export FZF_DEFAULT_COMMAND='rg -l ""'
-
-# Source .zshrc
-# [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 # Start X
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
