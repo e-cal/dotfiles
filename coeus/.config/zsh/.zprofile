@@ -7,6 +7,9 @@ export CONFIG=$XDG_CONFIG_HOME
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
 
+#
+export DOTFILES=~/.dotfiles/coeus
+
 # GET OUT OF MY HOUSE
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
 export XMONAD_DATA_HOME="$XDG_DATA_HOME"/xmonad
