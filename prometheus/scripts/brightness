@@ -1,12 +1,8 @@
 #!/bin/bash
 
-function get_brightness {
-  xbacklight -get | cut -d '.' -f 1
-}
-
 function notification() {
     icon="$HOME/.local/share/icons/Qogir-dark/16/panel/gpm-brightness-lcd.svg"
-    brightness=$(sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g')
+    brightness=`xbacklight -get | cut -d '.' -f 1`
 
     if [[ $1 == 1 ]]
     then

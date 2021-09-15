@@ -1,5 +1,4 @@
 # Settings
-$XONSHRC_DIR=$DOTFILES+"/.config/xonsh"
 $VI_MODE = True
 $HISTCONTROL = 'ignoredups' # ignore duplicate commands in history
 $MULTILINE_PROMPT = ' ' # remove multiline dots
