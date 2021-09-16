@@ -15,6 +15,10 @@ _xontribs = [
     # 'onepath',          # Associate files with app and run it without preceding commands. URL: https://github.com/anki-code/xontrib-onepath
     # 'sh',               # Paste and run commands from bash, zsh, fish, tcsh in xonsh shell. URL: https://github.com/anki-code/xontrib-sh
 
+    # python venvs
+    'vox',
+    'autovox'
+
 # other
 # https://github.com/laloch/xontrib-fzf-widgets
 # https://github.com/ajeetdsouza/zoxide

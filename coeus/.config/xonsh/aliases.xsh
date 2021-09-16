@@ -6,13 +6,14 @@ aliases['py'] = "python"
 aliases['vim'] = "nvim"
 aliases['v'] = "nvim"
 aliases['hist'] = "history | fzf"
-aliases['clear'] = r"/bin/clear && triangles"
+aliases['clear'] = "clear; triangles"
 # Use rsync instead of cp to get the progress and speed of copying.
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
 aliases['greps'] = 'grep -ri'
 aliases['clp'] = 'xclip -sel clip'
+aliases['vnew'] = 'vox new $arg0; echo $arg0 > .venv; vox activate $arg0; pip install pynvim'
 
-# Functions
+# Functions - TODO
 aliases['vs'] = "nvimsearch"
 aliases['cds'] = "cdsearch"
 
@@ -20,7 +21,7 @@ aliases['cds'] = "cdsearch"
 aliases['dotfiles'] = "cda $DOTFILES"
 aliases['config'] = "cda $DOTFILES/.config"
 aliases['xonshrc'] = "v $DOTFILES/.config/xonsh"
-aliases['alias'] = "v $DOTFILES/.config/xonsh/rc.d/aliases.xsh"
+aliases['alias'] = "v $DOTFILES/.config/xonsh/aliases.xsh"
 aliases['nvimconfig'] = "cda $DOTFILES/.config/nvim"
 aliases['wmconfig'] = "nvim $DOTFILES/.config/xmonad/xmonad.hs"
 

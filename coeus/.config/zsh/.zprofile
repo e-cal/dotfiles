@@ -32,6 +32,7 @@ export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 export MATLAB_LOG_DIR="$XDG_CACHE_HOME"/matlab/logs
 export VIRTUALFISH_HOME="$HOME"/.local/share/virtualenvs
+export VIRTUALENV_HOME="$HOME"/.local/share/virtualenvs
 export WGETRC="$XDG_CONFIG_HOME"/wgetrc
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export KAGGLE_CONFIG_DIR="$HOME"/projects/kaggle
