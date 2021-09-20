@@ -168,6 +168,8 @@ myManageHook = composeAll
     , className =? "Nemo"           --> doFloat
     , className =? "Nitrogen"       --> doFloat
     , className =? "flameshot"      --> doFloat
+    , className =? "zoom"           --> doFloat
+    , className =? "uk-org-jape-Jape" --> doFloat
 
     -- shift to workspace
     , className =? "Slack"          --> doShift "4"
