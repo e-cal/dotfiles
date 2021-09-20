@@ -44,6 +44,7 @@ aliases['cd360'] = "cda ~/Dropbox/uni/3F/cisc360/"
 aliases['cd452'] = "cda ~/Dropbox/uni/3F/cisc452/"
 aliases['cd221'] = "cda ~/Dropbox/uni/3F/comm221/"
 aliases['cd271'] = "cda ~/Dropbox/uni/3F/psyc271/"
+aliases['cd204'] = "cda ~/Dropbox/uni/3F/cisc204/"
 
 # Util
 aliases['fixkeys'] = "setxkbmap code-dvorak"
