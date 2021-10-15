@@ -4,6 +4,7 @@ $HISTCONTROL = 'ignoredups' # ignore duplicate commands in history
 $MULTILINE_PROMPT = ' ' # remove multiline dots
 $AUTO_CD = True # allow typing path to cd
 $DOTGLOB = True # include dotfiles in globs
+# $XONSH_HISTORY_BACKEND = 'sqlite'
 
 
 # load xontrib packages

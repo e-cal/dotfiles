@@ -9,6 +9,7 @@ export XDG_DATA_HOME=~/.local/share
 
 # Xonsh setup
 export DOTFILES=~/.dotfiles/`hostname`
+export STOW_DIR=~/.dotfiles
 export XONSHRC_DIR="$DOTFILES/.config/xonsh"
 
 # GET OUT OF MY HOUSE
