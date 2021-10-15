@@ -7,11 +7,14 @@ aliases['vim'] = "nvim"
 aliases['v'] = "nvim"
 aliases['hist'] = "history | fzf"
 aliases['clear'] = "clear; triangles"
+aliases['greps'] = 'grep -ri'
+aliases['clip'] = 'xclip -sel clip'
+aliases['newenv'] = 'vox new $arg0; echo $arg0 > .venv; vox activate $arg0; pip install pynvim'
+aliases['mvdl'] = 'mv ~/Downloads/@($arg0) $arg1'
+aliases['open'] = 'xdg-open'
+
 # Use rsync instead of cp to get the progress and speed of copying.
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
-aliases['greps'] = 'grep -ri'
-aliases['clp'] = 'xclip -sel clip'
-aliases['vnew'] = 'vox new $arg0; echo $arg0 > .venv; vox activate $arg0; pip install pynvim'
 
 # Functions - TODO
 aliases['vs'] = "nvimsearch"
@@ -20,6 +23,7 @@ aliases['cds'] = "cdsearch"
 # Config
 aliases['dotfiles'] = "cda $DOTFILES"
 aliases['config'] = "cda $DOTFILES/.config"
+aliases['zshrc'] = "v $DOTFILES/.config/zsh"
 aliases['xonshrc'] = "v $DOTFILES/.config/xonsh"
 aliases['alias'] = "v $DOTFILES/.config/xonsh/aliases.xsh"
 aliases['nvimconfig'] = "cda $DOTFILES/.config/nvim"
@@ -50,6 +54,7 @@ aliases['cd204'] = "cda ~/Dropbox/uni/3F/cisc204/"
 aliases['fixkeys'] = "setxkbmap code-dvorak"
 aliases['launchbar'] = "~/.config/polybar/launch.sh"
 aliases['killbar'] = "kill (ps -e | rg poly | awk '{print $1}')"
+aliases['fixap'] = "pacmd list-cards | grep 'Bean Pods' -m 1 -B 5 | head -1 | awk '{print $2}' | xargs -I % pacmd set-card-profile % a2dp_sink"
 
 # Other
 aliases['triangles'] = r"yes '△▽' | head -n @(int($(tput cols))//2) | tr '\n' ',' | sed 's/,//g' | lolcat -F 0.03"
@@ -67,4 +72,5 @@ aliases['crontab'] = "fcrontab"
 aliases['tmux'] = "tmux -2"
 aliases['funcs'] = "cd ~/.config/fish/functions && la"
 aliases['fishconf'] = "cd ~/.config/fish && la"
-
+aliases['weather'] = "curl wttr.in -s | head -n -1"
+aliases['envs'] = "ls ~/.local/share/virtualenvs"
