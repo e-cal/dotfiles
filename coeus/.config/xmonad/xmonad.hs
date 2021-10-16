@@ -251,13 +251,12 @@ myKeys = [
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi") -- Run Prompt
     , ("M-f", spawn "nemo") -- files
     , ("M-c", spawn "firefox -P ecal") -- Firefox
-    , ("M1-c", spawn "firefox -P ta") -- Firefox
+    , ("M1-c", spawn "firefox -P ta") -- TA firefox
     , ("M-g", spawn "firefox https://github.com") -- Github
     , ("M-d", spawn "inkscape $HOME/sketch.svg") -- Draw
     , ("M-S-d", spawn "firefox https://drive.google.com/drive/my-drive") -- Google Drive
     , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
     --, ("M-S-d", sequence_[spawn "nemo ~/Dropbox", spawnOnce "dropbox &"]) -- Dropbox
-    , ("M-y", spawn "firefox https://youtube.com") -- Github
     , ("M-S-b", spawn "$HOME/.config/polybar/launch.sh") -- Polybar
     , ("M-S-p", spawn "launch-picom")
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
@@ -269,47 +268,10 @@ myKeys = [
     , ("M-S-m", spawn "thunderbird")
     , ("M-t", spawn "teams")
     , ("M-S-t", spawn "slack")
-    , ("M-S-n", spawn "notion")
+    , ("M-S-n", spawn "obsidian")
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
-
-    -- Macros
-
-    -- Notion
-    , ("M-n w", spawn "firefox notion.so") -- open notion in the normal browser
-    , ("M-n m", spawn "macro notion matrix")
-    , ("M-n S-m", spawn "macro notion matrix-set")
-    , ("M-n =", spawn "macro notion tex")
-    , ("M-n a", spawn "macro notion align")
-    , ("M-n S-a", spawn "macro notion aligned")
-    , ("M-n b", spawn "macro notion mathbb")
-    , ("M-n d", spawn "macro notion def")
-    , ("M-n S-s", spawn "macro notion sum")
-    , ("M-n n", spawn "macro notion null")
-    , ("M-n -", spawn "macro notion inverse")
-    , ("M-n t", spawn "macro notion to")
-    , ("M-n v", spawn "macro notion vector")
-    , ("M-n l", spawn "macro notion lin-combo")
-    , ("M-n i", spawn "macro notion inline")
-    , ("<F9>", spawn "macro notion inline")
-    , ("M-n r", spawn "macro notion reals")
-    , ("M-n [", spawn "macro notion brackets")
-    , ("M-n S-[", spawn "macro notion braces")
-    , ("M-n S-9", spawn "macro notion parenthesis")
-    , ("M-n e", spawn "macro notion expr")
-        -- Symbols
-    , ("M-n s a", spawn "macro notion symbol alpha")
-    , ("M-n s b", spawn "macro notion symbol beta")
-    , ("M-n s e", spawn "macro notion symbol epsilon")
-    , ("M-n s l", spawn "macro notion symbol lambda")
-    , ("M-n s S-l", spawn "macro notion symbol cap-lambda")
-    , ("M-n s t", spawn "macro notion symbol theta")
-    , ("M-n s s", spawn "macro notion symbol sigma")
-    , ("M-n s S-s", spawn "macro notion symbol cap-sigma")
-    , ("M-n s =", spawn "macro notion symbol not-equal")
-    , ("M-n s d", spawn "macro notion symbol data-matrix")
-    , ("M-n s .", spawn "macro notion symbol dots")
 
     -- Kill Windows
     , ("M-q", kill) -- Focused window
