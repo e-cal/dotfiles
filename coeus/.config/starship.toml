@@ -1,11 +1,4 @@
 format = """
-$cmd_duration\
-${custom.battery100}\
-${custom.battery75}\
-${custom.battery50}\
-${custom.battery25}\
-${custom.battery10}\
-${custom.batterycharging}\
 $time\
 $hg_branch\
 $docker_context\
@@ -42,78 +35,42 @@ $env_var\
 $crystal\
 $lua\
 $jobs\
+
 $git_commit\
 $git_state\
 $git_status\
+$fill\
+$cmd_duration\
 
-$line_break\
+        $line_break\
+
+$directory\
+$git_branch\
+
+        $line_break\
 
 $username\
 $hostname\
-$shlvl\
-$kubernetes\
-$directory\
-$git_branch\
+${custom.lvl}\
+$shell\
 $status\
 $character\
 """
+
+command_timeout = 500
 
 [character]
 success_symbol = "[](bold green)"
 vicmd_symbol = "[](bold yellow)"
 error_symbol = "[](bold red)"
 
-[custom.battery100]
-command = "acpi | awk '{print $4}' | sed 's/,//g'"
-symbol = "  "
-style = "green"
-format = "[$symbol$output]($style) "
-when = "battery100"
-shell = ["bash"]
-
-[custom.battery75]
-command = "acpi | awk '{print $4}' | sed 's/,//g'"
-symbol = "  "
-style = "green"
-format = "[$symbol$output]($style) "
-when = "battery75"
-shell = ["bash"]
-
-[custom.battery50]
-command = "acpi | awk '{print $4}' | sed 's/,//g'"
-symbol = "  "
-style = "yellow"
-format = "[$symbol$output]($style) "
-when = "battery50"
-shell = ["bash"]
-
-[custom.battery25]
-command = "acpi | awk '{print $4}' | sed 's/,//g'"
-symbol = "  "
-style = "red"
-format = "[$symbol$output]($style) "
-when = "battery25"
-shell = ["bash"]
-
-[custom.battery10]
-command = "acpi | awk '{print $4}' | sed 's/,//g'"
-symbol = "  "
-style = "bold red"
-format = "[$symbol$output]($style) "
-when = "battery10"
-shell = ["bash"]
-
-[custom.batterycharging]
-command = "acpi | awk '{print $4}' | sed 's/,//g'"
-symbol = " "
-style = "#FFA570"
-format = "[$symbol$output]($style) "
-when = "batterycharging"
-shell = ["bash"]
+[fill]
+symbol = " "
 
 [cmd_duration]
 min_time = 1_000
-format = "祥[$duration]($style) "
+style = "#6A6A6A"
+format = "[$duration]($style) "
 
 [time]
 time_format = "%I:%M%p"
@@ -141,7 +98,6 @@ format = "[$symbol$version]($style) "
 symbol = " "
 format = "[$symbol$version]($style) "
 
-
 [package]
 disabled = true
 
@@ -151,11 +107,11 @@ format = "[$symbol]($style) "
 
 [git_branch]
 symbol = " "
-format = "[$symbol$branch]($style) "
+format = ' [$symbol$branch]($style) '
 
 [git_status]
-format = '([$all_status$ahead_behind]($style)) '
-style = "bright-white"
+format = '([$all_status$ahead_behind]($style))'
+style = "white"
 conflicted = "𥉉 "
 ahead = "落×${count} "
 behind = " ×${count} "
@@ -179,6 +135,25 @@ format = "[$hostname](blue): "
 disabled = true
 
 [directory]
-fish_style_pwd_dir_length = 1
-truncation_length = 2
+truncation_length = 8
 read_only = " "
+
+[directory.substitutions]
+"~/projects" = "projects"
+"~/Dropbox/uni/3F" = "uni"
+".dotfiles" = "dotfiles"
+
+[custom.lvl]
+command = "show_sh_lvl"
+when = "show_sh_lvl"
+style = "#FFA570"
+format = "[($output )]($style)"
+
+[shell]
+disabled = false
+fish_indicator = " "
+zsh_indicator = "ℤ "
+bash_indicator = " "
+unknown_indicator = " "
+xonsh_indicator = ""
+format = "$indicator"

@@ -172,6 +172,7 @@ myManageHook = composeAll
     , className =? "uk-org-jape-Jape" --> doFloat
 
     -- shift to workspace
+    , className =? "ClickUp"        --> doShift "2"
     , className =? "Slack"          --> doShift "4"
     , className =? "discord"        --> doShift "4"
     , className =? "Microsoft Teams - Preview" --> doShift "4"
@@ -191,6 +192,7 @@ myStartupHook = do
     spawnOnce "~/.config/polybar/launch.sh &"
     spawnOnce "dropbox &"
     spawnOnce "redshift"
+    spawnOnce "clickup"
     setWMName "LG3D"
 
 --------------------------------------------------------------------------------

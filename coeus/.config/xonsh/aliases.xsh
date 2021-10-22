@@ -28,6 +28,7 @@ aliases['xonshrc'] = "v $DOTFILES/.config/xonsh"
 aliases['alias'] = "v $DOTFILES/.config/xonsh/aliases.xsh"
 aliases['nvimconfig'] = "cda $DOTFILES/.config/nvim"
 aliases['wmconfig'] = "nvim $DOTFILES/.config/xmonad/xmonad.hs"
+aliases['xconfig'] = "nvim $DOTFILES/.config/X11/xinitrc"
 
 # Searching
 aliases['searchsys'] = "sudo find / 2>/dev/null | fzf"
