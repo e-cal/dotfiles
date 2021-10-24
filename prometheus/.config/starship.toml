@@ -41,13 +41,13 @@ $git_state\
 $git_status\
 
 $fill\
+$cmd_duration\
 ${custom.battery100}\
 ${custom.battery75}\
 ${custom.battery50}\
 ${custom.battery25}\
 ${custom.battery10}\
 ${custom.batterycharging}\
-$cmd_duration\
 
         $line_break\
 
