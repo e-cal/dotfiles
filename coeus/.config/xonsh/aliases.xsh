@@ -3,15 +3,14 @@ aliases['..'] = "cd .."
 aliases['la'] = "exa -la --color=always --group-directories-first"
 aliases['cda'] = "cd $arg0 && la"
 aliases['py'] = "python"
-aliases['vim'] = "nvim"
+aliases['envs'] = "ls ~/.local/share/virtualenvs"
+aliases['newenv'] = 'vox new $arg0; echo $arg0 > .venv; vox activate $arg0; pip install pynvim'
 aliases['v'] = "nvim"
-aliases['hist'] = "history | fzf"
 aliases['clear'] = "clear; triangles"
+aliases['open'] = 'xdg-open'
 aliases['greps'] = 'grep -ri'
 aliases['clip'] = 'xclip -sel clip'
-aliases['newenv'] = 'vox new $arg0; echo $arg0 > .venv; vox activate $arg0; pip install pynvim'
 aliases['mvdl'] = 'mv ~/Downloads/@($arg0) $arg1'
-aliases['open'] = 'xdg-open'
 
 # Use rsync instead of cp to get the progress and speed of copying.
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
@@ -26,9 +25,10 @@ aliases['config'] = "cda $DOTFILES/.config"
 aliases['zshrc'] = "v $DOTFILES/.config/zsh"
 aliases['xonshrc'] = "v $DOTFILES/.config/xonsh"
 aliases['alias'] = "v $DOTFILES/.config/xonsh/aliases.xsh"
-aliases['nvimconfig'] = "cda $DOTFILES/.config/nvim"
+aliases['nvimconf'] = "cda $DOTFILES/.config/nvim"
 aliases['wmconfig'] = "nvim $DOTFILES/.config/xmonad/xmonad.hs"
 aliases['xconfig'] = "nvim $DOTFILES/.config/X11/xinitrc"
+aliases['fishconf'] = "cda $DOTFILES/.config/fish"
 
 # Searching
 aliases['searchsys'] = "sudo find / 2>/dev/null | fzf"
@@ -43,7 +43,7 @@ aliases['gr'] = "git fetch; git pull"
 aliases['conflicts'] = "nvim (git diff --name-only | uniq)"
 
 # Uni
-aliases['uni'] = "cda ~/Dropbox/uni"
+aliases['cduni'] = "cda ~/Dropbox/uni/3F"
 aliases['cd324'] = "cda ~/Dropbox/uni/3F/cisc324/"
 aliases['cd360'] = "cda ~/Dropbox/uni/3F/cisc360/"
 aliases['cd452'] = "cda ~/Dropbox/uni/3F/cisc452/"
@@ -57,21 +57,21 @@ aliases['launchbar'] = "~/.config/polybar/launch.sh"
 aliases['killbar'] = "kill (ps -e | rg poly | awk '{print $1}')"
 aliases['fixap'] = "pacmd list-cards | grep 'Bean Pods' -m 1 -B 5 | head -1 | awk '{print $2}' | xargs -I % pacmd set-card-profile % a2dp_sink"
 
-# Other
-aliases['triangles'] = r"yes '△▽' | head -n @(int($(tput cols))//2) | tr '\n' ',' | sed 's/,//g' | lolcat -F 0.03"
+# Abbreviations
+aliases['rg'] = "rg -S"
+aliases['tmux'] = "tmux -2"
+aliases['docker'] = "sudo docker"
+aliases['venv'] = "python -m venv"
+aliases['yarn'] = "yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
+aliases['msf'] = "msfconsole --quiet -x \"db_connect $USER@msf\""
+
+# System specific
 aliases['battery'] = "acpi"
 aliases['bat-stat'] = "sudo tlp-stat"
-aliases['docker'] = "sudo docker"
-aliases['yarn'] = "yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
-aliases['hackenv'] = "source /home/ecal/.local/share/virtualenvs/hackenv-lLLAxNNd/bin/activate.fish"
-aliases['.hack'] ='/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt'
-aliases['rg'] = "rg -S"
-aliases['msf'] = "msfconsole --quiet -x \"db_connect $USER@msf\""
-aliases['venv'] = "python -m venv"
-aliases['update'] = "yay -Syyu"
-aliases['crontab'] = "fcrontab"
-aliases['tmux'] = "tmux -2"
-aliases['funcs'] = "cd ~/.config/fish/functions && la"
-aliases['fishconf'] = "cd ~/.config/fish && la"
+
+# Fun
 aliases['weather'] = "curl wttr.in -s | head -n -1"
-aliases['envs'] = "ls ~/.local/share/virtualenvs"
+aliases['triangles'] = r"yes '△▽' | head -n @(int($(tput cols))//2) | tr '\n' ',' | sed 's/,//g' | lolcat -F 0.03"
+
+# Other
+aliases['.hack'] ='/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt' # remove
