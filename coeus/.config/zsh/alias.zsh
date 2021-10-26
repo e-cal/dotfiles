@@ -45,8 +45,6 @@ alias "aursearch"="yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1}
 # Git
 alias "lg"="lazygit"
 alias "gs"="git status"
-alias "gf"="git fetch"
-alias "gr"="git fetch; git pull"
 alias "conflicts"="nvim (git diff --name-only | uniq)"
 
 # Uni

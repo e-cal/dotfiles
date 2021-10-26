@@ -32,7 +32,7 @@ ZSH_THEME="robbyrussell"
 # zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -70,7 +70,8 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ssh-agent zsh-syntax-highlighting zsh-autosuggestions zsh-vi-mode)
+plugins=(git git-auto-fetch ssh-agent zsh-syntax-highlighting zsh-autosuggestions zsh-vi-mode)
+GIT_AUTO_FETCH_INTERVAL=300 # auto-fetch every 5m
 zstyle :omz:plugins:ssh-agent identities coeus_id_ed25519
 
 source $ZSH/oh-my-zsh.sh

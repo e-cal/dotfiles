@@ -1,0 +1,37 @@
+#!/usr/bin/python
+
+import os
+
+
+expected = [
+    ".msf4",
+    ".ssh",
+    "kbd",
+    "sketch.svg",
+    "projects",
+    ".cache",
+    ".local",
+    ".thunderbird",
+    "aboutme",
+    "todo-qmind",
+    ".mozilla",
+    ".dotfiles",
+    "scripts",
+    "Downloads",
+    ".matlab",
+    ".dropbox",
+    "videos",
+    "Dropbox",
+    ".zoom",
+    "images",
+    ".dropbox-dist",
+    "fixes",
+    ".config",
+]
+
+home_path = os.path.expanduser("~")
+home_files = os.listdir(home_path)
+
+for f in home_files:
+    if f not in expected:
+        print(f)
