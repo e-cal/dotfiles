@@ -1,4 +1,10 @@
-source $HOME/.config/zsh/.zprofile
+source $HOME/.config/zsh/env.zsh
+source $HOME/.config/zsh/oh-my-zsh.zsh
 
-# Starship prompt
+source $HOME/.config/zsh/alias.zsh
+source $HOME/.config/zsh/bindkey.zsh
+
+source $HOME/.config/zsh/autoenv.zsh
+
+# Load prompt
 eval "$(starship init zsh)"

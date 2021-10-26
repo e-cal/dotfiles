@@ -1,5 +1,8 @@
 shell:
-    program: /usr/bin/xonsh
+    program: /usr/bin/zsh
+    args:
+      - -c
+      - sleep 0.15 && yes "△▽" | head -n $(($(tput cols) / 2)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.03 && exec zsh
 
 window:
     padding:
@@ -59,15 +62,11 @@ colors:
 
 key_bindings:
     - { key: V, mods: Control|Shift, action: Paste }
-    #- { key: C, mods: Control|Shift, action: Copy }
     - { key: Insert, mods: Shift, action: PasteSelection }
     - { key: Key0, mods: Control, action: ResetFontSize }
-    # - { key: Equals, mods: Control, action: IncreaseFontSize }
     - { key: Equals, mods: Control, action: ReceiveChar }
     - { key: Plus, mods: Control, action: IncreaseFontSize }
-    # - { key: Plus, mods: Control, action: ReceiveChar }
     - { key: Minus, mods: Control, action: DecreaseFontSize }
-    # - { key: Minus, mods: Control, action: ReceiveChar }
 
     - { key: Paste, action: Paste }
     - { key: Copy, action: Copy }
@@ -79,14 +78,7 @@ key_bindings:
     - { key: Home, mods: Shift, action: ScrollToTop, mode: ~Alt }
     - { key: End, mods: Shift, action: ScrollToBottom, mode: ~Alt }
 
-    # - { key: E, mods: Control, chars: "\x04" } # EOF
-    # - { key: Return, mods: Control, chars: "\x1b\x65" }
-
     - { key: Escape, mods: Alt, action: toggleViMode } # M-Esc -> Vi mode
-
-    # - { key: Tab, mods: Alt, chars: "\x1b\x5b\x31\x3b\x32\x50" } # f13
     - { key: Tab, mods: Alt, chars: "\x14" } # M-TAB -> C-T
 
 
-    # TMUX Keybindings
-    # - { key: Space, mods: Control, chars: "\x02" } # C-Space -> C-B

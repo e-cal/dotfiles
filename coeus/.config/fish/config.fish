@@ -1,6 +1,4 @@
-# Greeting
-triangles
-# colorscript random # Random color script
+# triangles
 
 # Exports
 set fish_greeting # Disable default welcome message

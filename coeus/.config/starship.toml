@@ -61,7 +61,7 @@ command_timeout = 500
 
 [character]
 success_symbol = "[](bold green)"
-vicmd_symbol = "[](bold yellow)"
+vicmd_symbol = "[](bold yellow)"
 error_symbol = "[](bold red)"
 
 [fill]
@@ -152,8 +152,8 @@ format = "[($output )]($style)"
 [shell]
 disabled = false
 fish_indicator = " "
-zsh_indicator = "ℤ "
-bash_indicator = " "
+zsh_indicator = ""
+bash_indicator = "𝐁 "
+xonsh_indicator = "𝐗 "
 unknown_indicator = " "
-xonsh_indicator = ""
 format = "$indicator"

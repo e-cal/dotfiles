@@ -1,16 +1,25 @@
 # lemme use my scripts
 export PATH=$HOME/.local/bin:$HOME/scripts:$PATH
 
+# Useful vars
+export DOTFILES=~/.dotfiles/`hostname`
+export STOW_DIR=~/.dotfiles
+
 # XDG path spec
 export XDG_CONFIG_HOME=~/.config
 export CONFIG=$XDG_CONFIG_HOME
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
 
-# Xonsh setup
-export DOTFILES=~/.dotfiles/`hostname`
-export STOW_DIR=~/.dotfiles
-export XONSHRC_DIR="$DOTFILES/.config/xonsh"
+# zsh
+export ZSH_COMPDUMP="$XDG_CACHE_HOME"/zsh/compdump
+export HISTFILE="$XDG_CACHE_HOME"/zsh/history
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+export PROMPT_EOL_MARK=""
+export PS2="  "
+export ZVM_CURSOR_STYLE_ENABLED=false
 
 # GET OUT OF MY HOUSE
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
@@ -18,7 +27,6 @@ export XMONAD_DATA_HOME="$XDG_DATA_HOME"/xmonad
 export XMONAD_CACHE_HOME="$XDG_CACHE_HOME"/xmonad
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint
-export HISTFILE="$XDG_DATA_HOME"/bash/history
 export LESSHISTFILE="$XDG_DATA_HOME"/lesshst
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
@@ -41,6 +49,7 @@ export npm_config_nodedir="$XDG_DATA_HOME"/node
 
 # Other env variables
 export FZF_DEFAULT_COMMAND='rg -l ""'
+export XONSHRC_DIR="$DOTFILES/.config/xonsh"
 
 # Start X
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
