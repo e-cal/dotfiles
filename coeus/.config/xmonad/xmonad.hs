@@ -87,7 +87,7 @@ altMask = mod1Mask
 
     -- Terminal
 myTerminal :: String
-myTerminal = "alacritty" -- Only works if fish is installed
+myTerminal = "kitty"
 
     -- Editor
 myEditor :: String
@@ -201,7 +201,7 @@ myStartupHook = do
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [ NS "terminal" spawnTerm findTerm manageScratchpad ]
                     where
-                        spawnTerm = myTerminal ++ " -t terminal"
+                        spawnTerm = myTerminal ++ " --title terminal"
                         findTerm = title =? "terminal"
 
                         -- % from left, % from top, width, height

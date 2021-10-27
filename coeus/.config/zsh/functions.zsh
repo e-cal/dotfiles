@@ -44,9 +44,12 @@ ve() {
     files=(
         nvim $DOTFILES/.config/nvim
         zsh $DOTFILES/.config/zsh
+        scripts $DOTFILES/scripts
 
         starship $DOTFILES/.config/starship.toml
+        kitty $DOTFILES/.config/kitty/kitty.conf
         xmonad $DOTFILES/.config/xmonad/xmonad.hs
+        tmux $DOTFILES/.config/tmux/tmux.conf
         x11 $DOTFILES/.config/X11/xinitrc
 
         alacritty $DOTFILES/.config/alacritty/alacritty.yml

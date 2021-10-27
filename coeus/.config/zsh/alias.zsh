@@ -64,7 +64,6 @@ alias "bat-stat"="sudo tlp-stat"
 
 # Fun
 alias "weather"="curl wttr.in -s | head -n -1"
-alias "triangles"='yes "△▽" | head -n $(($(tput cols) / 2)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.03'
 
 # Other
 alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
