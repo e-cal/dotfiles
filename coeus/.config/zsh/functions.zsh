@@ -30,9 +30,9 @@ vs() {
 cde() {
     dirs=(
         dotfiles $DOTFILES
-        projects ~/projects
-        uni ~/Dropbox/uni/3F
         config $DOTFILES/.config
+        uni ~/Dropbox/uni/3F
+        projects ~/projects
     )
     dir=`printf "%s %s\n" $dirs | fzf --with-nth 1 | awk '{print $2}'`
     if [[ ! -z $dir ]]; then
