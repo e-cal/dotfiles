@@ -2,6 +2,5 @@
 
 stow --target=prometheus/ coeus/ \
     --ignore='alacritty.yml' \
-    --ignore='brightness' \
     --ignore='launch.sh' # polybar
 
