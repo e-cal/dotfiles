@@ -1,5 +1,4 @@
 # Core
-alias ".."="cd .."
 alias "la"="exa -la --color=always --group-directories-first"
 alias "py"="python"
 alias "envs"="ls ~/.local/share/virtualenvs"
@@ -10,17 +9,8 @@ alias "open"='xdg-open'
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
 
-cda() {
-    cd $1
-    la
-}
-
 # Use rsync instead of cp to get the progress and speed of copying.
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
-
-# Functions - TODO
-alias "vs"="nvimsearch"
-alias "cds"="cdsearch"
 
 # Config
 alias "zshrc"="v $DOTFILES/.config/zsh"
@@ -29,7 +19,6 @@ alias "aliases"="v $DOTFILES/.config/zsh/alias.zsh"
 alias "dotfiles"="cda $DOTFILES"
 alias "config"="cda $DOTFILES/.config"
 alias "nvimconf"="cda $DOTFILES/.config/nvim"
-
 
 alias "prompt"="v $DOTFILES/.config/starship.toml"
 alias "wmconfig"="v $DOTFILES/.config/xmonad/xmonad.hs"
