@@ -31,11 +31,11 @@ cde() {
 
 uni() {
     courses=(
-        paradigms cisc324
-        os cisc360
+        paradigms cisc360
+        os cisc324
         nn cisc452
-        psyc comm221
-        comm psyc271
+        comm comm221
+        psyc psyc271
         ta cisc204
     )
     dir=`printf "%s %s\n" $courses | fzf --with-nth 1 | awk '{print $2}'`
