@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
+sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
+
 if [[ $# == 0 ]]; then
-    sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
     if [[ -z $sessions ]]; then
         sel="NEW"
     else
@@ -15,17 +16,18 @@ if [[ $# == 0 ]]; then
     elif [[ $sel == "KILL" ]]; then
         tm kill
     else
-        if [[ -z $TMUX_PANE ]]; then
-            tmux a -t $sel
-        else
-            tmux switch -t $sel
-        fi
+        tm session $sel
     fi
 else
     case $1 in
         new)
-            name=`read -p "session name: " -e tmp; echo $tmp`
-            [[ -z $name ]] && echo cannot have an empty session name && exit 1
+            if [[ -z $2 ]]; then
+                name=`read -p "session name: " -e tmp; echo $tmp`
+            else
+                name=$2
+            fi
+
+            [[ -z $name ]] && echo "no session name" && exit 1
             if [[ -z $TMUX_PANE ]]; then
                 tmux new -s $name -n main "triangles && echo && exec zsh"
             else
@@ -33,14 +35,30 @@ else
                 tmux switch -t $name
             fi
             ;;
+        session)
+            name=$2
+            [[ -z $name ]] && echo "no session name" && exit 1
+            if [[ $sessions == *"$name"* ]]; then
+                if [[ -z $TMUX_PANE ]]; then
+                    tmux a -t $name
+                else
+                    tmux switch -t $name
+                fi
+            else
+                tm new $name
+            fi
+            ;;
         kill)
-            sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
             if [[ -n $sessions ]]; then
-                sessions="$sessions all"
-                sel=`printf "%s\n" $sessions | fzf`
-                [[ -z $sel ]] && exit 1
+                if [[ -n $2 ]]; then
+                    sel=$2
+                else
+                    sessions="$sessions ALL"
+                    sel=`printf "%s\n" $sessions | fzf`
+                    [[ -z $sel ]] && exit 1
+                fi
 
-                if [[ $sel == "all" ]]; then
+                if [[ $sel == "ALL" ]]; then
                     tmux kill-server
                 else
                     tmux kill-session -t $sel
@@ -52,7 +70,6 @@ else
             ;;
         startup)
             wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
-            sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
             if [[ $wtitle == "scratch" ]]; then
                 if [[ $sessions == *"scratch"* ]]; then
                     tmux a -t scratch
@@ -60,13 +77,12 @@ else
                     tmux new -s scratch -n scratch "triangles && echo && exec zsh"
                 fi
             else
-                if [[ -z $sessions ]]; then
+                if [[ ! $sessions == *"main"* ]]; then
                     tmux new -s main -n main "triangles && echo && exec zsh"
                 else
                     tm
                 fi
             fi
-
             ;;
     esac
 fi
