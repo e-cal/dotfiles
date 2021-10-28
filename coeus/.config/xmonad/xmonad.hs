@@ -255,7 +255,7 @@ myKeys = [
     , ("M-c", spawn "firefox -P ecal") -- Firefox
     , ("M1-c", spawn "firefox -P ta") -- TA firefox
     , ("M-g", spawn "firefox https://github.com") -- Github
-    , ("M-d", spawn "inkscape $HOME/sketch.svg") -- Draw
+    , ("M-d", spawn "inkscape $HOME/images/sketch.svg") -- Draw
     , ("M-S-d", spawn "firefox https://drive.google.com/drive/my-drive") -- Google Drive
     , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
     --, ("M-S-d", sequence_[spawn "nemo ~/Dropbox", spawnOnce "dropbox &"]) -- Dropbox
