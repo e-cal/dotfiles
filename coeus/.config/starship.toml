@@ -148,6 +148,7 @@ command = "show_sh_lvl"
 when = "show_sh_lvl"
 style = "#FFA570"
 format = "[($output )]($style)"
+disabled = true
 
 [shell]
 disabled = false

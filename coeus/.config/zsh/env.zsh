@@ -4,6 +4,7 @@ export PATH=$HOME/.local/bin:$HOME/scripts:$PATH
 # Useful vars
 export DOTFILES=~/.dotfiles/`hostname`
 export STOW_DIR=~/.dotfiles
+export EDITOR=nvim
 
 # XDG path spec
 export XDG_CONFIG_HOME=~/.config
