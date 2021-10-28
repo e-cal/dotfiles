@@ -28,3 +28,18 @@ cde() {
         cda $dir
     fi
 }
+
+uni() {
+    courses=(
+        paradigms cisc324
+        os cisc360
+        nn cisc452
+        psyc comm221
+        comm psyc271
+        ta cisc204
+    )
+    dir=`printf "%s %s\n" $courses | fzf --with-nth 1 | awk '{print $2}'`
+    if [[ ! -z $dir ]]; then
+        cda "$HOME/Dropbox/uni/3F/$dir"
+    fi
+}
