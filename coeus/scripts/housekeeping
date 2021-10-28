@@ -27,6 +27,8 @@ expected = [
     ".dropbox-dist",
     "fixes",
     ".config",
+    ".ghc",
+    ".pki",
 ]
 
 home_path = os.path.expanduser("~")
