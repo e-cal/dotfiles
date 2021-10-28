@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+if [[ $# == 0 ]]; then
+    sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
+    if [[ -z $sessions ]]; then
+        sel="NEW"
+    else
+        sessions="$sessions NEW KILL"
+        sel=`printf "%s\n" $sessions | fzf`
+        [[ -z $sel ]] && exit 1
+    fi
+
+    if [[ $sel == "NEW" ]]; then
+        tm new
+    elif [[ $sel == "KILL" ]]; then
+        tm kill
+    else
+        if [[ -z $TMUX_PANE ]]; then
+            tmux a -t $sel
+        else
+            tmux switch -t $sel
+        fi
+    fi
+else
+    case $1 in
+        new)
+            name=`read -p "session name: " -e tmp; echo $tmp`
+            [[ -z $name ]] && echo cannot have an empty session name && exit 1
+            if [[ -z $TMUX_PANE ]]; then
+                tmux new -s $name -n main "triangles && exec zsh"
+            else
+                tmux new -s $name -d -n main "triangles && exec zsh"
+                tmux switch -t $name
+            fi
+            ;;
+        kill)
+            sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
+            if [[ -n $sessions ]]; then
+                sessions="$sessions all"
+                sel=`printf "%s\n" $sessions | fzf`
+                [[ -z $sel ]] && exit 1
+
+                if [[ $sel == "all" ]]; then
+                    tmux kill-server
+                else
+                    tmux kill-session -t $sel
+                fi
+            else
+                echo "no tmux sessions"
+                exit 1
+            fi
+            ;;
+        startup)
+            wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
+            sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
+            if [[ $wtitle == "scratch" ]]; then
+                if [[ $sessions == *"scratch"* ]]; then
+                    tmux a -t scratch
+                else
+                    tmux new -s scratch -n scratch "triangles && exec zsh"
+                fi
+            else
+                if [[ -z $sessions ]]; then
+                    tmux new -s main -n main "triangles && exec zsh"
+                else
+                    tm
+                fi
+            fi
+
+            ;;
+    esac
+fi
+

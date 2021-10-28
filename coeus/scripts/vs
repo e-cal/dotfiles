@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+
+if [[ $# > 0 ]]; then
+    searchFrom=$1
+else
+    searchFrom="."
+fi
+
+file=`find $searchFrom -type f | fzf --preview "bat --theme=gruvbox-dark --color=always {}"`
+
+if [[ ! -z $file ]]; then
+    nvim $file
+fi
