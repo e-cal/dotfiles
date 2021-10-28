@@ -19,6 +19,7 @@ cde() {
     dirs=(
         dotfiles $DOTFILES
         config $DOTFILES/.config
+        nvim $DOTFILES/.config/nvim
         uni ~/Dropbox/uni/3F
         projects ~/projects
     )
