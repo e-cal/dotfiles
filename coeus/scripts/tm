@@ -27,9 +27,9 @@ else
             name=`read -p "session name: " -e tmp; echo $tmp`
             [[ -z $name ]] && echo cannot have an empty session name && exit 1
             if [[ -z $TMUX_PANE ]]; then
-                tmux new -s $name -n main "triangles && exec zsh"
+                tmux new -s $name -n main "triangles && echo && exec zsh"
             else
-                tmux new -s $name -d -n main "triangles && exec zsh"
+                tmux new -s $name -d -n main "triangles && echo && exec zsh"
                 tmux switch -t $name
             fi
             ;;
@@ -57,11 +57,11 @@ else
                 if [[ $sessions == *"scratch"* ]]; then
                     tmux a -t scratch
                 else
-                    tmux new -s scratch -n scratch "triangles && exec zsh"
+                    tmux new -s scratch -n scratch "triangles && echo && exec zsh"
                 fi
             else
                 if [[ -z $sessions ]]; then
-                    tmux new -s main -n main "triangles && exec zsh"
+                    tmux new -s main -n main "triangles && echo && exec zsh"
                 else
                     tm
                 fi

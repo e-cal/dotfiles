@@ -7,7 +7,7 @@ else
     searchFrom="."
 fi
 
-file=`find $searchFrom -type f | fzf --preview "bat --theme=gruvbox-dark --color=always {}"`
+file=`find $searchFrom -type f | sed 's/\.\///' | fzf --preview "bat --theme=gruvbox-dark --color=always {}"`
 
 if [[ ! -z $file ]]; then
     nvim $file
