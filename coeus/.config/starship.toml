@@ -119,7 +119,7 @@ diverged = "落×${ahead_count}  ×${behind_count} "
 modified = " ×${count} "
 untracked = "﬒ ×${count} "
 stashed = "﬚  "
-staged = "ﳁ ×${count} "
+staged = " ﳁ×${count} "
 renamed = " ×${count} "
 deleted = " ×${count} "
 
