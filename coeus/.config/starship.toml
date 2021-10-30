@@ -98,6 +98,10 @@ format = "[$symbol$version]($style) "
 symbol = " "
 format = "[$symbol$version]($style) "
 
+[java]
+symbol = " "
+format = "[$symbol$version]($style) "
+
 [package]
 disabled = true
 
