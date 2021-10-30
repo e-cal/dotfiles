@@ -35,11 +35,19 @@ fi
 if [ $1 = "wacom" ]
 then
     # set screen
-    echo "main: 0"
-    echo "left: 1"
-    echo "right: 2"
-    printf "use screen: "
-    read screen
+    screens="main left right"
+    screen=`printf "%s\n" $screens | fzf`
+    case $screen in
+        "main")
+            screen=0
+            ;;
+        "left")
+            screen=1
+            ;;
+        "right")
+            screen=2
+            ;;
+    esac
     xsetwacom set "Wacom Intuos BT S Pen stylus" MapToOutput "HEAD-$screen"
 
     # config stylus
