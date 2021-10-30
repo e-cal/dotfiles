@@ -1,9 +1,9 @@
 partial alphanumeric_keys
 xkb_symbols "code-dvorak" {
 
-    name[Group1]= "English (Real Programmers Dvorak)";
+    name[Group1]= "English (Code Dvorak)";
 
-    key <TLDE> { [       dollar,        asciitilde, dead_grave, dead_tilde      ] };
+    key <TLDE> { [          grave,        asciitilde, dead_grave, dead_tilde      ] };
 
     key <AE01> { [          plus,       1               ]       };
     key <AE02> { [          bracketleft,        2               ]       };
@@ -16,7 +16,7 @@ xkb_symbols "code-dvorak" {
     key <AE09> { [          bracketright,       9,  dead_grave] };
     key <AE10> { [          asterisk,   0       ]       };
     key <AE11> { [ exclam,      percent ]       };
-    key <AE12> { [ bar, grave,  dead_tilde] };
+    key <AE12> { [ dollar, numbersign,  dead_tilde] };
 
     key <AD01> { [  semicolon,  colon, dead_acute, dead_diaeresis       ] };
     key <AD02> { [      comma,  less,   dead_cedilla, dead_caron        ] };
@@ -54,6 +54,6 @@ xkb_symbols "code-dvorak" {
     key <AB09> { [          v,  V               ]       };
     key <AB10> { [          z,  Z               ]       };
 
-    key <BKSL> { [  backslash,  numbersign             ]       };
+    key <BKSL> { [  backslash,  bar             ]       };
 };
 

@@ -38,7 +38,6 @@ xset s off -dpms
 # xrandr --output DP-4 --primary --mode 2560x1440 --output DP-2 --mode 1920x1080 --left-of DP-4 --rotate right
 xrandr --output DP-4 --primary --mode 2560x1440 --output HDMI-0 --mode 1920x1080 --right-of DP-4 --output DP-2 --mode 1920x1080 --left-of DP-4 --rotate right
 setxkbmap code-dvorak
-setxkbmap -option caps:escape
 nitrogen --restore &
 picom --config $XDG_CONFIG_HOME/picom/picom.conf &
 xsetroot -cursor_name left_ptr &

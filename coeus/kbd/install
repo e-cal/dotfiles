@@ -1,4 +1,7 @@
 #!/bin/bash
 
-cp ~/kbd/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak
+sudo cp ~/kbd/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak
 setxkbmap code-dvorak
+
+sudo cp ~/kbd/code-dvorak.map.gz /usr/share/kbd/keymaps/code-dvorak.map.gz
+echo "KEYMAP=code-dvorak" | sudo tee /etc/vconsole.conf
