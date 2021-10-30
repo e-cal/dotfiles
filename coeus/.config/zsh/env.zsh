@@ -52,6 +52,7 @@ export GOPATH="$XDG_DATA_HOME"/go
 
 # Other env variables
 export FZF_DEFAULT_COMMAND='rg -l ""'
+export FZF_DEFAULT_OPTS='--prompt=" " --pointer="›"'
 export XONSHRC_DIR="$DOTFILES/.config/xonsh"
 
 # Start X

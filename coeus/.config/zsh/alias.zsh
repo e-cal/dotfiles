@@ -2,12 +2,12 @@
 alias "la"="exa -la --color=always --group-directories-first"
 alias "py"="python"
 alias "envs"="ls ~/.local/share/virtualenvs"
-#alias "newenv"='vox new $arg0; echo $arg0 > .venv; vox activate $arg0; pip install pynvim'
 alias "v"="nvim"
 alias "clear"="clear;triangles"
 alias "open"='xdg-open'
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
+alias "mvdl"="mv ~/Downloads/tmp/* ./"
 
 # Use rsync instead of cp to get the progress and speed of copying.
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']

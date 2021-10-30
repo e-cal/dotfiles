@@ -40,6 +40,8 @@ uni() {
     )
     dir=`printf "%s %s\n" $courses | fzf --with-nth 1 | awk '{print $2}'`
     if [[ ! -z $dir ]]; then
-        cda "$HOME/Dropbox/uni/3F/$dir"
+        name=$courses[$(($courses[(i)$dir] - 1))]
+        cd "$HOME/Dropbox/uni/3F/$dir"
+        tm attach $name
     fi
 }
