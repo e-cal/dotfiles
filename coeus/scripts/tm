@@ -29,42 +29,60 @@ if [[ $# == 0 ]]; then
     if [[ -z $sessions ]]; then
         sel="NEW"
     else
-        sessions="$sessions NEW KILL"
-        sel=`printf "%s\n" $sessions | fzf --header="session menu" --info="hidden"`
+        sessions="$sessions NEW END KILL"
+        sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden"`
         [[ -z $sel ]] && exit 1
     fi
 
-    if [[ $sel == "NEW" ]]; then
-        tm new
-    elif [[ $sel == "KILL" ]]; then
-        tm kill
-    else
-        tm attach $sel
-    fi
+    case $sel in
+        NEW)
+            tm new
+            ;;
+        END)
+            tm end
+            ;;
+        KILL)
+            tm kill
+            ;;
+        *)
+            tm attach $sel
+            ;;
+    esac
 else
     case $1 in
-        new)
+        new | n)
             if [[ -z $2 ]]; then
                 name=`read -p "session name: " -e tmp; echo $tmp`
             else
                 name=$2
             fi
             [[ -z $name ]] && echo "no session name" && exit 1
+
             cd ~
             attach_session $name
             ;;
-        attach)
-            name=$2
+        attach | a)
+            if [[ -z $2 ]]; then
+                sessions="$sessions NEW"
+                name=`printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden"`
+            else
+                name=$2
+            fi
             [[ -z $name ]] && echo "no session name" && exit 1
-            attach_session $name
+
+            if [[ $name == "NEW" ]]; then
+                tm new
+            else
+                attach_session $name
+            fi
             ;;
-        kill)
+        kill | k | x)
             if [[ -n $sessions ]]; then
                 if [[ -n $2 ]]; then
                     sel=$2
                 else
                     sessions="$sessions ALL"
-                    sel=`printf "%s\n" $sessions | fzf --header="kill session" --info="hidden"`
+                    sel=`printf "%s\n" $sessions | fzf --header="kill menu" --info="hidden"`
                     [[ -z $sel ]] && exit 0
                 fi
 
@@ -78,7 +96,11 @@ else
                 exit 1
             fi
             ;;
-        startup)
+        end | e | q)
+            old=`tmux display-message -p '#S'`
+            tm attach && tm kill $old
+            ;;
+        startup | s)
             wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
             if [[ $wtitle == "scratch" ]]; then
                 attach_session "scratch"
@@ -90,6 +112,8 @@ else
                 fi
             fi
             ;;
+        *)
+            echo "Usage: tm [new [session-name] | attach [session-name] | kill [session-name] | startup | end]"
     esac
 fi
 
