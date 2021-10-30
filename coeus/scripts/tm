@@ -2,12 +2,35 @@
 
 sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
 
+not_in_tmux() {
+    [[ -z $TMUX ]]
+}
+
+session_exists() {
+    tmux has-session -t $1 &> /dev/null && true
+}
+
+attach_session() {
+    if not_in_tmux; then
+        if ! session_exists $1; then
+            tmux new -s $1 -n main "triangles && echo && exec zsh"
+        else
+            tmux attach -t $1
+        fi
+    else
+        if ! session_exists $1; then
+            tmux new -s $1 -d -n main "triangles && echo && exec zsh"
+        fi
+        tmux switch -t $1
+    fi
+}
+
 if [[ $# == 0 ]]; then
     if [[ -z $sessions ]]; then
         sel="NEW"
     else
         sessions="$sessions NEW KILL"
-        sel=`printf "%s\n" $sessions | fzf`
+        sel=`printf "%s\n" $sessions | fzf --header="session menu" --info="hidden"`
         [[ -z $sel ]] && exit 1
     fi
 
@@ -16,7 +39,7 @@ if [[ $# == 0 ]]; then
     elif [[ $sel == "KILL" ]]; then
         tm kill
     else
-        tm session $sel
+        tm attach $sel
     fi
 else
     case $1 in
@@ -26,27 +49,14 @@ else
             else
                 name=$2
             fi
-
             [[ -z $name ]] && echo "no session name" && exit 1
-            if [[ -z $TMUX_PANE ]]; then
-                tmux new -s $name -n main "triangles && echo && exec zsh"
-            else
-                tmux new -s $name -d -n main "triangles && echo && exec zsh"
-                tmux switch -t $name
-            fi
+            cd ~
+            attach_session $name
             ;;
-        session)
+        attach)
             name=$2
             [[ -z $name ]] && echo "no session name" && exit 1
-            if [[ $sessions == *"$name"* ]]; then
-                if [[ -z $TMUX_PANE ]]; then
-                    tmux a -t $name
-                else
-                    tmux switch -t $name
-                fi
-            else
-                tm new $name
-            fi
+            attach_session $name
             ;;
         kill)
             if [[ -n $sessions ]]; then
@@ -54,8 +64,8 @@ else
                     sel=$2
                 else
                     sessions="$sessions ALL"
-                    sel=`printf "%s\n" $sessions | fzf`
-                    [[ -z $sel ]] && exit 1
+                    sel=`printf "%s\n" $sessions | fzf --header="kill session" --info="hidden"`
+                    [[ -z $sel ]] && exit 0
                 fi
 
                 if [[ $sel == "ALL" ]]; then
@@ -71,16 +81,12 @@ else
         startup)
             wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
             if [[ $wtitle == "scratch" ]]; then
-                if [[ $sessions == *"scratch"* ]]; then
-                    tmux a -t scratch
-                else
-                    tmux new -s scratch -n scratch "triangles && echo && exec zsh"
-                fi
+                attach_session "scratch"
             else
-                if [[ ! $sessions == *"main"* ]]; then
-                    tmux new -s main -n main "triangles && echo && exec zsh"
-                else
+                if session_exists "main"; then
                     tm
+                else
+                    tmux new -s main -n main "triangles && echo && exec zsh"
                 fi
             fi
             ;;
