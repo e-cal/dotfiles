@@ -105,7 +105,7 @@ focusMouse = True
 -- Workspaces
 --------------------------------------------------------------------------------
 myExtraWorkspaces = ["NSP"]
-myWorkspaces = map show [1..6] ++ myExtraWorkspaces
+myWorkspaces = map show [1..7] ++ myExtraWorkspaces
 
 getSortByIndexNoNSP = fmap (. filter (\(W.Workspace tag _ _) -> not (tag `elem` myExtraWorkspaces))) getSortByIndex
 

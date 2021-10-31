@@ -10,6 +10,7 @@ files=(
     xmonad $DOTFILES/.config/xmonad/xmonad.hs
     tmux $DOTFILES/.config/tmux/tmux.conf
     x11 $DOTFILES/.config/X11/xinitrc
+    polybar $DOTFILES/.config/polybar/config.ini
 
     alacritty $DOTFILES/.config/alacritty/alacritty.yml
     xonsh $DOTFILES/.config/xonsh
