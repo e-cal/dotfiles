@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+
+for term in $@; do
+    query="$query%20$term"
+done
+
+firefox "google.com/search?q=$query"
