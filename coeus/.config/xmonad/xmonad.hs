@@ -189,11 +189,7 @@ myManageHook = composeAll
 --------------------------------------------------------------------------------
 myStartupHook :: X ()
 myStartupHook = do
-    spawnOnce "~/.config/polybar/launch.sh &"
-    spawnOnce "dropbox &"
-    spawnOnce "eyes &"
-    spawnOnce "redshift"
-    spawnOnce "clickup"
+    spawnOnce "startup"
     setWMName "LG3D"
 
 --------------------------------------------------------------------------------
