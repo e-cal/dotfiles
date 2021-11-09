@@ -10,12 +10,23 @@
 # bind-key Enter display-popup -E "tm"
 # this binds the popup to <prefix>Enter
 
-# NOTE: if you do not also grab my triangles script this script won't work.
-# change startcmd to a blank string (or whatever you want) to fix
-# also change the shell to whatever shell you use
-
+# Change the shell and startcmd (an empty string works too) to suit you
 shell="zsh"
 startcmd="triangles && echo"
+
+
+# Customize the projects map for quick launching project specific sessions
+# NOTE: the name will also be the name of the session and the path will be the
+#       startup path for the session (unless otherwise specified)
+# See the project case below (near the end of the file) for customizing project
+# specific behaviour
+declare -A projects=(
+    # ["name"]="path"
+    ["website"]="$HOME/projects/ecal.dev"
+    ["hackerrank"]="$HOME/projects/hackerrank"
+    ["school"]=""
+    )
+
 if [[ -n $startcmd ]]; then
     startcmd="$startcmd && exec $shell"
 else
@@ -51,12 +62,15 @@ if [[ $# == 0 ]]; then
     if [[ -z $sessions ]]; then
         sel="NEW"
     else
-        sessions="$sessions NEW END KILL"
+        sessions="$sessions PROJECT NEW END KILL"
         sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden"`
         [[ -z $sel ]] && exit 1
     fi
 
     case $sel in
+        PROJECT)
+            tm project
+            ;;
         NEW)
             tm new
             ;;
@@ -134,6 +148,46 @@ else
                     tmux new -s main -n main "$startcmd"
                 fi
             fi
+            ;;
+
+        project | p)
+            if [[ -n $2 ]]; then
+                sel=$2
+            else
+                sel=`printf "%s\n" ${!projects[@]} | fzf --header="project menu" --info="hidden"`
+            fi
+            [[ -z $sel ]] && exit 0
+
+# ========= CUSTOMIZE PROJECT BEHAVIOUR HERE ===================================
+            case $sel in
+                # Special cases
+                school)
+                    declare -A courses=(
+                        ["paradigms"]="cisc360"
+                        ["os"]="cisc324"
+                        ["nn"]="cisc452"
+                        ["comm"]="comm221"
+                        ["psyc"]="psyc271"
+                        ["ta"]="cisc204"
+                        )
+                    sel=`printf "%s\n" ${!courses[@]} | fzf --header="course menu" --info="hidden"`
+                    [[ -z $sel ]] && exit 0
+
+                    dir=${courses[$sel]}
+                    cd "$HOME/Dropbox/uni/3F/$dir"
+                    attach_session $sel
+                    cd - &>/dev/null
+                    ;;
+
+                # Default behaviour
+                *)
+                    dir=${projects[$sel]}
+                    cd $dir
+                    attach_session $sel
+                    cd - &>/dev/null
+                    ;;
+# ==============================================================================
+            esac
             ;;
         *)
             echo "Usage: tm [new [session-name] | attach [session-name] | kill [session-name] | startup | end]"
