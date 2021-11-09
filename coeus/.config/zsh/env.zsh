@@ -1,3 +1,5 @@
+export TERM="xterm-kitty"
+
 # lemme use my scripts
 export PATH=$HOME/.local/bin:$HOME/scripts:$PATH
 
@@ -27,7 +29,7 @@ export ZVM_CURSOR_STYLE_ENABLED=false
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
 export XMONAD_DATA_HOME="$XDG_DATA_HOME"/xmonad
 export XMONAD_CACHE_HOME="$XDG_CACHE_HOME"/xmonad
-export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init
+export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init.py
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint
 export LESSHISTFILE="$XDG_DATA_HOME"/lesshst
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc

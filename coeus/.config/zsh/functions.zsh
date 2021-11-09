@@ -43,6 +43,7 @@ uni() {
         name=$courses[$(($courses[(i)$dir] - 1))]
         cd "$HOME/Dropbox/uni/3F/$dir"
         tm attach $name
+        cd - &>/dev/null
     fi
 }
 
@@ -56,3 +57,25 @@ mkscript() {
     chmod +x $name
     v $name
 }
+
+mkvenv() {
+    if [[ -z $1 ]]; then
+        name=`read -p "venv name: "`
+    else
+        name=$1
+    fi
+    venv "$VIRTUALENV_HOME/$name"
+    echo $name > .venv
+}
+
+setvenv() {
+    if [[ -z $1 ]]; then
+        name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
+    else
+        name=$1
+        [[ ! `/usr/bin/ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
+
+    fi
+    echo $name > .venv
+}
+

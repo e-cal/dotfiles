@@ -71,8 +71,11 @@ DISABLE_MAGIC_FUNCTIONS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git git-auto-fetch ssh-agent zsh-syntax-highlighting zsh-autosuggestions zsh-vi-mode)
+
+# Plugin config
 GIT_AUTO_FETCH_INTERVAL=300 # auto-fetch every 5m
 zstyle :omz:plugins:ssh-agent identities id_ed25519
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 
 source $ZSH/oh-my-zsh.sh
 
