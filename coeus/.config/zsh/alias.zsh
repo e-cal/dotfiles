@@ -68,7 +68,6 @@ alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "msf"="msfconsole --quiet -x \"db_connect $USER@msf\""
 
 # System specific
-alias "battery"="acpi"
 alias "bat-stat"="sudo tlp-stat"
 
 # Fun

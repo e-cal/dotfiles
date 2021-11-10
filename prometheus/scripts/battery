@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+bat=`acpi | awk '{printf $4}' | tr -d ","`
+batnum=`echo $bat | tr -d "%"`
+
+ten=""
+twenty=""
+thirty=""
+fourty=""
+fifty=""
+sixty=""
+seventy=""
+eighty=""
+ninety=""
+full=""
+charging=""
+
+if [[ `acpi | awk '{printf $3}' | tr -d ','` == "Charging" ]]; then
+    icon=$charging
+elif (( $batnum <= 10 )); then
+    icon=$ten
+elif (( $batnum <= 20 )); then
+    icon=$twenty
+elif (( $batnum <= 30 )); then
+    icon=$thirty
+elif (( $batnum <= 40 )); then
+    icon=$fourty
+elif (( $batnum <= 50 )); then
+    icon=$fifty
+elif (( $batnum <= 60 )); then
+    icon=$sixty
+elif (( $batnum <= 70 )); then
+    icon=$seventy
+elif (( $batnum <= 80 )); then
+    icon=$eighty
+elif (( $batnum <= 90 )); then
+    icon=$ninety
+else
+    icon=$full
+fi
+
+if [[ $1 == "color" ]]; then
+    if (( $batnum > 50 )); then
+        color=2
+    elif (( $batnum > 20 )); then
+        color=11
+    else
+        color=1
+    fi
+    echo $color
+    exit 0
+fi
+
+echo "$bat $icon"
