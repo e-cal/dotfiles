@@ -2,5 +2,6 @@
 
 stow --target=prometheus/ coeus/ \
     --ignore='alacritty.yml' \
-    --ignore='launch.sh' # polybar
+    --ignore='launch.sh' \
+    --ignore='tmux.conf'
 
