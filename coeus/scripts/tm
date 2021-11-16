@@ -62,7 +62,7 @@ if [[ $# == 0 ]]; then
     if [[ -z $sessions ]]; then
         sel="NEW"
     else
-        sessions="$sessions PROJECT NEW END KILL"
+        sessions="$sessions KILL END PROJECT NEW"
         sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden"`
         [[ -z $sel ]] && exit 1
     fi
@@ -99,7 +99,7 @@ else
             ;;
         attach | a)
             if [[ -z $2 ]]; then
-                sessions="$sessions NEW"
+                sessions="$sessions PROJECT NEW"
                 name=`printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden"`
             else
                 name=$2
@@ -108,6 +108,8 @@ else
 
             if [[ $name == "NEW" ]]; then
                 tm new
+            elif [[ $name == "PROJECT" ]]; then
+                tm project
             else
                 attach_session $name
             fi
