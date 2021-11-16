@@ -12,8 +12,6 @@ expected = [
     ".cache",
     ".local",
     ".thunderbird",
-    "aboutme",
-    "todo-qmind",
     ".mozilla",
     ".dotfiles",
     "scripts",

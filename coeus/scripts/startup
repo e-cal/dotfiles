@@ -3,7 +3,7 @@
 case `hostname` in
     coeus)
         eyes &
-        clickup
+        clickup &
         ;;
     prometheus)
         ;;
@@ -11,4 +11,4 @@ esac
 
 ~/.config/polybar/launch.sh &
 dropbox &
-redshift
+redshift &
