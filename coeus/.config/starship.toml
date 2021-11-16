@@ -102,6 +102,10 @@ format = "[$symbol$version]($style) "
 symbol = " "
 format = "[$symbol$version]($style) "
 
+[perl]
+symbol = "/ "
+format = "[$symbol$version]($style) "
+
 [package]
 disabled = true
 
