@@ -8,7 +8,7 @@ alias "lta"="exa -a --tree --level=2"
 alias "tree"="exa -a --tree"
 
 alias "py"="python"
-alias "ipy"="ipython"
+alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "envs"="ls ~/.local/share/virtualenvs"
 alias "v"="nvim"
 alias "clear"="clear;triangles"
@@ -57,7 +57,6 @@ alias "cd204"="cda ~/Dropbox/uni/3F/cisc204/"
 # Util
 alias "fixkeys"="setxkbmap code-dvorak"
 alias "launchbar"="~/.config/polybar/launch.sh"
-alias "fixap"='pacmd list-cards | grep "Bean Pods" -m 1 -B 5 | head -1 | awk "{print $2}" | xargs -I % pacmd set-card-profile % a2dp_sink'
 
 # Abbreviations
 alias "rg"="rg -S"
@@ -76,3 +75,5 @@ alias "weather"="curl wttr.in -s | head -n -1"
 # Other
 alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
 alias luamake=/home/ecal/projects/lua-language-server/3rd/luamake/luamake
+alias "prolog"="swipl"
+alias "getpass"="clip ~/.config/Bitwarden\ CLI/.data"
