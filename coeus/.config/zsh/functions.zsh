@@ -79,3 +79,7 @@ setvenv() {
     echo $name > .venv
 }
 
+
+fixap() {
+    pacmd list-cards | grep 'Bean Pods' -m 1 -B 5 | head -1 | xargs | awk '{print $2}' | xargs -I % pacmd set-card-profile % a2dp_sink
+}
