@@ -1,0 +1,143 @@
+* {
+    invis: #0000;
+    text: #F2F2F2;
+    placeholder-text: #B2B2B2;
+    search-bar: #111111DF;
+    results: #111111EF;
+    selected: #4EC9B055;
+    active: #F00;
+    urgent: #F00;
+    urgent-selected: #F00;
+}
+
+
+
+window {
+    transparency: "real";
+    background-color: @invis;
+    location: center;
+    anchor: center;
+    x-offset: 0px;
+    height: 500px;
+    width: 50%;
+    orientation: vertical;
+    border-radius: 5px;
+}
+
+overlay {
+    background-color: red;
+}
+
+
+mainbox {
+    background-color: @invis;
+    children: [ inputbar, listview ];
+    spacing: 1em;
+}
+
+// Input Bar ==================================================================
+
+inputbar {
+    background-color: @search-bar;
+    text-color: @text;
+    expand: false;
+    padding: 1em 1em 1em 1em;
+    position: north;
+    children: [ entry-wrapper ];
+    border-radius: 5px;
+
+}
+
+case-indicator {
+    background-color: @invis;
+    text-color: @text;
+    vertical-align: 0.5;
+    horizontal-align: 0.5;
+}
+
+prompt {
+    enabled: false;
+}
+
+button {
+    action: "ok";
+    str: " ";
+    expand: false;
+    text-color: @text;
+    background-color: @invis;
+    vertical-align: 0.6;
+    horizontal-align: 0.5;
+}
+
+
+entry {
+    background-color: @invis;
+    text-color: @text;
+    expand: true;
+    vertical-align: 0.5;
+    horizontal-align: 0;
+    placeholder: "Search";
+    placeholder-color: @placeholder-text;
+    blink: true;
+}
+
+
+entry-wrapper {
+		orientation: horizontal;
+		vertical-align: 0.5;
+		spacing: 4px;
+		background-color: @invis;
+		children: [ button, entry, case-indicator ];
+}
+
+
+// Results ====================================================================
+
+listview {
+    background-color: @results;
+    columns: 1;
+    spacing: 5px;
+    cycle: false;
+    dynamic: true;
+    layout: vertical;
+    border-radius: 5px;
+}
+
+scrollbar {
+    background-color: @results;
+    handle-color: @selected;
+    handle-width: 0.3em;
+}
+
+element {
+    background-color: @invis;
+    text-color: @text;
+    padding: 0.5em 0 0.5em 1em;
+    children: [ element-icon, element-text ];
+}
+
+element-icon {
+    background-color: inherit;
+    text-color: inherit;
+    size: 36px;
+    border: 0;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    expand: true;
+    horizontal-align: 0;
+    vertical-align: 0.5;
+}
+
+element selected {
+    background-color: @selected;
+    text-color: @text;
+}
+
+element-text selected,
+element-icon selected {
+    background-color: @invis;
+    text-color: inherit;
+}
