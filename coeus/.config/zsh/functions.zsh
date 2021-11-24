@@ -9,7 +9,7 @@ cds() {
     else
         searchFrom="."
     fi
-    dir=`find $searchFrom -type d -maxdepth 3 | sed 's/\.\///' | fzf`
+    dir=`find $searchFrom -maxdepth 5 -type d 2>/dev/null | sed 's/\.\///' | fzf --border --height=50% --layout=reverse`
     if [[ ! -z $dir ]]; then
         cda $dir
     fi
@@ -23,7 +23,7 @@ cde() {
         uni ~/Dropbox/uni/3F
         projects ~/projects
     )
-    dir=`printf "%s %s\n" $dirs | fzf --with-nth 1 | awk '{print $2}'`
+    dir=`printf "%s %s\n" $dirs | fzf --with-nth 1 --border --height=20% --layout=reverse | awk '{print $2}'`
     if [[ ! -z $dir ]]; then
         cda $dir
     fi

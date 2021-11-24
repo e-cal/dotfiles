@@ -25,6 +25,11 @@ export PROMPT_EOL_MARK=""
 export PS2="  "
 export ZVM_CURSOR_STYLE_ENABLED=false
 
+# fzf
+export FZF_DEFAULT_COMMAND='rg -l ""'
+export FZF_DEFAULT_OPTS='--prompt=" " --pointer="›" --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'
+export FZF_INLINE='--border --height=50% --layout=reverse'
+
 # GET OUT OF MY HOUSE
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
 export XMONAD_DATA_HOME="$XDG_DATA_HOME"/xmonad
@@ -54,8 +59,6 @@ export SSB_HOME="$XDG_DATA_HOME"/zoom
 export GOPATH="$XDG_DATA_HOME"/go
 
 # Other env variables
-export FZF_DEFAULT_COMMAND='rg -l ""'
-export FZF_DEFAULT_OPTS='--prompt=" " --pointer="›"'
 export XONSHRC_DIR="$DOTFILES/.config/xonsh"
 
 # Start X

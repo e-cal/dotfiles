@@ -62,23 +62,26 @@ if [[ $# == 0 ]]; then
     if [[ -z $sessions ]]; then
         sel="NEW"
     else
-        sessions="$sessions KILL END PROJECT NEW"
+        sessions="$sessions RESET KILL END PROJECT NEW"
         sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden"`
         [[ -z $sel ]] && exit 1
     fi
 
     case $sel in
-        PROJECT)
+        PROJECT)
             tm project
             ;;
-        NEW)
+        NEW)
             tm new
             ;;
-        END)
+        END)
             tm end
             ;;
-        KILL)
+        KILL)
             tm kill
+            ;;
+        RESET)
+            tm reset
             ;;
         *)
             tm attach $sel
@@ -92,39 +95,42 @@ else
             else
                 name=$2
             fi
+
             [[ -z $name ]] && echo "no session name" && exit 1
+            [[ `tmux display-message -p '#S'` == $name ]] && echo "cannot create a session with the same name as the current session" && exit 1
 
             cd ~
             attach_session $name
             ;;
         attach | a)
             if [[ -z $2 ]]; then
-                sessions="$sessions PROJECT NEW"
+                cur=`tmux display-message -p '#S'`
+                sessions="${sessions//$cur/} PROJECT NEW"
                 name=`printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden"`
             else
                 name=$2
             fi
-            [[ -z $name ]] && echo "no session name" && exit 1
+            [[ -z $name ]] && echo "no selection" && exit 1
 
-            if [[ $name == "NEW" ]]; then
-                tm new
-            elif [[ $name == "PROJECT" ]]; then
-                tm project
+            if [[ $name == "NEW" ]]; then
+                tm new || exit 1
+            elif [[ $name == "PROJECT" ]]; then
+                tm project || exit 1
             else
-                attach_session $name
+                attach_session $name || exit 1
             fi
             ;;
-        kill | k | x)
+        kill | k)
             if [[ -n $sessions ]]; then
                 if [[ -n $2 ]]; then
                     sel=$2
                 else
-                    sessions="$sessions ALL"
+                    sessions="$sessions >ALL"
                     sel=`printf "%s\n" $sessions | fzf --header="kill menu" --info="hidden"`
                     [[ -z $sel ]] && exit 0
                 fi
 
-                if [[ $sel == "ALL" ]]; then
+                if [[ $sel == ">ALL" ]]; then
                     tmux kill-server
                 else
                     tmux kill-session -t $sel
@@ -134,10 +140,16 @@ else
                 exit 1
             fi
             ;;
-        end | e | q)
+        end | e)
             not_in_tmux && echo "not in a tmux session, nothing to end" && exit 1
             old=`tmux display-message -p '#S'`
-            tm attach && [[ `tmux display-message -p '#S'` != $old ]] && tm kill $old
+            tm attach && tm kill $old
+            ;;
+        reset | r)
+            not_in_tmux && echo "not in a tmux session, nothing to reset" && exit 1
+            cur=`tmux display-message -p '#S'`
+            tmp=`uuidgen`
+            tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur && tm kill $tmp" ENTER
             ;;
         startup | s)
             wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
@@ -180,7 +192,6 @@ else
                     attach_session $sel
                     cd - &>/dev/null
                     ;;
-
                 # Default behaviour
                 *)
                     dir=${projects[$sel]}
@@ -191,10 +202,10 @@ else
 # ==============================================================================
             esac
             ;;
+
         *)
-            echo "Usage: tm [new [session-name] | attach [session-name] | kill [session-name] | startup | end]"
-            echo
-            echo "Main menu: tm"
+            echo "Usage: tm [new [session-name] | attach [session-name] | kill [session-name] | end | reset | startup]"
+            ;;
     esac
 fi
 
