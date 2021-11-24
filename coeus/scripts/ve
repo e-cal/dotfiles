@@ -5,6 +5,7 @@ files=(
     zsh $DOTFILES/.config/zsh
     scripts $DOTFILES/scripts
 
+    tm $DOTFILES/scripts/tm
     starship $DOTFILES/.config/starship.toml
     kitty $DOTFILES/.config/kitty/kitty.conf
     xmonad $DOTFILES/.config/xmonad/xmonad.hs
@@ -17,7 +18,7 @@ files=(
     fish $DOTFILES/.config/fish
 )
 
-file=`printf "%s %s\n" ${files[@]} | fzf --with-nth 1 | awk '{print $2}'`
+file=`printf "%s %s\n" ${files[@]} | fzf --with-nth 1 $FZF_INLINE | awk '{print $2}'`
 
 if [[ ! -z $file ]]; then
     nvim $file

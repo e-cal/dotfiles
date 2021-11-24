@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-
 if [[ $# > 0 ]]; then
     searchFrom=$1
 else
     searchFrom="."
 fi
 
-file=`find $searchFrom -type f | sed 's/\.\///' | fzf --preview "bat --theme=gruvbox-dark --color=always {}"`
+file=`find $searchFrom -type f 2>/dev/null | sed 's/\.\///' | fzf --preview "bat --theme=gruvbox-dark --color=always {}" $FZF_INLINE`
 
 if [[ ! -z $file ]]; then
     nvim $file
