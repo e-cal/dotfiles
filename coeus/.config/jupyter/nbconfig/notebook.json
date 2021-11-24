@@ -15,5 +15,12 @@
     "cm_config": {
       "lineNumbers": false
     }
+  },
+  "keys": {
+    "command": {
+      "bind": {
+        "alt-r": "jupyter-notebook:restart-kernel-and-run-all-cells"
+      }
+    }
   }
 }
