@@ -257,6 +257,7 @@ myKeys = [
     , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
     --, ("M-S-d", sequence_[spawn "nemo ~/Dropbox", spawnOnce "dropbox &"]) -- Dropbox
     , ("M-S-b", spawn "$HOME/.config/polybar/launch.sh") -- Polybar
+    , ("M-b", spawn "polybar-msg cmd toggle") -- toggle Polybar
     , ("M-S-p", spawn "launch-picom")
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
     , ("M-s", spawn "focus-spotify") -- Spotify
@@ -281,7 +282,7 @@ myKeys = [
 	, ("M-<Space> f", sendMessage $ JumpToLayout "full")
 	, ("M-<Space> h", sendMessage $ JumpToLayout "horizontal")
 	, ("M-<Space> v", sendMessage $ JumpToLayout "vertical")
-    , ("M-b", spawn "polybar-msg cmd toggle" >> sendMessage ToggleStruts)
+    , ("M-C-b", sendMessage ToggleStruts)
     , ("M-C-<Down>", sequence_[sendMessage DeArrange, withFocused $ windows . W.sink]) -- Tile Mode
     , ("M-S-h", sendMessage Shrink) -- Shrink horizontal
     , ("M-S-l", sendMessage Expand) -- Expand horizontal
