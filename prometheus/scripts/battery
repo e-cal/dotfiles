@@ -3,6 +3,7 @@
 bat=`acpi | awk '{printf $4}' | tr -d ","`
 batnum=`echo $bat | tr -d "%"`
 
+empty=""
 ten=""
 twenty=""
 thirty=""
@@ -18,22 +19,24 @@ charging=""
 if [[ `acpi | awk '{printf $3}' | tr -d ','` == "Charging" ]]; then
     icon=$charging
 elif (( $batnum <= 10 )); then
-    icon=$ten
+    icon=$empty
 elif (( $batnum <= 20 )); then
-    icon=$twenty
+    icon=$ten
 elif (( $batnum <= 30 )); then
-    icon=$thirty
+    icon=$twenty
 elif (( $batnum <= 40 )); then
-    icon=$fourty
+    icon=$thirty
 elif (( $batnum <= 50 )); then
-    icon=$fifty
+    icon=$fourty
 elif (( $batnum <= 60 )); then
-    icon=$sixty
+    icon=$fifty
 elif (( $batnum <= 70 )); then
-    icon=$seventy
+    icon=$sixty
 elif (( $batnum <= 80 )); then
-    icon=$eighty
+    icon=$seventy
 elif (( $batnum <= 90 )); then
+    icon=$eighty
+elif (( $batnum <= 95 )); then
     icon=$ninety
 else
     icon=$full
