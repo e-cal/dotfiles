@@ -24,6 +24,7 @@ declare -A projects=(
     # ["name"]="path"
     ["website"]="$HOME/projects/ecal.dev"
     ["hackerrank"]="$HOME/projects/hackerrank"
+    ["ssh"]=""
     ["school"]=""
     )
 
@@ -37,6 +38,17 @@ sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
 
 not_in_tmux() {
     [[ -z $TMUX ]]
+}
+
+stay_in_tmux() {
+    echo $NOT_SSH
+    sleep 0.3
+    if [[ -z $NOT_SSH ]]; then
+        echo setting NOT_SSH
+        sleep 0.3
+        export NOT_SSH=true
+    fi
+    [[ $NOT_SSH == true ]]
 }
 
 session_exists() {
@@ -99,9 +111,18 @@ else
             [[ -z $name ]] && echo "no session name" && exit 1
             [[ `tmux display-message -p '#S'` == $name ]] && echo "cannot create a session with the same name as the current session" && exit 1
 
-            cd ~
+
+            if [[ -z $3 ]]; then
+                from=`find $HOME -maxdepth 5 -type d 2>/dev/null | sed 's/\/home\/ecal\///' | sed 's/\/home\/ecal/home/' | fzf --header="start dir"`
+            else
+                from=$3
+            fi
+            [[ -z $from ]] && from=`pwd` && echo "start dir not set, using $(pwd)"
+
+            [[ $from == "home" ]] && cd ~ || cd "$HOME/$from"
             attach_session $name
             ;;
+
         attach | a)
             if [[ -z $2 ]]; then
                 cur=`tmux display-message -p '#S'`
@@ -120,19 +141,22 @@ else
                 attach_session $name || exit 1
             fi
             ;;
+
         kill | k)
             if [[ -n $sessions ]]; then
                 if [[ -n $2 ]]; then
                     sel=$2
                 else
-                    sessions="$sessions >ALL"
+                    sessions="$sessions TMUX"
                     sel=`printf "%s\n" $sessions | fzf --header="kill menu" --info="hidden"`
                     [[ -z $sel ]] && exit 0
                 fi
 
-                if [[ $sel == ">ALL" ]]; then
+                if [[ $sel == "TMUX" ]]; then
                     tmux kill-server
                 else
+                    cur=`tmux display-message -p '#S'`
+                    [[ $sel ==  $cur ]] && echo "use END (tm end) to end current session and attach to a new one" && exit 1
                     tmux kill-session -t $sel
                 fi
             else
@@ -140,24 +164,35 @@ else
                 exit 1
             fi
             ;;
+
         end | e)
             not_in_tmux && echo "not in a tmux session, nothing to end" && exit 1
             old=`tmux display-message -p '#S'`
             tm attach && tm kill $old
             ;;
+
         reset | r)
             not_in_tmux && echo "not in a tmux session, nothing to reset" && exit 1
             cur=`tmux display-message -p '#S'`
             tmp=`uuidgen`
             tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur && tm kill $tmp" ENTER
             ;;
+
         startup | s)
             wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
             if [[ $wtitle == "scratch" ]]; then
                 attach_session "scratch"
             else
                 if session_exists "main"; then
-                    tm
+                    while not_in_tmux; do
+                        out=`tm`
+                        [[ $out == "SSH" ]] && break
+                    done
+                    echo
+                    echo "local:        ssh pi@PILOCAL"
+                    echo "external:     sshpi"
+                    echo
+                    echo "after:        tmux a"
                 else
                     tmux new -s main -n main "$startcmd"
                 fi
@@ -172,7 +207,7 @@ else
             fi
             [[ -z $sel ]] && exit 0
 
-# ========= CUSTOMIZE PROJECT BEHAVIOUR HERE ===================================
+# ====================== CUSTOMIZE PROJECT BEHAVIOUR HERE ======================
             case $sel in
                 # Special cases
                 school)
@@ -191,6 +226,9 @@ else
                     cd "$HOME/Dropbox/uni/3F/$dir"
                     attach_session $sel
                     cd - &>/dev/null
+                    ;;
+                ssh)
+                    echo SSH
                     ;;
                 # Default behaviour
                 *)
