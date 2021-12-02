@@ -13,7 +13,7 @@ function zvm_after_init() {
     zle -N _dir_files
     bindkey "^p" _dir_files
 
-    _jump() { BUFFER="cds ~"; zle accept-line }
+    _jump() { BUFFER="cdh"; zle accept-line }
     zle -N _jump
     bindkey "^j" _jump
 
