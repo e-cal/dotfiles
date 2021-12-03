@@ -155,8 +155,6 @@ else
                 if [[ $sel == "TMUX" ]]; then
                     tmux kill-server
                 else
-                    cur=`tmux display-message -p '#S'`
-                    [[ $sel ==  $cur ]] && echo "use END (tm end) to end current session and attach to a new one" && exit 1
                     tmux kill-session -t $sel
                 fi
             else
