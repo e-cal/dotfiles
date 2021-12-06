@@ -22,9 +22,6 @@ else
 fi
 
 case $STATUS in
-    Stopped)
-        echo "No music is playing"
-        ;;
     Paused)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
         ;;
