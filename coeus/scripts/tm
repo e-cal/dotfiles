@@ -72,7 +72,8 @@ attach_session() {
 
 if [[ $# == 0 ]]; then
     if [[ -z $sessions ]]; then
-        sel="NEW"
+        echo "starting a new tmux server..."
+        sel="NEW"
     else
         sessions="$sessions RESET KILL END PROJECT NEW"
         sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden"`
@@ -153,6 +154,7 @@ else
                 fi
 
                 if [[ $sel == "TMUX" ]]; then
+                    pgrep -f "bash.*tm startup" | xargs -n1 kill
                     tmux kill-server
                 else
                     tmux kill-session -t $sel
@@ -180,19 +182,13 @@ else
             wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
             if [[ $wtitle == "scratch" ]]; then
                 attach_session "scratch"
+                tm startup
             else
                 if session_exists "main"; then
-                    while not_in_tmux; do
-                        out=`tm`
-                        [[ $out == "SSH" ]] && break
-                    done
-                    echo
-                    echo "local:        ssh pi@PILOCAL"
-                    echo "external:     sshpi"
-                    echo
-                    echo "after:        tmux a"
+                    tm
+                    while [[ $? != 0 ]]; do tm; done
                 else
-                    tmux new -s main -n main "$startcmd"
+                    attach_session "main"
                 fi
             fi
             ;;
@@ -226,7 +222,7 @@ else
                     cd - &>/dev/null
                     ;;
                 ssh)
-                    echo SSH
+                    not_in_tmux || tmux detach
                     ;;
                 # Default behaviour
                 *)
@@ -244,4 +240,3 @@ else
             ;;
     esac
 fi
-
