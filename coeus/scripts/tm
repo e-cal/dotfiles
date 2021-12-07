@@ -35,6 +35,10 @@ fi
 
 sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
 
+not_in_tmux() {
+    [[ -z $TMUX ]]
+}
+
 session_exists() {
     tmux has-session -t $1 &> /dev/null && true
 }
@@ -102,7 +106,7 @@ else
             else
                 from=$3
             fi
-            [[ -z $from ]] && from=`pwd` && echo "start dir not set, using $(pwd)"
+            [[ -z $from ]] && from=`pwd | sed 's/\/home\/ecal\///' | sed 's/\/home\/ecal/home/'` && echo "start dir not set, using $(pwd)"
 
             [[ $from == "home" ]] && cd ~ || cd "$HOME/$from"
             attach_session $name
