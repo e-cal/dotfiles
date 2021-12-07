@@ -24,7 +24,6 @@ declare -A projects=(
     # ["name"]="path"
     ["website"]="$HOME/projects/ecal.dev"
     ["hackerrank"]="$HOME/projects/hackerrank"
-    ["ssh"]=""
     ["school"]=""
     )
 
@@ -35,21 +34,6 @@ else
 fi
 
 sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
-
-not_in_tmux() {
-    [[ -z $TMUX ]]
-}
-
-stay_in_tmux() {
-    echo $NOT_SSH
-    sleep 0.3
-    if [[ -z $NOT_SSH ]]; then
-        echo setting NOT_SSH
-        sleep 0.3
-        export NOT_SSH=true
-    fi
-    [[ $NOT_SSH == true ]]
-}
 
 session_exists() {
     tmux has-session -t $1 &> /dev/null && true
@@ -220,9 +204,6 @@ else
                     cd "$HOME/Dropbox/uni/3F/$dir"
                     attach_session $sel
                     cd - &>/dev/null
-                    ;;
-                ssh)
-                    not_in_tmux || tmux detach
                     ;;
                 # Default behaviour
                 *)
