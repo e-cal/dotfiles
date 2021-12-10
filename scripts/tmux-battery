@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 
-acpi 2>/dev/null || exit 0
+if [[ ! `acpi 2>/dev/null` ]]; then
+    [[ $1 == "get-len" ]] && echo 0
+    exit 0
+fi
 
 empty=""
 ten=""
@@ -19,7 +22,7 @@ charging=""
 bat=`acpi | awk '{printf $4}' | tr -d ","`
 batnum=`echo $bat | tr -d "%"`
 
-if [[ `acpi | awk '{printf $3}' | tr -d ','` == "Charging" ]]; then
+if [[ `acpi 2>/dev/null | awk '{printf $3}' | tr -d ','` == "Charging" ]]; then
     icon=$charging
 elif (( $batnum <= 10 )); then
     icon=$empty
@@ -55,4 +58,10 @@ else
     color=1
 fi
 
-echo "#[fg=color236]#[fg=color$color, bg=color236] $bat $icon"
+if [[ $1 == "get-len" ]]; then
+    str=" $bat $icon "
+    echo ${#str}
+    exit 0
+fi
+
+echo "#[fg=color236]#[fg=color$color, bg=color236] $bat $icon "

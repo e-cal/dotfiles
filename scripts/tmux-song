@@ -13,14 +13,10 @@ wcount=`echo $wnames | wc -w`
 wnames=${#wnames}
 left_space=$((($sname+5)+wnames+(2*$wcount)))
 
-right_space=25
-if [[ `hostname` == "prometheus" ]]; then
-    right_space=$right_space+7
-else
-    song="  $song"
-    len=${#song}
-fi
-
+all_right="  ddd mmm nn  hh:mmPP "
+all_right=${#all_right}
+extra=`tmux-battery get-len`
+right_space=$all_right+$extra+1
 
 remaining=$(($w - ($left_space+$right_space+$len)))
 if (( $remaining > 1 && $wcount < 4 )); then
