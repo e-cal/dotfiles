@@ -15,7 +15,7 @@ alias "clear"="clear;triangles"
 alias "open"='xdg-open'
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
-alias "mvdl"="mv ~/Downloads/tmp/* ./"
+alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "sshpi"="[[ $HOST = 'coeus' ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)"
 
 # Use rsync instead of cp to get the progress and speed of copying.
