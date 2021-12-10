@@ -1,0 +1,9 @@
+#!/bin/bash
+
+xrandr --output DP3 --mode 2560x1440
+nitrogen
+echo "192.168.2.10" | xsel -ib
+barrier &
+disown
+redshift &
+disown

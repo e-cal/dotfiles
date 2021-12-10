@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if ps -e | rg -q "polybar"; then
+    killall polybar
+else
+    launch-bar &> /dev/null
+fi
+

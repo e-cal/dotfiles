@@ -1,0 +1,51 @@
+#!/bin/bash
+
+function get_volume {
+    amixer -D pulse get Master | grep '%' | head -n 1 | cut -d '[' -f 2 | cut -d '%' -f 1
+}
+
+function is_mute {
+    amixer -D pulse get Master | grep '%' | grep -oE '[^ ]+$' | grep off > /dev/null
+}
+
+function send_notification {
+    iconSound="$HOME/.local/share/icons/Qogir-dark/16/panel/volume-level-high.svg"
+    iconSound="$HOME/.local/share/icons/Qogir-dark/16/panel/volume-level-muted.svg"
+  if is_mute ; then
+    dunstify -i $iconMuted -r 2593 -u normal " mute"
+  else
+    volume=$(get_volume)
+    bar=$(seq --separator="─" 0 "$((volume / 3))" | sed 's/[0-9]//g')
+    # Send the notification
+    dunstify -I $iconSound -r 2593 -u normal " $bar"
+  fi
+}
+
+case $1 in
+  up)
+    pactl set-sink-mute @DEFAULT_SINK@ 0
+    volume=$(get_volume)
+    if [ $volume -lt 100 ]
+    then
+        pactl set-sink-volume @DEFAULT_SINK@ +5%
+    fi
+    send_notification
+    ;;
+  down)
+    pactl set-sink-mute @DEFAULT_SINK@ 0
+    volume=$(get_volume)
+    if [ $volume -gt 0 ]
+    then
+        pactl set-sink-volume @DEFAULT_SINK@ -5%
+    fi
+    send_notification
+    ;;
+  mute)
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    send_notification
+    ;;
+  set)
+    pactl set-sink-volume @DEFAULT_SINK@ $2%
+    send_notification
+
+esac

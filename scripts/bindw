@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ -z $1 ]
+then
+    dir=`pwd`
+else
+    dir=$1
+fi
+
+echo "bind \cw 'cd $dir;clear;echo;la;echo;printf (tput smul;tput bold;tput setaf 5;pwd)\"\n\";tput rmul;redraw'" > $HOME/.config/fish/conf.d/work-binding.fish
+exec fish

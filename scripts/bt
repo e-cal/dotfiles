@@ -1,0 +1,38 @@
+#!/bin/bash
+bluetoothctl power on
+
+
+dev=""
+case $1 in
+    ap)
+        dev="E4:90:FD:90:2B:52"
+        ;;
+    wacom)
+        dev="E0:9F:2A:16:65:E4"
+        ;;
+esac
+
+if [ -z $2 ]
+then
+    connected=`bluetoothctl info | grep "$dev" -A 8 | grep "Connected" | awk '{ print $2 }'`
+	if [[ $connected == 'yes' ]]
+	then
+		bluetoothctl disconnect $dev
+	else
+		bluetoothctl connect $dev
+	fi
+else
+	case $2 in
+		c)
+			bluetoothctl connect $dev
+			;;
+		d)
+			bluetoothctl disconnect $dev
+			;;
+	esac
+fi
+
+if [ $1 = "wacom" ]
+then
+    config-wacom
+fi

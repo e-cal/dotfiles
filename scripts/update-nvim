@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /home/ecal/projects/neovim
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install

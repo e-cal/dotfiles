@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+lvl=$(($SHLVL - 5))
+
+if [ $lvl -gt 0 ]
+then
+    printf " $lvl"
+    exit 0
+fi
+exit 1

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+if [[ -n $BW_SESSION ]]; then
+    bw get item "$(bw list items | jq '.[] | "\(.name)  id: \(.id)"' | tr -d '"' | fzf-tmux --delimiter="  " --with-nth=1 | awk '{print $(NF -0)}' | sed 's/\"//g')" | jq '.login.password' | sed 's/\"//g' | xclip -sel clip
+else
+    key=`bw unlock --passwordfile ~/.config/Bitwarden\ CLI/.data | awk -F'"' '{print $2}'`
+    export BW_SESSION="$key"
+    pass
+fi
+
