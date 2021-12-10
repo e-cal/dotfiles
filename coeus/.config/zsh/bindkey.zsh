@@ -29,8 +29,12 @@ function zvm_after_init() {
     zle -N _rgs
     bindkey "^t" _rgs
 
-    bindkey "^l" up-history
-    bindkey -s "^a" '!$^M'
+
+    _la() { BUFFER="la"; zle accept-line }
+    zle -N _la
+    bindkey "^l" _la
+
+    bindkey -s "^a" '!$^M' # last arg
 }
 
 function zvm_after_lazy_keybindings() {
