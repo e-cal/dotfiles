@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-bat=`acpi | awk '{printf $4}' | tr -d ","`
-batnum=`echo $bat | tr -d "%"`
+
+acpi 2>/dev/null || exit 0
 
 empty=""
 ten=""
@@ -15,6 +15,9 @@ eighty=""
 ninety=""
 full=""
 charging=""
+
+bat=`acpi | awk '{printf $4}' | tr -d ","`
+batnum=`echo $bat | tr -d "%"`
 
 if [[ `acpi | awk '{printf $3}' | tr -d ','` == "Charging" ]]; then
     icon=$charging
@@ -42,18 +45,14 @@ else
     icon=$full
 fi
 
-if [[ $1 == "color" ]]; then
-    if (( $batnum >= 75 )); then
-        color=2
-    elif (( $batnum >= 50 )); then
-        color=3
-    elif (( $batnum > 20 )); then
-        color=11
-    else
-        color=1
-    fi
-    echo $color
-    exit 0
+if (( $batnum >= 75 )); then
+    color=2
+elif (( $batnum >= 50 )); then
+    color=3
+elif (( $batnum > 20 )); then
+    color=11
+else
+    color=1
 fi
 
-echo "$bat $icon"
+echo "#[fg=color236]#[fg=color$color, bg=color236] $bat $icon"
