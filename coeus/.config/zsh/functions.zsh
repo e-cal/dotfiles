@@ -36,7 +36,7 @@ cde() {
         dotfiles $DOTFILES
         config $DOTFILES/.config
         nvim $DOTFILES/.config/nvim
-        scripts $DOTFILES/scripts
+        scripts $STOW_DIR/scripts
         uni ~/Dropbox/uni/3F
         projects ~/projects
     )
