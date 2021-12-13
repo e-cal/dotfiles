@@ -178,6 +178,7 @@ myManageHook = composeAll
     , className =? "Microsoft Teams - Preview" --> doShift "4"
     , className =? "Thunderbird"    --> doShift "5"
     , className =? "barrier"        --> doShift "5"
+    , className =? "Spotify"        --> doShift "6"
     , manageDocks
     ]
   where
