@@ -6,10 +6,11 @@ alias "lla"="exa -la --group-directories-first --git -h"
 alias "lt"="exa --tree --level=2"
 alias "lta"="exa -a --tree --level=2"
 alias "tree"="exa -a --tree"
+alias "lss"="/usr/bin/ls"
 
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
-alias "envs"="ls ~/.local/share/virtualenvs"
+alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "v"="nvim"
 alias "clear"="clear;triangles"
 alias "open"='xdg-open'
