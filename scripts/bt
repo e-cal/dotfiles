@@ -51,7 +51,7 @@ case $1 in
         dev=`get_dev $2`
         [[ -z $dev ]] && echo "Invalid device" && exit 1
         mac=${devices[$dev]}
-        connected=`bluetoothctl info | grep "$dev" -A 8 | grep "Connected" | awk '{ print $2 }'`
+        connected=`bluetoothctl info | grep "$mac" -A 8 | grep "Connected" | awk '{ print $2 }'`
         if [[ $connected == 'yes' ]]; then
             bluetoothctl disconnect $mac || exit 1
         else
@@ -68,7 +68,21 @@ case $1 in
         sed -i "/^$2 /d" "$DEVFILE"
         ;;
     menu | m)
-        echo TODO: launch rofi
+        icons="\n\n蓼"
+        # printf "%s\n" ${!devices[@]}
+        sel=`echo -e "$icons" | rofi -no-fixed-num-lines -theme $HOME/.config/bt/btmenu.rasi -dmenu`
+        case $sel in
+            )
+                dev="ap"
+                ;;
+            )
+                dev="wacom"
+                ;;
+            蓼)
+                dev="heater"
+                ;;
+        esac
+        bt toggle $dev && [[ $dev = "wacom" ]] && dunstify "Run config-wacom"
         ;;
     *)
         echo "Usage: bt [connect | disconnect | add [name] [mac] | remove [name]]"

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+teams=""
+slack=""
+discord="ﭮ"
+
+options="$slack\n$teams\n$discord"
+
+
+sel=`echo -e "$options" | rofi -no-fixed-num-lines -theme $HOME/.config/rofi/commmenu.rasi -dmenu`
+
+
+case $sel in
+    $teams)
+	    teams
+        ;;
+    $slack)
+	    slack
+        ;;
+    $discord)
+        discord
+        ;;
+esac

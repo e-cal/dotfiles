@@ -248,17 +248,14 @@ myKeys = [
     -- Launch Programs
     ("M-<Return>", spawn myTerminal) -- Terminal
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi") -- Run Prompt
-    , ("M-f", spawn "nemo") -- files
+    , ("M-e", spawn "nemo") -- files
     , ("M-c", spawn "firefox -P ecal") -- Firefox
     , ("M1-c", spawn "firefox -P ta") -- TA firefox
-    , ("M-g", spawn "firefox https://github.com") -- Github
-    , ("M-d", spawn "inkscape $HOME/images/sketch.svg") -- Draw
-    , ("M-S-d", spawn "firefox https://drive.google.com/drive/my-drive") -- Google Drive
+    , ("M-S-g", spawn "firefox https://github.com") -- Github
+    , ("M-S-d", spawn "inkscape $HOME/images/sketch.svg") -- Draw
     , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
-    --, ("M-S-d", sequence_[spawn "nemo ~/Dropbox", spawnOnce "dropbox &"]) -- Dropbox
-    , ("M-S-b", spawn "$HOME/.config/polybar/launch.sh") -- Polybar
-    , ("M-b", spawn "polybar-msg cmd toggle") -- toggle Polybar
-    , ("M-S-p", spawn "launch-picom")
+    , ("M-b", spawn "bt menu")
+    , ("M-S-b", spawn "polybar-msg cmd toggle") -- toggle Polybar
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
     , ("M-s", spawn "focus-spotify") -- Spotify
     , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu.sh") -- Powermenu
@@ -266,8 +263,7 @@ myKeys = [
     -- , ("M-S-s", spawn "sc -r -c ~/images")
     , ("M1-S-s", spawn "flameshot full -p ~/screenshots") -- Screenshot
     , ("M-S-m", spawn "thunderbird")
-    , ("M-t", spawn "teams")
-    , ("M-S-t", spawn "slack")
+    , ("M-t", spawn "launch-comm")
     , ("M-S-n", spawn "obsidian")
 
     -- Scratchpads
@@ -282,7 +278,7 @@ myKeys = [
 	, ("M-<Space> f", sendMessage $ JumpToLayout "full")
 	, ("M-<Space> h", sendMessage $ JumpToLayout "horizontal")
 	, ("M-<Space> v", sendMessage $ JumpToLayout "vertical")
-    , ("M-C-b", sendMessage ToggleStruts)
+    , ("M-f", sendMessage ToggleStruts)
     , ("M-C-<Down>", sequence_[sendMessage DeArrange, withFocused $ windows . W.sink]) -- Tile Mode
     , ("M-S-h", sendMessage Shrink) -- Shrink horizontal
     , ("M-S-l", sendMessage Expand) -- Expand horizontal
