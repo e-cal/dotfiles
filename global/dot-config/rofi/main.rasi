@@ -9,5 +9,5 @@ configuration {
     disable-history: false;
     fullscreen: false;
     window-thumbnail: true;
-    theme: "themes/main";
 }
+@theme "themes/main"

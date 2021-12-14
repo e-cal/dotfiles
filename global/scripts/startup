@@ -9,6 +9,6 @@ case `hostname` in
         ;;
 esac
 
-~/.config/polybar/launch.sh &
+launch-bar
 dropbox &
 redshift &

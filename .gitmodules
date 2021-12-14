@@ -1,4 +1,4 @@
-[submodule "coeus/.config/nvim"]
-	path = coeus/.config/nvim
+[submodule "global/dot-config/nvim"]
+	path = global/dot-config/nvim
 	url = git@github.com:e-cal/evim.git
 	branch = ecal
