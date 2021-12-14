@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if ! pgrep -x "picom" >/dev/null
-then
-    picom --config $XDG_CONFIG_HOME/picom/picom.conf &
-fi
-

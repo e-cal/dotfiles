@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
+if [[ -z $1 ]]; then
+    screens="right main left"
+    screen=`printf "%s\n" $screens | fzf`
+else
+    screen=$1
+fi
 
-# set screen
-screens="right main left"
-screen=`printf "%s\n" $screens | fzf`
 case $screen in
     "main")
         screen=0
@@ -13,6 +16,9 @@ case $screen in
         ;;
     "right")
         screen=2
+        ;;
+    *)
+        echo "invalid screen" && exit 1
         ;;
 esac
 xsetwacom set "Wacom Intuos BT S Pen stylus" MapToOutput "HEAD-$screen"
