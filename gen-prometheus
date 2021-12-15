@@ -1,6 +1,0 @@
-#!/bin/bash
-
-stow --target=prometheus/ coeus/ \
-    --ignore='alacritty.yml' \
-    --ignore='launch.sh'
-
