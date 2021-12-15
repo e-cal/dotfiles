@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+# NEEDS TESTING
+
 cd $STOW_DIR
 git fetch
+git submodule update --remote --rebase
 status=`git pull --rebase`
-[[ $status != "Already up to date." ]] && echo -e "Installing updates..." && .install || echo $status
+[[ $? = 0 && $status != "Already up to date." ]] && echo -e "Installing updates..." && .install || echo $status
