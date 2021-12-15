@@ -1,28 +1,55 @@
 #!/usr/bin/env bash
 
-files=(
-    nvim $DOTFILES/.config/nvim
-    zsh $DOTFILES/.config/zsh
-    scripts $DOTFILES/scripts
-    alias $DOTFILES/.config/zsh/alias.zsh
-    functions $DOTFILES/.config/zsh/functions.zsh
+# swap to associative array
+# reload if a zsh file is edited
+# reload if tmux is edited
 
-    tm $DOTFILES/scripts/tm
-    starship $DOTFILES/.config/starship.toml
-    kitty $DOTFILES/.config/kitty/kitty.conf
-    xmonad $DOTFILES/.config/xmonad/xmonad.hs
-    tmux $DOTFILES/.config/tmux/tmux.conf
-    x11 $DOTFILES/.config/X11/xinitrc
-    polybar $DOTFILES/.config/polybar/config.ini
+declare -A files=(
+    ["nvim"]="$DOTFILES/.config/nvim"
+    ["zsh"]="$DOTFILES/.config/zsh"
+    ["scripts"]="$DOTFILES/scripts"
+    ["alias"]="$DOTFILES/.config/zsh/alias.zsh"
+    ["functions"]="$DOTFILES/.config/zsh/functions.zsh"
 
-    alacritty $DOTFILES/.config/alacritty/alacritty.yml
-    xonsh $DOTFILES/.config/xonsh
-    fish $DOTFILES/.config/fish
+    ["tm"]="$DOTFILES/scripts/tm"
+    ["starship"]="$DOTFILES/.config/starship.toml"
+    ["kitty"]="$DOTFILES/.config/kitty/kitty.conf"
+    ["xmonad"]="$DOTFILES/.config/xmonad/xmonad.hs"
+    ["tmux"]="$DOTFILES/.config/tmux/tmux.conf"
+    ["x11"]="$DOTFILES/.config/X11/xinitrc"
+    ["polybar"]="$DOTFILES/.config/polybar/config.ini"
+
+    ["alacritty"]="$DOTFILES/.config/alacritty/alacritty.yml"
+    ["xonsh"]="$DOTFILES/.config/xonsh"
+    ["fish"]="$DOTFILES/.config/fish"
 )
 
-file=`printf "%s %s\n" ${files[@]} | fzf --with-nth 1 $FZF_INLINE | awk '{print $2}'`
-
-if [[ -n $file ]]; then
-    nvim $file
+if [[ -v "files[$1]" ]]; then
+    sel=$1
+else
+    sel=`printf "%s\n" ${!files[@]} | fzf --header="edit" $FZF_INLINE`
+    [[ -z $sel ]] && exit 0
 fi
+
+file=${files[$sel]}
+nvim $file
+
+case $sel in
+    zsh | alias | functions)
+        echo -e "\nReloading shell..."
+        sleep 0.1 && xdotool key Control+r &
+        ;;
+    tmux)
+        xdotool key Control+space R &
+        echo -e "\nReloading tmux..."
+        ;;
+    kitty)
+        echo -e "\nRestart terminal"
+        ;;
+    polybar)
+        echo -e "\nRestarting polybar...\n"
+        launch-bar
+        sleep 1 && xdotool key enter
+        ;;
+esac
 

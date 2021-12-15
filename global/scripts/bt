@@ -19,7 +19,7 @@ for e in ${a[@]}; do
 done
 
 has_dev() {
-    [[ ${devices[$1]+true} ]]
+    [[ -v "devices[$1]" ]]
 }
 
 get_dev() {
