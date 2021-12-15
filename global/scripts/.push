@@ -9,7 +9,7 @@ else
 fi
 
 cd $STOW_DIR
-git submodule foreach "git add -A && git commit -m \"$msg\" && git push"
+git submodule foreach "git add -A && git commit -m \"$msg\" && git push" 2>/dev/null
 git add -A
 git commit -m "$msg"
 git push --recurse-submodules=on-demand
