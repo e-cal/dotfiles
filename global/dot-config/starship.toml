@@ -39,7 +39,8 @@ $jobs\
 $git_commit\
 $git_state\
 $git_status\
-$fill\
+
+    $fill\
 $cmd_duration\
 
         $line_break\
