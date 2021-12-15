@@ -9,7 +9,9 @@ else
 fi
 
 cd $STOW_DIR
+echo "Pushing submodule updates..."
 git submodule foreach "git add -A && git commit -m \"$msg\" && git push" 2>/dev/null
+echo "Pushing dotfile updates..."
 git add -A
 git commit -m "$msg"
 git push --recurse-submodules=on-demand
