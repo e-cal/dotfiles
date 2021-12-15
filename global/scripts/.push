@@ -2,6 +2,6 @@
 
 cd $STOW_DIR
 git add -A
-git commit -m "Update"
+[[ -n $1 ]] && git commit -m "$@" || git commit -m "Update"
 git push
 
