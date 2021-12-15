@@ -6,7 +6,7 @@ alias "lla"="exa -la --group-directories-first --git -h"
 alias "lt"="exa --tree --level=2"
 alias "lta"="exa -a --tree --level=2"
 alias "tree"="exa -a --tree"
-alias "lss"="/usr/bin/ls"
+alias ".ls"="/usr/bin/ls"
 
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"

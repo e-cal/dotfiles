@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "Generating `hostname` dotfiles..."
-stow --dir=$STOW_DIR --target="$STOW_DIR/`hostname`" global --dotfiles -R
+stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
 
 echo "Linking `hostname` dotfiles..."
 stow `hostname` -R
