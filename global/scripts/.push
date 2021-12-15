@@ -12,5 +12,7 @@ fi
 cd $STOW_DIR
 git add -A
 git commit -m "$msg"
+git submodule foreach "git add -A; git commit -m \"$msg\""
 git push --recurse-submodules=on-demand
+
 
