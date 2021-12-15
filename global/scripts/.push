@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 
+
+if [[ $# = 0 ]]; then
+    msg="Update"
+else
+    for w in $@; do
+        msg+="$w "
+    done
+fi
+
 cd $STOW_DIR
 git add -A
-[[ -n $1 ]] && git commit -m "$@" || git commit -m "Update"
+git commit -m "$msg"
+exit 0
 git push
 

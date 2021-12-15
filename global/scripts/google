@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 for term in $@; do
-    query="$query $term"
+    query+="$term "
 done
 
-firefox "google.com/search?q=$query"
+firefox "google.com/search?q=$query" &
