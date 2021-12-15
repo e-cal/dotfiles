@@ -13,6 +13,6 @@ cd $STOW_DIR
 git submodule foreach "git add -A; git commit -m \"$msg\""
 git add -A
 git commit -m "$msg"
-git push --recurse-submodules=on-demand
+echo git push --recurse-submodules=on-demand
 
 
