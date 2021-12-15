@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cd $STOW_DIR
+git fetch
+status=`git pull --rebase`
+[[ $status != "Already up to date." ]] && echo -e "Installing updates..." && .install || echo $status
