@@ -9,7 +9,7 @@ else
 fi
 
 cd $STOW_DIR
-echo "\nPushing submodule updates..."
+echo -e "\nPushing submodule updates..."
 git submodule foreach "git add -A && git commit -m \"$msg\" && git push && echo" 2>/dev/null
 echo -e "\nPushing dotfile updates..."
 git add -A
