@@ -12,6 +12,7 @@ alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "v"="nvim"
+alias "e"="nvim"
 alias "clear"="clear;triangles"
 alias "open"='xdg-open'
 alias "greps"='grep -ri'
@@ -23,18 +24,7 @@ alias "sshpi"="[[ $HOST = 'coeus' ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short e
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
 
 # Config
-alias "zshrc"="v $DOTFILES/.config/zsh"
-alias "aliases"="v $DOTFILES/.config/zsh/alias.zsh"
-
-alias "dotfiles"="cda $DOTFILES"
-alias "config"="cda $DOTFILES/.config"
-alias "nvimconf"="cda $DOTFILES/.config/nvim"
-
-alias "prompt"="v $DOTFILES/.config/starship.toml"
-alias "wmconfig"="v $DOTFILES/.config/xmonad/xmonad.hs"
-alias "xconfig"="v $DOTFILES/.config/X11/xinitrc"
-alias "xonshrc"="v $DOTFILES/.config/xonsh"
-alias "fishconf"="v $DOTFILES/.config/fish"
+alias "aliases"="e $DOTFILES/.config/zsh/alias.zsh"
 
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf"

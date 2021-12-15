@@ -4,6 +4,8 @@ files=(
     nvim $DOTFILES/.config/nvim
     zsh $DOTFILES/.config/zsh
     scripts $DOTFILES/scripts
+    alias $DOTFILES/.config/zsh/alias.zsh
+    functions $DOTFILES/.config/zsh/functions.zsh
 
     tm $DOTFILES/scripts/tm
     starship $DOTFILES/.config/starship.toml
@@ -20,7 +22,7 @@ files=(
 
 file=`printf "%s %s\n" ${files[@]} | fzf --with-nth 1 $FZF_INLINE | awk '{print $2}'`
 
-if [[ ! -z $file ]]; then
+if [[ -n $file ]]; then
     nvim $file
 fi
 
