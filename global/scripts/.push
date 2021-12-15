@@ -12,6 +12,5 @@ fi
 cd $STOW_DIR
 git add -A
 git commit -m "$msg"
-exit 0
 git push
 
