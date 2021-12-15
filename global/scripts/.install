@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+cd $HOME/.dotfiles
+
 echo "Generating `hostname` dotfiles..."
 stow --dir="$HOME/.dotfiles" --target=`hostname` global --dotfiles -R
 
