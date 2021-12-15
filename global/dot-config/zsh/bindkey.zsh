@@ -44,6 +44,12 @@ function zvm_after_init() {
 
     # C-a -> get last arg
     bindkey -s "^a" '!$^M' # last arg
+
+    # C-g -> lg
+    _lg() { BUFFER="lg"; zle accept-line }
+    zle -N _lg
+    bindkey "^g" _lg
+
 }
 
 function zvm_after_lazy_keybindings() {
