@@ -53,3 +53,6 @@ case $sel in
         ;;
 esac
 
+echo -e "\nDotfiles git status:"
+cd $STOW_DIR
+git status -s

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd $STOW_DIR
+git add -A
+git commit -m "Update"
+git push
+
