@@ -27,7 +27,7 @@ declare -A files=(
 if [[ -v "files[$1]" ]]; then
     sel=$1
 else
-    sel=`printf "%s\n" ${!files[@]} | fzf --header="edit" $FZF_INLINE`
+    sel=`printf "%s\n" ${!files[@]} | fzf --header="Edit" $FZF_INLINE`
     [[ -z $sel ]] && exit 0
 fi
 
