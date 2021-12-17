@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [[ $1 = "submodule" ]]; then
+    echo "Initializing submodules..."
+    cd $STOW_DIR
+    git submodule update --init --recursive
+fi
+
 echo "Generating `hostname` dotfiles..."
 stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
 
