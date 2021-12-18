@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# NEEDS TESTING
-
 cd $STOW_DIR
 git fetch
 git submodule update --remote --rebase
