@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+pgrep -f "polybar `hostname`" > ~/test
+
+if [[ `playerctl -p spotify status` = "Playing" ]]; then
+    polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 2 &>/dev/null
+else
+    polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 1 &>/dev/null
+fi
+
+playerctl -p spotify play-pause
+
+
+

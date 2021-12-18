@@ -9,6 +9,6 @@ configuration {
     disable-history: false;
     fullscreen: false;
     window-thumbnail: true;
-    theme: "themes/topbar";
 }
+@theme "themes/topbar"
 

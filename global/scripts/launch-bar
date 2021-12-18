@@ -4,11 +4,4 @@
 killall -q polybar
 sleep 3
 
-case `hostname` in
-    coeus)
-        polybar desktop -c $HOME/.config/polybar/config.ini &
-        ;;
-    prometheus)
-        polybar laptop -c $HOME/.config/polybar/config.ini &
-        ;;
-esac
+polybar `hostname` -c $HOME/.config/polybar/config.ini &
