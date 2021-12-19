@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# TODO: add fzf menu to ask which file or all
+# can get changed files and path with .status -s
+
+cd $STOW_DIR
+git diff $@
+

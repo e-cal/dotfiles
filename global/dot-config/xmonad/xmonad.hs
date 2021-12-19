@@ -259,7 +259,7 @@ myKeys = [
     , ("M-S-b", spawn "polybar-msg cmd toggle") -- toggle Polybar
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
     , ("M-s", spawn "focus-spotify") -- Spotify
-    , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu.sh") -- Powermenu
+    , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu") -- Powermenu
     , ("M-S-s", spawn "flameshot gui") -- Screenshot GUI
     -- , ("M-S-s", spawn "sc -r -c ~/images")
     , ("M1-S-s", spawn "flameshot full -p ~/screenshots") -- Screenshot
