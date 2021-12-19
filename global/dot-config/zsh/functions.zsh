@@ -83,6 +83,8 @@ mkvenv() {
     fi
     venv "$VIRTUALENV_HOME/$name"
     echo $name > .venv
+    source "$VIRTUALENV_HOME/$name/bin/activate"
+    pip install pynvim
 }
 
 setvenv() {
@@ -91,10 +93,14 @@ setvenv() {
     else
         name=$1
         [[ ! `/usr/bin/ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
-
     fi
     echo $name > .venv
 }
+
+rmvenv() {
+    echo todo
+}
+
 
 
 fixap() {
