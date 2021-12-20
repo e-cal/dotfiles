@@ -1,5 +1,4 @@
 TODO:
-- add diff menu
 - overhaul pass managment (default get, get by name, menu)
 - overhaul polybar
     - replace search
@@ -7,5 +6,4 @@ TODO:
     - fix spotify play pause on track end
     - menus/sliders for vol and internet
     - more bars?
-- kitty/tmux bottom padding?
 - add notifications to bluetooth menu

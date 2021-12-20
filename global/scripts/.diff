@@ -1,23 +1,18 @@
 #!/usr/bin/env bash
 
 cd $STOW_DIR
-if [[ $# > 0 ]]; then
-    case $1 in
-        all | a | -a | --all)
-            git diff | bat
-            ;;
-        *)
-            git diff $@ | bat
-            ;;
-    esac
-    exit 0
-fi
+changed=`.status -n -s | awk '{print $2}'`
 
-changed=`.status -s | awk '{print $2}'`
-
-
-sel=`printf "%s\n" $changed | fzf --header="modified files" -m --bind space:toggle $FZF_INLINE`
+case $1 in
+    all | a | -a | --all)
+        sel=`printf "%s\n" $changed`
+        ;;
+    *)
+        sel=`printf "%s\n" $changed | fzf --header="modified files" -m --bind space:toggle $FZF_INLINE`
+        ;;
+esac
 [[ -z $sel ]] && exit 1
+
 
 for f in $sel; do
     echo >> tmp.diff
