@@ -23,8 +23,8 @@
   width: 50px;
   anchor: north east;
   location: north east;
-  x-offset: -14px;
-  y-offset: 42px;
+  x-offset: -0.5%;
+  y-offset: 3.5%;
   border: 0px;
   border-radius: 0px 0px 0px 0px;
   background-color: @background;
