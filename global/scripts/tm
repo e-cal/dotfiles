@@ -16,16 +16,31 @@ startcmd="triangles && echo"
 
 
 # Customize the projects map for quick launching project specific sessions
-# NOTE: the name will also be the name of the session and the path will be the
+# NOTES:
+#   - The name will also be the name of the session and the path will be the
 #       startup path for the session (unless otherwise specified)
-# See the project case below (near the end of the file) for customizing project
-# specific behaviour
+#   - Any project defined manually will override the automatic entry
+#       (make sure to include the trailing /)
+#   - See the project case below (near the end of the file) for customizing
+#       project specific behaviour
 declare -A projects=(
     # ["name"]="path"
-    ["website"]="$HOME/projects/ecal.dev"
-    ["hackerrank"]="$HOME/projects/hackerrank"
-    ["school"]=""
+    ["SCHOOL"]=""
     )
+
+declare -A revp
+for k in "${!projects[@]}"; do
+    if [[ -n ${projects[$k]} ]]; then
+        revp[${projects[$k]}]="$k"
+    fi
+done
+
+for d in $HOME/projects/*/; do
+    if [[ ! -v "revp[$d]" ]]; then
+        name=`echo $d | sed 's,'"$HOME"'/projects/,,' | tr -d '/'`
+        projects["$name"]=$d
+    fi
+done
 
 if [[ -n $startcmd ]]; then
     startcmd="$startcmd && exec $shell"
@@ -102,11 +117,11 @@ else
 
 
             if [[ -z $3 ]]; then
-                from=`find $HOME -maxdepth 5 -type d 2>/dev/null | sed 's/\/home\/ecal\///' | sed 's/\/home\/ecal/home/' | fzf --header="start dir"`
+                from=`find $HOME -maxdepth 5 -type d 2>/dev/null | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,' | fzf --header="start dir"`
             else
                 from=$3
             fi
-            [[ -z $from ]] && from=`pwd | sed 's/\/home\/ecal\///' | sed 's/\/home\/ecal/home/'` && echo "start dir not set, using $(pwd)"
+            [[ -z $from ]] && from=`pwd | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,'` && echo "start dir not set, using $(pwd)"
 
             [[ $from == "home" ]] && cd ~ || cd "$HOME/$from"
             attach_session $name
@@ -115,7 +130,11 @@ else
         attach | a)
             if [[ -z $2 ]]; then
                 cur=`tmux display-message -p '#S'`
-                sessions="${sessions//$cur/} PROJECT NEW"
+                if not_in_tmux; then
+                    sessions="$sessions PROJECT NEW"
+                else
+                    sessions="${sessions//$cur/} PROJECT NEW"
+                fi
                 name=`printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden"`
             else
                 name=$2
@@ -192,7 +211,7 @@ else
 # ====================== CUSTOMIZE PROJECT BEHAVIOUR HERE ======================
             case $sel in
                 # Special cases
-                school)
+                SCHOOL)
                     declare -A courses=(
                         ["paradigms"]="cisc360"
                         ["os"]="cisc324"

@@ -3,14 +3,13 @@
 if [[ -z $BW_SESSION ]]; then
     key=`bw unlock --passwordfile ~/.config/Bitwarden\ CLI/.data | awk -F'"' '{print $2}'`
     export BW_SESSION="$key"
-    # pass $@
 fi
 
 if [[ $# = 0 ]]; then
     bw get item `bw list items | jq '.[] | "\(.name)  id: \(.id)"' | tr -d '"' | fzf-tmux --delimiter="  " --with-nth=1 $FZF_INLINE | awk '{print $(NF -0)}' | sed 's/\"//g'` | jq '.login.password' | sed 's/\"//g' | xclip -sel clip
 else
     case $1 in
-        login)
+        -l)
             xclip -sel clip ~/.config/Bitwarden\ CLI/.data
             ;;
         *)
