@@ -67,5 +67,4 @@ alias "weather"="curl wttr.in -s | head -n -1"
 alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
 alias luamake=/home/ecal/projects/lua-language-server/3rd/luamake/luamake
 alias "prolog"="swipl"
-alias "getpass"="clip ~/.config/Bitwarden\ CLI/.data"
 alias "xae"="setxkbmap us"

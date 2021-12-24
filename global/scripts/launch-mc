@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+env DRI_PRIME=1 java "$@"
+

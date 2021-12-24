@@ -1,9 +1,0 @@
-TODO:
-- overhaul pass managment (default get, get by name, menu)
-- overhaul polybar
-    - replace search
-    - checkout new xmonad integration
-    - fix spotify play pause on track end
-    - menus/sliders for vol and internet
-    - more bars?
-- add notifications to bluetooth menu

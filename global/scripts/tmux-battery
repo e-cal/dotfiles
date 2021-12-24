@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 if [[ ! `acpi 2>/dev/null` ]]; then
     [[ $1 == "get-len" ]] && echo 0
     exit 0
