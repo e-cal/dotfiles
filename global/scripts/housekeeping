@@ -27,6 +27,7 @@ expected = [
     ".config",
     ".ghc",
     ".pki",
+    ".minecraft",
 ]
 
 home_path = os.path.expanduser("~")
