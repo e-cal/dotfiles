@@ -45,7 +45,7 @@ case $1 in
             dev=`get_dev $2`
             [[ -z $dev ]] && echo "Invalid device" && exit 1
             mac=${devices[$dev]}
-            bluetoothctl disconnect $mac || exit 1
+            bluetoothctl disconnect $mac && dunstify "$dev disconnected" || dunstify "could not disconnect $dev" && exit 1
         ;;
     toggle | t)
         dev=`get_dev $2`
