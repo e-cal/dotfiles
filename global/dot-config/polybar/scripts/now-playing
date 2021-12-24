@@ -20,11 +20,14 @@ if [ "$1" == "--status" ]; then
 else
     if [ "$STATUS" = "Stopped" ]; then
         echo "No music is playing"
+        polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 2 &>/dev/null
     elif [ "$STATUS" = "Paused"  ]; then
         playerctl --player=spotify metadata --format "$FORMAT"
-    elif [ "$STATUS" = "No player is running"  ]; then
-        echo 
-    else
+        polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 2 &>/dev/null
+    elif [ "$STATUS" = "Playing"  ]; then
         playerctl --player=spotify metadata --format "$FORMAT"
+        polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 1 &>/dev/null
+    else
+        echo 
     fi
 fi
