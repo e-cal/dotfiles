@@ -21,7 +21,7 @@ charging=""
 bat=`acpi | head -n1 | awk '{printf $4}' | tr -d ","`
 batnum=`echo $bat | tr -d "%"`
 
-if [[ `acpi 2>/dev/null | awk '{printf $3}' | tr -d ','` == "Charging" ]]; then
+if [[ `acpi 2>/dev/null | awk '{printf $3}' | head -c8 | tr -d ','` == "Charging" ]]; then
     icon=$charging
 elif (( $batnum <= 10 )); then
     icon=$empty
