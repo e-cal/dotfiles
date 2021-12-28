@@ -18,49 +18,48 @@ ninety=""
 full=""
 charging=""
 
-bat=`acpi | head -n1 | awk '{printf $4}' | tr -d ","`
-batnum=`echo $bat | tr -d "%"`
+charge=`cat /sys/class/power_supply/BAT0/capacity`
 
-if [[ `acpi 2>/dev/null | awk '{printf $3}' | head -c8 | tr -d ','` == "Charging" ]]; then
+if [[ `cat /sys/class/power_supply/BAT0/status` == "Charging" ]]; then
     icon=$charging
-elif (( $batnum <= 10 )); then
+elif (( $charge <= 10 )); then
     icon=$empty
-elif (( $batnum <= 20 )); then
+elif (( $charge <= 20 )); then
     icon=$ten
-elif (( $batnum <= 30 )); then
+elif (( $charge <= 30 )); then
     icon=$twenty
-elif (( $batnum <= 40 )); then
+elif (( $charge <= 40 )); then
     icon=$thirty
-elif (( $batnum <= 50 )); then
+elif (( $charge <= 50 )); then
     icon=$fourty
-elif (( $batnum <= 60 )); then
+elif (( $charge <= 60 )); then
     icon=$fifty
-elif (( $batnum <= 70 )); then
+elif (( $charge <= 70 )); then
     icon=$sixty
-elif (( $batnum <= 80 )); then
+elif (( $charge <= 80 )); then
     icon=$seventy
-elif (( $batnum <= 90 )); then
+elif (( $charge <= 90 )); then
     icon=$eighty
-elif (( $batnum <= 95 )); then
+elif (( $charge <= 95 )); then
     icon=$ninety
 else
     icon=$full
 fi
 
-if (( $batnum >= 75 )); then
+if (( $charge >= 75 )); then
     color=2
-elif (( $batnum >= 50 )); then
+elif (( $charge >= 50 )); then
     color=3
-elif (( $batnum > 20 )); then
+elif (( $charge > 20 )); then
     color=11
 else
     color=1
 fi
 
 if [[ $1 == "get-len" ]]; then
-    str=" $bat $icon "
+    str=" $charge% $icon "
     echo ${#str}
     exit 0
 fi
 
-echo "#[fg=color236]#[fg=color$color, bg=color236] $bat $icon "
+echo "#[fg=color236]#[fg=color$color, bg=color236] $charge% $icon "
