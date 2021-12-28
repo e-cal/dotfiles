@@ -46,11 +46,6 @@ case $sel in
     kitty)
         echo -e "\nRestart terminal"
         ;;
-    polybar)
-        echo -e "\nRestarting polybar...\n"
-        launch-bar
-        sleep 1 && xdotool key enter
-        ;;
 esac
 
 echo -e "\nDotfiles git status:"
