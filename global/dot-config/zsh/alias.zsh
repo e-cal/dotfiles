@@ -27,7 +27,7 @@ alias "sshpi"="[[ $HOST = 'coeus' ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short e
 alias "aliases"="e $DOTFILES/.config/zsh/alias.zsh"
 
 # Searching
-alias "searchsys"="sudo find / 2>/dev/null | fzf"
+alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle"
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
 alias "aursearch"="yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print $2}\")' | xargs -ro  yay -S"
 
