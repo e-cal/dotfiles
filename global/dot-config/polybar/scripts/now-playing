@@ -28,6 +28,6 @@ else
         playerctl --player=spotify metadata --format "$FORMAT"
         polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 1 &>/dev/null
     else
-        echo 
+        echo " "
     fi
 fi
