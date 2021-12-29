@@ -84,7 +84,7 @@ mkvenv() {
     venv "$VIRTUALENV_HOME/$name"
     echo $name > .venv
     source "$VIRTUALENV_HOME/$name/bin/activate"
-    pip install pynvim
+    pip install pynvim black
 }
 
 setvenv() {

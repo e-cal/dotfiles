@@ -46,11 +46,11 @@ else
     icon=$full
 fi
 
-if (( $charge >= 75 )); then
+if (( $charge >= 50 )); then
     color=2
-elif (( $charge >= 50 )); then
+elif (( $charge >= 20 )); then
     color=3
-elif (( $charge > 20 )); then
+elif (( $charge > 10 )); then
     color=11
 else
     color=1
@@ -62,4 +62,4 @@ if [[ $1 == "get-len" ]]; then
     exit 0
 fi
 
-echo "#[fg=color236]#[fg=color$color, bg=color236] $charge% $icon "
+echo "#[fg=color236]#[fg=color$color, bg=color236] $icon $charge% "
