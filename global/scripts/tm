@@ -25,6 +25,8 @@ startcmd="triangles && echo"
 #       project specific behaviour
 declare -A projects=(
     # ["name"]="path"
+    # ["my-project"]="$HOME/my-project"
+    ["NEW"]=""
     ["SCHOOL"]=""
     )
 
@@ -211,6 +213,12 @@ else
 # ====================== CUSTOMIZE PROJECT BEHAVIOUR HERE ======================
             case $sel in
                 # Special cases
+                NEW)
+                    name=`read -p "project name: " -e tmp; echo $tmp`
+                    [[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
+                    mkdir "$HOME/projects/$name"
+                    tm project $name
+                    ;;
                 SCHOOL)
                     declare -A courses=(
                         ["paradigms"]="cisc360"
@@ -230,6 +238,22 @@ else
                     ;;
                 # Default behaviour
                 *)
+                    if [[ ! -v "projects[$sel]" ]]; then
+                        echo "project \"$sel\" does not exist"
+                        echo -n "create new project \"$sel\" (y/n)? "
+                        old_stty_cfg=$(stty -g)
+                        stty raw -echo
+                        answer=$( while ! head -c 1 | grep -i '[ny]'; do true; done )
+                        stty $old_stty_cfg
+                        if echo "$answer" | grep -iq "^y" ;then
+                            echo yes
+                            mkdir "$HOME/projects/$sel"
+                            tm project $sel
+                        else
+                            echo no
+                        fi
+                        exit 0
+                    fi
                     dir=${projects[$sel]}
                     cd $dir
                     attach_session $sel
