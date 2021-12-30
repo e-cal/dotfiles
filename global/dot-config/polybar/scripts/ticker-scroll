@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# see man zscroll for documentation of the following parameters
+# ticker | zscroll -l 20 \
+#     --delay 1 \
+#     --scroll-padding " " \
+#     2>/dev/null
+
+zscroll -l 300 --delay 0.3 -p '    ' --update-check true --update-interval 300 ~/.config/polybar/scripts/ticker 2>/dev/null &
+wait
