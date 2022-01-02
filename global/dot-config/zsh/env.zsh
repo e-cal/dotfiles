@@ -1,8 +1,5 @@
 export TERM="xterm-kitty"
 
-# lemme use my scripts
-export PATH=$HOME/.local/bin:$HOME/scripts:$PATH
-
 # Useful vars
 export DOTFILES=~/.dotfiles/`hostname`
 export STOW_DIR=~/.dotfiles
@@ -30,15 +27,21 @@ export FZF_DEFAULT_COMMAND='rg -l ""'
 export FZF_DEFAULT_OPTS='--prompt=" " --pointer="›" --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'
 export FZF_INLINE='--border --height=50% --layout=reverse --no-info'
 
+# python
+export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init.py
+export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
+export PYENV_ROOT="$XDG_CONFIG_HOME"/pyenv
+
+# lemme use things
+export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$PATH
+
 # GET OUT OF MY HOUSE
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
 export XMONAD_DATA_HOME="$XDG_DATA_HOME"/xmonad
 export XMONAD_CACHE_HOME="$XDG_CACHE_HOME"/xmonad
-export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init.py
 export PYLINTHOME="$XDG_CACHE_HOME"/pylint
 export LESSHISTFILE="$XDG_DATA_HOME"/lesshst
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
-export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
@@ -65,3 +68,4 @@ export XONSHRC_DIR="$DOTFILES/.config/xonsh"
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     startx "$XDG_CONFIG_HOME"/X11/xinitrc
 fi
+

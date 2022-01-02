@@ -9,3 +9,6 @@ source $HOME/.config/zsh/autoenv.zsh
 
 # Load prompt
 eval "$(starship init zsh)"
+
+# Load pyenv
+eval "$(pyenv init --path)"

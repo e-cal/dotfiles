@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [[ -z $1 ]]; then
-    symbols="TSLA,CSU.TO,ARKW,NVDA,VISA"
+    symbols="TD.TO,TOI.VN,POW.TO,BAM.A.TO,MFC.TO,BEP.UN.TO,CSU.TO,MSFT,ADSK,V,NVDA,TCEHY,TSLA,MA,ARKW,GOOG,AAPL,IBM"
 else
     symbols=""
     for s in $@; do
@@ -9,14 +9,13 @@ else
     symbols=`echo $symbols | head -c -2`
 fi
 
-# data=`curl -s "https://yfapi.net/v6/finance/quote?symbols=$symbols" -H "x-api-key: EsSRy3ICPy7BIa7oDJgWw7Dy1AoIGFWI767CUT6d" | jq '.quoteResponse.result | .[] | "\(.symbol) \(.bid)"'`
-data=`cat $HOME/eg-yfapi-res | jq '.quoteResponse.result | .[] | "\(.symbol) \(.bid)"'`
+data=`curl -s "https://yfapi.net/v6/finance/quote?symbols=$symbols" -H "x-api-key: EsSRy3ICPy7BIa7oDJgWw7Dy1AoIGFWI767CUT6d" | jq '.quoteResponse.result | .[] | "\(.symbol) - $\(.regularMarketPrice)"'`
 
 out=""
 IFS='"\n'
 for stock in $data; do
     if [[ -n `echo $stock | tr -d " "` ]]; then
-        out+="$stock        "
+        out+="$stock                "
     fi
 done
 echo -e $out
