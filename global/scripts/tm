@@ -3,19 +3,19 @@
 # To use, add this script to your path, and make sure it is executable
 
 # To auto-launch with your terminal, add -c "tm startup || exec [shell]" to
-# your shell in your terminal config. See coeus/.config/kitty/kitty.conf for
+# your shell in your terminal config. See global/dot-config/kitty/kitty.conf for
 # an example.
 
 # To enable the floating window in tmux, add this line to your tmux.conf:
 # bind-key Enter display-popup -E "tm"
-# this binds the popup to <prefix>Enter
+# this binds the popup to <prefix>Enter (the keybind I use).
 
-# Change the shell and startcmd (an empty string works too) to suit you
+# Set your shell, startcmd, and default projects folder
 shell="zsh"
 startcmd="triangles && echo"
+project_dir="$HOME/projects"
 
-
-# Customize the projects map for quick launching project specific sessions
+# Customize project names and add other projects (not in the project_dir) here
 # NOTES:
 #   - The name will also be the name of the session and the path will be the
 #       startup path for the session (unless otherwise specified)
@@ -37,9 +37,9 @@ for k in "${!projects[@]}"; do
     fi
 done
 
-for d in $HOME/projects/*/; do
+for d in $project_dir/*/; do
     if [[ ! -v "revp[$d]" ]]; then
-        name=`echo $d | sed 's,'"$HOME"'/projects/,,' | tr -d '/'`
+        name=`echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/'`
         projects["$name"]=$d
     fi
 done
@@ -216,7 +216,7 @@ else
                 NEW)
                     name=`read -p "project name: " -e tmp; echo $tmp`
                     [[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
-                    mkdir "$HOME/projects/$name"
+                    mkdir "$project_dir/$name"
                     tm project $name
                     ;;
                 SCHOOL)
@@ -247,7 +247,7 @@ else
                         stty $old_stty_cfg
                         if echo "$answer" | grep -iq "^y" ;then
                             echo yes
-                            mkdir "$HOME/projects/$sel"
+                            mkdir "$project_dir/$sel"
                             tm project $sel
                         else
                             echo no
@@ -264,7 +264,31 @@ else
             ;;
 
         *)
-            echo "Usage: tm [new [session-name] | attach [session-name] | kill [session-name] | end | reset | startup]"
+            echo "tm [command]"
+            echo
+            echo "Run tm without a command to use the main menu."
+            echo
+            echo "Commands"
+            echo "  new [session-name] [start-dir]"
+            echo "    Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup)."
+            echo
+            echo "  attach [session-name]"
+            echo "    Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands."
+            echo
+            echo "  project [project-name]"
+            echo "    Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default)."
+            echo
+            echo "  kill [session-name]"
+            echo "    Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \"TMUX\" to kill the tmux server."
+            echo
+            echo "  end"
+            echo "    Ends (kills) the current tmux session and opens the attach menu."
+            echo
+            echo "  reset"
+            echo "    Resets the current tmux session."
+            echo
+            echo "  startup"
+            echo "    Utility command to use as the launch command for your terminal emulator."
             ;;
     esac
 fi
