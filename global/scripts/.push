@@ -6,7 +6,7 @@ else
     for w in $@; do
         msg+="$w "
     done
-    msg=`echo $msg | head -c -2`
+    msg=`echo $msg | head -c -1`
 fi
 
 echo "Updated with dotfiles: ($msg)"
