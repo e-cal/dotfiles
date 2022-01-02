@@ -1,6 +1,8 @@
 function zvm_after_init() {
-    # Load FZF keybinds
+    # Load FZF completions
     source /usr/share/fzf/completion.zsh
+    source /usr/share/fzf/key-bindings.zsh
+    bindkey '^h' fzf-history-widget
 
     # C-r -> Reload
     _re_source() { BUFFER="exec zsh"; zle accept-line; }
@@ -49,7 +51,6 @@ function zvm_after_init() {
     _lg() { BUFFER="lg"; zle accept-line }
     zle -N _lg
     bindkey "^g" _lg
-
 }
 
 function zvm_after_lazy_keybindings() {

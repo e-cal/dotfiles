@@ -11,14 +11,15 @@ alias ".ls"="/usr/bin/ls"
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
-alias "v"="nvim && clear"
-alias "e"="nvim && clear"
+alias "v"="nvim"
+alias "e"="nvim"
 alias "clear"="clear;triangles"
 alias "open"='xdg-open'
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
 alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "sshpi"="[[ $HOST = 'coeus' ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)"
+alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 
 # Use rsync instead of cp to get the progress and speed of copying.
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
