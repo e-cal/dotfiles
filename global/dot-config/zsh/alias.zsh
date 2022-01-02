@@ -11,8 +11,8 @@ alias ".ls"="/usr/bin/ls"
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
-alias "v"="nvim"
-alias "e"="nvim"
+alias "v"="nvim && clear"
+alias "e"="nvim && clear"
 alias "clear"="clear;triangles"
 alias "open"='xdg-open'
 alias "greps"='grep -ri'

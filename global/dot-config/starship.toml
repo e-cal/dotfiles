@@ -149,7 +149,8 @@ read_only = " "
 
 [directory.substitutions]
 "~/projects" = "projects"
-"~/Dropbox/uni/3F" = "uni"
+"~/Dropbox/uni" = "uni"
+"~/Dropbox/uni/3W" = "uni"
 ".dotfiles" = "dotfiles"
 
 [custom.lvl]
