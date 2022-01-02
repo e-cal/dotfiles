@@ -6,7 +6,10 @@ else
     for w in $@; do
         msg+="$w "
     done
+    msg=`echo $msg | head -c -2`
 fi
+
+echo "Updated with dotfiles: ($msg)"
 
 cd $STOW_DIR
 echo -e "\nPushing submodule updates..."
