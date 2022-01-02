@@ -132,10 +132,9 @@ else
         attach | a)
             if [[ -z $2 ]]; then
                 cur=`tmux display-message -p '#S'`
-                if not_in_tmux; then
-                    sessions="$sessions PROJECT NEW"
-                else
-                    sessions="${sessions//$cur/} PROJECT NEW"
+                sessions="$sessions PROJECT NEW"
+                if ! not_in_tmux; then
+                    sessions=`echo $sessions | sed "s/\<$cur\>//"`
                 fi
                 name=`printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden"`
             else
@@ -221,18 +220,17 @@ else
                     ;;
                 SCHOOL)
                     declare -A courses=(
-                        ["paradigms"]="cisc360"
-                        ["os"]="cisc324"
-                        ["nn"]="cisc452"
-                        ["comm"]="comm221"
-                        ["psyc"]="psyc271"
-                        ["ta"]="cisc204"
+                        ["architecture"]="cisc322"
+                        ["ai"]="cisc352"
+                        ["algorithms"]="cisc365"
+                        ["investments"]="comm324"
+                        ["neuro"]="nsci323"
                         )
                     sel=`printf "%s\n" ${!courses[@]} | fzf --header="course menu" --info="hidden"`
                     [[ -z $sel ]] && exit 0
 
                     dir=${courses[$sel]}
-                    cd "$HOME/Dropbox/uni/3F/$dir"
+                    cd "$HOME/Dropbox/uni/3W/$dir"
                     attach_session $sel
                     cd - &>/dev/null
                     ;;
