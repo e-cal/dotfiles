@@ -20,14 +20,16 @@ project_dir="$HOME/projects"
 #   - The name will also be the name of the session and the path will be the
 #       startup path for the session (unless otherwise specified)
 #   - Any project defined manually will override the automatic entry
-#       (make sure to include the trailing /)
-#   - See the project case below (near the end of the file) for customizing
+#   - Projects with punctuation in their name may not work correctly
+#       e.g. "." gets changed to "_" by tmux when creating a session
+#   - See the indicated section below (near the end of the file) for customizing
 #       project specific behaviour
 declare -A projects=(
     # ["name"]="path"
-    # ["my-project"]="$HOME/my-project"
+    # ["my-project"]="$HOME/path/my-project"
     ["NEW"]=""
     ["SCHOOL"]=""
+    ["website"]="$HOME/projects/ecal.dev"
     )
 
 declare -A revp
