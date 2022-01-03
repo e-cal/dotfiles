@@ -10,7 +10,7 @@ if [[ $# = 0 ]]; then
 else
     case $1 in
         -l)
-            xclip -sel clip ~/.config/Bitwarden\ CLI/.data
+            head -c-1 ~/.config/Bitwarden\ CLI/.data | xclip -sel clip
             ;;
         *)
             bw get item `bw list items | jq '.[] | "\(.name)  id: \(.id)"' | tr -d '"' | fzf-tmux --delimiter="  " --with-nth=1 --query="$1" $FZF_INLINE | awk '{print $(NF -0)}' | sed 's/\"//g'` | jq '.login.password' | sed 's/\"//g' | xclip -sel clip

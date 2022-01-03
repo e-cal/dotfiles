@@ -255,6 +255,7 @@ myKeys = [
     , ("M-S-g", spawn "firefox https://github.com") -- Github
     , ("M-S-d", spawn "inkscape $HOME/images/sketch.svg") -- Draw
     , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
+    , ("M-S-p", spawn "pass -l")
     , ("M-b", spawn "bt menu")
     , ("M-S-b", spawn "polybar-msg cmd toggle") -- toggle Polybar
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
