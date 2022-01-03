@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+[[ -z $STOW_DIR ]] && STOW_DIR="$HOME/.dotfiles"
+
 if [[ $1 = "submodule" ]]; then
     echo "Initializing submodules..."
     cd $STOW_DIR
@@ -7,7 +9,20 @@ if [[ $1 = "submodule" ]]; then
 fi
 
 echo "Generating `hostname` dotfiles..."
-stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
+if [[ `hostname`="raspberrypi" ]]; then
+    echo "here"
+    #stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
+    rm -rf ~/.dotfiles/raspberrypi/.config
+    mkdir ~/.dotfiles/raspberrypi/.config
+    ln -s ~/.dotfiles/global/dot-config/nvim ~/.dotfiles/raspberrypi/.config/nvim
+    cp -r ~/.dotfiles/global/dot-config/tmux ~/.dotfiles/raspberrypi/.config
+    sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf 
+    ln -s ~/.dotfiles/coeus/.config/starship.toml ~/.dotfiles/raspberrypi/.config/starship.toml
+    cp -r ~/.dotfiles/global/dot-config/zsh ~/.dotfiles/raspberrypi/.config
+    sed -i 's/\(export TERM=\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+else
+    stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
+fi
 
 echo "Linking `hostname` dotfiles..."
 stow `hostname` -R
