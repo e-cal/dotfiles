@@ -48,7 +48,7 @@ fi
 
 if (( $charge >= 50 )); then
     color=2
-elif (( $charge >= 20 )); then
+elif (( $charge >= 25 )); then
     color=3
 elif (( $charge > 10 )); then
     color=11
