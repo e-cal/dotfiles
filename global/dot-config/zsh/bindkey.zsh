@@ -2,7 +2,7 @@ function zvm_after_init() {
     # Load FZF completions
     source /usr/share/fzf/completion.zsh
     source /usr/share/fzf/key-bindings.zsh
-    bindkey '^h' fzf-history-widget
+    bindkey '^h' backward-delete-word
 
     # C-r -> Reload
     _re_source() { BUFFER="exec zsh"; zle accept-line; }
