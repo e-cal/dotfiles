@@ -1,0 +1,6 @@
+#!/bin/bash
+while true
+do
+	sleep 20m
+	dunstify "20 min" "take a break" -u critical
+done

@@ -24,8 +24,8 @@ export ZVM_CURSOR_STYLE_ENABLED=false
 
 # fzf
 export FZF_DEFAULT_COMMAND='rg -l ""'
-export FZF_DEFAULT_OPTS='--prompt=" " --pointer="›" --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'
-export FZF_INLINE='--border --height=50% --layout=reverse --no-info'
+export FZF_DEFAULT_OPTS='--prompt=" " --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'
+export FZF_INLINE='--border --height=50% --layout=reverse'
 
 # python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init.py

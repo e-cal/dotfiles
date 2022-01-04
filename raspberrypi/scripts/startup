@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+case `hostname` in
+    coeus)
+        # eyes &
+        # clickup &
+        ;;
+    prometheus)
+        ;;
+esac
+
+launch-bar
+dropbox &
+redshift &

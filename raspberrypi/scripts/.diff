@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+cd $STOW_DIR
+changed=`.status -n -s | awk '{print $2}'`
+
+case $1 in
+    -a | --all)
+        sel=`printf "%s\n" $changed`
+        ;;
+    *)
+        sel=`printf "%s\n" $changed | fzf --header="modified files" -m --bind space:toggle --query="$1" $FZF_INLINE`
+        ;;
+esac
+[[ -z $sel ]] && exit 1
+
+
+for f in $sel; do
+    echo >> tmp.diff
+    yes "=" | head -n $((`tput cols` - 9)) | tr "\n" "," | sed "s/,//g" >> tmp.diff
+    printf "\n$f\n" >> tmp.diff
+    yes "=" | head -n $((`tput cols` - 9)) | tr "\n" "," | sed "s/,//g" >> tmp.diff
+    printf "\n\n" >> tmp.diff
+
+    git --no-pager diff $f >> tmp.diff
+done
+bat tmp.diff
+rm tmp.diff
+
+
+

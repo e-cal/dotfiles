@@ -1,0 +1,2 @@
+#!/bin/bash
+yes "△▽" | head -n $(($(tput cols) / 2)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.03

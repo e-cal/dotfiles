@@ -1,0 +1,90 @@
+#!/bin/bash
+
+DEVFILE=$HOME/.config/bt/devices
+
+# Power on bluetooth controller
+[[ `bluetoothctl show | rg "Powered" | awk '{print $2}'` == "yes" ]] || bluetoothctl power on
+
+# Load associative array with device name -> mac address
+IFS="\n"
+
+readarray -t a < "$DEVFILE"
+
+declare -A devices
+
+for e in ${a[@]}; do
+    k=`echo $e | awk '{print $1}'`
+    v=`echo $e | awk '{print $2}'`
+    devices+=( [$k]=$v )
+done
+
+has_dev() {
+    [[ -v "devices[$1]" ]]
+}
+
+get_dev() {
+    if [[ -n $1 ]]; then
+        dev=$1
+    else
+        dev=`printf "%s\n" ${!devices[@]} | fzf --header="device menu" --info="hidden"`
+    fi
+    has_dev $dev || exit 0
+    echo $dev
+}
+
+
+case $1 in
+    connect | con | c)
+            dev=`get_dev $2`
+            [[ -z $dev ]] && echo "Invalid device" && exit 1
+            mac=${devices[$dev]}
+            bluetoothctl connect $mac && dunstify "$dev connected" || dunstify "could not connect $dev" && exit 1
+            [[ $dev = "wacom" ]] && config-wacom
+        ;;
+    disconnect | discon | d)
+            dev=`get_dev $2`
+            [[ -z $dev ]] && echo "Invalid device" && exit 1
+            mac=${devices[$dev]}
+            bluetoothctl disconnect $mac && dunstify "$dev disconnected" || dunstify "could not disconnect $dev" && exit 1
+        ;;
+    toggle | t)
+        dev=`get_dev $2`
+        [[ -z $dev ]] && echo "Invalid device" && exit 1
+        mac=${devices[$dev]}
+        connected=`bluetoothctl info | grep "$mac" -A 8 | grep "Connected" | awk '{ print $2 }'`
+        if [[ $connected == 'yes' ]]; then
+            bt disconnect $dev
+        else
+            bt connect $dev
+        fi
+        ;;
+    add | a)
+        [[ -z $2 || -z $3 ]] && echo "Usage: bt add [name] [mac]" && exit 1
+        echo "$2 $3" >> "$DEVFILE" && echo "Sucessfully added $2 ($3) to the list of devices"
+        ;;
+    remove | r)
+        [[ -z $2 ]] && echo "Usage: bt remove [name]" && exit 1
+        ! has_dev $2 && echo "Invalid device \"$2\"" && exit 1
+        sed -i "/^$2 /d" "$DEVFILE"
+        ;;
+    menu | m)
+        icons="\n\n蓼"
+        # printf "%s\n" ${!devices[@]}
+        sel=`echo -e "$icons" | rofi -no-fixed-num-lines -theme $HOME/.config/bt/btmenu.rasi -dmenu`
+        case $sel in
+            )
+                dev="ap"
+                ;;
+            )
+                dev="wacom"
+                ;;
+            蓼)
+                dev="heater"
+                ;;
+        esac
+        bt toggle $dev && [[ $dev = "wacom" ]] && dunstify "Run config-wacom"
+        ;;
+    *)
+        echo "Usage: bt [connect | disconnect | add [name] [mac] | remove [name]]"
+        ;;
+esac

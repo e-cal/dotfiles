@@ -1,7 +1,7 @@
 alias "l"="COLUMNS=60 exa --group-directories-first"
 alias "ls"="l"
 alias "la"="ls -a"
-alias "ll"="exa -la --group-directories-first --no-time --git"
+alias "ll"="exa -la --group-directories-first --no-permissions --no-time --git"
 alias "lla"="exa -la --group-directories-first --git -h"
 alias "lt"="exa --tree --level=2"
 alias "lta"="exa -a --tree --level=2"
