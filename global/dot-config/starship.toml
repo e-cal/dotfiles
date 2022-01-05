@@ -139,9 +139,9 @@ format = "[$user]($style)@"
 disabled = true
 
 [hostname]
-ssh_only = false
+ssh_only = true
 format = "[$hostname](blue): "
-disabled = true
+disabled = false
 
 [directory]
 truncation_length = 8
