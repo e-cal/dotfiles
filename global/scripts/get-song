@@ -10,7 +10,12 @@ PLAYER="spotify"
 # Format of the information displayed
 # Eg. {{ artist }} - {{ album }} - {{ title }}
 # See more attributes here: https://github.com/altdesktop/playerctl/#printing-properties-and-metadata
-FORMAT="{{ title }} - {{ artist }}"
+
+if [[ -n `playerctl --player=spotify metadata --format "{{artist}}" 2>/dev/null` ]]; then
+    FORMAT="  {{ title }} - {{ artist }}"
+else
+    FORMAT="  {{ title }} - {{ album }}"
+fi
 
 PLAYERCTL_STATUS=$(playerctl --player=$PLAYER status 2>/dev/null)
 EXIT_CODE=$?
@@ -22,10 +27,15 @@ else
 fi
 
 case $STATUS in
-    Paused)
-        playerctl --player=$PLAYER metadata --format "$FORMAT"
-        ;;
     Playing)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
+        polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 1 &>/dev/null
+        ;;
+    Paused)
+        playerctl --player=$PLAYER metadata --format "$FORMAT"
+        polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 2 &>/dev/null
+        ;;
+    *)
+        echo ""
         ;;
 esac
