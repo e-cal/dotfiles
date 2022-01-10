@@ -20,6 +20,6 @@ while true; do
             out+="$stock\n"
         fi
     done
-    notify-send "Watchlist" "$out"
+    notify-send "Watchlist" "$out" -u critical
     sleep 5m
 done
