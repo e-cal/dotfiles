@@ -207,23 +207,8 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageScratchpad ]
                             where
                                 h = 0.9 -- height
                                 w = 0.9 -- width
-                                t = 0.945 - h -- offset from top
+                                t = 0.95 - h -- offset from top
                                 l = 0.95 - w -- offset from left
-
---------------------------------------------------------------------------------
--- Search Engines
---------------------------------------------------------------------------------
-archwiki = S.searchEngine "archwiki" "https://wiki.archlinux.org/index.php?search="
-searchList :: [(String, S.SearchEngine)]
-searchList = [
-    ("a", archwiki),
-    ("d", S.vocabulary),
-    ("i", S.images),
-    ("g", S.google),
-    ("t", S.thesaurus),
-    ("v", S.youtube),
-    ("w", S.wikipedia)
-    ]
 
 --------------------------------------------------------------------------------
 -- Mouse Bindings
