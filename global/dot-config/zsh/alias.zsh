@@ -13,7 +13,8 @@ alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "v"="nvim"
-alias "e"="nvim"
+alias "vr"="nvim -c 'Dashboard | Telescope oldfiles'"
+alias "vS"="nvim -c 'SessionLoad'"
 alias "clear"="clear;triangles"
 alias "open"='xdg-open'
 alias "greps"='grep -ri'
@@ -70,3 +71,5 @@ alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
 alias luamake=/home/ecal/projects/lua-language-server/3rd/luamake/luamake
 alias "prolog"="swipl"
 alias "xae"="setxkbmap us"
+
+
