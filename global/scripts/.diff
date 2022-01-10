@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd $STOW_DIR
-changed=`.status -n -s | awk '{print $2}'`
+changed=`.stat -n -s | awk '{print $2}'`
 
 case $1 in
     -a | --all)

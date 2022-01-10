@@ -226,7 +226,7 @@ else
                         ["ai"]="cisc352"
                         ["algorithms"]="cisc365"
                         ["investments"]="comm324"
-                        ["neuro"]="nsci323"
+                        ["neuro"]="nsci324"
                         )
                     sel=`printf "%s\n" ${!courses[@]} | fzf --header="course menu" --info="hidden"`
                     [[ -z $sel ]] && exit 0
