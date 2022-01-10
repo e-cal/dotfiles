@@ -11,7 +11,7 @@ if [[ $1 = "submodule" ]]; then
 fi
 
 echo "Generating `hostname` dotfiles..."
-if [[ `hostname`="raspberrypi" ]]; then
+if [[ `hostname` = "raspberrypi" ]]; then
     rm -rf ~/.dotfiles/raspberrypi/.config
     rm -rf ~/.dotfiles/raspberrypi/scripts
     mkdir ~/.dotfiles/raspberrypi/.config

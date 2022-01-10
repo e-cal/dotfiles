@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd $STOW_DIR
-changed=`.status -n -s | awk '{print $2}'`
+changed=`.stat -n -s | awk '{print $2}'`
 
 case $1 in
     -a | --all)
@@ -23,7 +23,7 @@ for f in $sel; do
 
     git --no-pager diff $f >> tmp.diff
 done
-bat tmp.diff
+bat tmp.diff | cat tmp.diff
 rm tmp.diff
 
 

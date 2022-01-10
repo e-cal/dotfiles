@@ -23,7 +23,7 @@ for f in $sel; do
 
     git --no-pager diff $f >> tmp.diff
 done
-bat tmp.diff
+bat tmp.diff | cat tmp.diff
 rm tmp.diff
 
 
