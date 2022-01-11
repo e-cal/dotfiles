@@ -12,9 +12,16 @@ PLAYER="spotify"
 # See more attributes here: https://github.com/altdesktop/playerctl/#printing-properties-and-metadata
 
 if [[ -n `playerctl --player=spotify metadata --format "{{artist}}" 2>/dev/null` ]]; then
-    FORMAT="  {{ title }} - {{ artist }}"
+    ICON=""
+    FORMAT="$ICON {{ title }} - {{ artist }}"
 else
-    FORMAT="  {{ title }} - {{ album }}"
+    ICON=""
+    FORMAT="$ICON  {{ title }} - {{ album }}"
+fi
+
+if [[ $1 = "icon" ]]; then
+    echo $ICON
+    exit
 fi
 
 PLAYERCTL_STATUS=$(playerctl --player=$PLAYER status 2>/dev/null)
@@ -29,13 +36,14 @@ fi
 case $STATUS in
     Playing)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
-        polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 1 &>/dev/null
+        # polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 1 &>/dev/null
         ;;
     Paused)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
-        polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 2 &>/dev/null
+        # polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 2 &>/dev/null
         ;;
     *)
         echo ""
         ;;
 esac
+
