@@ -2,5 +2,6 @@
 while true
 do
 	sleep 20m
-    notify-send "Break time" "Take care of your eyes! 👀" -u critical -i ~/.config/dunst/images/heart.png
+    notify-send "Break time" "Take care of your eyes! 👀" -u critical -i ~/.config/dunst/images/eyes.png
 done
+

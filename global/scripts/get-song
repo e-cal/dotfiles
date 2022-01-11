@@ -36,11 +36,11 @@ fi
 case $STATUS in
     Playing)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
-        # polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 1 &>/dev/null
+        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 1 &>/dev/null
         ;;
     Paused)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
-        # polybar-msg -p "$(pgrep -f "polybar `hostname`")" hook play-pause 2 &>/dev/null
+        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 2 &>/dev/null
         ;;
     *)
         echo ""

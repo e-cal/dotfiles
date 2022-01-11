@@ -20,7 +20,7 @@ while true; do
             out+="$stock\n"
         fi
     done
-    notify-send "Watchlist" "$out" -u critical
+    notify-send "Watchlist" "$out" -u critical -i ~/.config/dunst/images/stocks.png
     sleep 5m
 done
 
