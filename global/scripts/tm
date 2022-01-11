@@ -1,35 +1,37 @@
 #!/usr/bin/env bash
 
-# To use, add this script to your path, and make sure it is executable
+# Add this script to your path, and make sure it is executable!
+# (easiest way is to copy it or symlink it to /usr/bin)
 
-# To auto-launch with your terminal, add -c "tm startup || exec [shell]" to
-# your shell in your terminal config. See global/dot-config/kitty/kitty.conf for
-# an example.
+# To auto-launch with your terminal, add:
+# -c "tm startup || exec [shell]"
+# to your shell in your terminal config.
+# (see global/dot-config/kitty/kitty.conf for an example)
 
 # To enable the floating window in tmux, add this line to your tmux.conf:
 # bind-key Enter display-popup -E "tm"
-# this binds the popup to <prefix>Enter (the keybind I use).
+# this binds the popup to <prefix>Enter.
 
-# Set your shell, startcmd, and default projects folder
+################################################################################
+# USER CONFIG
+################################################################################
+
+# Set your shell, startcmd, and default projects folder here
 shell="zsh"
 startcmd="triangles && echo"
 project_dir="$HOME/projects"
 
-# Customize/add projects here
-# NOTES:
-#   - The name will also be the name of the session and the path will be the
-#       startup path for the session (unless otherwise specified)
-#   - Any project defined manually will override the automatic entry
-#   - Projects with punctuation in their name may not work correctly
+# Add projects here
+# NOTE: Projects with punctuation in their name may not work correctly
 #       e.g. "." gets changed to "_" by tmux when creating a session
-#   - See the indicated section below (near the end of the file) for customizing
-#       project specific behaviour
 declare -A projects=(
+    # Format:
     # ["name"]="path"
-    # ["my-project"]="$HOME/path/my-project"
-    ["NEW"]=""
+
+    # Project name customization (default has a "." and will not work)
     ["website"]="$HOME/projects/ecal.dev"
 
+    # Adding projects
     ["architecture"]="$HOME/Dropbox/uni/3W/cisc322"
     ["ai"]="$HOME/Dropbox/uni/3W/cisc352"
     ["algorithms"]="$HOME/Dropbox/uni/3W/cisc365"
@@ -37,19 +39,9 @@ declare -A projects=(
     ["neuro"]="$HOME/Dropbox/uni/3W/nsci324"
     )
 
-declare -A revp
-for k in "${!projects[@]}"; do
-    if [[ -n ${projects[$k]} ]]; then
-        revp[${projects[$k]}]="$k"
-    fi
-done
-
-for d in $project_dir/*/; do
-    if [[ ! -v "revp[$d]" ]]; then
-        name=`echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/'`
-        projects["$name"]=$d
-    fi
-done
+################################################################################
+# END OF USER CONFIG
+################################################################################
 
 if [[ -n $startcmd ]]; then
     startcmd="$startcmd && exec $shell"
@@ -209,9 +201,24 @@ else
             ;;
 
         project | p)
+            declare -A revp
+            for k in "${!projects[@]}"; do
+                if [[ -n ${projects[$k]} ]]; then
+                    revp[${projects[$k]}]="$k"
+                fi
+            done
+
+            for d in $project_dir/*/; do
+                if [[ ! -v "revp[$d]" ]]; then
+                    name=`echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/'`
+                    projects["$name"]=$d
+                fi
+            done
+
             if [[ -n $2 ]]; then
                 sel=$2
             else
+                projects["NEW"]=""
                 sel=`printf "%s\n" ${!projects[@]} | fzf --header="project menu" --info="hidden"`
             fi
             [[ -z $sel ]] && exit 0
@@ -246,31 +253,32 @@ else
             ;;
 
         *)
-            echo "tm [command]"
-            echo
-            echo "Run tm without a command to use the main menu."
-            echo
-            echo "Commands"
-            echo "  new [session-name] [start-dir]"
-            echo "    Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup)."
-            echo
-            echo "  attach [session-name]"
-            echo "    Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands."
-            echo
-            echo "  project [project-name]"
-            echo "    Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default)."
-            echo
-            echo "  kill [session-name]"
-            echo "    Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \"TMUX\" to kill the tmux server."
-            echo
-            echo "  end"
-            echo "    Ends (kills) the current tmux session and opens the attach menu."
-            echo
-            echo "  reset"
-            echo "    Resets the current tmux session."
-            echo
-            echo "  startup"
-            echo "    Utility command to use as the launch command for your terminal emulator."
+            echo "tm [command]" >> /tmp/tmusage
+            echo "" >> /tmp/tmusage
+            echo "Run tm without a command to use the main menu." >> /tmp/tmusage
+            echo >> /tmp/tmusage
+            echo "Commands" >> /tmp/tmusage
+            echo "  new [session-name] [start-dir]" >> /tmp/tmusage
+            echo "    Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup)." >> /tmp/tmusage
+            echo "" >> /tmp/tmusage
+            echo "  attach [session-name]" >> /tmp/tmusage
+            echo "    Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands." >> /tmp/tmusage
+            echo "" >> /tmp/tmusage
+            echo "  project [project-name]" >> /tmp/tmusage
+            echo "    Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default)." >> /tmp/tmusage
+            echo "" >> /tmp/tmusage
+            echo "  kill [session-name]" >> /tmp/tmusage
+            echo "    Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \"TMUX\" to kill the tmux server." >> /tmp/tmusage
+            echo "" >> /tmp/tmusage
+            echo "  end" >> /tmp/tmusage
+            echo "    Ends (kills) the current tmux session and opens the attach menu." >> /tmp/tmusage
+            echo "" >> /tmp/tmusage
+            echo "  reset" >> /tmp/tmusage
+            echo "    Resets the current tmux session." >> /tmp/tmusage
+            echo "" >> /tmp/tmusage
+            echo "  startup" >> /tmp/tmusage
+            echo "    Utility command to use as the launch command for your terminal emulator." >> /tmp/tmusage
+            less /tmp/tmusage
             ;;
     esac
 fi
