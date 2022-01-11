@@ -13,15 +13,17 @@ PLAYER="spotify"
 
 if [[ -n `playerctl --player=spotify metadata --format "{{artist}}" 2>/dev/null` ]]; then
     ICON=""
-    FORMAT="$ICON {{ title }} - {{ artist }}"
+    FORMAT="{{ title }} - {{ artist }}"
 else
     ICON=""
-    FORMAT="$ICON  {{ title }} - {{ album }}"
+    FORMAT="{{ title }} - {{ album }}"
 fi
 
 if [[ $1 = "icon" ]]; then
     echo $ICON
     exit
+elif [[ ! $1 = "noicon" ]]; then
+    FORMAT="$ICON $FORMAT"
 fi
 
 PLAYERCTL_STATUS=$(playerctl --player=$PLAYER status 2>/dev/null)
