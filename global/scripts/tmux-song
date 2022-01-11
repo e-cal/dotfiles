@@ -14,7 +14,7 @@ wcount=`echo $wnames | wc -w`
 wnames=${#wnames}
 left_space=$((($sname+5)+wnames+(2*$wcount)))
 
-all_right="  ddd mmm nn  hh:mmPP "
+all_right="  ddd mmm nn   hh:mmPP "
 all_right=${#all_right}
 extra=`tmux-battery get-len`
 right_space=$all_right+$extra+1
@@ -25,3 +25,4 @@ if (( $remaining > 1 && $wcount < 4 )); then
     spaces=`printf '%*s' $count`
     echo "$song$spaces"
 fi
+
