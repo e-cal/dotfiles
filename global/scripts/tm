@@ -15,7 +15,7 @@ shell="zsh"
 startcmd="triangles && echo"
 project_dir="$HOME/projects"
 
-# Customize project names and add other projects (not in the project_dir) here
+# Customize/add projects here
 # NOTES:
 #   - The name will also be the name of the session and the path will be the
 #       startup path for the session (unless otherwise specified)
@@ -28,8 +28,13 @@ declare -A projects=(
     # ["name"]="path"
     # ["my-project"]="$HOME/path/my-project"
     ["NEW"]=""
-    ["SCHOOL"]=""
     ["website"]="$HOME/projects/ecal.dev"
+
+    ["architecture"]="$HOME/Dropbox/uni/3W/cisc322"
+    ["ai"]="$HOME/Dropbox/uni/3W/cisc352"
+    ["algorithms"]="$HOME/Dropbox/uni/3W/cisc365"
+    ["investments"]="$HOME/Dropbox/uni/3W/comm324"
+    ["neuro"]="$HOME/Dropbox/uni/3W/nsci324"
     )
 
 declare -A revp
@@ -211,56 +216,33 @@ else
             fi
             [[ -z $sel ]] && exit 0
 
-# ====================== CUSTOMIZE PROJECT BEHAVIOUR HERE ======================
-            case $sel in
-                # Special cases
-                NEW)
-                    name=`read -p "project name: " -e tmp; echo $tmp`
-                    [[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
-                    mkdir "$project_dir/$name"
-                    tm project $name
-                    ;;
-                SCHOOL)
-                    declare -A courses=(
-                        ["architecture"]="cisc322"
-                        ["ai"]="cisc352"
-                        ["algorithms"]="cisc365"
-                        ["investments"]="comm324"
-                        ["neuro"]="nsci324"
-                        )
-                    sel=`printf "%s\n" ${!courses[@]} | fzf --header="course menu" --info="hidden"`
-                    [[ -z $sel ]] && exit 0
-
-                    dir=${courses[$sel]}
-                    cd "$HOME/Dropbox/uni/3W/$dir"
-                    attach_session $sel
-                    cd - &>/dev/null
-                    ;;
-                # Default behaviour
-                *)
-                    if [[ ! -v "projects[$sel]" ]]; then
-                        echo "project \"$sel\" does not exist"
-                        echo -n "create new project \"$sel\" (y/n)? "
-                        old_stty_cfg=$(stty -g)
-                        stty raw -echo
-                        answer=$( while ! head -c 1 | grep -i '[ny]'; do true; done )
-                        stty $old_stty_cfg
-                        if echo "$answer" | grep -iq "^y" ;then
-                            echo yes
-                            mkdir "$project_dir/$sel"
-                            tm project $sel
-                        else
-                            echo no
-                        fi
-                        exit 0
+            if [[ $sel = "NEW" ]]; then
+                name=`read -p "project name: " -e tmp; echo $tmp`
+                [[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
+                mkdir "$project_dir/$name"
+                tm project $name
+            else
+                if [[ ! -v "projects[$sel]" ]]; then
+                    echo "project \"$sel\" does not exist"
+                    echo -n "create new project \"$sel\" (y/n)? "
+                    old_stty_cfg=$(stty -g)
+                    stty raw -echo
+                    answer=$( while ! head -c 1 | grep -i '[ny]'; do true; done )
+                    stty $old_stty_cfg
+                    if echo "$answer" | grep -iq "^y" ;then
+                        echo yes
+                        mkdir "$project_dir/$sel"
+                        tm project $sel
+                    else
+                        echo no
                     fi
-                    dir=${projects[$sel]}
-                    cd $dir
-                    attach_session $sel
-                    cd - &>/dev/null
-                    ;;
-# ==============================================================================
-            esac
+                    exit 0
+                fi
+                dir=${projects[$sel]}
+                cd $dir
+                attach_session $sel
+                cd - &>/dev/null
+            fi
             ;;
 
         *)
@@ -292,3 +274,4 @@ else
             ;;
     esac
 fi
+
