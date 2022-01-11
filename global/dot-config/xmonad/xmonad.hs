@@ -62,7 +62,6 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Column
 import qualified XMonad.Layout.BoringWindows as BW
 
-
     -- Utils
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.SpawnOnce
@@ -115,14 +114,14 @@ getSortByIndexNoNSP = fmap (. filter (\(W.Workspace tag _ _) -> not (tag `elem` 
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
 -- disable when one window, screen edge gaps, screen edge gaps?, window gaps, window gaps?
 -- T B R L
-mySpacing i = spacingRaw True (Border i i i i) True (Border 0 i 0 i) True
+mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
 
 horizontal  = renamed [Replace "horizontal"]
             $ smartBorders
             $ minimize . BW.boringWindows
             $ mySpacing 5
         -- params: windows in master, increment on resize, proportion for master
-            $ ResizableTall 1 (3/100) (55/100) []
+            $ ResizableTall 1 (1/100) (1/2) []
 full    = renamed [Replace "full"]
             $ noBorders Full
 vertical  = renamed [Replace "vertical"]
@@ -242,7 +241,6 @@ myKeys = [
     , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
     , ("M-S-p", spawn "pass -l")
     , ("M-b", spawn "bt menu")
-    , ("M-S-b", spawn "polybar-msg cmd toggle") -- toggle Polybar
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
     , ("M-s", spawn "focus-spotify") -- Spotify
     , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu") -- Powermenu
@@ -265,7 +263,6 @@ myKeys = [
 	, ("M-<Space> f", sendMessage $ JumpToLayout "full")
 	, ("M-<Space> h", sendMessage $ JumpToLayout "horizontal")
 	, ("M-<Space> v", sendMessage $ JumpToLayout "vertical")
-    , ("M-f", sendMessage ToggleStruts)
     , ("M-C-<Down>", sequence_[sendMessage DeArrange, withFocused $ windows . W.sink]) -- Tile Mode
     , ("M-S-h", sendMessage Shrink) -- Shrink horizontal
     , ("M-S-l", sendMessage Expand) -- Expand horizontal
@@ -275,6 +272,7 @@ myKeys = [
     , ("M-.", sendMessage (IncMasterN (-1))) -- Remove a window from master area
     , ("M--", withFocused minimizeWindow) -- Minimize
     , ("M-+", withLastMinimized maximizeWindowAndFocus) -- Maximize
+    , ("M-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"]) -- toggle bar
 
     -- Floating Layout
     , ("M-C-<Up>", sendMessage Arrange) -- Floating Mode
@@ -427,3 +425,4 @@ dbusOutput dbus str = do
     objectPath = D.objectPath_ "/org/xmonad/Log"
     interfaceName = D.interfaceName_ "org.xmonad.Log"
     memberName = D.memberName_ "Update"
+
