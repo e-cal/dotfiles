@@ -21,6 +21,7 @@ import XMonad.Actions.WithAll (killAll)
 import XMonad.Actions.WindowNavigation
 import XMonad.Actions.CycleWS
 import XMonad.Actions.Minimize
+import XMonad.Actions.MouseResize
 import qualified XMonad.Actions.Search as S
 
     -- Data
@@ -53,6 +54,7 @@ import XMonad.Layout.WindowArranger
 import XMonad.Layout.ResizableTile
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Simplest
+import XMonad.Layout.SimplestFloat
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.Renamed
 import XMonad.Layout.MultiToggle
@@ -61,7 +63,6 @@ import XMonad.Layout.Minimize
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Column
 import qualified XMonad.Layout.BoringWindows as BW
-
 import XMonad.Layout.Gaps
     ( Direction2D(D, L, R, U),
       gaps,
@@ -118,14 +119,17 @@ getSortByIndexNoNSP = fmap (. filter (\(W.Workspace tag _ _) -> not (tag `elem` 
 -- Layouts
 --------------------------------------------------------------------------------
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
--- disable when one window, screen edge gaps, screen edge gaps?, window gaps, window gaps?
--- T B R L
-mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
+mySpacing i = spacingRaw
+                True -- smart border
+                     -- T B R L
+                (Border i i i i) False -- screen border
+                (Border i i i i) True -- window border
 
 horizontal  = renamed [Replace "horizontal"]
             $ smartBorders
             $ minimize . BW.boringWindows
-            $ mySpacing 10
+            $ mouseResize
+            $ mySpacing 5
         -- params: windows in master, increment on resize, proportion for master
             $ ResizableTall 1 (1/100) (1/2) []
 full    = renamed [Replace "full"]
@@ -133,6 +137,7 @@ full    = renamed [Replace "full"]
 vertical  = renamed [Replace "vertical"]
 			$ smartBorders
 			$ minimize . BW.boringWindows
+            $ mouseResize
 			$ mySpacing 5
 			$ Column 1.6
 
@@ -220,13 +225,14 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageScratchpad ]
 --------------------------------------------------------------------------------
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-button1, Set the window to floating mode and move by dragging
-    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster))
+    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w >> sendMessage Arrange))
+                                       -- >> windows W.shiftMaster))
+    -- [ ((modm, button1), (\w -> focus w >> placeFocused (underMouse (0, 0))))
     -- mod-button2, Raise the window to the top of the stack
     , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
     -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
-                                       >> windows W.shiftMaster))
+    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w >> sendMessage Arrange))
+                                       -- >> windows W.shiftMaster))
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
@@ -280,20 +286,19 @@ myKeys = [
     , ("M-+", withLastMinimized maximizeWindowAndFocus) -- Maximize
     , ("M-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"]) -- toggle bar
 
-    -- Gaps
-    , ("M-g g", sendMessage $ ToggleGaps) -- toggle
-    , ("M-g r", sendMessage $ setGaps [(L,40), (R,40), (U,20), (D,40)]) -- reset
-    , ("M-g l", sendMessage $ IncGap 5 R)
-    , ("M-g S-l", sendMessage $ DecGap 5 R)
-    , ("M-g h", sendMessage $ IncGap 5 L)
-    , ("M-g S-h", sendMessage $ DecGap 5 L)
-    , ("M-g j", sendMessage $ IncGap 5 D)
-    , ("M-g S-j", sendMessage $ DecGap 5 D)
-    , ("M-g k", sendMessage $ IncGap 5 U)
-    , ("M-g S-k", sendMessage $ DecGap 5 U)
+    -- Gaps / Spacing
+    , ("M-g g", sequence_[
+        sendMessage $ setGaps [(L,40), (R,40), (U,20), (D,40)],
+        setWindowSpacing (Border 20 20 20 20)
+        ])
+    , ("M-g r", sequence_[
+        sendMessage $ setGaps [(L,0), (R,0), (U,0), (D,0)],
+        setWindowSpacing (Border 5 5 5 5)
+        ])
+
 
     -- Floating Layout
-    , ("M-C-<Up>", sendMessage Arrange) -- Floating Mode
+    , ("M-C-<Up>", sendMessage Arrange)
     , ("M-<Up>", sendMessage (MoveUp 20))
     , ("M-<Down>", sendMessage (MoveDown 20))
     , ("M-<Left>", sendMessage (MoveLeft 20))
@@ -443,4 +448,3 @@ dbusOutput dbus str = do
     objectPath = D.objectPath_ "/org/xmonad/Log"
     interfaceName = D.interfaceName_ "org.xmonad.Log"
     memberName = D.memberName_ "Update"
-
