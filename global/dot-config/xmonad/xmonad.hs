@@ -252,7 +252,7 @@ myKeys = [
     , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu") -- Powermenu
     , ("M-S-s", spawn "flameshot gui") -- Screenshot GUI
     -- , ("M-S-s", spawn "sc -r -c ~/images")
-    , ("M1-S-s", spawn "flameshot full -p ~/screenshots") -- Screenshot
+    , ("M1-S-s", spawn "flameshot full -p ~/Dropbox/images/screenshots/") -- Screenshot
     , ("M-S-m", spawn "thunderbird")
     , ("M-t", spawn "launch-comm")
     , ("M-S-n", spawn "obsidian")
