@@ -1,5 +1,7 @@
 # Dependencies
+
 ## Required
+
 neovim
 nvidia
 git
@@ -19,6 +21,7 @@ rofi
 fish
 
 ## Secondary
+
 lolcat
 exa
 fzf
@@ -57,6 +60,7 @@ eog
 postgresql
 
 # H4CK (move to /opt)
+
 gnu-netcat
 nmap
 gobuster (go get github.com/OJ/gobuster)
@@ -75,22 +79,25 @@ metasploit
 wireshark-cli (or wireshark-qt)
 wfuzz (pip)
 
-
-
 # Set up multiple monitors
+
 https://wiki.archlinux.org/index.php/Multihead#Example:_dualhead_configuration_using_relative_coordinates
 `xrandr --output DP-2 --auto --output DP-5 --auto --left-of DP-2`
 
 # Disable mouse acceleration
+
 https://wiki.archlinux.org/index.php/Mouse_acceleration#Disabling_mouse_acceleration
 
 # Set Cursor for Non-GTK
+
 /usr/share/icons/default/index.theme
 
 # Polybar cursor
+
 `sudo cp -r .local/share/icons/Sweet-cursors/ /usr/share/icons`
 
 # Fix audio
+
 https://unix.stackexchange.com/questions/473694/pulseaudio-not-recognizing-intel-hda-after-upgrading-to-debian-testing-buster
 
 # Remove ~/.xmonad
@@ -98,4 +105,6 @@ https://unix.stackexchange.com/questions/473694/pulseaudio-not-recognizing-intel
 `rm -rf $HOME/.xmonad && mkdir $HOME/.local/share/xmonad`
 
 # Disable sleep on idle
+
 Add: `xset s off -dpms` to `.xinitrc`
+

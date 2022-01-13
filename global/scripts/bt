@@ -38,15 +38,15 @@ case $1 in
             dev=`get_dev $2`
             [[ -z $dev ]] && echo "Invalid device" && exit 1
             mac=${devices[$dev]}
-            bluetoothctl connect $mac && dunstify "$dev connected" || dunstify "could not connect $dev" && exit 1
+            bluetoothctl connect $mac && notify-send "$dev connected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not connect $dev" -i ~/.config/dunst/images/bluetooth.png && exit 1
             [[ $dev = "wacom" ]] && config-wacom
-            [[ $dev = "ap" ]] && pacmd list-cards | grep 'Bean Pods' -m 1 -B 5 | head -1 | xargs | awk '{print $2}' | xargs -I % pacmd set-card-profile % a2dp_sink
+            [[ $dev = "airpods" ]] && pacmd list-cards | grep 'Bean Pods' -m 1 -B 5 | head -1 | xargs | awk '{print $2}' | xargs -I % pacmd set-card-profile % a2dp_sink
         ;;
     disconnect | discon | d)
             dev=`get_dev $2`
             [[ -z $dev ]] && echo "Invalid device" && exit 1
             mac=${devices[$dev]}
-            bluetoothctl disconnect $mac && dunstify "$dev disconnected" || dunstify "could not disconnect $dev" && exit 1
+            bluetoothctl disconnect $mac && notify-send "$dev disconnected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not disconnect $dev" -i ~/.config/dunst/images/bluetooth.png && exit 1
         ;;
     toggle | t)
         dev=`get_dev $2`
@@ -74,7 +74,7 @@ case $1 in
         sel=`echo -e "$icons" | rofi -no-fixed-num-lines -theme $HOME/.config/bt/btmenu.rasi -dmenu`
         case $sel in
             )
-                dev="ap"
+                dev="airpods"
                 ;;
             )
                 dev="wacom"
@@ -83,7 +83,7 @@ case $1 in
                 dev="heater"
                 ;;
         esac
-        bt toggle $dev && [[ $dev = "wacom" ]] && dunstify "Run config-wacom"
+        bt toggle $dev && [[ $dev = "wacom" ]] && notify-send "Run config-wacom"
         ;;
     *)
         echo "Usage: bt [connect | disconnect | add [name] [mac] | remove [name]]"

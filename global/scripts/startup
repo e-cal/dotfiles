@@ -9,6 +9,7 @@ case `hostname` in
         ;;
 esac
 
-launch-bar
+launch-bar &
 dropbox &
 redshift &
+
