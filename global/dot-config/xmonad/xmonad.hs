@@ -62,6 +62,12 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Column
 import qualified XMonad.Layout.BoringWindows as BW
 
+import XMonad.Layout.Gaps
+    ( Direction2D(D, L, R, U),
+      gaps,
+      setGaps,
+      GapMessage(DecGap, ToggleGaps, IncGap) )
+
     -- Utils
 import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.SpawnOnce
@@ -119,7 +125,7 @@ mySpacing i = spacingRaw True (Border i i i i) True (Border i i i i) True
 horizontal  = renamed [Replace "horizontal"]
             $ smartBorders
             $ minimize . BW.boringWindows
-            $ mySpacing 5
+            $ mySpacing 10
         -- params: windows in master, increment on resize, proportion for master
             $ ResizableTall 1 (1/100) (1/2) []
 full    = renamed [Replace "full"]
@@ -149,7 +155,7 @@ myLayouts =
 	named "full" full |||
 	named "vertical" vertical
 
-myLayoutHook = avoidStruts $ windowArrange
+myLayoutHook = avoidStruts $ windowArrange $ gaps [(L,0), (R,0), (U,0), (D,0)]
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myLayouts
 
 --------------------------------------------------------------------------------
@@ -273,6 +279,18 @@ myKeys = [
     , ("M--", withFocused minimizeWindow) -- Minimize
     , ("M-+", withLastMinimized maximizeWindowAndFocus) -- Maximize
     , ("M-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"]) -- toggle bar
+
+    -- Gaps
+    , ("M-g g", sendMessage $ ToggleGaps) -- toggle
+    , ("M-g r", sendMessage $ setGaps [(L,40), (R,40), (U,20), (D,40)]) -- reset
+    , ("M-g l", sendMessage $ IncGap 5 R)
+    , ("M-g S-l", sendMessage $ DecGap 5 R)
+    , ("M-g h", sendMessage $ IncGap 5 L)
+    , ("M-g S-h", sendMessage $ DecGap 5 L)
+    , ("M-g j", sendMessage $ IncGap 5 D)
+    , ("M-g S-j", sendMessage $ DecGap 5 D)
+    , ("M-g k", sendMessage $ IncGap 5 U)
+    , ("M-g S-k", sendMessage $ DecGap 5 U)
 
     -- Floating Layout
     , ("M-C-<Up>", sendMessage Arrange) -- Floating Mode
