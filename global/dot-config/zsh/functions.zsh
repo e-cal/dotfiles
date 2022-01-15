@@ -84,7 +84,7 @@ mkvenv() {
     venv "$VIRTUALENV_HOME/$name"
     echo $name > .venv
     source "$VIRTUALENV_HOME/$name/bin/activate"
-    pip install pynvim black
+    pip install pynvim black ipykernel data-science-types
 }
 
 setvenv() {
@@ -99,6 +99,16 @@ setvenv() {
 
 rmvenv() {
     echo not implemented
+}
+
+mkkernel() {
+    if [[ -f ".venv" ]]; then
+        pip install jupyter ipykernel jupytext
+        name=`cat .venv`
+        python -m ipykernel install --name="$name" --user
+    else
+        echo "no venv in current dir"
+    fi
 }
 
 fixap() {

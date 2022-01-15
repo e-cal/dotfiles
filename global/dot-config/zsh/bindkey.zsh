@@ -29,10 +29,10 @@ function zvm_after_init() {
     zle -N _special
     bindkey "^e" _special
 
-    # C-s -> cde
+    # C-o -> cde
     _jump_shortlist() { BUFFER="cde"; zle accept-line }
     zle -N _jump_shortlist
-    bindkey "^s" _jump_shortlist
+    bindkey "^o" _jump_shortlist
 
     # C-t -> rgs
     _rgs() { BUFFER="rgs"; zle accept-line }
@@ -51,6 +51,11 @@ function zvm_after_init() {
     _lg() { BUFFER="lg"; zle accept-line }
     zle -N _lg
     bindkey "^g" _lg
+
+    # C-s -> bashtop
+    _bashtop() { BUFFER="bashtop"; zle accept-line }
+    zle -N _bashtop
+    bindkey "^s" _bashtop
 }
 
 function zvm_after_lazy_keybindings() {

@@ -9,6 +9,7 @@ alias "tree"="exa -a --tree"
 alias ".ls"="/usr/bin/ls"
 
 alias "yeet"="yay -Rsn"
+alias "top"="bashtop"
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
@@ -25,9 +26,6 @@ alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 
 # Use rsync instead of cp to get the progress and speed of copying.
 # aliases['cp'] = ['rsync', '--progress', '--recursive', '--archive']
-
-# Config
-alias "aliases"="e $DOTFILES/.config/zsh/alias.zsh"
 
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle"
@@ -71,5 +69,3 @@ alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
 alias luamake=/home/ecal/projects/lua-language-server/3rd/luamake/luamake
 alias "prolog"="swipl"
 alias "xae"="setxkbmap us"
-
-
