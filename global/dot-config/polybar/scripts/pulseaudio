@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+update_sink() {
+    sink=`pacmd list-sinks | sed -n '/\* index:/ s/.*: //p'`
+}
+
+get_vol() {
+    vol=`pamixer --sink "$sink" --get-volume`
+}
+
+volume_up() {
+    update_sink
+    get_vol
+    if (( $vol < 100 )); then
+        pactl set-sink-volume "$sink" +5%
+    fi
+}
+
+volume_down() {
+    update_sink
+    pactl set-sink-volume "$sink" -5%
+}
+
+volume_mute() {
+    update_sink
+    pactl set-sink-mute "$sink" toggle
+}
+
+print_vol() {
+    update_sink
+    active_port=`pacmd list-sinks | sed -n "/index: $sink/,/index:/p" | grep active`
+    muted=`pamixer --sink "$sink" --get-mute`
+    get_vol
+
+    if echo "$active_port" | grep -q speaker; then
+        icon="default"
+        if [[ $muted = true ]] || (( $vol == 0 )); then
+            icon=󰸈
+        elif (( $vol < 25 )); then
+            icon=󰕿
+        elif (( $vol < 50 )); then
+            icon=󰖀
+        elif (( $vol < 75 )); then
+            icon=󰕾
+        else
+            icon="   "
+        fi
+
+    elif echo "$active_port" | grep -q headphone; then
+        if [[ $muted = true ]] || (( $vol == 0 )); then
+            icon="ﳌ  "
+        else
+            icon="  "
+        fi
+    else
+        icon=" "
+    fi
+
+    if [[ $muted = true ]]; then
+        echo "$icon "
+    else
+        echo "$icon $vol%"
+    fi
+}
+
+
+listen() {
+    print_vol
+    pactl subscribe | while read -r event; do
+        if echo "$event" | grep -qv "Client"; then
+            print_vol
+        fi
+    done
+}
+
+case $1 in
+    up)
+        volume_up
+        ;;
+    down)
+        volume_down
+        ;;
+    mute)
+        volume_mute
+        ;;
+    *)
+        listen
+        ;;
+esac
