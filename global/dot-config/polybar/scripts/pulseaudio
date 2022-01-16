@@ -45,7 +45,6 @@ print_vol() {
         else
             icon="   "
         fi
-
     elif echo "$active_port" | grep -q headphone; then
         if [[ $muted = true ]] || (( $vol == 0 )); then
             icon="ﳌ  "
@@ -53,7 +52,7 @@ print_vol() {
             icon="  "
         fi
     else
-        icon=" "
+        icon="ﱝ  "
     fi
 
     if [[ $muted = true ]]; then
