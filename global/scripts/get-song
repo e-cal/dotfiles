@@ -19,12 +19,6 @@ else
     FORMAT="{{ title }} - {{ album }}"
 fi
 
-if [[ $1 = "icon" ]]; then
-    echo $ICON
-    exit
-elif [[ ! $1 = "noicon" ]]; then
-    FORMAT="$ICON $FORMAT"
-fi
 
 PLAYERCTL_STATUS=$(playerctl --player=$PLAYER status 2>/dev/null)
 EXIT_CODE=$?
@@ -35,17 +29,24 @@ else
     STATUS="None"
 fi
 
+if [[ $1 = "icon" ]]; then
+    [[ ! $STATUS = "None" ]] && echo $ICON || echo 
+    exit
+elif [[ ! $1 = "noicon" ]]; then
+    FORMAT="$ICON $FORMAT"
+fi
+
 case $STATUS in
     Playing)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
-        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 1 &>/dev/null
+        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 1 &>/dev/null ||\
+        polybar-msg -p "$(pgrep -f "polybar top")" hook play-pause 1 &>/dev/null
         ;;
     Paused)
         playerctl --player=$PLAYER metadata --format "$FORMAT"
-        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 2 &>/dev/null
+        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 2 &>/dev/null ||\
+        polybar-msg -p "$(pgrep -f "polybar top")" hook play-pause 2 &>/dev/null
         ;;
     *)
-        echo ""
-        ;;
+        echo
 esac
-

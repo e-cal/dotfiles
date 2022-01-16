@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 song=`get-song`
-[[ $song = "" ]] && exit 0
+[[ -z $song ]] && exit 0
 len=${#song}
 widx=`tmux display-message -p '#{window_index}'`
 w=`tmux list-windows -F "#{window_index} #{window_width}" | grep -E "^$widx" | awk '{print $2}'`
@@ -25,4 +25,3 @@ if (( $remaining > 1 && $wcount < 4 )); then
     spaces=`printf '%*s' $count`
     echo "$song$spaces"
 fi
-
