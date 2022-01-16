@@ -32,8 +32,13 @@ print_vol() {
     muted=`pamixer --sink "$sink" --get-mute`
     get_vol
 
-    if echo "$active_port" | grep -q speaker; then
-        icon="default"
+    if echo "$active_port" | grep -q headphone; then
+        if [[ $muted = true ]] || (( $vol == 0 )); then
+            icon="ﳌ  "
+        else
+            icon="  "
+        fi
+    else
         if [[ $muted = true ]] || (( $vol == 0 )); then
             icon=󰸈
         elif (( $vol < 25 )); then
@@ -45,14 +50,6 @@ print_vol() {
         else
             icon="   "
         fi
-    elif echo "$active_port" | grep -q headphone; then
-        if [[ $muted = true ]] || (( $vol == 0 )); then
-            icon="ﳌ  "
-        else
-            icon="  "
-        fi
-    else
-        icon="ﱝ  "
     fi
 
     if [[ $muted = true ]]; then
