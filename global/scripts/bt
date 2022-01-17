@@ -48,7 +48,7 @@ case $1 in
             mac=${devices[$dev]}
             bluetoothctl disconnect $mac && notify-send "$dev disconnected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not disconnect $dev" -i ~/.config/dunst/images/bluetooth.png && exit 1
         ;;
-    toggle | t)
+    toggle | tog | t)
         dev=`get_dev $2`
         [[ -z $dev ]] && echo "Invalid device" && exit 1
         mac=${devices[$dev]}
@@ -85,8 +85,11 @@ case $1 in
         esac
         bt toggle $dev && [[ $dev = "wacom" ]] && notify-send "Run config-wacom"
         ;;
+    restart)
+        sudo killall bluetoothd
+        sudo systemctl restart bluetooth
+        ;;
     *)
         echo "Usage: bt [connect | disconnect | add [name] [mac] | remove [name]]"
         ;;
 esac
-
