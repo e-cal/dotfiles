@@ -89,6 +89,18 @@ case $1 in
         sudo killall bluetoothd
         sudo systemctl restart bluetooth
         ;;
+    recon | rc)
+        echo "Prepare airpods for pairing..."
+        sleep 5
+        echo "Reconnecting..."
+        mac="E4:90:FD:90:2B:52"
+        bluetoothctl remove $mac
+        bluetoothctl scan on
+        sleep 3
+        bluetoothctl pair $mac
+        pkill -f "scan on"
+        bt connect airpods
+        ;;
     *)
         echo "Usage: bt [connect | disconnect | add [name] [mac] | remove [name]]"
         ;;
