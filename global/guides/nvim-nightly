@@ -1,3 +1,0 @@
-clone neovim github repo
-make CMAKE_BUILD_TYPE=RelWithDebInfo
-sudo make install

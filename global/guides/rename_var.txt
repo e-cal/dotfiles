@@ -1,4 +1,0 @@
-gd
-*
-cgn
-. or :%norm.
