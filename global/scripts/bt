@@ -28,8 +28,8 @@ get_dev() {
     else
         dev=`printf "%s\n" ${!devices[@]} | fzf --header="device menu" --info="hidden"`
     fi
-    has_dev $dev || exit 0
-    echo $dev
+    has_dev $dev || exit
+    echo $dev # pseudo-return
 }
 
 
@@ -63,7 +63,7 @@ case $1 in
         [[ -z $2 || -z $3 ]] && echo "Usage: bt add [name] [mac]" && exit 1
         echo "$2 $3" >> "$DEVFILE" && echo "Sucessfully added $2 ($3) to the list of devices"
         ;;
-    remove | r)
+    remove)
         [[ -z $2 ]] && echo "Usage: bt remove [name]" && exit 1
         ! has_dev $2 && echo "Invalid device \"$2\"" && exit 1
         sed -i "/^$2 /d" "$DEVFILE"
@@ -85,23 +85,20 @@ case $1 in
         esac
         bt toggle $dev && [[ $dev = "wacom" ]] && notify-send "Run config-wacom"
         ;;
-    restart)
+    restart | r)
         sudo killall bluetoothd
         sudo systemctl restart bluetooth
         ;;
     recon | rc)
-        echo "Prepare airpods for pairing..."
-        sleep 5
-        echo "Reconnecting..."
-        mac="E4:90:FD:90:2B:52"
-        bluetoothctl remove $mac
-        bluetoothctl scan on
-        sleep 3
-        bluetoothctl pair $mac
-        pkill -f "scan on"
-        bt connect airpods
+        mac=""
+        if [[ -n $2 ]]; then
+            dev=`get_dev $2`
+            [[ -z $dev ]] && echo "Invalid device" && exit 1
+            mac=${devices[$dev]}
+        fi
+        bt-reconnect $mac
         ;;
     *)
-        echo "Usage: bt [connect | disconnect | add [name] [mac] | remove [name]]"
+        bluetoothctl $@
         ;;
 esac
