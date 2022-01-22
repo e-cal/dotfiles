@@ -1,5 +1,5 @@
-#!/bin/bash
-
-cd /home/ecal/projects/neovim
+#!/usr/bin/env bash
+[[ ! -d ~/projects/neovim ]] && git clone git@github.com:neovim/neovim.git ~/projects/neovim
+cd ~/projects/neovim
 make CMAKE_BUILD_TYPE=RelWithDebInfo
 sudo make install
