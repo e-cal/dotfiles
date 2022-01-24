@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+source parseargs
+
+exa --group-directories-first --icons -a
+echo
+
+if (( ${#args[@]} )); then
+    dir=`du -h ${args[@]} 2>/dev/null | head -n-1 | sort -rh`
+    total="`du -sh ${args[@]} 2>/dev/null | awk '{$2="Total:"; print $2 " " $1}'`"
+else
+    dir=`du -ahd1 2>/dev/null | sed 's/\.\///' | sed '/\.$/d' | sort -rh`
+    total="`du -shc 2>/dev/null | head -n1 | awk '{$2="Total:"; print $2 " " $1}'`"
+fi
+
+
+if [[ ${booleans[l]} = true ]]; then
+    echo $dir | xargs printf "%-10s %s\n" | sed '/[[:digit:]]K/d'
+else
+    echo $dir | xargs printf "%-10s %s\n"
+fi
+
+echo -e "\n$total"
