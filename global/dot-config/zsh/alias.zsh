@@ -1,4 +1,4 @@
-alias "l"="COLUMNS=60 exa --group-directories-first --icons"
+alias "l"="COLUMNS=80 exa --group-directories-first --icons"
 alias "ls"="l"
 alias "la"="ls -a"
 alias "ll"="exa -la --group-directories-first --no-permissions --no-time --git"
