@@ -70,7 +70,8 @@ mkscript() {
     else
         name=$1
     fi
-    echo "#!/usr/bin/env bash\n" > $name
+    echo "#!/usr/bin/env bash" > $name
+    echo "source parseargs\n" >> $name
     chmod +x $name
     v $name
 }
