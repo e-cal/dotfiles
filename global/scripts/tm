@@ -191,12 +191,13 @@ else
                 attach_session "scratch"
                 tm startup
             else
-                if session_exists "main"; then
-                    tm
-                    while [[ $? != 0 ]]; do tm; done
-                else
-                    attach_session "main"
-                fi
+                # if session_exists "main"; then
+                #     tm
+                #     while [[ $? != 0 ]]; do tm; done
+                # else
+                #     attach_session "main"
+                # fi
+                attach_session "main"
             fi
             ;;
 
@@ -282,4 +283,3 @@ else
             ;;
     esac
 fi
-
