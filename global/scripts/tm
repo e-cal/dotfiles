@@ -32,11 +32,11 @@ declare -A projects=(
     ["website"]="$HOME/projects/ecal.dev"
 
     # Adding projects
-    ["architecture"]="$HOME/Dropbox/uni/3W/cisc322"
-    ["ai"]="$HOME/Dropbox/uni/3W/cisc352"
-    ["algorithms"]="$HOME/Dropbox/uni/3W/cisc365"
-    ["investments"]="$HOME/Dropbox/uni/3W/comm324"
-    ["neuro"]="$HOME/Dropbox/uni/3W/nsci324"
+    ["architecture"]="$HOME/cloud/school/winter/cisc322"
+    ["ai"]="$HOME/cloud/school/winter/cisc352"
+    ["algorithms"]="$HOME/cloud/school/winter/cisc365"
+    ["investments"]="$HOME/cloud/school/winter/comm324"
+    ["neuro"]="$HOME/cloud/school/winter/nsci324"
     )
 
 ################################################################################
