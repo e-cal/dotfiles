@@ -1,59 +1,73 @@
 #!/usr/bin/env bash
+source parseargs
 
-if [[ $1 == "-h" ]]; then
-    echo "Usage:"
-    echo "        .sync bucket [(u)pload/(d)ownload/(b)ackup]"
-    echo
-    echo -e "WARNING: upload overwrites cloud, download overwrites local"
+if [[ -n ${booleans[h]} ]]; then
+    echo "TODO: help"
     exit
 fi
 
-# Get existing bucket
-buckets=( `rclone lsf cloud: | tr -d "/"` )
-buckets+=" ALL"
-    
-# Select bucket
-bucket=$1
-[[ $bucket == "all" ]] && bucket="ALL"
-[[ -z $bucket || ! " ${buckets[@]} " =~ " $bucket " ]] && \
-bucket=`printf "%s\n" ${buckets[@]} | fzf --header="buckets" --info="hidden"`
-[[ -z $bucket ]] && exit 1
-[[ $bucket == "ALL" ]] && bucket=""
+[[ $# = 0 ]] && cloud sync && exit
 
-# Select operation
-op=$2
-ops=( "upload" "download" "backup (local)" "test run" )
-case $op in
+get_bucket() {
+    # Get existing bucket
+    buckets=( `rclone lsf cloud: | tr -d "/"` )
+    buckets+=" ALL"
+
+    # Select bucket
+    bucket=${args[1]}
+    [[ $bucket == "all" ]] && bucket="ALL"
+    [[ -z $bucket || ! " ${buckets[@]} " =~ " $bucket " ]] && \
+        bucket=`printf "%s\n" ${buckets[@]} | fzf --header="buckets" --info="hidden"`
+    [[ -z $bucket ]] && exit 1
+    [[ $bucket == "ALL" ]] && bucket=""
+}
+
+case ${args[0]} in
     upload | u)
+        get_bucket
         echo "Uploading..."
-        rclone sync --progress $HOME/cloud/$bucket cloud:$bucket
+        if [[ -n ${booleans[t]} ]]; then
+            rclone sync --progress $HOME/cloud/$bucket cloud:$bucket --dry-run
+        else
+            rclone sync --progress $HOME/cloud/$bucket cloud:$bucket
+        fi
         ;;
     download | d)
+        get_bucket
         echo "Downloading..."
-        rclone sync --progress cloud:$bucket $HOME/cloud/$bucket 
+        if [[ -n ${booleans[t]} ]]; then
+            rclone sync --progress cloud:$bucket $HOME/cloud/$bucket --dry-run
+        else
+            rclone sync --progress cloud:$bucket $HOME/cloud/$bucket
+        fi
         ;;
     backup | b)
         echo "Backing up..."
-        mkdir -p $HOME/backup/$bucket 
+        mkdir -p $HOME/backup
         cp -r $HOME/cloud/$bucket $HOME/backup/
         ;;
-    test | t)
-        ops=( "upload" "download" )
-        op=`printf "%s\n" "${ops[@]}" | fzf --header="buckets" --info="hidden" | awk '{ print $1 }'`
-        [[ -z $op ]] && exit 1
-        case $op in
-            upload)
-                rclone sync --progress --dry-run $HOME/cloud/$bucket cloud:$bucket
+    *)
+        echo "WARNING: boolean flags will be ignored"
+        echo -n "(u)pload, (d)ownload, (q)uit? "
+        rst_stty=$(stty -g)
+        stty raw -echo
+        sel=$( while ! head -c 1 | grep -i '[udq]'; do true; done )
+        stty $rst_stty
+
+        case $sel in
+            u)
+                echo upload
+                cloud upload ${args[@]:1}
                 ;;
-            download)
-                rclone sync --progress --dry-run cloud:$bucket $HOME/cloud/$bucket
+            d)
+                echo download
+                cloud dowload ${args[@]:1}
+                ;;
+
+            q)
+                echo quit
+                exit
                 ;;
         esac
-        ;;
-    *)
-        op=`printf "%s\n" "${ops[@]}" | fzf --header="buckets" --info="hidden" | awk '{ print $1 }'`
-        [[ -z $bucket ]] && bucket="all"
-        .sync $bucket $op
-        exit
         ;;
 esac
