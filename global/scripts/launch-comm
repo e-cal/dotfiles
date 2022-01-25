@@ -3,8 +3,9 @@
 teams=""
 slack=""
 discord="ﭮ"
+zoom=""
 
-options="$slack\n$teams\n$discord"
+options="$slack\n$teams\n$discord\n$zoom"
 
 
 sel=`echo -e "$options" | rofi -no-fixed-num-lines -theme $HOME/.config/rofi/commmenu.rasi -dmenu`
@@ -19,5 +20,8 @@ case $sel in
         ;;
     $discord)
         discord
+        ;;
+    $zoom)
+        zoom
         ;;
 esac
