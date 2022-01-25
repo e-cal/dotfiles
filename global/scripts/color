@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+source parseargs
+
+r=${flags[r]}
+g=${flags[g]}
+b=${flags[b]}
+
+
+if [[ -n $r && -n $g && -n $b ]]; then
+    printf "\x1b[38;2;$r;$g;$b""m"
+    printf "foreground: \\\x1b[38;2;$r;$g;$b""m"
+    printf "\x1b[0m"
+    printf "\x1b[48;2;$r;$g;$b""m"
+    printf "\nbackground: \\\x1b[48;2;$r;$g;$b""m"
+    printf "\x1b[0m\n"
+fi
+
+if [[ -n ${booleans[c]} ]]; then
+    printf "Foreground  |  Background\n"
+    echo "------------+----------------"
+    printf "31 \x1b[31m""red\x1b[0m      |   41 \x1b[0;41m""red\x1b[0m\n"
+    printf "32 \x1b[32m""green\x1b[0m    |   32 \x1b[0;42m""green\x1b[0m\n"
+    printf "33 \x1b[33m""yellow\x1b[0m   |   33 \x1b[0;43m""yellow\x1b[0m\n"
+    printf "34 \x1b[34m""blue\x1b[0m     |   34 \x1b[0;44m""blue\x1b[0m\n"
+    printf "35 \x1b[35m""magenta\x1b[0m  |   35 \x1b[0;45m""magenta\x1b[0m\n"
+    printf "36 \x1b[36m""cyan\x1b[0m     |   36 \x1b[0;46m""cyan\x1b[0m\n"
+    printf "37 \x1b[37m""white\x1b[0m    |   37 \x1b[30;47m""white\x1b[0m\n"
+    printf "30 \x1b[30;47m""black\x1b[0m    |   30 \x1b[0;40m""black\x1b[0m\n"
+
+    printf "\nprintf \"\\\x1b[##m\"\n"
+fi
+
+if [[ -n ${booleans[f]} ]]; then
+    echo
+
+    echo "Format    | Code (after [) | Reset"
+    echo "----------+----------------+------"
+    echo "reset     |       0        |      "
+    echo "bold      |       1        |  22  "
+    echo "dim       |       2        |  22  "
+    echo "italic    |       3        |  23  "
+    echo "underline |       4        |  24  "
+    echo "blink     |       5        |  25  "
+    echo "inverse   |       7        |  27  "
+    echo "hidden    |       8        |  28  "
+    echo "cross out |       9        |  29  "
+
+    printf "\nreset: \\\x1b[0m"
+fi
