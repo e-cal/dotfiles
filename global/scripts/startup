@@ -12,4 +12,4 @@ esac
 launch-bar &
 dropbox &
 redshift &
-
+cloud download all
