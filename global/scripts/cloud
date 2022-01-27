@@ -53,7 +53,8 @@ case ${args[0]} in
         while true
         do
             sleep "$interval""m"
-            cloud upload all --log-file ~/.local/share/rclone/cloud-autosync.log -P
+            printf "\x1b[38;2;150;150;150m`date +'%H:%M'`\x1b[0m\n"
+            cloud upload all
             echo
         done
         ;;
