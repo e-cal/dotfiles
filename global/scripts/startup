@@ -12,4 +12,5 @@ esac
 launch-bar &
 dropbox &
 redshift &
+cloud backup
 cloud download all
