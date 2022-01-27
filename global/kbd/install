@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# sudo cp ~/kbd/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak
-# setxkbmap code-dvorak
+curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak" > /tmp/code-dvorak
+curl -s "https://github.com/e-cal/dotfiles/blob/main/global/kbd/code-dvorak.map.gz?raw=true" > /tmp/code-dvorak.map.gz
 
-# sudo cp ~/kbd/code-dvorak.map.gz /usr/share/kbd/keymaps/code-dvorak.map.gz
-# echo "KEYMAP=code-dvorak" | sudo tee /etc/vconsole.conf
+sudo cp /tmp/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak || echo "Failed to copy code-dvorak (X11)" && exit 1
+sudo cp /tmp/code-dvorak.map.gz /usr/share/kbd/keymaps/code-dvorak.map.gz || echo "Failed to copy code-dvorak (system)" && exit 1
 
-echo "Success"
+setxkbmap code-dvorak || echo "setxkbmap failed" && exit 1
+localectl set-keymap code-dvorak || echo "localectl set-keymap failed" && exit 1
+
+echo "Successfully installed code-dvorak. Happy typing!"
