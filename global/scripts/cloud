@@ -49,11 +49,12 @@ case ${args[0]} in
     autosync)
         interval=${args[1]}
         [[ -z $interval ]] && interval=5
-        echo "Starting auto sync at ""$interval""m intervals"
+        printf "Starting auto sync at ""$interval""m intervals\n\n"
         while true
         do
             sleep "$interval""m"
             cloud upload all --log-file ~/.local/share/rclone/cloud-autosync.log -P
+            echo
         done
         ;;
     *)

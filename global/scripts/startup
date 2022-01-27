@@ -13,4 +13,4 @@ launch-bar &
 dropbox &
 redshift &
 cloud backup
-cloud download all
+cloud download all > ~/.local/share/rclone/startup-sync.log
