@@ -1,12 +1,18 @@
 #!/bin/bash
 
-curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak" > /tmp/code-dvorak
-curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak.map.gz" > /tmp/code-dvorak.map.gz
+install_x11() {
+    curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak" > /tmp/code-dvorak
+    sudo cp /tmp/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak || echo "Failed to copy code-dvorak (X11)" 
+    setxkbmap code-dvorak || echo "setxkbmap failed" 
 
-sudo cp /tmp/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak || echo "Failed to copy code-dvorak (X11)" 
-sudo cp /tmp/code-dvorak.map.gz /usr/share/kbd/keymaps/code-dvorak.map.gz || echo "Failed to copy code-dvorak (system)"
+}
 
-setxkbmap code-dvorak || echo "setxkbmap failed" 
-localectl set-keymap code-dvorak || echo "localectl set-keymap failed"
+install_sys() {
+    curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak.map.gz" > /tmp/code-dvorak.map.gz
+    sudo cp /tmp/code-dvorak.map.gz /usr/share/kbd/keymaps/code-dvorak.map.gz || echo "Failed to copy code-dvorak (system)"
+    localectl set-keymap code-dvorak || echo "localectl set-keymap failed"
 
-echo "Successfully installed code-dvorak. Happy typing!"
+}
+
+
+install_x11 && install_sys && echo "Successfully installed code-dvorak. Happy typing!"
