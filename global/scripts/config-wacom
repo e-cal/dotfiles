@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
 
-if [[ -z $1 ]]; then
-    screens="right main left"
-    screen=`printf "%s\n" $screens | fzf`
-else
-    screen=$1
-fi
+
+echo "Select screen to configure for:"
+echo -n "(l)eft, (r)ight, or (m)ain? "
+rst_stty=$(stty -g)
+stty raw -echo
+screen=$( while ! head -c 1 | grep -i '[lrm]'; do true; done )
+stty $rst_stty
 
 case $screen in
-    "main")
+    m)
         screen=0
         ;;
-    "left")
+    l)
         screen=1
         ;;
-    "right")
+    r)
         screen=2
         ;;
     *)
-        echo "invalid screen" && exit 1
+        echo "bruh" && exit 1
         ;;
 esac
 xsetwacom set "Wacom Intuos BT S Pen stylus" MapToOutput "HEAD-$screen"
