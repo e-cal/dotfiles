@@ -248,7 +248,7 @@ myKeys = [
     , ("M-c", spawn "firefox -P ecal") -- Firefox
     , ("M1-c", spawn "firefox -P ta") -- TA firefox
     , ("M-S-g", spawn "firefox https://github.com") -- Github
-    , ("M-S-d", spawn "inkscape $HOME/Dropbox/images/sketch.svg") -- Draw
+    , ("M-S-d", spawn "inkscape $HOME/sketch.svg") -- Draw
     , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
     , ("M-S-p", spawn "pass -l")
     , ("M-b", spawn "bt menu")
