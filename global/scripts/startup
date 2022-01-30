@@ -14,3 +14,4 @@ dropbox &
 redshift &
 cloud backup
 cloud download all > ~/.local/share/rclone/startup-sync.log
+yay -Syyy
