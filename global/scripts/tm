@@ -70,6 +70,8 @@ attach_session() {
         if ! session_exists $1; then
             tmux new -s $1 -d -n main "$startcmd"
         fi
+        cur=`tmux display-message -p '#S'`
+        echo $cur > ~/.local/share/tm/swap-session
         tmux switch -t $1
     fi
 }
@@ -175,7 +177,7 @@ else
         end | e)
             not_in_tmux && echo "not in a tmux session, nothing to end" && exit 1
             old=`tmux display-message -p '#S'`
-            tm attach && tm kill $old
+            tm attach $2 && tm kill $old
             ;;
 
         reset | r)
@@ -183,22 +185,6 @@ else
             cur=`tmux display-message -p '#S'`
             tmp=`uuidgen`
             tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur && tm kill $tmp" ENTER
-            ;;
-
-        startup | s)
-            wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
-            if [[ $wtitle == "scratch" ]]; then
-                attach_session "scratch"
-                tm startup
-            else
-                # if session_exists "main"; then
-                #     tm
-                #     while [[ $? != 0 ]]; do tm; done
-                # else
-                #     attach_session "main"
-                # fi
-                attach_session "main"
-            fi
             ;;
 
         project | p)
@@ -252,6 +238,31 @@ else
                 cd - &>/dev/null
             fi
             ;;
+
+        swap | s)
+            target=`cat ~/.local/share/tm/swap-session`
+            cur=`tmux display-message -p '#S'`
+            echo $cur > ~/.local/share/tm/swap-session
+            tm attach $target 
+            ;;
+
+        startup)
+            [[ ! -d ~/.local/share/tm ]] && mkdir ~/.local/share/tm && echo "main" > ~/.local/share/tm/swap-session
+            wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
+            if [[ $wtitle == "scratch" ]]; then
+                attach_session "scratch"
+                tm startup
+            else
+                # if session_exists "main"; then
+                #     tm
+                #     while [[ $? != 0 ]]; do tm; done
+                # else
+                #     attach_session "main"
+                # fi
+                attach_session "main"
+            fi
+            ;;
+
 
         *)
             echo "tm [command]" >> /tmp/tmusage
