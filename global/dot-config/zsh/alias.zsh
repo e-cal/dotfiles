@@ -38,15 +38,6 @@ alias "lg"="lazygit"
 alias "gs"="git status"
 alias "conflicts"="nvim (git diff --name-only | uniq)"
 
-# Uni
-alias "cduni"="cda ~/Dropbox/uni/3F"
-alias "cd324"="cda ~/Dropbox/uni/3F/cisc324/"
-alias "cd360"="cda ~/Dropbox/uni/3F/cisc360/"
-alias "cd452"="cda ~/Dropbox/uni/3F/cisc452/"
-alias "cd221"="cda ~/Dropbox/uni/3F/comm221/"
-alias "cd271"="cda ~/Dropbox/uni/3F/psyc271/"
-alias "cd204"="cda ~/Dropbox/uni/3F/cisc204/"
-
 # Util
 alias "fixkeys"="setxkbmap code-dvorak"
 alias "launchbar"="~/.config/polybar/launch.sh"

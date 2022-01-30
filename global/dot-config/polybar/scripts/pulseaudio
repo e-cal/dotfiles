@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 update_sink() {
-    sink=`pacmd list-sinks | sed -n '/\* index:/ s/.*: //p'`
+    sink=`pacmd list-sinks 2>/dev/null | sed -n '/\* index:/ s/.*: //p'`
 }
 
 get_vol() {
-    vol=`pamixer --sink "$sink" --get-volume`
+    vol=`pamixer --sink "$sink" --get-volume 2>/dev/null`
 }
 
 volume_up() {
@@ -28,8 +28,8 @@ volume_mute() {
 
 print_vol() {
     update_sink
-    active_port=`pacmd list-sinks | sed -n "/index: $sink/,/index:/p" | grep active`
-    muted=`pamixer --sink "$sink" --get-mute`
+    active_port=`pacmd list-sinks 2>/dev/null | sed -n "/index: $sink/,/index:/p" | grep active`
+    muted=`pamixer --sink "$sink" --get-mute 2>/dev/null`
     get_vol
 
     if echo "$active_port" | grep -q headphone; then
