@@ -34,7 +34,7 @@ cdh() {
 cde() {
     dirs=(
         dotfiles $STOW_DIR
-        config $DOTFILES/.config
+        config $STOW_DIR/global/dot-config
         nvim $DOTFILES/.config/nvim
         scripts $STOW_DIR/global/scripts
         uni ~/Dropbox/uni/3F
