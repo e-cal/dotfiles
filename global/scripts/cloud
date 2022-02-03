@@ -58,6 +58,9 @@ case ${args[0]} in
             echo
         done
         ;;
+    stop)
+        pkill -f "cloud autosync" && echo "Stopped cloud autosync" || echo "Cloud autosync not running"
+        ;;
     *)
         echo "WARNING: boolean flags will be ignored"
         echo -n "(u)pload, (d)ownload, (q)uit? "
