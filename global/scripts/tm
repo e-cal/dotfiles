@@ -70,8 +70,7 @@ attach_session() {
         if ! session_exists $1; then
             tmux new -s $1 -d -n main "$startcmd"
         fi
-        cur=`tmux display-message -p '#S'`
-        echo $cur > ~/.local/share/tm/swap-session
+        tmux display-message -p '#S' > ~/.local/share/tm/swap-session
         tmux switch -t $1
     fi
 }
