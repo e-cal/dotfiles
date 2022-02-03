@@ -72,6 +72,7 @@ attach_session() {
         fi
         tmux display-message -p '#S' > ~/.local/share/tm/swap-session
         tmux switch -t $1
+        echo $1 > ~/.local/share/tm/last-session
     fi
 }
 
@@ -240,28 +241,34 @@ else
 
         swap | s)
             target=`cat ~/.local/share/tm/swap-session`
-            cur=`tmux display-message -p '#S'`
-            echo $cur > ~/.local/share/tm/swap-session
-            tm attach $target 
+            if session_exists $target; then
+                tm attach $target 
+            else
+                tmux display-message -p '#S' > ~/.local/share/tm/swap-session
+            fi
+
             ;;
 
         startup)
-            [[ ! -d ~/.local/share/tm ]] && mkdir ~/.local/share/tm && echo "main" > ~/.local/share/tm/swap-session
+            [[ ! -d ~/.local/share/tm ]] && mkdir ~/.local/share/tm && echo "main" > ~/.local/share/tm/swap-session && echo "main" > ~/.local/share/tm/last-session
             wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
             if [[ $wtitle == "scratch" ]]; then
                 attach_session "scratch"
                 tm startup
             else
-                # if session_exists "main"; then
-                #     tm
-                #     while [[ $? != 0 ]]; do tm; done
-                # else
-                #     attach_session "main"
-                # fi
-                attach_session "main"
+                if session_exists "main"; then
+                    # tm
+                    # while [[ $? != 0 ]]; do tm; done
+                    attach_session `cat ~/.local/share/tm/last-session`
+                else
+                    attach_session "main"
+                fi
             fi
             ;;
 
+        list | l)
+            printf "%s\n" $sessions
+            ;;
 
         *)
             echo "tm [command]" >> /tmp/tmusage
