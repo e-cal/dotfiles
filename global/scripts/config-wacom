@@ -1,21 +1,25 @@
 #!/usr/bin/env bash
 
-
-echo "Select screen to configure for:"
-echo -n "(l)eft, (r)ight, or (m)ain? "
-rst_stty=$(stty -g)
-stty raw -echo
-screen=$( while ! head -c 1 | grep -i '[lrm]'; do true; done )
-stty $rst_stty
+if [[ -z $1 ]]; then
+    echo "Select screen to configure for:"
+    echo -n "(l)eft, (r)ight, or (m)ain? "
+    rst_stty=$(stty -g)
+    stty raw -echo
+    screen=$( while ! head -c 1 | grep -i '[lrmq]'; do true; done )
+    stty $rst_stty
+    echo $screen
+else
+    screen=$1
+fi
 
 case $screen in
-    m)
+    m | main)
         screen=0
         ;;
-    l)
+    l | left)
         screen=1
         ;;
-    r)
+    r | right)
         screen=2
         ;;
     *)
@@ -30,7 +34,7 @@ xsetwacom set "Wacom Intuos BT S Pen stylus" Button 2 21
 xsetwacom set "Wacom Intuos BT S Pen stylus" Button 3 22
 
 # config pad
-xsetwacom set "Wacom Intuos BT S Pad pad" Button 1 "key del"
+xsetwacom set "Wacom Intuos BT S Pad pad" Button 1 "key s"
 xsetwacom set "Wacom Intuos BT S Pad pad" Button 2 "key +ctrl z -ctrl"
-xsetwacom set "Wacom Intuos BT S Pad pad" Button 3 "key +ctrl c -ctrl"
-xsetwacom set "Wacom Intuos BT S Pad pad" Button 8 "key +ctrl v -ctrl"
+xsetwacom set "Wacom Intuos BT S Pad pad" Button 3 "key del"
+xsetwacom set "Wacom Intuos BT S Pad pad" Button 8 "key p"
