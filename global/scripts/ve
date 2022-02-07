@@ -6,22 +6,19 @@
 
 declare -A files=(
     ["nvim"]="$DOTFILES/.config/nvim"
-    ["zsh"]="$DOTFILES/.config/zsh"
     ["scripts"]="$DOTFILES/scripts"
+    ["zsh"]="$DOTFILES/.config/zsh"
     ["alias"]="$DOTFILES/.config/zsh/alias.zsh"
-    ["functions"]="$DOTFILES/.config/zsh/functions.zsh"
 
     ["tm"]="$DOTFILES/scripts/tm"
-    ["starship"]="$DOTFILES/.config/starship.toml"
-    ["kitty"]="$DOTFILES/.config/kitty/kitty.conf"
-    ["xmonad"]="$DOTFILES/.config/xmonad/xmonad.hs"
     ["tmux"]="$DOTFILES/.config/tmux/tmux.conf"
-    ["x11"]="$DOTFILES/.config/X11/xinitrc"
     ["polybar"]="$DOTFILES/.config/polybar"
+    ["xmonad"]="$DOTFILES/.config/xmonad/xmonad.hs"
+    ["kitty"]="$DOTFILES/.config/kitty/kitty.conf"
+    ["starship"]="$DOTFILES/.config/starship.toml"
+    ["x11"]="$DOTFILES/.config/X11/xinitrc"
 
-    ["alacritty"]="$DOTFILES/.config/alacritty/alacritty.yml"
-    ["xonsh"]="$DOTFILES/.config/xonsh"
-    ["fish"]="$DOTFILES/.config/fish"
+    ["config"]="$STOW_DIR/global/dot-config"
 )
 
 if [[ -v "files[$1]" ]]; then
