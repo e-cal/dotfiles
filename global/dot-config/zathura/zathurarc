@@ -1,0 +1,17 @@
+# Open document in fit-width mode by default
+set adjust-open "best-fit"
+
+# Vim scrolling
+map <C-e> scroll half-down
+map <C-y> scroll half-up
+
+# zathurarc-dark
+
+set font "JetBrainsMonoNerdFont 15"
+set recolor
+set recolor-lightcolor \#222222
+set recolor-keephue
+set default-bg \#222230
+
+set statusbar-fg "#B0B0B0" #04
+set statusbar-bg "#202020" #01
