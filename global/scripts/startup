@@ -1,19 +1,12 @@
 #!/usr/bin/env bash
 
-case `hostname` in
-    coeus)
-        # eyes &
-        # clickup &
-        ;;
-    prometheus)
-        ;;
-esac
-
 launch-bar &
 dropbox &
 redshift &
-cloud backup
-cloud download all > ~/.local/share/rclone/startup-sync.log
-cloud autosync
-yay -Syyy
-config-wacom m
+eyes &
+yay -Syyy &
+config-wacom m &
+
+cloud backup &
+cloud download all > ~/.local/share/rclone/startup-sync.log &
+cloud autosync &
