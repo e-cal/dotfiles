@@ -19,9 +19,17 @@ chosen="$(echo -e "$options" | $rofi_command -dmenu)"
 
 case $chosen in
     $shutdown)
+        notify-send "Syncing..."
+        cloud upload all
+        notify-send "Shutting down"
+        sleep 1
 	    sudo poweroff
         ;;
     $reboot)
+        notify-send "Syncing..."
+        cloud upload all
+        notify-send "Rebooting"
+        sleep 1
 	    sudo reboot
         ;;
     $suspend)
@@ -30,6 +38,7 @@ case $chosen in
         systemctl suspend
         ;;
     $logout)
+        cloud upload all
         session=`loginctl session-status | head -n 1 | awk '{print $1}'`
         loginctl terminate-session $session
         ;;
