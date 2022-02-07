@@ -43,8 +43,13 @@ case ${args[0]} in
         ;;
     backup | b)
         echo "Backing up..."
-        mkdir -p $HOME/backup
-        cp -r $HOME/cloud/$bucket $HOME/backup/
+        [[ ! -d $HOME/backup ]] && mkdir $HOME/backup
+        num=$(find ~/backup -name "`date +'%F'`*" | wc -l)
+        if [[ $num > 0 ]]; then
+            cp -r $HOME/cloud $HOME/backup/`date +"%F"`_$num
+        else
+            cp -r $HOME/cloud $HOME/backup/`date +"%F"`
+        fi
         ;;
     autosync)
         interval=${args[1]}
@@ -58,8 +63,11 @@ case ${args[0]} in
             echo
         done
         ;;
+    stat)
+        pgrep -f "cloud autosync" && echo " cloud autosync is running" || echo " cloud autosync not running"
+        ;;
     stop)
-        pkill -f "cloud autosync" && echo "Stopped cloud autosync" || echo "Cloud autosync not running"
+        pkill -f "cloud autosync" && echo " Stopped cloud autosync" || echo " cloud autosync not running"
         ;;
     *)
         echo "WARNING: boolean flags will be ignored"
