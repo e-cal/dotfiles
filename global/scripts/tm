@@ -72,7 +72,7 @@ attach_session() {
         fi
         tmux display-message -p '#S' > ~/.local/share/tm/swap-session
         tmux switch -t $1
-        echo $1 > ~/.local/share/tm/last-session
+        [[ ! $1 = "scratch" ]] && echo $1 > ~/.local/share/tm/last-session
     fi
 }
 
