@@ -4,9 +4,12 @@ set adjust-open "best-fit"
 # Copy to clipboard
 set selection-clipboard clipboard
 
-# Vim scrolling
+# Vim big scrolling
 map <C-e> scroll half-down
 map <C-y> scroll half-up
+
+set scroll-step 50
+set scroll-hstep 10
 
 # Dark mode
 set font "JetBrainsMonoNerdFont 15"
