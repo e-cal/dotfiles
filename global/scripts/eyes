@@ -1,7 +1,16 @@
 #!/bin/bash
-while true
-do
-    sleep 20m
-    notify-send "Break time" "Take care of your eyes! 👀" -u critical -i ~/.config/dunst/images/eyes.png
-done
 
+sleep 20m
+ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Break time" "Take care of your eyes! 👀" -i ~/.config/dunst/images/eyes.png -u critical)
+
+case $ACTION in
+    default)
+        eyes
+        ;;
+    stop)
+        exit
+        ;;
+    1 | 2) # expired (1) | dismissed (2)
+        exit
+        ;;
+esac
