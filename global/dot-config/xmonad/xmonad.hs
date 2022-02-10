@@ -349,6 +349,10 @@ myKeys = [
     , ("<XF86MonBrightnessUp>", spawn "brightness up")
     , ("M-<F12>", spawn "brightness up")
     , ("M-C-<F12>", spawn "brightness set 70")
+    , ("M-C-b d", spawn "brightness set 10")
+    , ("M-C-b m", spawn "brightness set 20")
+    , ("M-C-b b", spawn "brightness set 30")
+    , ("M-C-b f", spawn "brightness set 50")
     ]
 	-- Change workspace with function keys
 	++
