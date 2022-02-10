@@ -5,7 +5,7 @@ update_sink() {
 }
 
 get_vol() {
-    vol=`pamixer --sink "$sink" --get-volume 2>/dev/null`
+    vol=`pamixer --sink "$sink" --get-volume 2>/dev/null` || exit 1
 }
 
 volume_up() {
@@ -30,7 +30,7 @@ print_vol() {
     update_sink
     active_port=`pacmd list-sinks 2>/dev/null | sed -n "/index: $sink/,/index:/p" | grep active`
     muted=`pamixer --sink "$sink" --get-mute 2>/dev/null`
-    get_vol
+    get_vol || exit 1
 
     if echo "$active_port" | grep -q headphone; then
         if [[ $muted = true ]] || (( $vol == 0 )); then
