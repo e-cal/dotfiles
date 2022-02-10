@@ -69,28 +69,24 @@ case ${args[0]} in
     stop)
         pkill -f "cloud autosync" && echo " Stopped cloud autosync" || echo " cloud autosync not running"
         ;;
+    share)
+        local_path=`readlink -f $2`
+
+        # safety checks
+        [[ ! -f $local_path ]] && echo "file does not exist" && exit 1
+        [[ ! $local_path =~ ^/home/ecal/cloud/.*$ ]] && echo "cannot share a file not stored in the cloud" && exit 1
+
+        cloud_path=`echo $local_path | sed 's/\/home\/ecal\/cloud\///'`
+
+        time=$3
+        end_char=`echo $time | tail -c2`
+        [[ ! $end_char =~ ^(s|m|h|d)$ ]] && echo "invalid expiry time" && exit 1
+
+        uplink cp $local_path sj://$cloud_path
+        uplink share sj://$cloud_path --url --public --not-after="+$time"
+        # TODO: copy link to clipboard
+        ;;
     *)
-        echo "WARNING: boolean flags will be ignored"
-        echo -n "(u)pload, (d)ownload, (q)uit? "
-        rst_stty=$(stty -g)
-        stty raw -echo
-        sel=$( while ! head -c 1 | grep -i '[udq]'; do true; done )
-        stty $rst_stty
-
-        case $sel in
-            u)
-                echo upload
-                cloud upload ${args[@]:1}
-                ;;
-            d)
-                echo download
-                cloud dowload ${args[@]:1}
-                ;;
-
-            q)
-                echo quit
-                exit
-                ;;
-        esac
+        echo "Command not recognized."
         ;;
 esac
