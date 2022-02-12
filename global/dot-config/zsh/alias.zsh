@@ -17,7 +17,6 @@ alias "v"="nvim"
 alias "vr"="nvim -c 'Dashboard | Telescope oldfiles'"
 alias "vS"="nvim -c 'SessionLoad'"
 alias "clear"="clear;triangles"
-alias "open"='xdg-open'
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
 alias "sshpi"="[[ $HOST = 'coeus' ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)"
@@ -35,6 +34,7 @@ alias "lg"="lazygit"
 alias "gs"="git status"
 alias "conflicts"="nvim (git diff --name-only | uniq)"
 alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
+alias "gwa"="git worktree add"
 
 # Util
 alias "fixkeys"="setxkbmap code-dvorak"

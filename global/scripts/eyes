@@ -5,7 +5,7 @@ ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Break time"
 
 case $ACTION in
     default)
-        eyes
+        eyes &
         ;;
     stop)
         exit

@@ -34,11 +34,11 @@ $openstack\
 $env_var\
 $crystal\
 $lua\
-$jobs\
 
 $git_commit\
 $git_state\
 $git_status\
+$jobs\
 
     $fill\
 $cmd_duration\
@@ -112,7 +112,8 @@ disabled = true
 
 [jobs]
 symbol = ""
-format = "[$symbol]($style) "
+style = "#6A6A6A"
+format = "[$symbol (×$number)]($style) "
 
 [git_branch]
 symbol = " "
