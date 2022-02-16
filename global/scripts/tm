@@ -270,6 +270,26 @@ else
             printf "%s\n" $sessions
             ;;
 
+        toggle_term)
+            hid() {
+                tmux list-windows -F '#{window_name}' | grep -q ' '
+            }
+
+            no_bot() {
+                tmux list-panes -F '#{pane_at_left} #{pane_at_top} #{pane_at_bottom}' | grep -q '1 1 1'
+            }
+
+            if hid; then
+                tmux select-pane -t 0;
+                tmux join-pane -v -l 30% -s ' '
+            elif no_bot; then
+                tmux split-window -v -p 30
+            else
+                tmux select-pane -t 1;
+                tmux break-pane -ad -n ' ' 
+            fi
+            ;;
+
         *)
             echo "tm [command]" >> /tmp/tmusage
             echo "" >> /tmp/tmusage
