@@ -46,7 +46,7 @@ case $1 in
             dev=`get_dev $2`
             [[ -z $dev ]] && echo "Invalid device" && exit 1
             mac=${devices[$dev]}
-            bluetoothctl disconnect $mac && notify-send "$dev disconnected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not disconnect $dev" -i ~/.config/dunst/images/bluetooth.png && exit 1
+            bluetoothctl disconnect $mac && notify-send "$dev disconnected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not disconnect $dev" -i ~/.config/dunst/images/bluetooth.png 
         ;;
     toggle | tog | t)
         dev=`get_dev $2`
