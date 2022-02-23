@@ -184,7 +184,7 @@ else
             not_in_tmux && echo "not in a tmux session, nothing to reset" && exit 1
             cur=`tmux display-message -p '#S'`
             tmp=`uuidgen`
-            tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur && tm kill $tmp" ENTER
+            tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur; tm kill $tmp" ENTER 
             ;;
 
         project | p)
