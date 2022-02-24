@@ -1,3 +1,42 @@
 #!/usr/bin/env bash
 
-# TODO
+print_brightness() {
+    bright=`brightness get`
+
+    if (( $bright < 10 )); then
+        icon=
+    elif (( $bright < 30 )); then
+        icon=
+    elif (( $bright < 50 )); then
+        icon=
+    elif (( $bright < 70 )); then
+        icon=
+    elif (( $bright < 90 )); then
+        icon=
+    else (( $bright < 95 ))
+        icon=
+    fi
+
+    echo "$icon   $bright%"
+}
+
+listen() {
+    print_brightness
+    pactl subscribe | while read -r event; do
+        if echo "$event" | grep -qv "Client"; then
+            print_brightness
+        fi
+    done
+}
+
+case $1 in
+    up)
+        brightness up
+        ;;
+    down)
+        brightness down
+        ;;
+    *)
+        listen
+        ;;
+esac

@@ -3,7 +3,7 @@
 rofi_command="rofi -no-fixed-num-lines -theme $HOME/.config/polybar/themes/powermenu.rasi"
 
 if [[ `hostname` = "coeus" ]]; then
-    rofi_command+=" -m 2"
+    rofi_command+=" -m DP-0"
 fi
 
 # Options

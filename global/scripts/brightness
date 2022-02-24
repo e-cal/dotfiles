@@ -29,37 +29,48 @@ function notification() {
 }
 
 case $1 in
-  up)
-    notification 1
-    case $hostname in
-        coeus)
-            sudo ddcutil --bus $monitor setvcp 10 + 10
-            ;;
-        prometheus)
-            xbacklight -inc 2
-            ;;
-    esac
-    ;;
-  down)
-    notification -1
-    case $hostname in
-        coeus)
-            sudo ddcutil --bus $monitor setvcp 10 - 10
-            ;;
-        prometheus)
-            xbacklight -dec 2
-            ;;
-    esac
-    ;;
-  set)
-    case $hostname in
-        coeus)
-            sudo ddcutil --bus $monitor setvcp 10 $2
-            ;;
-        prometheus)
-            xbacklight -set $2
-            ;;
-    esac
-    notification
-    ;;
+    up)
+        notification 1
+        case $hostname in
+            coeus)
+                sudo ddcutil --bus $monitor setvcp 10 + 10
+                ;;
+            prometheus)
+                xbacklight -inc 2
+                ;;
+        esac
+        ;;
+    down)
+        notification -1
+        case $hostname in
+            coeus)
+                sudo ddcutil --bus $monitor setvcp 10 - 10
+                ;;
+            prometheus)
+                xbacklight -dec 2
+                ;;
+        esac
+        ;;
+    set)
+        case $hostname in
+            coeus)
+                sudo ddcutil --bus $monitor setvcp 10 $2
+                ;;
+            prometheus)
+                xbacklight -set $2
+                ;;
+        esac
+        notification
+        ;;
+    get)
+        case $hostname in
+            coeus)
+                sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g'
+                ;;
+
+            prometheus)
+                xbacklight -get | cut -d '.' -f 1
+                ;;
+        esac
+        ;;
 esac
