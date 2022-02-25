@@ -20,15 +20,6 @@ print_brightness() {
     echo "$icon   $bright%"
 }
 
-listen() {
-    print_brightness
-    pactl subscribe | while read -r event; do
-        if echo "$event" | grep -qv "Client"; then
-            print_brightness
-        fi
-    done
-}
-
 case $1 in
     up)
         brightness up
@@ -37,6 +28,6 @@ case $1 in
         brightness down
         ;;
     *)
-        listen
+        print_brightness
         ;;
 esac
