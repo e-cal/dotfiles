@@ -9,6 +9,7 @@ function notification() {
     case $hostname in
         coeus)
             brightness=`sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g'`
+            polybar-msg -p "$(pgrep -f "polybar top")" hook brightness 1 &>/dev/null
             ;;
 
         prometheus)

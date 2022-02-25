@@ -1,4 +1,5 @@
 export TERM="xterm-kitty"
+export TERMINAL="kitty"
 
 # Useful vars
 export DOTFILES=~/.dotfiles/`hostname`
@@ -68,4 +69,3 @@ export XONSHRC_DIR="$DOTFILES/.config/xonsh"
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     startx "$XDG_CONFIG_HOME"/X11/xinitrc
 fi
-

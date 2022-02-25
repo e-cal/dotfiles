@@ -207,10 +207,16 @@ myStartupHook = do
 -- Scratchpads
 --------------------------------------------------------------------------------
 myScratchPads :: [NamedScratchpad]
-myScratchPads = [ NS "terminal" spawnTerm findTerm manageScratchpad ]
+myScratchPads = [ 
+                    NS "terminal" spawnTerm findTerm manageScratchpad,
+                    NS "browser" spawnBrowser findBrowser manageScratchpad
+                ]
                     where
                         spawnTerm = myTerminal ++ " --title scratch"
                         findTerm = title =? "scratch"
+
+                        spawnBrowser = "qutebrowser"
+                        findBrowser = className =? "qutebrowser"
 
                         -- % from left, % from top, width, height
                         manageScratchpad = customFloating $ W.RationalRect l t w h
@@ -264,6 +270,7 @@ myKeys = [
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
+    , ("M-<Home>", namedScratchpadAction myScratchPads "browser")
 
     -- Kill Windows
     , ("M-q", kill) -- Focused window
