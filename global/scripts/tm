@@ -288,6 +288,9 @@ else
             else
                 tmux select-pane -t 1
                 tmux break-pane -ad -n ' ' 
+                sleep 0.01
+                tmux next-window
+                tmux previous-window
             fi
             ;;
 
