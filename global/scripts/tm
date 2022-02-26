@@ -82,7 +82,7 @@ if [[ $# == 0 ]]; then
         sel="NEW"
     else
         sessions="$sessions RESET KILL END PROJECT NEW"
-        sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden"`
+        sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden" --bind "ctrl-k:execute(tm kill {}; tm)+abort"`
         [[ -z $sel ]] && exit 1
     fi
 
@@ -126,7 +126,7 @@ else
             fi
             [[ -z $from ]] && from=`pwd | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,'` && echo "start dir not set, using $(pwd)"
 
-            [[ $from == "home" ]] && cd ~ || cd "$HOME/$from"
+            [[ $from == "home" || $from == "/home/ecal" ]] && cd ~ || cd "$HOME/$from"
             attach_session $name
             ;;
 
