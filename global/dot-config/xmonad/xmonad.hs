@@ -221,10 +221,10 @@ myScratchPads = [
                         -- % from left, % from top, width, height
                         manageScratchpad = customFloating $ W.RationalRect l t w h
                             where
-                                h = 0.9 -- height
-                                w = 0.9 -- width
-                                t = 0.95 - h -- offset from top
                                 l = 0.95 - w -- offset from left
+                                t = 0.95 - h -- offset from top
+                                w = 0.9 -- width
+                                h = 0.9 -- height
 
 --------------------------------------------------------------------------------
 -- Mouse Bindings
@@ -265,7 +265,7 @@ myKeys = [
     -- , ("M-S-s", spawn "sc -r -c ~/images")
     , ("M1-S-s", spawn "flameshot full -p ~/Dropbox/images/screenshots/") -- Screenshot
     , ("M-S-m", spawn "thunderbird")
-    , ("M-t", spawn "launch-comm")
+    , ("M-S-t", spawn "launch-comm")
     , ("M-S-n", spawn "obsidian")
 
     -- Scratchpads
@@ -290,7 +290,8 @@ myKeys = [
     , ("M-.", sendMessage (IncMasterN (-1))) -- Remove a window from master area
     , ("M--", withFocused minimizeWindow) -- Minimize
     , ("M-+", withLastMinimized maximizeWindowAndFocus) -- Maximize
-    , ("M-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"]) -- toggle bar
+    , ("M-S-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"]) -- toggle bar
+    , ("M-f", withFocused toggleFloat) -- toggle float
 
     -- Gaps / Spacing
     , ("M-g g", sequence_[
@@ -382,6 +383,14 @@ myKeys = [
         , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
                                      , ("S-", windows . W.shift)]
     ]
+    where
+        _l = 0.95 - _w -- offset from left
+        _t = 0.95 - _h -- offset from top
+        _w = 0.9 -- width
+        _h = 0.9 -- height
+        toggleFloat w = windows (\s -> if M.member w (W.floating s)
+                            then W.sink w s
+                            else (W.float w (W.RationalRect _l _t _w _h) s))
 
 myWindowNavigation = withWindowNavigationKeys ([
     ((myModMask, xK_k), WNGo U),
