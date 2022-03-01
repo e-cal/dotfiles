@@ -450,6 +450,8 @@ myConfig = def
     -- Move Spotify to workspace 5
         <+> dynamicPropertyChange "WM_NAME"
             (className =? "Spotify" --> doShift "6")
+        <+> dynamicPropertyChange "WM_NAME"
+            (wmName =? "Sign in - Google Accounts — Mozilla Firefox" --> doFloat)
     , startupHook        = myStartupHook
     , focusFollowsMouse  = focusMouse
     , clickJustFocuses   = False
@@ -460,6 +462,8 @@ myConfig = def
     , focusedBorderColor = myFocusColor
     , mouseBindings      = myMouseBindings
     } `additionalKeysP` myKeys
+        where
+            wmName = stringProperty "WM_NAME"
 
 
 --------------------------------------------------------------------------------
