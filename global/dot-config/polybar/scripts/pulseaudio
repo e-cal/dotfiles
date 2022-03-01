@@ -5,7 +5,7 @@ update_sink() {
 }
 
 get_vol() {
-    vol=`pamixer --sink "$sink" --get-volume 2>/dev/null` || exit 1
+    vol=`pamixer --sink "$sink" --get-volume 2>/dev/null`
 }
 
 volume_up() {
@@ -14,23 +14,26 @@ volume_up() {
     if (( $vol < 100 )); then
         pactl set-sink-volume "$sink" +5%
     fi
+    polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
 }
 
 volume_down() {
     update_sink
     pactl set-sink-volume "$sink" -5%
+    polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
 }
 
 volume_mute() {
     update_sink
     pactl set-sink-mute "$sink" toggle
+    polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
 }
 
 print_vol() {
     update_sink
     active_port=`pacmd list-sinks 2>/dev/null | sed -n "/index: $sink/,/index:/p" | grep active`
     muted=`pamixer --sink "$sink" --get-mute 2>/dev/null`
-    get_vol || exit 1
+    get_vol 
 
     if echo "$active_port" | grep -q headphone; then
         if [[ $muted = true ]] || (( $vol == 0 )); then
@@ -60,15 +63,6 @@ print_vol() {
 }
 
 
-listen() {
-    print_vol
-    pactl subscribe | while read -r event; do
-        if echo "$event" | grep -qv "Client"; then
-            print_vol
-        fi
-    done
-}
-
 case $1 in
     up)
         volume_up
@@ -80,6 +74,6 @@ case $1 in
         volume_mute
         ;;
     *)
-        listen
+        print_vol
         ;;
 esac
