@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+source parseargs
+
+# [ -z "$5" ] && echo "Usage: $0 <image> <x> <y> <max height> <max width>" && exit
+
+clear
+x=$2
+y=$3
+w=$4
+h=$5
+
+[[ -z $w ]] && w=$((`tput cols` / 2))
+[[ -z $h ]] && h=$((`tput lines` / 2))
+[[ -z $x ]] && x=$(( `tput cols` - ($w + ($w / 2)) ))
+[[ -z $y ]] && y=5
+
+source "`ueberzug library`"
+
+ImageLayer 0< <(
+    ImageLayer::add [identifier]="example0" [x]="$x" [y]="$y" [max_width]="$w" [max_height]="$h" [path]="$1"
+    read
+)
