@@ -10,3 +10,5 @@ config-wacom m &
 cloud backup &
 cloud download all > ~/.local/share/rclone/startup-sync.log &
 cloud autosync &
+
+[[ `hostname`="coeus" ]] && polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
