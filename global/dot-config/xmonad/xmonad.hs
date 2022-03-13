@@ -215,8 +215,8 @@ myScratchPads = [
                         spawnTerm = myTerminal ++ " --title scratch"
                         findTerm = title =? "scratch"
 
-                        spawnBrowser = "qutebrowser"
-                        findBrowser = className =? "qutebrowser"
+                        spawnBrowser = "firefox"
+                        findBrowser = className =? "firefox"
 
                         -- % from left, % from top, width, height
                         manageScratchpad = customFloating $ W.RationalRect l t w h
@@ -251,11 +251,11 @@ myKeys = [
     ("M-<Return>", spawn myTerminal) -- Terminal
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi") -- Run Prompt
     , ("M-e", spawn "nemo") -- files
-    , ("M-c", spawn "firefox -P ecal") -- Firefox
-    , ("M1-c", spawn "firefox -P ta") -- TA firefox
-    , ("M-S-g", spawn "firefox https://github.com") -- Github
+    , ("M-w", spawn "launch-browser") -- Web Browser Menu
+    , ("M-S-w", spawn "brave") -- Default Web Browser
+    , ("M-S-g", spawn "brave https://github.com") -- Github
+    , ("M-S-c", spawn "brave https://calendar.google.com") -- Calendar
     , ("M-S-d", spawn "inkscape $HOME/sketch.svg") -- Draw
-    , ("M-S-c", spawn "firefox https://calendar.google.com") -- Calendar
     , ("M-S-p", spawn "pass -l")
     , ("M-b", spawn "bt menu")
     , ("M-C-w", spawn "nitrogen") -- Nitrogen
@@ -450,8 +450,6 @@ myConfig = def
     -- Move Spotify to workspace 5
         <+> dynamicPropertyChange "WM_NAME"
             (className =? "Spotify" --> doShift "6")
-        <+> dynamicPropertyChange "WM_NAME"
-            (wmName =? "Sign in - Google Accounts — Mozilla Firefox" --> doFloat)
     , startupHook        = myStartupHook
     , focusFollowsMouse  = focusMouse
     , clickJustFocuses   = False
