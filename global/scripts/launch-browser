@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+source parseargs
+
+
+brave="ﱾ"
+firefox=""
+ta="拾"
+
+options="$brave\n$firefox\n$ta"
+
+
+sel=`echo -e "$options" | rofi -no-fixed-num-lines -theme $HOME/.config/rofi/commmenu.rasi -dmenu`
+
+
+case $sel in
+    $brave)
+	    brave
+        ;;
+    $firefox)
+        firefox -P ecal
+        ;;
+    $ta)
+        firefox -P ta
+        ;;
+esac

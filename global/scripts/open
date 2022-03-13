@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
+source parseargs
 
-for f in $@; do
+# Incase something breaks, use if statement and -s flag
+# if [[ $bools =~ .*s.* ]]; then
+#     IFS=""
+# fi
+
+IFS=""
+for f in ${args[@]}; do
     if [[ ! -r $f ]]; then
         echo "$0: cannot open: '$f'" >&2
     fi
