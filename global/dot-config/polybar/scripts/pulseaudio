@@ -14,19 +14,19 @@ volume_up() {
     if (( $vol < 100 )); then
         pactl set-sink-volume "$sink" +5%
     fi
-    polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
+    polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
 }
 
 volume_down() {
     update_sink
     pactl set-sink-volume "$sink" -5%
-    polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
+    polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
 }
 
 volume_mute() {
     update_sink
     pactl set-sink-mute "$sink" toggle
-    polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
+    polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
 }
 
 print_vol() {
