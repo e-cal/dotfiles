@@ -8,10 +8,10 @@ if [[ $# = 0 ]]; then
         polybar workspaces -c $HOME/.config/polybar/config.ini &
         polybar sys -c $HOME/.config/polybar/config.ini &
         polybar clock -c $HOME/.config/polybar/config.ini &
+        pgrep "spotify" && launch-bar music
     else
         polybar top -c $HOME/.config/polybar/config.ini &
     fi
 else
     polybar $1 -c $HOME/.config/polybar/config.ini &
 fi
-
