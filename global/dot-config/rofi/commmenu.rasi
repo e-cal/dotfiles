@@ -12,15 +12,16 @@
 * {
   /* General */
   icon-font: "Material Design Icons Desktop 18";
-  text-font: "BreezeSans 18";
+  text-font: "JetBrains Mono Nerd Font 18";
+  /* text-font: "BreezeSans 18"; */
 
   option-6-listview-spacing: 6px;
   menu-window-padding: 5px 5px;
-  menu-element-padding: 6px 0.7em 6px 0.5em;
+  menu-element-padding: 6px 0.85em 6px 0.5em;
 }
 
 #window {
-  width: 2.1em;
+  width: 2.2em;
   anchor: center;
   location: center;
   x-offset: 0px;
