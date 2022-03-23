@@ -245,7 +245,7 @@ else
             else
                 if session_exists "main"; then
                     tm
-                    while [[ $? != 0 ]]; do tm; done
+                    [[ $? != 0 ]] && triangles && printf "\n\n\x1b[31mGoing in raw... 😳\x1b[0m"
                 else
                     attach_session "main"
                 fi
