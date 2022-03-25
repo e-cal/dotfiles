@@ -1,11 +1,11 @@
 alias "l"='COLUMNS=$((`tput cols` - (`tput cols` / 4))) exa --group-directories-first --icons'
 alias "ls"="l"
 alias "la"="ls -a"
-alias "ll"="exa -la --group-directories-first --no-permissions --no-time --git"
-alias "lla"="exa -la --group-directories-first --git -h"
-alias "lt"="exa --tree --level=2"
-alias "lta"="exa -a --tree --level=2"
-alias "tree"="exa -a --tree"
+alias "ll"="exa -la --group-directories-first --no-permissions --no-time --git --color=always"
+alias "lla"="exa -la --group-directories-first --git -h --color=always"
+alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=always | less"
+alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always | less"
+alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always"
 alias ".ls"="/usr/bin/ls"
 
 alias "yeet"="yay -Rsn"
