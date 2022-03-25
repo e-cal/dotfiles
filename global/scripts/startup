@@ -11,4 +11,10 @@ cloud backup &
 cloud download all > ~/.local/share/rclone/startup-sync.log &
 # cloud autosync &
 
-[[ `hostname`="coeus" ]] && sleep 10 && polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
+# Might want prom to do the same
+if [[ `hostname`="coeus" ]]; then
+    for i in {0..10}; do
+        sleep 5
+        polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
+    done
+fi
