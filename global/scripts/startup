@@ -7,6 +7,9 @@ eyes &
 yay -Syyy &
 config-wacom m &
 
+tmux new -s main -d -n main "triangles && echo" &
+tmux new -s scratch -d -n main "triangles && echo" &
+
 cloud backup &
 cloud download all > ~/.local/share/rclone/startup-sync.log &
 # cloud autosync &
