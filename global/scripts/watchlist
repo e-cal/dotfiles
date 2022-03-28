@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+APIKEY="EsSRy3ICPy7BIa7oDJgWw7Dy1AoIGFWI767CUT6d"
+
 if [[ -z $1 ]]; then
     symbols="TD.TO,TOI.VN,POW.TO,BAM.A.TO,MFC.TO,BEP.UN.TO,CSU.TO,MSFT,ADSK,V,NVDA,TCEHY,TSLA,MA,ARKW,GOOG,AAPL,IBM"
 else
@@ -11,7 +13,11 @@ else
 fi
 
 while true; do
-    data=`curl -s "https://yfapi.net/v6/finance/quote?symbols=$symbols" -H "x-api-key: EsSRy3ICPy7BIa7oDJgWw7Dy1AoIGFWI767CUT6d" | jq '.quoteResponse.result | .[] | "\(.symbol) - $\(.regularMarketPrice)"'`
+    data=`curl -s "https://yfapi.net/v6/finance/quote?symbols=$symbols" -H "x-api-key: $APIKEY" | jq '.quoteResponse.result | .[] | "\(.symbol) - $\(.regularMarketPrice)"'`
+	if [[ $? != 0 ]]; then
+		curl -s "https://yfapi.net/v6/finance/quote?symbols=TSLA" -H "x-api-key: $APIKEY"
+		exit 1
+	fi
 
     out=""
     IFS='"\n'
@@ -23,4 +29,3 @@ while true; do
     notify-send "Watchlist" "$out" -u critical -i ~/.config/dunst/images/stocks.png
     sleep 5m
 done
-
