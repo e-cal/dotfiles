@@ -15,7 +15,6 @@ cloud download all > ~/.local/share/rclone/startup-sync.log &
 if [[ `hostname`="coeus" ]]; then
     for i in {0..10}; do
         sleep 5
-        polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
-		#sleep 10 && polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
+		polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
     done
 fi
