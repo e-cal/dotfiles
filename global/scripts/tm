@@ -25,288 +25,293 @@ project_dir="$HOME/projects"
 # NOTE: Projects with punctuation in their name may not work correctly
 #       e.g. "." gets changed to "_" by tmux when creating a session
 declare -A projects=(
-    # Format:
-    # ["name"]="path"
+	# Format:
+	# ["name"]="path"
 
-    # Project name customization (default has a "." and will not work)
-    ["website"]="$HOME/projects/ecal.dev"
+	# Project name override (default has a "." in the name and will not work)
+	["website"]="$HOME/projects/ecal.dev"
 
-    # Adding projects
-    ["soft"]="$HOME/cloud/school/winter/cisc322"
-    ["ai"]="$HOME/cloud/school/winter/cisc352"
-    ["algo"]="$HOME/cloud/school/winter/cisc365"
-    ["invest"]="$HOME/cloud/school/winter/comm324"
-    ["neuro"]="$HOME/cloud/school/winter/nsci324"
-    )
+	# Adding projects
+	["soft"]="$HOME/cloud/school/winter/cisc322"
+	["ai"]="$HOME/cloud/school/winter/cisc352"
+	["algo"]="$HOME/cloud/school/winter/cisc365"
+	["invest"]="$HOME/cloud/school/winter/comm324"
+	["neuro"]="$HOME/cloud/school/winter/nsci324"
+)
 
 ################################################################################
 # END OF USER CONFIG
 ################################################################################
 
 if [[ -n $startcmd ]]; then
-    startcmd="$startcmd && exec $shell"
+	startcmd="$startcmd && exec $shell"
 else
-    startcmd="exec $shell"
+	startcmd="exec $shell"
 fi
 
-sessions=`tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'`
+sessions=$(tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://')
 
 not_in_tmux() {
-    [[ -z $TMUX ]]
+	[[ -z $TMUX ]]
 }
 
 session_exists() {
-    tmux has-session -t $1 &> /dev/null && true
+	tmux has-session -t $1 &>/dev/null && true
 }
 
 attach_session() {
-    if not_in_tmux; then
-        if ! session_exists $1; then
-            tmux new -s $1 -n main "$startcmd"
-        else
-            tmux attach -t $1
-        fi
-    else
-        if ! session_exists $1; then
-            tmux new -s $1 -d -n main "$startcmd"
-        fi
-        tmux switch -t $1
-    fi
+	if not_in_tmux; then
+		if ! session_exists $1; then
+			tmux new -s $1 -n main "$startcmd"
+		else
+			tmux attach -t $1
+		fi
+	else
+		if ! session_exists $1; then
+			tmux new -s $1 -d -n main "$startcmd"
+		fi
+		tmux switch -t $1
+	fi
 }
 
 if [[ $# == 0 ]]; then
-    if [[ -z $sessions ]]; then
-        echo "starting a new tmux server..."
-        sel="NEW"
-    else
-        sessions="$sessions RESET KILL END PROJECT NEW"
-        sel=`printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden" --bind "ctrl-k:execute(tm kill {}; tm)+abort"`
-        [[ -z $sel ]] && exit 1
-    fi
+	if [[ -z $sessions ]]; then
+		echo "starting a new tmux server..."
+		sel="NEW"
+	else
+		sessions="$sessions RESET KILL END PROJECT NEW"
+		sel=$(printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden" --bind "ctrl-k:execute(tm kill {}; tm)+abort")
+		[[ -z $sel ]] && exit 1
+	fi
 
-    case $sel in
-        PROJECT)
-            tm project
-            ;;
-        NEW)
-            tm new
-            ;;
-        END)
-            tm end
-            ;;
-        KILL)
-            tm kill
-            ;;
-        RESET)
-            tm reset
-            ;;
-        *)
-            tm attach $sel
-            ;;
-    esac
+	case $sel in
+	PROJECT)
+		tm project
+		;;
+	NEW)
+		tm new
+		;;
+	END)
+		tm end
+		;;
+	KILL)
+		tm kill
+		;;
+	RESET)
+		tm reset
+		;;
+	*)
+		tm attach $sel
+		;;
+	esac
 else
-    case $1 in
-        new | n)
-            if [[ -z $2 ]]; then
-                name=`read -p "session name: " -e tmp; echo $tmp`
-            else
-                name=$2
-            fi
+	case $1 in
+	new | n)
+		if [[ -z $2 ]]; then
+			name=$(
+				read -p "session name: " -e tmp
+				echo $tmp
+			)
+		else
+			name=$2
+		fi
 
-            [[ -z $name ]] && echo "no session name" && exit 1
-            [[ `tmux display-message -p '#S'` == $name ]] && echo "cannot create a session with the same name as the current session" && exit 1
+		[[ -z $name ]] && echo "no session name" && exit 1
+		[[ $(tmux display-message -p '#S') == $name ]] && echo "cannot create a session with the same name as the current session" && exit 1
 
+		if [[ -z $3 ]]; then
+			from=$(find $HOME -maxdepth 5 -type d 2>/dev/null | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,' | fzf --header="start dir")
+		else
+			from=$3
+		fi
+		[[ -z $from ]] && from=$(pwd | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,') && echo "start dir not set, using $(pwd)"
 
-            if [[ -z $3 ]]; then
-                from=`find $HOME -maxdepth 5 -type d 2>/dev/null | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,' | fzf --header="start dir"`
-            else
-                from=$3
-            fi
-            [[ -z $from ]] && from=`pwd | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,'` && echo "start dir not set, using $(pwd)"
+		[[ $from == "home" || $from == "/home/ecal" ]] && cd ~ || cd "$HOME/$from"
+		attach_session $name
+		;;
 
-            [[ $from == "home" || $from == "/home/ecal" ]] && cd ~ || cd "$HOME/$from"
-            attach_session $name
-            ;;
+	attach | a)
+		if [[ -z $2 ]]; then
+			cur=$(tmux display-message -p '#S')
+			sessions="$sessions PROJECT NEW"
+			if ! not_in_tmux; then
+				sessions=$(echo $sessions | sed "s/\<$cur\>//")
+			fi
+			name=$(printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden")
+		else
+			name=$2
+		fi
+		[[ -z $name ]] && echo "no selection" && exit 1
 
-        attach | a)
-            if [[ -z $2 ]]; then
-                cur=`tmux display-message -p '#S'`
-                sessions="$sessions PROJECT NEW"
-                if ! not_in_tmux; then
-                    sessions=`echo $sessions | sed "s/\<$cur\>//"`
-                fi
-                name=`printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden"`
-            else
-                name=$2
-            fi
-            [[ -z $name ]] && echo "no selection" && exit 1
+		if [[ $name == "NEW" ]]; then
+			tm new || exit 1
+		elif [[ $name == "PROJECT" ]]; then
+			tm project || exit 1
+		else
+			attach_session $name || exit 1
+		fi
+		;;
 
-            if [[ $name == "NEW" ]]; then
-                tm new || exit 1
-            elif [[ $name == "PROJECT" ]]; then
-                tm project || exit 1
-            else
-                attach_session $name || exit 1
-            fi
-            ;;
+	kill | k)
+		if [[ -n $sessions ]]; then
+			if [[ -n $2 ]]; then
+				sel=$2
+			else
+				sessions="$sessions TMUX"
+				sel=$(printf "%s\n" $sessions | fzf --header="kill menu" --info="hidden")
+				[[ -z $sel ]] && exit 0
+			fi
 
-        kill | k)
-            if [[ -n $sessions ]]; then
-                if [[ -n $2 ]]; then
-                    sel=$2
-                else
-                    sessions="$sessions TMUX"
-                    sel=`printf "%s\n" $sessions | fzf --header="kill menu" --info="hidden"`
-                    [[ -z $sel ]] && exit 0
-                fi
+			if [[ $sel == "TMUX" ]]; then
+				pgrep -f "bash.*tm startup" | xargs -n1 kill
+				tmux kill-server
+			else
+				tmux kill-session -t $sel
+			fi
+		else
+			echo "no tmux sessions"
+			exit 1
+		fi
+		;;
 
-                if [[ $sel == "TMUX" ]]; then
-                    pgrep -f "bash.*tm startup" | xargs -n1 kill
-                    tmux kill-server
-                else
-                    tmux kill-session -t $sel
-                fi
-            else
-                echo "no tmux sessions"
-                exit 1
-            fi
-            ;;
+	end | e)
+		not_in_tmux && echo "not in a tmux session, nothing to end" && exit 1
+		old=$(tmux display-message -p '#S')
+		tm attach $2 && tm kill $old
+		;;
 
-        end | e)
-            not_in_tmux && echo "not in a tmux session, nothing to end" && exit 1
-            old=`tmux display-message -p '#S'`
-            tm attach $2 && tm kill $old
-            ;;
+	reset | r)
+		not_in_tmux && echo "not in a tmux session, nothing to reset" && exit 1
+		cur=$(tmux display-message -p '#S')
+		tmp=$(uuidgen)
+		tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur; tm kill $tmp" ENTER
+		;;
 
-        reset | r)
-            not_in_tmux && echo "not in a tmux session, nothing to reset" && exit 1
-            cur=`tmux display-message -p '#S'`
-            tmp=`uuidgen`
-            tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur; tm kill $tmp" ENTER 
-            ;;
+	project | p)
+		declare -A revp
+		for k in "${!projects[@]}"; do
+			if [[ -n ${projects[$k]} ]]; then
+				revp[${projects[$k]}]="$k"
+			fi
+		done
 
-        project | p)
-            declare -A revp
-            for k in "${!projects[@]}"; do
-                if [[ -n ${projects[$k]} ]]; then
-                    revp[${projects[$k]}]="$k"
-                fi
-            done
+		for d in $project_dir/*; do
+			if [[ ! -v "revp[$d]" ]]; then
+				name=$(echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/')
+				projects["$name"]=$d
+			fi
+		done
 
-            for d in $project_dir/*/; do
-                if [[ ! -v "revp[$d]" ]]; then
-                    name=`echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/'`
-                    projects["$name"]=$d
-                fi
-            done
+		if [[ -n $2 ]]; then
+			sel=$2
+		else
+			projects["NEW"]=""
+			sel=$(printf "%s\n" ${!projects[@]} | fzf --header="project menu" --info="hidden")
+		fi
+		[[ -z $sel ]] && exit 0
 
-            if [[ -n $2 ]]; then
-                sel=$2
-            else
-                projects["NEW"]=""
-                sel=`printf "%s\n" ${!projects[@]} | fzf --header="project menu" --info="hidden"`
-            fi
-            [[ -z $sel ]] && exit 0
+		if [[ $sel = "NEW" ]]; then
+			name=$(
+				read -p "project name: " -e tmp
+				echo $tmp
+			)
+			[[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
+			mkdir "$project_dir/$name"
+			tm project $name
+		else
+			if [[ ! -v "projects[$sel]" ]]; then
+				echo "project \"$sel\" does not exist"
+				echo -n "create new project \"$sel\" (y/n)? "
+				old_stty_cfg=$(stty -g)
+				stty raw -echo
+				answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+				stty $old_stty_cfg
+				if echo "$answer" | grep -iq "^y"; then
+					echo yes
+					mkdir "$project_dir/$sel"
+					tm project $sel
+				else
+					echo no
+				fi
+				exit 0
+			fi
+			dir=${projects[$sel]}
+			cd $dir
+			attach_session $sel
+			cd - &>/dev/null
+		fi
+		;;
 
-            if [[ $sel = "NEW" ]]; then
-                name=`read -p "project name: " -e tmp; echo $tmp`
-                [[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
-                mkdir "$project_dir/$name"
-                tm project $name
-            else
-                if [[ ! -v "projects[$sel]" ]]; then
-                    echo "project \"$sel\" does not exist"
-                    echo -n "create new project \"$sel\" (y/n)? "
-                    old_stty_cfg=$(stty -g)
-                    stty raw -echo
-                    answer=$( while ! head -c 1 | grep -i '[ny]'; do true; done )
-                    stty $old_stty_cfg
-                    if echo "$answer" | grep -iq "^y" ;then
-                        echo yes
-                        mkdir "$project_dir/$sel"
-                        tm project $sel
-                    else
-                        echo no
-                    fi
-                    exit 0
-                fi
-                dir=${projects[$sel]}
-                cd $dir
-                attach_session $sel
-                cd - &>/dev/null
-            fi
-            ;;
+	startup)
+		wtitle=$(wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}')
+		if [[ $wtitle == "scratch" ]]; then
+			attach_session "scratch"
+			tm startup
+		else
+			if session_exists "main"; then
+				tm
+				[[ $? != 0 ]] && triangles && printf "\n\n\x1b[31mGoing in raw... 😳\x1b[0m"
+			else
+				attach_session "main"
+			fi
+		fi
+		;;
 
-        startup)
-            wtitle=`wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'`
-            if [[ $wtitle == "scratch" ]]; then
-                attach_session "scratch"
-                tm startup
-            else
-                if session_exists "main"; then
-                    tm
-                    [[ $? != 0 ]] && triangles && printf "\n\n\x1b[31mGoing in raw... 😳\x1b[0m"
-                else
-                    attach_session "main"
-                fi
-            fi
-            ;;
+	list | l)
+		printf "%s\n" $sessions
+		;;
 
-        list | l)
-            printf "%s\n" $sessions
-            ;;
+	toggle_term)
+		hid() {
+			tmux list-windows -F '#{window_name}' | grep -q ' '
+		}
 
-        toggle_term)
-            hid() {
-                tmux list-windows -F '#{window_name}' | grep -q ' '
-            }
+		no_bot() {
+			tmux list-panes -F '#{pane_at_left} #{pane_at_top} #{pane_at_bottom}' | grep -q '1 1 1'
+		}
 
-            no_bot() {
-                tmux list-panes -F '#{pane_at_left} #{pane_at_top} #{pane_at_bottom}' | grep -q '1 1 1'
-            }
+		if hid; then
+			tmux select-pane -t 0
+			tmux join-pane -v -l 30% -s ' '
+		elif no_bot; then
+			tmux select-pane -t 0
+			tmux split-window -v -p 30
+		else
+			tmux select-pane -t 1
+			tmux break-pane -ad -n ' '
+			[[ $HOSTNAME = "coeus" ]] && sleep 0.01 || sleep 0.3
+			tmux next-window
+			tmux previous-window
+		fi
+		;;
 
-            if hid; then
-                tmux select-pane -t 0
-                tmux join-pane -v -l 30% -s ' '
-            elif no_bot; then
-                tmux select-pane -t 0
-                tmux split-window -v -p 30
-            else
-                tmux select-pane -t 1
-                tmux break-pane -ad -n ' ' 
-                [[ $HOSTNAME = "coeus" ]] && sleep 0.01 || sleep 0.3
-                tmux next-window
-                tmux previous-window
-            fi
-            ;;
-
-        *)
-            echo "tm [command]" >> /tmp/tmusage
-            echo "" >> /tmp/tmusage
-            echo "Run tm without a command to use the main menu." >> /tmp/tmusage
-            echo >> /tmp/tmusage
-            echo "Commands" >> /tmp/tmusage
-            echo "  new [session-name] [start-dir]" >> /tmp/tmusage
-            echo "    Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup)." >> /tmp/tmusage
-            echo "" >> /tmp/tmusage
-            echo "  attach [session-name]" >> /tmp/tmusage
-            echo "    Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands." >> /tmp/tmusage
-            echo "" >> /tmp/tmusage
-            echo "  project [project-name]" >> /tmp/tmusage
-            echo "    Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default)." >> /tmp/tmusage
-            echo "" >> /tmp/tmusage
-            echo "  kill [session-name]" >> /tmp/tmusage
-            echo "    Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \"TMUX\" to kill the tmux server." >> /tmp/tmusage
-            echo "" >> /tmp/tmusage
-            echo "  end" >> /tmp/tmusage
-            echo "    Ends (kills) the current tmux session and opens the attach menu." >> /tmp/tmusage
-            echo "" >> /tmp/tmusage
-            echo "  reset" >> /tmp/tmusage
-            echo "    Resets the current tmux session." >> /tmp/tmusage
-            echo "" >> /tmp/tmusage
-            echo "  startup" >> /tmp/tmusage
-            echo "    Utility command to use as the launch command for your terminal emulator." >> /tmp/tmusage
-            less /tmp/tmusage
-            ;;
-    esac
+	*)
+		echo "tm [command]" >>/tmp/tmusage
+		echo "" >>/tmp/tmusage
+		echo "Run tm without a command to use the main menu." >>/tmp/tmusage
+		echo >>/tmp/tmusage
+		echo "Commands" >>/tmp/tmusage
+		echo "  new [session-name] [start-dir]" >>/tmp/tmusage
+		echo "    Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup)." >>/tmp/tmusage
+		echo "" >>/tmp/tmusage
+		echo "  attach [session-name]" >>/tmp/tmusage
+		echo "    Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands." >>/tmp/tmusage
+		echo "" >>/tmp/tmusage
+		echo "  project [project-name]" >>/tmp/tmusage
+		echo "    Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default)." >>/tmp/tmusage
+		echo "" >>/tmp/tmusage
+		echo "  kill [session-name]" >>/tmp/tmusage
+		echo "    Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \"TMUX\" to kill the tmux server." >>/tmp/tmusage
+		echo "" >>/tmp/tmusage
+		echo "  end" >>/tmp/tmusage
+		echo "    Ends (kills) the current tmux session and opens the attach menu." >>/tmp/tmusage
+		echo "" >>/tmp/tmusage
+		echo "  reset" >>/tmp/tmusage
+		echo "    Resets the current tmux session." >>/tmp/tmusage
+		echo "" >>/tmp/tmusage
+		echo "  startup" >>/tmp/tmusage
+		echo "    Utility command to use as the launch command for your terminal emulator." >>/tmp/tmusage
+		less /tmp/tmusage
+		;;
+	esac
 fi
