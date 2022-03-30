@@ -1,5 +1,4 @@
-alias "l"='COLUMNS=$((`tput cols` - (`tput cols` / 4))) exa --group-directories-first --icons'
-alias "ls"="l"
+alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directories-first --icons'
 alias "la"="ls -a"
 alias "ll"="exa -la --group-directories-first --no-permissions --no-time --git --color=always"
 alias "lla"="exa -la --group-directories-first --git -h --color=always"
