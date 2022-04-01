@@ -5,7 +5,7 @@ INTERVAL=20
 sleep "$INTERVAL"m
 count=$(($1 + $INTERVAL))
 
-ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Take care of your eyes! 👀" "$count min without a break" -i ~/.config/dunst/images/eyes.png)
+ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Take care of your eyes! 👀" "$count min without a break" -i ~/.config/dunst/images/eyes.png -t 300000)
 
 case $ACTION in
 default) # left click
