@@ -25,7 +25,7 @@ upload | u)
 		exit 1
 	fi
 	get_bucket
-	notify-send "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png -t 5000
+	notify-send "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png -t 5000 -u low
 	if [[ -n ${booleans[t]} ]]; then
 		rclone sync --progress $HOME/cloud/$bucket cloud:$bucket --dry-run
 	else
@@ -40,13 +40,13 @@ download | d)
 	fi
 	get_bucket
 	echo "Downloading..."
-	notify-send "Cloud" "($(date +'%H:%M')) Downloading..." -i ~/.config/dunst/images/cloud.png -u critical
+	notify-send "Cloud" "($(date +'%H:%M')) Downloading..." -i ~/.config/dunst/images/cloud.png -t 10000
 	if [[ -n ${booleans[t]} ]]; then
 		rclone sync --progress cloud:$bucket $HOME/cloud/$bucket --dry-run
 	else
 		rclone sync --progress cloud:$bucket $HOME/cloud/$bucket
 	fi
-	notify-send "Cloud" "($(date +'%H:%M')) Download complete" -i ~/.config/dunst/images/cloud.png -u critical
+	notify-send "Cloud" "($(date +'%H:%M')) Download complete" -i ~/.config/dunst/images/cloud.png -t 10000
 	;;
 backup | b)
 	echo "Backing up..."
