@@ -144,7 +144,7 @@ vertical  = renamed [Replace "vertical"]
 -- Not using
 accordion = renamed [Replace "Accordion"]
 			$ Accordion
-triple  = renamed [Replace "Columns"]
+cols  = renamed [Replace "Columns"]
             $ subLayout [] (smartBorders Simplest)
             $ mySpacing 5
             $ minimize . BW.boringWindows
@@ -158,7 +158,8 @@ spirals  = renamed [Replace "Spiral"]
 myLayouts =
 	named "horizontal" horizontal |||
 	named "full" full |||
-	named "vertical" vertical
+	named "vertical" vertical |||
+	named "cols" cols
 
 myLayoutHook = avoidStruts $ windowArrange $ gaps [(L,0), (R,0), (U,0), (D,0)]
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myLayouts

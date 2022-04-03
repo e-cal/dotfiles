@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 source parseargs
 
-[[ $# = 0 ]] && cloud sync && exit
-
 get_bucket() {
 	# Get existing bucket
 	buckets=($(rclone lsf cloud: | tr -d "/"))
