@@ -67,6 +67,7 @@ autosync)
 	done
 	;;
 stat)
+	ps -ef | rg "cloud"
 	pgrep -f "cloud autosync" && echo " cloud autosync is running" || echo " cloud autosync not running"
 	;;
 stop)
