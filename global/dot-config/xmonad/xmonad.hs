@@ -113,7 +113,6 @@ myFocusColor = "#4ec9b0"
 
 focusMouse = True
 
-
 --------------------------------------------------------------------------------
 -- Workspaces
 --------------------------------------------------------------------------------
@@ -214,7 +213,7 @@ myStartupHook = do
 -- Scratchpads
 --------------------------------------------------------------------------------
 myScratchPads :: [NamedScratchpad]
-myScratchPads = [ 
+myScratchPads = [
                     NS "terminal" spawnTerm findTerm manageScratchpad,
                     NS "browser" spawnBrowser findBrowser manageScratchpad
                 ]
@@ -248,29 +247,26 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
-
 --------------------------------------------------------------------------------
 -- Keybindings
 --------------------------------------------------------------------------------
 myKeys :: [(String, X())]
 myKeys = [
     -- Launch Programs
-    ("M-<Return>", spawn myTerminal) -- Terminal
-    , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi") -- Run Prompt
-    , ("M-e", spawn "nemo") -- files
-    , ("M-w", spawn "launch-browser") -- Web Browser Menu
-    , ("M-S-w", spawn mainBrowser) -- Default Web Browser
-    , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal")) -- Github
-    , ("M-S-c", spawn (mainBrowser ++ " https://calendar.google.com")) -- Calendar
-    , ("M-S-d", spawn "inkscape $HOME/sketch.svg") -- Draw
+    ("M-<Return>", spawn myTerminal)
+    , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi")
+    , ("M-e", spawn "nemo")
+    , ("M-w", spawn "launch-browser")
+    , ("M-S-w", spawn mainBrowser)
+    , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal"))
+    , ("M-S-c", spawn (mainBrowser ++ " https://calendar.google.com"))
+    , ("M-S-d", spawn "inkscape $HOME/sketch.svg")
     , ("M-S-p", spawn "pass -l")
     , ("M-b", spawn "bt menu")
-    , ("M-C-w", spawn "nitrogen") -- Nitrogen
-    , ("M-s", spawn "focus-spotify") -- Spotify
-    , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu") -- Powermenu
-    , ("M-S-s", spawn "flameshot gui") -- Screenshot GUI
-    -- , ("M-S-s", spawn "sc -r -c ~/images")
-    , ("M1-S-s", spawn "flameshot full -p ~/Dropbox/images/screenshots/") -- Screenshot
+    , ("M-s", spawn "focus-spotify")
+    , ("M-<Esc> <Return>", spawn "$HOME/.config/polybar/scripts/powermenu")
+    , ("M-S-s", spawn "flameshot gui")
+    , ("M1-S-s", spawn "flameshot full -p ~/Dropbox/images/screenshots/")
     , ("M-S-m", spawn "thunderbird")
     , ("M-S-t", spawn "launch-comm")
     , ("M-S-n", spawn "obsidian")
@@ -283,23 +279,6 @@ myKeys = [
     , ("M-q", kill) -- Focused window
     , ("M-S-q", killAll) -- Kill all windows
 
-    -- Layout
-    , ("M-<Space> n", sendMessage NextLayout)
-	, ("M-<Space> f", sendMessage $ JumpToLayout "full")
-	, ("M-<Space> h", sendMessage $ JumpToLayout "horizontal")
-	, ("M-<Space> v", sendMessage $ JumpToLayout "vertical")
-    , ("M-C-<Down>", sequence_[sendMessage DeArrange, withFocused $ windows . W.sink]) -- Tile Mode
-    , ("M-S-h", sendMessage Shrink) -- Shrink horizontal
-    , ("M-S-l", sendMessage Expand) -- Expand horizontal
-    , ("M-S-j", sendMessage MirrorShrink) -- Shrink vertical
-    , ("M-S-k", sendMessage MirrorExpand) -- Expand vertical
-    , ("M-,", sendMessage (IncMasterN 1)) -- Add a window to master area
-    , ("M-.", sendMessage (IncMasterN (-1))) -- Remove a window from master area
-    , ("M--", withFocused minimizeWindow) -- Minimize
-    , ("M-+", withLastMinimized maximizeWindowAndFocus) -- Maximize
-    , ("M-S-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"]) -- toggle bar
-    , ("M-f", withFocused toggleFloat) -- toggle float
-
     -- Gaps / Spacing
     , ("M-g g", sequence_[
         sendMessage $ setGaps [(L,40), (R,40), (U,20), (D,40)],
@@ -310,8 +289,20 @@ myKeys = [
         setWindowSpacing (Border 5 5 5 5)
         ])
 
-
-    -- Floating Layout
+    -- Window Management
+	-- tiled
+    , ("M-C-<Down>", sequence_[sendMessage DeArrange, withFocused $ windows . W.sink]) -- Tile Mode
+    , ("M-S-h", sendMessage Shrink)
+    , ("M-S-l", sendMessage Expand)
+    , ("M-S-j", sendMessage MirrorShrink)
+    , ("M-S-k", sendMessage MirrorExpand)
+    , ("M-,", sendMessage (IncMasterN 1))
+    , ("M-.", sendMessage (IncMasterN (-1)))
+    , ("M--", withFocused minimizeWindow)
+    , ("M-+", withLastMinimized maximizeWindowAndFocus)
+    , ("M-S-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
+    , ("M-f", withFocused toggleFloat)
+    -- floating
     , ("M-C-<Up>", sendMessage Arrange)
     , ("M-<Up>", sendMessage (MoveUp 20))
     , ("M-<Down>", sendMessage (MoveDown 20))
@@ -326,62 +317,68 @@ myKeys = [
     , ("M-M1-<Left>", sendMessage (DecreaseLeft 20))
     , ("M-M1-<Right>", sendMessage (DecreaseRight 20))
 
-    -- Focus
-    --, ("M-m", windows W.focusMaster) -- Focus master window
-    , ("M-C-m", windows W.swapMaster) -- Swap focused with master
-
-    -- Workspace
-    , ("M-<Tab>", nextWS) -- Next workspace
-    , ("M-S-<Tab>", shiftToNext >> nextWS) -- Move window to next workspace
-    , ("M-C-<Tab>", shiftToPrev >> prevWS) -- Move window to prev workspace
-	-- , ("M-<F1>", windows $ W.greedyView "1")
-	-- , ("M-<F2>", windows $ W.greedyView "2")
-	-- , ("M-<F3>", windows $ W.greedyView "3")
-
-
     -- XMonad
-    , ("C-M1-<Delete>", io (exitWith ExitSuccess)) -- Quit
-    , ("M-S-r", sequence_[spawn "xmonad --recompile; xmonad --restart", spawn "$HOME/.config/polybar/launch.sh"]) -- Restart
+    , ("C-M1-<Delete>", io (exitWith ExitSuccess))
+    , ("M-S-r", sequence_[spawn "xmonad --recompile; xmonad --restart", spawn "$HOME/.config/polybar/launch.sh"])
 
     -- Function Keys
     , ("<XF86AudioMute>", spawn "volume mute")
-    -- , ("M-<F1>", spawn "volume mute")
     , ("<XF86AudioLowerVolume>", spawn "volume down")
-    -- , ("M-<F2>", spawn "volume down")
     , ("<XF86AudioRaiseVolume>", spawn "volume up")
-    -- , ("M-<F3>", spawn "volume up")
-
     , ("<XF86AudioPrev>", spawn "playerctl previous")
-    -- , ("M-<F4>", spawn "playerctl previous")
     , ("<XF86AudioPlay>", spawn "playerctl play-pause")
-    -- , ("M-<F5>", spawn "playerctl play-pause")
     , ("<XF86AudioNext>", spawn "playerctl next")
-    -- , ("M-<F6>", spawn "playerctl next")
-
     , ("<XF86MonBrightnessDown>", spawn "brightness down")
-    , ("M-<F11>", spawn "brightness down")
-    , ("M-C-<F11>", spawn "brightness set 10")
     , ("<XF86MonBrightnessUp>", spawn "brightness up")
-    , ("M-<F12>", spawn "brightness up")
-    , ("M-C-<F12>", spawn "brightness set 70")
 
-    , ("M-C-b d", spawn "brightness set 5")
-    , ("M-C-b m", spawn "brightness set 15")
-    , ("M-C-b b", spawn "brightness set 30")
-    , ("M-C-b B", spawn "brightness set 50")
-    , ("M-C-b f", spawn "brightness set 75")
-    , ("M-C-b S-f", spawn "brightness set 100")
+	---------------------------------------------------------------------------
+	-- Leader mappings
+	---------------------------------------------------------------------------
 
-    , ("M-C-b +", spawn "brightness set 10")
-    , ("M-C-b [", spawn "brightness set 20")
-    , ("M-C-b {", spawn "brightness set 30")
-    , ("M-C-b (", spawn "brightness set 40")
-    , ("M-C-b &", spawn "brightness set 50")
-    , ("M-C-b =", spawn "brightness set 60")
-    , ("M-C-b )", spawn "brightness set 70")
-    , ("M-C-b }", spawn "brightness set 80")
-    , ("M-C-b ]", spawn "brightness set 90")
-    , ("M-C-b *", spawn "brightness set 0")
+	-- Layout
+    , ("M-<Space> l n", sendMessage NextLayout)
+	, ("M-<Space> l f", sendMessage $ JumpToLayout "full")
+	, ("M-<Space> l h", sendMessage $ JumpToLayout "horizontal")
+	, ("M-<Space> l v", sendMessage $ JumpToLayout "vertical")
+
+	-- Brightness
+	-- presets
+    , ("M-<Space> b d", spawn "brightness set 5")
+    , ("M-<Space> b m", spawn "brightness set 15")
+    , ("M-<Space> b b", spawn "brightness set 30")
+    , ("M-<Space> b B", spawn "brightness set 50")
+    , ("M-<Space> b f", spawn "brightness set 75")
+    , ("M-<Space> b F", spawn "brightness set 100")
+	-- intervals
+    , ("M-<Space> b +", spawn "brightness set 10")
+    , ("M-<Space> b [", spawn "brightness set 20")
+    , ("M-<Space> b {", spawn "brightness set 30")
+    , ("M-<Space> b (", spawn "brightness set 40")
+    , ("M-<Space> b &", spawn "brightness set 50")
+    , ("M-<Space> b =", spawn "brightness set 60")
+    , ("M-<Space> b )", spawn "brightness set 70")
+    , ("M-<Space> b }", spawn "brightness set 80")
+    , ("M-<Space> b ]", spawn "brightness set 90")
+    , ("M-<Space> b *", spawn "brightness set 0")
+
+	-- Volume / Audio Control
+	-- volume
+    , ("M-<Space> v +", spawn "volume set 10")
+    , ("M-<Space> v [", spawn "volume set 20")
+    , ("M-<Space> v {", spawn "volume set 30")
+    , ("M-<Space> v (", spawn "volume set 40")
+    , ("M-<Space> v &", spawn "volume set 50")
+    , ("M-<Space> v =", spawn "volume set 60")
+    , ("M-<Space> v )", spawn "volume set 70")
+    , ("M-<Space> v }", spawn "volume set 80")
+    , ("M-<Space> v ]", spawn "volume set 90")
+    , ("M-<Space> v *", spawn "volume set 0")
+    , ("M-<Space> v m", spawn "volume mute")
+	-- player
+    , ("M-<Space> v p", spawn "playerctl previous")
+    , ("M-<Space> v <Space>", spawn "playerctl play-pause")
+    , ("M-<Space> v n", spawn "playerctl next")
+
     ]
 	-- Change workspace with function keys
 	++
@@ -408,7 +405,6 @@ myWindowNavigation = withWindowNavigationKeys ([
     ((myModMask .|. controlMask, xK_j), WNSwap D),
     ((myModMask .|. controlMask, xK_h), WNSwap L),
     ((myModMask .|. controlMask, xK_l), WNSwap R)])
-
 
 --------------------------------------------------------------------------------
 -- Main
@@ -469,7 +465,6 @@ myConfig = def
     } `additionalKeysP` myKeys
         where
             wmName = stringProperty "WM_NAME"
-
 
 --------------------------------------------------------------------------------
 -- LogHook (xmonad-log output)
