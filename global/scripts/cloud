@@ -23,7 +23,7 @@ upload | u)
 		exit 1
 	fi
 	get_bucket
-	notify-send "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png -t 5000 -u low
+	notify-send "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png -t 5000
 	if [[ -n ${booleans[t]} ]]; then
 		rclone sync --progress $HOME/cloud/$bucket cloud:$bucket --dry-run
 	else
