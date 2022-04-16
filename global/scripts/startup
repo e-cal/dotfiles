@@ -7,9 +7,10 @@ eyes &
 yay -Syyy &
 config-wacom m &
 
+sleep 30
 cloud backup &
 cloud download all >~/.local/share/rclone/startup-sync.log &
-cloud autosync &
+#cloud autosync &
 
 for i in {0..10}; do
 	sleep 5
