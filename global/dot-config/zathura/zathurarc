@@ -18,7 +18,7 @@ set recolor-lightcolor \#222222
 set recolor-keephue
 set default-bg \#222230
 
-set statusbar-fg "#B0B0B0" #04
-set statusbar-bg "#202020" #01
-set notification-bg "#B0B0B0" #0B
-set notification-fg "#202020" #00
+set statusbar-fg "#B0B0B0" 
+set statusbar-bg "#202020"
+set notification-bg "#B0B0B0"
+set notification-fg "#202020"
