@@ -9,7 +9,7 @@ map <C-e> scroll half-down
 map <C-y> scroll half-up
 
 set scroll-step 50
-set scroll-hstep 10
+set scroll-hstep 20
 
 # Dark mode
 set font "JetBrainsMonoNerdFont 15"
