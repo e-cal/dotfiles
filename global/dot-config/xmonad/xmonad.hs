@@ -99,6 +99,12 @@ myTerminal = "kitty"
 myEditor :: String
 myEditor = "nvim"
 
+	-- Browser
+mainBrowser :: String
+mainBrowser = "firefox"
+altBrowser :: String
+altBrowser = "brave"
+
     -- Border
 myBorderWidth :: Dimension
 myBorderWidth = 0
@@ -106,6 +112,7 @@ myBorderColor = "#272A29"
 myFocusColor = "#4ec9b0"
 
 focusMouse = True
+
 
 --------------------------------------------------------------------------------
 -- Workspaces
@@ -215,8 +222,8 @@ myScratchPads = [
                         spawnTerm = myTerminal ++ " --title scratch"
                         findTerm = title =? "scratch"
 
-                        spawnBrowser = "firefox"
-                        findBrowser = className =? "firefox"
+                        spawnBrowser = altBrowser
+                        findBrowser = className =? "Brave-browser"
 
                         -- % from left, % from top, width, height
                         manageScratchpad = customFloating $ W.RationalRect l t w h
@@ -252,9 +259,9 @@ myKeys = [
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi") -- Run Prompt
     , ("M-e", spawn "nemo") -- files
     , ("M-w", spawn "launch-browser") -- Web Browser Menu
-    , ("M-S-w", spawn "brave") -- Default Web Browser
-    , ("M-S-g", spawn "brave https://github.com") -- Github
-    , ("M-S-c", spawn "brave https://calendar.google.com") -- Calendar
+    , ("M-S-w", spawn mainBrowser) -- Default Web Browser
+    , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal")) -- Github
+    , ("M-S-c", spawn (mainBrowser ++ " https://calendar.google.com")) -- Calendar
     , ("M-S-d", spawn "inkscape $HOME/sketch.svg") -- Draw
     , ("M-S-p", spawn "pass -l")
     , ("M-b", spawn "bt menu")
