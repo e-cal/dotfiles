@@ -40,26 +40,18 @@ expected = [
 home_path = os.path.expanduser("~")
 home_files = os.listdir(home_path)
 
-print("Unexpected paths in home dir:")
-for f in home_files:
-    if f not in expected:
-        print(f)
+unexpected = [f for f in home_files if f not in expected]
 
-print()
+if unexpected:
+    print("Unexpected files in home dir:")
+    for f in unexpected:
+        print(" ", f)
+    print()
+
 backups_path = os.path.join(os.path.expanduser("~"), "backup")
 backups = os.listdir(backups_path)
 
 today = date.today()
-
-# ans = ""
-# while ans not in ["y", "n"]:
-#     ans = input("Delete out-of-year cloud backups? (y/n): ").lower()
-# del_year_old = True if ans == "y" else False
-
-# ans = ""
-# while ans not in ["y", "n"]:
-#     ans = input("Delete backups older than 1w? (y/n): ").lower()
-# del_week_old = True if ans == "y" else False
 
 most_recent = float("inf")
 old = []
@@ -76,12 +68,14 @@ for b in backups:
     elif diff >= 3:
         semi_old.append(os.path.join(backups_path, b))
 
-print(f"Most recent backup (other than today) is {most_recent} day old")
+if most_recent != float("inf"):
+    print(f"Most recent backup (other than today) is {most_recent} day old")
+
 if most_recent < 7 and old:
     print("Deleting backups over a week old...")
     for b in old:
         os.system(f"rm -rf {b}")
-print()
+    print()
 
 if semi_old:
     print(f"{len(semi_old)} backups >=3 days old")
@@ -93,3 +87,6 @@ if semi_old:
         print("Deleting...")
         for b in semi_old:
             os.system(f"rm -rf {b}")
+
+if not unexpected and not old and not semi_old:
+    print("The house is clean")

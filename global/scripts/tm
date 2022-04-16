@@ -278,7 +278,7 @@ else
 			tmux split-window -v -p 30
 		else
 			tmux select-pane -t 1
-			tmux break-pane -ad -n ' '
+			tmux break-pane -d -n ' ' -t $(($(tmux list-windows -F '#{window_index}' | tail -n1) + 1))
 			[[ $HOSTNAME = "coeus" ]] && sleep 0.01 || sleep 0.3
 			tmux next-window
 			tmux previous-window
