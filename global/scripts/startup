@@ -8,11 +8,12 @@ yay -Syyy &
 config-wacom m &
 
 sleep 30
+notify-send "You need to figure out laptop no connection download retry"
 cloud backup &
 cloud download all >~/.local/share/rclone/startup-sync.log &
-#cloud autosync &
+[[ $HOSTNAME = "coeus" ]] && cloud autosync &
 
-for i in {0..10}; do
+for i in {0..5}; do
 	sleep 5
 	polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
 done
