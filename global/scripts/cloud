@@ -24,11 +24,9 @@ upload | u)
 	fi
 	get_bucket
 	notify-send "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png
-	if [[ -n ${booleans[t]} ]]; then
-		rclone sync --progress $HOME/cloud/$bucket cloud:$bucket --dry-run
-	else
-		rclone sync --progress $HOME/cloud/$bucket cloud:$bucket
-	fi
+	rclone sync --progress $HOME/cloud/$bucket cloud:$bucket
+	[[ $? != 0 ]] && notify-send "Cloud" "($(date +'%H:%M')) Upload failed" -i ~/.config/dunst/images/warning.png && exit 1
+	notify-send "Cloud" "($(date +'%H:%M')) Upload complete" -i ~/.config/dunst/images/cloud.png
 	;;
 download | d)
 	# Safety check
@@ -39,11 +37,8 @@ download | d)
 	get_bucket
 	echo "Downloading..."
 	notify-send "Cloud" "($(date +'%H:%M')) Downloading..." -i ~/.config/dunst/images/cloud.png
-	if [[ -n ${booleans[t]} ]]; then
-		rclone sync --progress cloud:$bucket $HOME/cloud/$bucket --dry-run
-	else
-		rclone sync --progress cloud:$bucket $HOME/cloud/$bucket
-	fi
+	rclone sync --progress cloud:$bucket $HOME/cloud/$bucket
+	[[ $? != 0 ]] && notify-send "Cloud" "($(date +'%H:%M')) Download failed" -i ~/.config/dunst/images/warning.png && exit 1
 	notify-send "Cloud" "($(date +'%H:%M')) Download complete" -i ~/.config/dunst/images/cloud.png
 	;;
 backup | b)
@@ -85,6 +80,11 @@ share)
 	time=$3
 	end_char=$(echo $time | tail -c2)
 	[[ ! $end_char =~ ^(s|m|h|d)$ ]] && echo "invalid expiry time" && exit 1
+	if [[ $end_char == "d" ]]; then
+		num_days=${time%d}
+		num_hours=$(($num_days * 24))
+		time="$num_hours""h"
+	fi
 
 	uplink cp $local_path sj://$cloud_path
 	uplink share sj://$cloud_path --url --public --not-after="+$time"
