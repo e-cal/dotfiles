@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+while true; do
+	mainbg="/home/ecal/images/wallpapers/introspection.jpg"
+	tallbg="/home/ecal/images/wallpapers/soup.jpg"
+	altbg="/home/ecal/projects/archillect/images/img$(perl -e 'print int rand 10, "\n"; ').jpg"
+	feh --no-fehbg --bg-fill "$mainbg" "$tallbg" "$altbg"
+	sleep 5m
+done
