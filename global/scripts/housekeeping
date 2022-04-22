@@ -45,6 +45,9 @@ unexpected = [f for f in home_files if f not in expected]
 if unexpected:
     print("Unexpected files in home dir:")
     for f in unexpected:
+        if f == "Desktop":
+            os.rmdir(os.path.join(home_path, f))
+
         print(" ", f)
     print()
 
@@ -57,10 +60,10 @@ most_recent = float("inf")
 old = []
 semi_old = []
 for b in backups:
-    clean = re.sub("_.*$", "", b) # strip _n suffix
-    sp = map(int, clean.split("-")) # split into [y,m,d]
-    b_date = date(*sp) # convert to date
-    diff = (today-b_date).days # get diff from today
+    clean = re.sub("_.*$", "", b)  # strip _n suffix
+    sp = map(int, clean.split("-"))  # split into [y,m,d]
+    b_date = date(*sp)  # convert to date
+    diff = (today - b_date).days  # get diff from today
     if diff < most_recent and diff != 0:
         most_recent = diff
     if diff >= 7:
