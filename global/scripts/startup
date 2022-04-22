@@ -7,13 +7,23 @@ eyes &
 yay -Syyy &
 config-wacom m &
 
-sleep 30
-notify-send "You need to figure out laptop no connection download retry"
-cloud backup &
-cloud download all >~/.local/share/rclone/startup-sync.log &
-[[ $HOSTNAME = "coeus" ]] && cloud autosync &
+if [[ $HOSTNAME == "coeus" ]]; then
+	~/projects/archillect/get-images
+	mainbg="/home/ecal/images/wallpapers/introspection.jpg"
+	tallbg="/home/ecal/images/wallpapers/soup.jpg"
+	altbg="/home/ecal/projects/archillect/images/img$(perl -e 'print int rand 10, "\n"; ').jpg"
+	# feh --no-fehbg --bg-fill "$mainbg" "$tallbg" "$altbg"
+fi
 
+# Update volume 5 times
 for i in {0..5}; do
-	sleep 5
+	sleep 3
 	polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
+done
+
+cloud backup
+cloud download all >~/.local/share/rclone/startup-sync.log
+while [[ $? != 0 ]]; do
+	sleep 30
+	cloud download all >~/.local/share/rclone/startup-sync.log
 done
