@@ -11,7 +11,7 @@ else
 	case $1 in
 	-l)
 		head -c-1 ~/.config/Bitwarden\ CLI/.data | xclip -sel clip
-		sleep 0.1
+		sleep 0.2
 		xdotool key Alt+Shift+L
 		sleep 1.5
 		xdotool key Control+v

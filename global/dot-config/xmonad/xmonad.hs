@@ -22,6 +22,7 @@ import XMonad.Actions.WindowNavigation
 import XMonad.Actions.CycleWS
 import XMonad.Actions.Minimize
 import XMonad.Actions.MouseResize
+import XMonad.Actions.Promote
 import qualified XMonad.Actions.Search as S
 
     -- Data
@@ -202,6 +203,20 @@ myManageHook = composeAll
     role = stringProperty "WM_WINDOW_ROLE"
 
 --------------------------------------------------------------------------------
+-- Event Hooks
+--------------------------------------------------------------------------------
+-- bring clicked floating window to the front
+clickFocusFloatHook :: Event -> X All
+clickFocusFloatHook ButtonEvent { ev_window = w } = do
+	withWindowSet $ \s -> do
+		if isFloat w s
+		   then (focus w >> promote)
+		   else return ()
+		return (All True)
+		where isFloat w ss = M.member w $ W.floating ss
+clickFocusFloatHook _ = return (All True)
+
+--------------------------------------------------------------------------------
 -- Startup Hook
 --------------------------------------------------------------------------------
 myStartupHook :: X ()
@@ -244,8 +259,30 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-button3, Set the window to floating mode and resize by dragging
     , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
                                        >> windows W.shiftMaster))
-    -- you may also bind events to the mouse scroll wheel (button4 and button5)
+	-- click to raise
+	-- , ((0, button1), (\w -> focus w >> do
+	-- 	{ floats <- gets (W.floating . windowset);
+	-- 		if w `M.member` floats
+	-- 		then (focus w >> promote)
+	-- 		else return ()
+	-- 	}
+	-- ))
     ]
+
+
+{-
+clickFocusFloatHook :: Event -> X All
+	clickFocusFloatHook ButtonEvent { ev_window = w } = do
+	withWindowSet $ \s -> do
+	if isFloat w s
+		then (focus w >> promote)
+	else return ()
+		return (All True)
+			where isFloat w ss = M.member w $ W.floating ss
+			clickFocusFloatHook _ = return (All True)
+-}
+
+
 
 --------------------------------------------------------------------------------
 -- Keybindings
@@ -447,6 +484,7 @@ myConfig = def
         <+> (isFullscreen --> doFullFloat)
     , handleEventHook    = docksEventHook
         <+> minimizeEventHook
+		<+> clickFocusFloatHook
         -- Allows windows to properly fullscreen
         -- breaks flameshot: https://github.com/flameshot-org/flameshot/issues/773#issuecomment-752933143
         -- <+> fullscreenEventHook
