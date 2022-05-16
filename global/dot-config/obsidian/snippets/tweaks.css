@@ -1,0 +1,41 @@
+.CodeMirror-lines,
+.CodeMirror-selected,
+.markdown-preview-section {
+  /* fallback max-width */
+  /* max-width: 620px; */
+  max-width: 65ch;
+  margin: 0 auto;
+}
+
+p {
+  margin-block-start: 1em;
+  margin-block-end: 0.25em;
+}
+
+ul {
+  margin-block-start: 0;
+  padding-inline-start: 1.5em;
+}
+
+.markdown-preview-view code {
+  color: #abb2bf;
+}
+
+.markdown-preview-view mark {
+  background-color: var(--interactive-accent);
+  color: var(--text-normal);
+  border-radius: 0.2em;
+  padding: 0.1em;
+}
+
+.markdown-preview-view img {
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: 0.25s ease all;
+}
+
+.markdown-preview-view img:hover {
+  width: 100%;
+}
