@@ -95,11 +95,18 @@ setvenv() {
         name=$1
         [[ ! `/usr/bin/ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
     fi
-    echo $name > .venv
+	[[ -z $name ]] || echo $name > .venv
 }
 
 rmvenv() {
-    echo not implemented
+    if [[ -f ".venv" ]]; then
+		name=`cat .venv`
+		rm .venv
+		deactivate
+		rm -rf "$VIRTUALENV_HOME/$name"
+	else
+		echo "no venv in current dir"
+	fi
 }
 
 mkkernel() {
@@ -122,4 +129,14 @@ icat() {
     else
         echo "Cannot display images in tmux."
     fi
+}
+
+initnotes() {
+	cp -r ~/.dotfiles/global/dot-config/obsidian .obsidian-new
+	if [[ -d ".obsidian" ]]; then
+		cp .obsidian/workspace obsidian-workspace.bak
+		rm -r .obsidian
+		mv obsidian-workspace.bak .obsidian-new/workspace
+	fi
+	mv .obsidian-new .obsidian
 }
