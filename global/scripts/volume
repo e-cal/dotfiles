@@ -18,7 +18,7 @@ function send_notification {
 		bar=$(seq --separator="─" 0 "$((volume / 3))" | sed 's/[0-9]//g')
 		# Send the notification
 		# dunstify -I $iconSound -r 2593 -u normal " $bar"
-		dunstify "Volume" -r 2593 -u normal -h int:value:"$volume" --icon ~/.config/dunst/volume
+		dunstify "Volume" -r 2593 -u normal -h int:value:"$volume" --icon ~/.config/dunst/images/volume.png
 	fi
 }
 

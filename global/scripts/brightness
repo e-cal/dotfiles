@@ -26,7 +26,9 @@ function notification() {
     fi
 
     bar=$(seq -s "─" 0 $((brightness / 3)) | sed 's/[0-9]//g')
-    dunstify -i "$icon" -r 5555 -u normal " $bar"
+
+    # dunstify -i "$icon" -r 5555 -u normal " $bar"
+	dunstify "Brightness" -r 2593 -u normal -h int:value:"$brightness" --icon ~/.config/dunst/images/brightness.png
 }
 
 case $1 in
@@ -37,7 +39,7 @@ case $1 in
                 sudo ddcutil --bus $monitor setvcp 10 + 10
                 ;;
             prometheus)
-                xbacklight -inc 2
+                xbacklight -inc 2.5
                 ;;
         esac
         ;;
