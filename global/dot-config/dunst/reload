@@ -2,4 +2,4 @@
 pkill dunst
 dunst -config ~/.config/dunst/dunstrc &
 
-notify-send -u low "reloaded dunst"
+notify-send "reloaded dunst" -h "int:value:50"
