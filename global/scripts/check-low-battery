@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+bat=$(acpi | awk '{printf $4}' | tr -d "," | tr -d "%")
+
+if (($bat <= 5)); then
+	notify-send "critical battery" -u "critical" -i ~/.config/dunst/images/warning.png
+elif (($bat == 10)); then
+	notify-send "low battery" -u "critical" -i ~/.config/dunst/images/warning.png
+elif (($bat == 20)); then
+	notify-send "low battery" -u "critical" -i ~/.config/dunst/images/warning.png
+elif (($bat == 25)); then
+	notify-send "low battery" -u "critical" -i ~/.config/dunst/images/warning.png
+fi
