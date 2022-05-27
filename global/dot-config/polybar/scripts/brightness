@@ -1,33 +1,33 @@
 #!/usr/bin/env bash
 
 print_brightness() {
-    bright=`brightness get`
+	bright=$(brightness get)
 
-    if (( $bright < 10 )); then
-        icon=
-    elif (( $bright < 30 )); then
-        icon=
-    elif (( $bright < 50 )); then
-        icon=
-    elif (( $bright < 70 )); then
-        icon=
-    elif (( $bright < 90 )); then
-        icon=
-    else (( $bright < 95 ))
-        icon=
-    fi
+	if (($bright < 10)); then
+		icon=
+	elif (($bright < 30)); then
+		icon=
+	elif (($bright < 50)); then
+		icon=
+	elif (($bright < 70)); then
+		icon=
+	elif (($bright < 90)); then
+		icon=
+	else
+		icon=
+	fi
 
-    echo "$icon   $bright%"
+	echo "$icon   $bright%"
 }
 
 case $1 in
-    up)
-        brightness up
-        ;;
-    down)
-        brightness down
-        ;;
-    *)
-        print_brightness
-        ;;
+up)
+	brightness up
+	;;
+down)
+	brightness down
+	;;
+*)
+	print_brightness
+	;;
 esac

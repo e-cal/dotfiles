@@ -9,16 +9,19 @@ function is_mute {
 }
 
 function send_notification {
-	iconSound="$HOME/.local/share/icons/Qogir-dark/16/panel/volume-level-high.svg"
-	iconSound="$HOME/.local/share/icons/Qogir-dark/16/panel/volume-level-muted.svg"
+	if [[ $HOSTNAME == "coeus" ]]; then
+		polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
+	elif [[ $HOSTNAME == "prometheus" ]]; then
+		polybar-msg -p "$(pgrep -f "polybar sys")" hook volume 1 &>/dev/null
+	fi
+
 	if is_mute; then
-		dunstify -i $iconMuted -r 2593 -u normal " mute"
+		dunstify "Muted" --icon ~/.config/dunst/images/mute.png -r 1234
 	else
 		volume=$(get_volume)
 		bar=$(seq --separator="─" 0 "$((volume / 3))" | sed 's/[0-9]//g')
 		# Send the notification
-		# dunstify -I $iconSound -r 2593 -u normal " $bar"
-		dunstify "Volume" -r 2593 -u normal -h int:value:"$volume" --icon ~/.config/dunst/images/volume.png
+		dunstify "Volume" -h int:value:"$volume" --icon ~/.config/dunst/images/volume.png -r 1234
 	fi
 }
 

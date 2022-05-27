@@ -1,79 +1,57 @@
 #!/usr/bin/env bash
 
 update_sink() {
-    sink=`pacmd list-sinks 2>/dev/null | sed -n '/\* index:/ s/.*: //p'`
+	sink=$(pacmd list-sinks 2>/dev/null | sed -n '/\* index:/ s/.*: //p')
 }
 
 get_vol() {
-    vol=`pamixer --sink "$sink" --get-volume 2>/dev/null`
-}
-
-volume_up() {
-    update_sink
-    get_vol
-    if (( $vol < 100 )); then
-        pactl set-sink-volume "$sink" +5%
-    fi
-    polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
-}
-
-volume_down() {
-    update_sink
-    pactl set-sink-volume "$sink" -5%
-    polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
-}
-
-volume_mute() {
-    update_sink
-    pactl set-sink-mute "$sink" toggle
-    polybar-msg -p "$(pgrep -f "polybar `get-bar`")" hook volume 1 &>/dev/null
+	vol=$(pamixer --sink "$sink" --get-volume 2>/dev/null)
 }
 
 print_vol() {
-    update_sink
-    active_port=`pacmd list-sinks 2>/dev/null | sed -n "/index: $sink/,/index:/p" | grep active`
-    muted=`pamixer --sink "$sink" --get-mute 2>/dev/null`
-    get_vol 
+	update_sink
+	active_port=$(pacmd list-sinks 2>/dev/null | sed -n "/index: $sink/,/index:/p" | grep active)
+	muted=$(pamixer --sink "$sink" --get-mute 2>/dev/null)
+	get_vol
 
-    if echo "$active_port" | grep -q headphone; then
-        if [[ $muted = true ]] || (( $vol == 0 )); then
-            icon="ﳌ  "
-        else
-            icon="  "
-        fi
-    else
-        if [[ $muted = true ]] || (( $vol == 0 )); then
-            icon=󰸈
-        elif (( $vol < 25 )); then
-            icon=󰕿
-        elif (( $vol < 50 )); then
-            icon=󰖀
-        elif (( $vol < 75 )); then
-            icon=󰕾
-        else
-            icon="   "
-        fi
-    fi
+	if echo "$active_port" | grep -q headphone; then
+		if [[ $muted = true ]] || (($vol == 0)); then
+			icon="ﳌ  "
+		else
+			icon="  "
+		fi
+	else
+		if [[ $muted = true ]] || (($vol == 0)); then
+			icon=󰸈
+		elif (($vol < 25)); then
+			icon=󰕿
+		elif (($vol < 50)); then
+			icon=󰖀
+		elif (($vol < 75)); then
+			icon=󰕾
+		else
+			icon="   "
+		fi
+	fi
 
-    if [[ $muted = true ]]; then
-        echo "$icon "
-    else
-        echo "$icon $vol%"
-    fi
+	if [[ $muted = true ]]; then
+		echo "$icon "
+	else
+		echo "$icon $vol%"
+	fi
 }
 
-
 case $1 in
-    up)
-        volume_up
-        ;;
-    down)
-        volume_down
-        ;;
-    mute)
-        volume_mute
-        ;;
-    *)
-        print_vol
-        ;;
+up)
+	volume up
+	;;
+down)
+	volume down
+	;;
+mute)
+	volume mute
+	;;
+*)
+	print_vol
+	;;
 esac
