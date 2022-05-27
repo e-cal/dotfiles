@@ -140,3 +140,8 @@ initnotes() {
 	fi
 	mv .obsidian-new .obsidian
 }
+
+conflicts() {
+	files=`git diff --name-only | uniq`
+	echo "$files" | xargs -d "\n" nvim
+}

@@ -31,7 +31,6 @@ alias "aursearch"="yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1}
 # Git
 alias "lg"="lazygit"
 alias "gs"="git status"
-alias "conflicts"="nvim (git diff --name-only | uniq)"
 alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
 alias "gwa"="git worktree add"
 
