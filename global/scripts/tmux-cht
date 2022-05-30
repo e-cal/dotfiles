@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+LANGS="
+python
+golang
+solidity
+nodejs
+javascript
+tmux
+typescript
+zsh
+cpp
+c
+lua
+rust
+bash
+php
+haskell
+css
+html
+gdb
+"
+
+CMDS="
+find
+man
+tldr
+sed
+awk
+tr
+cp
+ls
+grep
+xargs
+rg
+ps
+mv
+kill
+lsof
+less
+head
+tail
+tar
+cp
+rm
+rename
+jq
+cat
+ssh
+cargo
+git
+git-worktree
+git-status
+git-commit
+git-rebase
+docker
+docker-compose
+stow
+chmod
+chown
+make
+"
+
+# printf "%s\n" $LANGS
+sel=$(printf "%s\n" $LANGS $CMDS | fzf)
+
+[[ -z $sel ]] && exit 0
+
+read -p "Enter Query: " query
+
+printf "%s\n" $LANGS >/tmp/.tmux-langs
+
+if grep -qs "$sel" /tmp/.tmux-langs; then
+	query=$(echo $query | tr ' ' '+')
+	tmux neww bash -c "echo \"curl cht.sh/$sel/$query/\" & curl cht.sh/$sel/$query & stty -echo & while [ : ]; do sleep 1; done"
+
+	# curl -s cht.sh/$sel/$query | less -r
+else
+	tmux neww bash -c "curl -s cht.sh/$sel~$query | less -r"
+	# tmux display-popup -w "75%" -h "75%" -E "curl -s cht.sh/$sel~$query | less"
+	# curl -s cht.sh/$sel~$query | less -r
+fi
