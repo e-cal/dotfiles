@@ -72,7 +72,8 @@ printf "%s\n" $LANGS >/tmp/.tmux-langs
 
 if grep -qs "$sel" /tmp/.tmux-langs; then
 	query=$(echo $query | tr ' ' '+')
-	tmux neww bash -c "echo \"curl cht.sh/$sel/$query/\" & curl cht.sh/$sel/$query & stty -echo & while [ : ]; do sleep 1; done"
+	# tmux neww bash -c "echo \"curl cht.sh/$sel/$query/\" & curl cht.sh/$sel/$query & stty -echo & while [ : ]; do sleep 1; done"
+	tmux neww bash -c "curl -s cht.sh/$sel/$query | less -r"
 
 	# curl -s cht.sh/$sel/$query | less -r
 else
