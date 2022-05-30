@@ -56,7 +56,7 @@ not_in_tmux() {
 }
 
 session_exists() {
-	tmux has-session -t $1 &>/dev/null && true
+	tmux has-session -t="$1" &>/dev/null && true
 }
 
 attach_session() {
@@ -275,7 +275,7 @@ else
 			tmux join-pane -v -l 30% -s ' '
 		elif no_bot; then
 			tmux select-pane -t 0
-			tmux split-window -c "#{pane_current_path}" -v -p 30 
+			tmux split-window -c "#{pane_current_path}" -v -p 30
 		else
 			tmux select-pane -t 1
 			tmux break-pane -d -n ' ' -t $(($(tmux list-windows -F '#{window_index}' | tail -n1) + 1))
