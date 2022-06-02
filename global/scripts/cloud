@@ -19,27 +19,27 @@ case ${args[0]} in
 upload | u)
 	# Safety check
 	if pgrep -f "cloud d"; then
-		notify-send "Cloud" "($(date +'%H:%M')) Download in progress, cannot upload" -i ~/.config/dunst/images/warning.png -u critical
+		dunstify "Cloud" "($(date +'%H:%M')) Download in progress, cannot upload" -i ~/.config/dunst/images/warning.png -u critical -r 1111
 		exit 1
 	fi
 	get_bucket
-	notify-send "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png -r 1111
+	dunstify "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png -r 1111
 	rclone sync --progress $HOME/cloud/$bucket cloud:$bucket
-	[[ $? != 0 ]] && notify-send "Cloud" "($(date +'%H:%M')) Upload failed" -i ~/.config/dunst/images/warning.png -r 1111 && exit 1
-	notify-send "Cloud" "($(date +'%H:%M')) Upload complete" -i ~/.config/dunst/images/cloud.png -r 1111
+	[[ $? != 0 ]] && dunstify "Cloud" "($(date +'%H:%M')) Upload failed" -i ~/.config/dunst/images/warning.png -r 1111 && exit 1
+	dunstify "Cloud" "($(date +'%H:%M')) Upload complete" -i ~/.config/dunst/images/cloud.png -r 1111
 	;;
 download | d)
 	# Safety check
 	if pgrep -f "cloud u"; then
-		notify-send "Cloud" "($(date +'%H:%M')) Upload in progress, cannot download" -i ~/.config/dunst/images/warning.png -u critical
+		dunstify "Cloud" "($(date +'%H:%M')) Upload in progress, cannot download" -i ~/.config/dunst/images/warning.png -u critical -r 1112
 		exit 1
 	fi
 	get_bucket
 	echo "Downloading..."
-	notify-send "Cloud" "($(date +'%H:%M')) Downloading..." -i ~/.config/dunst/images/cloud.png -r 1112
+	dunstify "Cloud" "($(date +'%H:%M')) Downloading..." -i ~/.config/dunst/images/cloud.png -r 1112
 	rclone sync --progress cloud:$bucket $HOME/cloud/$bucket
-	[[ $? != 0 ]] && notify-send "Cloud" "($(date +'%H:%M')) Download failed" -i ~/.config/dunst/images/warning.png -r 1112 && exit 1
-	notify-send "Cloud" "($(date +'%H:%M')) Download complete" -i ~/.config/dunst/images/cloud.png -r 1112
+	[[ $? != 0 ]] && dunstify "Cloud" "($(date +'%H:%M')) Download failed" -i ~/.config/dunst/images/warning.png -r 1112 && exit 1
+	dunstify "Cloud" "($(date +'%H:%M')) Download complete" -i ~/.config/dunst/images/cloud.png -r 1112
 	;;
 backup | b)
 	echo "Backing up..."
