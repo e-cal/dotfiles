@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+INTERVAL="1m"
+
+if [[ $1 == "cancel" ]]; then
+	touch /tmp/force-stop-startup-download
+	exit
+fi
+
 launch-bar &
 dropbox &
 redshift &
@@ -24,6 +31,12 @@ done
 cloud backup
 cloud download all >~/.local/share/rclone/startup-sync.log
 while [[ $? != 0 ]]; do
-	sleep 30
+	dunstify "Startup file sync" "Retrying in $INTERVAL"
+	sleep $INTERVAL
 	cloud download all >~/.local/share/rclone/startup-sync.log
+	if [[ -f /tmp/force-stop-startup-download ]]; then
+		dunstify "Startup file sync" "Aborting file sync. Files may be out of date."
+		rm /tmp/force-stop-startup-download
+		exit
+	fi
 done
