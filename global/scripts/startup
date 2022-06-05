@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
+SYNC=false
 INTERVAL="1m"
 
 if [[ $1 == "abort" ]]; then
-	dunstify "Startup file sync" "Aborting file sync. Files may be out of date."
+	dunstify "Startup" "Aborting cloud sync"
 	touch /tmp/force-stop-startup-download
 	exit
 fi
@@ -24,19 +25,23 @@ if [[ $HOSTNAME == "coeus" ]]; then
 fi
 
 # Update volume 5 times
-for i in {0..5}; do
-	sleep 3
-	polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
-done
+# for i in {0..5}; do
+# 	sleep 3
+# 	polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
+# done
 
-cloud backup
-cloud download all >~/.local/share/rclone/startup-sync.log
-while [[ $? != 0 ]]; do
-	dunstify "Startup file sync" "Retrying in $INTERVAL"
-	sleep $INTERVAL
+if [[ $SYNC == true ]]; then
+	cloud backup
 	cloud download all >~/.local/share/rclone/startup-sync.log
-	if [[ -f /tmp/force-stop-startup-download ]]; then
-		rm /tmp/force-stop-startup-download
-		exit
-	fi
-done
+	while [[ $? != 0 ]]; do
+		if [[ -f /tmp/force-stop-startup-download ]]; then
+			rm /tmp/force-stop-startup-download
+			exit
+		fi
+		dunstify "Startup" "Cloud sync failed. Retrying in $INTERVAL."
+		sleep $INTERVAL
+		cloud download all >~/.local/share/rclone/startup-sync.log
+	done
+else
+	dunstify "Startup" "Cloud sync disabled"
+fi
