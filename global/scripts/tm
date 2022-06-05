@@ -79,8 +79,7 @@ if [[ $# == 0 ]]; then
 		echo "starting a new tmux server..."
 		sel="NEW"
 	else
-		sessions="$sessions RESET KILL END PROJECT NEW"
-		sel=$(printf "%s\n" $sessions | fzf --header="tmux menu" --info="hidden" --bind "ctrl-d:execute(tm kill {}; tm)+abort")
+		sel=$(tm menu | fzf --header="tmux menu" --info="hidden" --bind "ctrl-d:execute(tm kill {})+reload(tm menu)")
 		[[ -z $sel ]] && exit 1
 	fi
 
@@ -106,6 +105,7 @@ if [[ $# == 0 ]]; then
 	esac
 else
 	case $1 in
+
 	new | n)
 		if [[ -z $2 ]]; then
 			name=$(
@@ -261,6 +261,11 @@ else
 		printf "%s\n" $sessions
 		;;
 
+	menu)
+		sessions="$sessions RESET KILL END PROJECT NEW"
+		printf "%s\n" $sessions
+		;;
+
 	toggle_term)
 		hid() {
 			tmux list-windows -F '#{window_name}' | grep -q ' '
@@ -286,32 +291,34 @@ else
 		;;
 
 	*)
-		echo "tm [command]" >>/tmp/tmusage
-		echo "" >>/tmp/tmusage
-		echo "Run tm without a command to use the main menu." >>/tmp/tmusage
-		echo >>/tmp/tmusage
-		echo "Commands" >>/tmp/tmusage
-		echo "  new [session-name] [start-dir]" >>/tmp/tmusage
-		echo "    Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup)." >>/tmp/tmusage
-		echo "" >>/tmp/tmusage
-		echo "  attach [session-name]" >>/tmp/tmusage
-		echo "    Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands." >>/tmp/tmusage
-		echo "" >>/tmp/tmusage
-		echo "  project [project-name]" >>/tmp/tmusage
-		echo "    Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default)." >>/tmp/tmusage
-		echo "" >>/tmp/tmusage
-		echo "  kill [session-name]" >>/tmp/tmusage
-		echo "    Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \"TMUX\" to kill the tmux server." >>/tmp/tmusage
-		echo "" >>/tmp/tmusage
-		echo "  end" >>/tmp/tmusage
-		echo "    Ends (kills) the current tmux session and opens the attach menu." >>/tmp/tmusage
-		echo "" >>/tmp/tmusage
-		echo "  reset" >>/tmp/tmusage
-		echo "    Resets the current tmux session." >>/tmp/tmusage
-		echo "" >>/tmp/tmusage
-		echo "  startup" >>/tmp/tmusage
-		echo "    Utility command to use as the launch command for your terminal emulator." >>/tmp/tmusage
-		less /tmp/tmusage
+		less <<'END'
+Usage: tm [command]
+
+Run tm without a command to use the main menu.
+
+Commands
+new [session-name] [start-dir]
+	Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup).
+
+attach [session-name]
+	Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands.
+
+project [project-name]
+	Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default).
+
+kill [session-name]
+	Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \TMUX\ to kill the tmux server.
+
+end
+	Ends (kills) the current tmux session and opens the attach menu.
+
+reset
+	Resets the current tmux session.
+
+startup
+	Utility command to use as the launch command for your terminal emulator.
+
+END
 		;;
 	esac
 fi
