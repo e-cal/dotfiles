@@ -16,12 +16,18 @@
 # USER CONFIG
 ################################################################################
 
-# Set your shell, startcmd, and default projects folder here
+# Set your shell, startcmd, and project folders here
 shell="zsh"
 startcmd="triangles && echo"
-project_dir="$HOME/projects"
+declare -A project_dirs=(
+	# Format:
+	# ["dir"]="prefix" (applied to all sub-directories)
 
-# Add projects here
+	["$HOME/projects"]=""
+	["$HOME/projects/praxis"]="praxis/"
+)
+
+# Add/rename individual projects here
 # NOTE: Projects with punctuation in their name may not work correctly
 #       e.g. "." gets changed to "_" by tmux when creating a session
 declare -A projects=(
@@ -32,11 +38,7 @@ declare -A projects=(
 	["website"]="$HOME/projects/ecal.dev"
 
 	# Adding projects
-	["soft"]="$HOME/cloud/school/winter/cisc322"
-	["ai"]="$HOME/cloud/school/winter/cisc352"
-	["algo"]="$HOME/cloud/school/winter/cisc365"
-	["invest"]="$HOME/cloud/school/winter/comm324"
-	["neuro"]="$HOME/cloud/school/winter/nsci324"
+	["y3"]="$HOME/cloud/school/old/y3"
 )
 
 ################################################################################
@@ -195,11 +197,14 @@ else
 			fi
 		done
 
-		for d in $project_dir/*; do
-			if [[ ! -v "revp[$d]" ]]; then
-				name=$(echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/')
-				projects["$name"]=$d
-			fi
+		for project_dir in "${!project_dirs[@]}"; do
+			for d in $project_dir/*; do
+				if [[ ! -v "revp[$d]" ]] && [[ -d $d ]]; then
+					name=$(echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/')
+					name="${project_dirs[$project_dir]}$name"
+					projects["$name"]=$d
+				fi
+			done
 		done
 
 		if [[ -n $2 ]]; then
@@ -210,17 +215,41 @@ else
 		fi
 		[[ -z $sel ]] && exit 0
 
+		# Make new project
 		if [[ $sel = "NEW" ]]; then
 			name=$(
 				read -p "project name: " -e tmp
 				echo $tmp
 			)
 			[[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
-			mkdir "$project_dir/$name"
+
+			sel_dir=$(printf "%s\n" ${!project_dirs[@]} | fzf --header="parent project directory" --info="hidden")
+			mkdir "$sel_dir/$name"
 			tm project $name
-		else
+			exit
+		else # not making new project
+			# Project does not exist
 			if [[ ! -v "projects[$sel]" ]]; then
+				for pdir in ${!project_dirs[@]}; do
+					maybe="${project_dirs[$pdir]}$sel"
+					if [[ -v "projects[$maybe]" ]]; then
+						echo -n "did you mean \"$maybe\" (y/n)? "
+						old_stty_cfg=$(stty -g)
+						stty raw -echo
+						answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+						stty $old_stty_cfg
+						if echo "$answer" | grep -iq "^y"; then
+							echo yes
+							tm project $maybe
+							exit
+						else
+							echo no
+						fi
+					fi
+				done
+
 				echo "project \"$sel\" does not exist"
+
 				echo -n "create new project \"$sel\" (y/n)? "
 				old_stty_cfg=$(stty -g)
 				stty raw -echo
@@ -228,13 +257,16 @@ else
 				stty $old_stty_cfg
 				if echo "$answer" | grep -iq "^y"; then
 					echo yes
-					mkdir "$project_dir/$sel"
-					tm project $sel
+					sel_dir=$(printf "%s\n" ${!project_dirs[@]} | fzf --header="parent project directory" --info="hidden")
+					mkdir "$sel_dir/$sel"
+					tm project "${project_dirs[$sel_dir]}$sel"
 				else
 					echo no
 				fi
-				exit 0
+				exit
 			fi
+
+			# Load project
 			dir=${projects[$sel]}
 			cd $dir
 			attach_session $sel
