@@ -295,6 +295,7 @@ myKeys = [
     , ("M-e", spawn "nemo")
     , ("M-w", spawn "launch-browser")
     , ("M-S-w", spawn mainBrowser)
+    , ("M-C-w", spawn (mainBrowser ++ " -P work"))
     , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal"))
     , ("M-S-c", spawn (mainBrowser ++ " https://calendar.google.com"))
     , ("M-S-d", spawn "inkscape $HOME/sketch.svg")

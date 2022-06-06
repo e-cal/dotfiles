@@ -28,6 +28,7 @@ while [[ $(~/.config/polybar/scripts/pulseaudio) == "    %" ]]; do
 	sleep 0.5
 done
 polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
+# TODO: desktop support
 
 if [[ $SYNC == true ]]; then
 	cloud backup
