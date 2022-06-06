@@ -24,11 +24,10 @@ if [[ $HOSTNAME == "coeus" ]]; then
 	# feh --no-fehbg --bg-fill "$mainbg" "$tallbg" "$altbg"
 fi
 
-# Update volume 5 times
-# for i in {0..5}; do
-# 	sleep 3
-# 	polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
-# done
+while [[ $(~/.config/polybar/scripts/pulseaudio) == "    %" ]]; do
+	sleep 0.5
+done
+polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
 
 if [[ $SYNC == true ]]; then
 	cloud backup
