@@ -131,7 +131,7 @@ icat() {
     fi
 }
 
-initnotes() {
+mknote() {
 	cp -r ~/.dotfiles/global/dot-config/obsidian .obsidian-new
 	if [[ -d ".obsidian" ]]; then
 		cp .obsidian/workspace obsidian-workspace.bak
