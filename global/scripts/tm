@@ -22,6 +22,7 @@ startcmd="triangles && echo"
 declare -A project_dirs=(
 	# Format:
 	# ["dir"]="prefix" (applied to all sub-directories)
+	# NOTE: prefix is recommended to avoid overwitting duplicate project names in the menu
 
 	["$HOME/projects"]=""
 	["$HOME/projects/praxis"]="praxis/"
@@ -216,16 +217,18 @@ else
 		[[ -z $sel ]] && exit 0
 
 		# Make new project
-		if [[ $sel = "NEW" ]]; then
-			name=$(
-				read -p "project name: " -e tmp
-				echo $tmp
-			)
-			[[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
-
+		# if [[ $sel = "NEW" ]]; then
+		if [[ $sel = "n" ]]; then
+			# name=$(
+			# 	read -p "project name: " -e tmp
+			# 	echo $tmp
+			# )
+			read -p "project name: " -e name
 			sel_dir=$(printf "%s\n" ${!project_dirs[@]} | fzf --header="parent project directory" --info="hidden")
+			prefixed="${project_dirs[$sel_dir]}$name"
+			[[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
 			mkdir "$sel_dir/$name"
-			tm project $name
+			tm project $prefixed
 			exit
 		else # not making new project
 			# Project does not exist
