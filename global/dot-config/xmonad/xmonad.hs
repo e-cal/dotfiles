@@ -186,7 +186,7 @@ myManageHook = composeAll
     , className =? "Nemo"           --> doFloat
     , className =? "Nitrogen"       --> doFloat
     , className =? "flameshot"      --> doFloat
-    , className =? "zoom"           --> doFloat
+    -- , className =? "zoom "           --> doFloat
     , className =? "uk-org-jape-Jape" --> doFloat
 
     -- shift to workspace
@@ -197,6 +197,7 @@ myManageHook = composeAll
     , className =? "Thunderbird"    --> doShift "5"
     , className =? "barrier"        --> doShift "5"
     , className =? "Spotify"        --> doShift "6"
+    , className =? "zoom "           --> doShift "7"
     , manageDocks
     ]
   where
@@ -294,7 +295,7 @@ myKeys = [
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi")
     , ("M-e", spawn "nemo")
     , ("M-w", spawn "launch-browser")
-    , ("M-S-w", spawn mainBrowser)
+    , ("M-S-w", spawn (mainBrowser ++ " -P ecal"))
     , ("M-C-w", spawn (mainBrowser ++ " -P work"))
     , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal"))
     , ("M-S-c", spawn (mainBrowser ++ " https://calendar.google.com"))
@@ -311,7 +312,7 @@ myKeys = [
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
-    , ("M-<Home>", namedScratchpadAction myScratchPads "browser")
+    , ("M-/", namedScratchpadAction myScratchPads "browser")
 
     -- Kill Windows
     , ("M-q", kill) -- Focused window
