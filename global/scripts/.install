@@ -3,49 +3,49 @@
 [[ -z $STOW_DIR ]] && STOW_DIR="$HOME/.dotfiles"
 
 if [[ $1 = "submodule" ]]; then
-    echo "Initializing submodules..."
-    rm -rf ~/.dotfiles/global/dot-config/nvim
-    cd $STOW_DIR
-    git submodule update --init --recursive
-    exit 0
+	echo "Initializing submodules..."
+	rm -rf ~/.dotfiles/global/dot-config/nvim
+	cd $STOW_DIR
+	git submodule update --init --recursive
+	exit 0
 fi
 
-echo "Generating `hostname` dotfiles..."
-if [[ `hostname` = "raspberrypi" ]]; then
-    rm -rf ~/.dotfiles/raspberrypi/.config
-    rm -rf ~/.dotfiles/raspberrypi/scripts
-    mkdir ~/.dotfiles/raspberrypi/.config
+echo "Generating $(hostname) dotfiles..."
+if [[ $(hostname) = "raspberrypi" ]]; then
+	rm -rf ~/.dotfiles/raspberrypi/.config
+	rm -rf ~/.dotfiles/raspberrypi/scripts
+	mkdir ~/.dotfiles/raspberrypi/.config
 
-    ln -s ~/.dotfiles/coeus/.config/starship.toml ~/.dotfiles/raspberrypi/.config/starship.toml
+	ln -s ~/.dotfiles/coeus/.config/starship.toml ~/.dotfiles/raspberrypi/.config/starship.toml
 
-    cp -r ~/.dotfiles/global/scripts ~/.dotfiles/raspberrypi/scripts
-    sed -i 's/--info="hidden"//g' ~/.dotfiles/raspberrypi/scripts/tm
+	cp -r ~/.dotfiles/global/scripts ~/.dotfiles/raspberrypi/scripts
+	sed -i 's/--info="hidden"//g' ~/.dotfiles/raspberrypi/scripts/tm
 
-    cp -r ~/.dotfiles/global/dot-config/nvim ~/.dotfiles/raspberrypi/.config/nvim
-    sed -i 's/require("telescope").load_extension("fzy_native")//' ~/.dotfiles/raspberrypi/.config/nvim/lua/plugins/telescope.lua
+	cp -r ~/.dotfiles/global/dot-config/nvim ~/.dotfiles/raspberrypi/.config/nvim
+	sed -i 's/require("telescope").load_extension("fzy_native")//' ~/.dotfiles/raspberrypi/.config/nvim/lua/plugins/telescope.lua
 
-    cp -r ~/.dotfiles/global/dot-config/zsh ~/.dotfiles/raspberrypi/.config
-    sed -i 's/\(export TERM=\).*/\1"screen-256color"/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
-    sed -i 's/\(alias "l"=\).*/\1"COLUMNS=60 exa --group-directories-first"/' ~/.dotfiles/raspberrypi/.config/zsh/alias.zsh
-    sed -i 's/\(export FZF_DEFAULT_OPTS=\).*/\1'"'"'--prompt=" " --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
-    sed -i 's/\(export FZF_INLINE=\).*/\1'"'"'--border --height=50% --layout=reverse'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+	cp -r ~/.dotfiles/global/dot-config/zsh ~/.dotfiles/raspberrypi/.config
+	sed -i 's/\(export TERM=\).*/\1"screen-256color"/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+	sed -i 's/\(alias "l"=\).*/\1"COLUMNS=60 exa --group-directories-first"/' ~/.dotfiles/raspberrypi/.config/zsh/alias.zsh
+	sed -i 's/\(export FZF_DEFAULT_OPTS=\).*/\1'"'"'--prompt=" " --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+	sed -i 's/\(export FZF_INLINE=\).*/\1'"'"'--border --height=50% --layout=reverse'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
 
-
-    cp -r ~/.dotfiles/global/dot-config/tmux ~/.dotfiles/raspberrypi/.config
-    sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
-    sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
+	cp -r ~/.dotfiles/global/dot-config/tmux ~/.dotfiles/raspberrypi/.config
+	sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
+	sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
 
 else
-    stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
+	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
 fi
 
-echo "Linking `hostname` dotfiles..."
-stow `hostname` -R
+echo "Linking $(hostname) dotfiles..."
+stow $(hostname) -R
 
 if [[ ! -d "$HOME/.config/zsh/oh-my-zsh" ]]; then
-    cd ~/.config/zsh
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    git clone https://github.com/jeffreytse/zsh-vi-mode ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-vi-mode
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	cd ~/.config/zsh
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	[[ -f "$HOME/.zshrc" ]] && rm "$HOME/.zshrc"
+	git clone https://github.com/jeffreytse/zsh-vi-mode ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-vi-mode
+	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
