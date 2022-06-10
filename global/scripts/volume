@@ -9,11 +9,7 @@ function is_mute {
 }
 
 function send_notification {
-	if [[ $HOSTNAME == "coeus" ]]; then
-		polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
-	elif [[ $HOSTNAME == "prometheus" ]]; then
-		polybar-msg -p "$(pgrep -f "polybar sys")" hook volume 1 &>/dev/null
-	fi
+	update_bar
 
 	if is_mute; then
 		dunstify "Muted" --icon ~/.config/dunst/images/mute.png -r 1234
@@ -23,6 +19,15 @@ function send_notification {
 		# Send the notification
 		dunstify "Volume" -h int:value:"$volume" --icon ~/.config/dunst/images/volume.png -r 1234
 	fi
+}
+
+function update_bar {
+	if [[ $HOSTNAME == "coeus" ]]; then
+		polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
+	elif [[ $HOSTNAME == "prometheus" ]]; then
+		polybar-msg -p "$(pgrep -f "polybar sys")" hook volume 1 &>/dev/null
+	fi
+
 }
 
 [[ $# = 0 ]] && get_volume && exit 0
@@ -50,6 +55,6 @@ mute)
 	;;
 set)
 	pactl set-sink-volume @DEFAULT_SINK@ $2%
-	send_notification
+	update_bar
 	;;
 esac
