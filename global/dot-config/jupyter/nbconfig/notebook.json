@@ -6,7 +6,8 @@
     "nbextensions_configurator/config_menu/main": true,
     "contrib_nbextensions_help_item/main": true,
     "collapsible_headings/main": true,
-    "jupyter-js-widgets/extension": true
+    "jupyter-js-widgets/extension": true,
+    "collapsible_headings": true
   },
   "Notebook": {
     "Header": true,
@@ -20,8 +21,49 @@
   "keys": {
     "command": {
       "bind": {
-        "alt-r": "jupyter-notebook:restart-kernel-and-run-all-cells"
-      }
+        "o": "jupyter-notebook:insert-cell-below",
+        "shift-o": "jupyter-notebook:insert-cell-above",
+        "c": "jupyter-notebook:change-cell-to-code",
+        "y": "jupyter-notebook:copy-cell",
+        "p": "jupyter-notebook:paste-cell-below",
+        "shift-p": "jupyter-notebook:paste-cell-above",
+        "alt-s": "jupyter-notebook:split-cell-at-cursor",
+        "alt-c": "jupyter-notebook:interrupt-kernel",
+        ":": "jupyter-notebook:show-command-palette",
+        "shift-:": "jupyter-notebook:show-command-palette",
+        "k": "jupyter-notebook:select-previous-cell",
+        "j": "jupyter-notebook:select-next-cell",
+        "/": "jupyter-notebook:find-and-replace",
+        "ctrl-e": "jupyter-notebook:scroll-notebook-down",
+        "ctrl-y": "jupyter-notebook:scroll-notebook-up",
+        "shift-k": "jupyter-notebook:extend-selection-above",
+        "shift-j": "jupyter-notebook:extend-selection-below",
+        "alt-tab": "jupyter-notebook:auto-indent",
+        "a": "jupyter-notebook:enter-edit-mode",
+        "i": "jupyter-notebook:enter-edit-mode",
+        "alt-j": "jupyter-notebook:move-cell-down",
+        "alt-k": "jupyter-notebook:move-cell-up",
+        "alt-shift-r": "jupyter-notebook:confirm-restart-kernel-and-run-all-cells",
+        "alt-r": "jupyter-notebook:run-all-cells",
+        "alt-d": "jupyter-notebook:clear-cell-output"
+      },
+      "unbind": [
+        "shift-o",
+        "a",
+        "b",
+        "y",
+        "v",
+        "shift-v",
+        "0,0",
+        "space",
+        "shift-space",
+        "k",
+        "j",
+        "shift-j",
+        "shift-k",
+        "i,i",
+        "shift-m"
+      ]
     }
   }
 }
