@@ -1,4 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python
+
+import os
+import sys
+from uuid import uuid4 as uuid
+from pathlib import Path
+from dataclasses import dataclass
 
 # Add this script to your path, and make sure it is executable!
 # (easiest way is to copy it or symlink it to /usr/bin)
@@ -17,355 +23,220 @@
 ################################################################################
 
 # Set your shell, startcmd, and project folders here
-shell="zsh"
-startcmd="triangles && echo"
-declare -A project_dirs=(
-	# Format:
-	# ["dir"]="prefix" (applied to all sub-directories)
-	# NOTE: prefix is recommended to avoid overwitting duplicate project names in the menu
+SHELL = "zsh"
+STARTCMD = "triangles && echo"
+DIRICON = ""
 
-	["$HOME/projects"]=""
-	["$HOME/projects/praxis"]=""
-)
 
-# Add/rename individual projects here
-# NOTE: Projects with punctuation in their name may not work correctly
-#       e.g. "." gets changed to "_" by tmux when creating a session
-declare -A projects=(
-	# Format:
-	# ["name"]="path"
+@dataclass
+class ProjectDir:
+    """Describes a project parent directory, i.e. a directory that stores projects (in sub-directories)."""
 
-	# Project name override (default has a "." in the name and will not work)
-	["website"]="$HOME/projects/ecal.dev"
+    name: str
+    path: Path
+    # Optional; rename/add projects to the project directory
+    # format: {"path":"name"}
+    rename: dict[Path, str] | None = None
 
-	# Adding projects
-	["y3"]="$HOME/cloud/school/old/y3"
-)
+
+# Define top level sub-menu entries for distinct project directories
+PROJECTDIRS = [
+    ProjectDir(
+        name="projects",
+        path=Path.home() / "projects",
+        rename={
+            Path.home() / "projects/ecal.dev": "website",
+            Path.home() / "cloud/school/old/y3": "y3",
+        },
+    ),
+    ProjectDir(
+        name="praxis",
+        path=Path.home() / "praxis",
+    ),
+]
 
 ################################################################################
 # END OF USER CONFIG
 ################################################################################
 
-if [[ -n $startcmd ]]; then
-	startcmd="$startcmd && exec $shell"
-else
-	startcmd="exec $shell"
-fi
+startcmd = f"exec {SHELL}" if not STARTCMD else f"{STARTCMD} && exec {SHELL}"
+in_tmux = os.getenv("TMUX") is not None
+menus = ["reset", "kill", "new"]
 
-sessions=$(tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://')
 
-not_in_tmux() {
-	[[ -z $TMUX ]]
-}
+def run_cmd(cmd):
+    """Runs a shell command and returns the output.
+    If there is more than one line in the output, a list of the lines is returned.
+    """
+    res = os.popen(cmd).read()
+    return res
 
-session_exists() {
-	tmux has-session -t="$1" &>/dev/null && true
-}
 
-attach_session() {
-	if not_in_tmux; then
-		if ! session_exists $1; then
-			tmux new -s $1 -d -n main "$startcmd"
-			if [[ $1 == "scratch" ]]; then
-				tmux new-window -d -n todo "nvim ~/todo"
-				tmux new-window -d -n ipy "ipython --TerminalInteractiveShell.editing_mode=vi"
-			fi
-		fi
-		tmux attach -t $1
-	else
-		if ! session_exists $1; then
-			tmux new -s $1 -d -n main "$startcmd"
-		fi
-		tmux switch -t $1
-	fi
+# Get list of active sessions
+sessions = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'").splitlines()
 
-}
 
-if [[ $# == 0 ]]; then
-	if [[ -z $sessions ]]; then
-		echo "starting a new tmux server..."
-		sel="NEW"
-	else
-		sel=$(tm menu | fzf --header="tmux menu" --info="hidden" --bind "ctrl-d:execute(tm kill {})+reload(tm menu)")
-		[[ -z $sel ]] && exit 1
-	fi
+def fzf_menu(options, title="menu", binds=None, fzf_options=""):
+    binds_txt = ""
+    if binds:
+        binds_txt = '--bind="'
+        for key, cmd in binds.items():
+            binds_txt += f"{key}:{cmd},"
+        binds_txt = binds_txt[:-1] + '"'
+    options_str = "\n".join(options)
+    try:
+        return run_cmd(
+            f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {binds_txt}'
+        ).strip()
+    except:
+        exit(1)
 
-	case $sel in
-	PROJECT)
-		tm project
-		;;
-	NEW)
-		tm new
-		;;
-	END)
-		tm end
-		;;
-	KILL)
-		tm kill
-		;;
-	RESET)
-		tm reset
-		;;
-	*)
-		tm attach $sel
-		;;
-	esac
-else
-	case $1 in
 
-	new | n)
-		if [[ -z $2 ]]; then
-			name=$(
-				read -p "session name: " -e tmp
-				echo $tmp
-			)
-		else
-			[[ $2 == "project" ]] && tm project "NEW" && exit
-			name=$2
-		fi
+def session_exists(session):
+    return os.popen(f"tmux has-session -t={session} &>/dev/null").close() is None
 
-		[[ -z $name ]] && echo "no session name" && exit 1
-		[[ $(tmux display-message -p '#S') == $name ]] && echo "cannot create a session with the same name as the current session" && exit 1
 
-		if [[ -z $3 ]]; then
-			from=$(find $HOME -maxdepth 5 -type d 2>/dev/null | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,' | fzf --header="start dir")
-		else
-			from=$3
-		fi
-		[[ -z $from ]] && from=$(pwd | sed 's,'"$HOME/"',,' | sed 's,'"$HOME"',home,') && echo "start dir not set, using $(pwd)"
+def attach_session(session, start_dir=None):
+    attach_cmd = "tmux switch" if in_tmux else "tmux attach"
+    if not session_exists(session):
+        if start_dir:
+            run_cmd(f'tmux new -s {session} -d -n main -c {start_dir} "{startcmd}"')
+        else:
+            run_cmd(f'tmux new -s {session} -d -n main "{startcmd}"')
 
-		[[ $from == "home" || $from == "/home/ecal" ]] && cd ~ || cd "$HOME/$from"
-		attach_session $name
-		;;
+        """
+        if session == "scratch":
+            run_cmd(f'tmux new-window -d -n todo "nvim ~/todo"')
+            run_cmd(
+                f'tmux new-window -d -n ipy "ipython --TerminalInteractiveShell.editing_mode=vi"'
+            )
+        """
 
-	attach | a)
-		if [[ -z $2 ]]; then
-			cur=$(tmux display-message -p '#S')
-			sessions="$sessions PROJECT NEW"
-			if ! not_in_tmux; then
-				sessions=$(echo $sessions | sed "s/\<$cur\>//")
-			fi
-			name=$(printf "%s\n" $sessions | fzf --header="attach menu" --info="hidden")
-		else
-			name=$2
-		fi
-		[[ -z $name ]] && echo "no selection" && exit 1
+    run_cmd(f"{attach_cmd} -t {session}")
 
-		if [[ $name == "NEW" ]]; then
-			tm new || exit 1
-		elif [[ $name == "PROJECT" ]]; then
-			tm project || exit 1
-		else
-			attach_session $name || exit 1
-		fi
-		;;
 
-	kill | k)
-		if [[ -n $sessions ]]; then
-			if [[ -n $2 ]]; then
-				sel=$2
-			else
-				sessions="$sessions TMUX"
-				sel=$(printf "%s\n" $sessions | fzf --header="kill menu" --info="hidden")
-				[[ -z $sel ]] && exit 0
-			fi
+def startup():
+    wtitle = run_cmd(
+        "wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}'"
+    ).strip()
+    if wtitle == "scratch":
+        print("attaching scratch")
+        attach_session("scratch")
+        startup()
+    else:
+        if session_exists("main"):
+            sys.argv = []
+            main()
+        else:
+            print("attaching main")
+            attach_session("main")
 
-			if [[ $sel == "TMUX" ]]; then
-				pgrep -f "bash.*tm startup" | xargs -n1 kill
-				tmux kill-server
-			else
-				tmux kill-session -t $sel
-			fi
-		else
-			echo "no tmux sessions"
-			exit 1
-		fi
-		;;
 
-	end | e)
-		not_in_tmux && echo "not in a tmux session, nothing to end" && exit 1
-		old=$(tmux display-message -p '#S')
-		tm attach $2 && tm kill $old
-		;;
+def new(name=None, start_dir=None, *args):
+    while not name:
+        name = input("session name: ")
+        if name in sessions:
+            print(f"session {name} already exists.")
+            name = None
 
-	reset | r)
-		not_in_tmux && echo "not in a tmux session, nothing to reset" && exit 1
-		cur=$(tmux display-message -p '#S')
-		tmp=$(uuidgen)
-		tmux new -s $tmp -d && tmux switch -t $tmp && tmux send-keys -t $tmp "tm kill $cur && tm a $cur; tm kill $tmp" ENTER
-		;;
+    attach_session(name, start_dir)
 
-	project | p)
-		declare -A revp
-		for k in "${!projects[@]}"; do
-			if [[ -n ${projects[$k]} ]]; then
-				revp[${projects[$k]}]="$k"
-			fi
-		done
 
-		for project_dir in "${!project_dirs[@]}"; do
-			for d in $project_dir/*; do
-				if [[ ! -v "revp[$d]" ]] && [[ -d $d ]]; then
-					name=$(echo $d | sed 's,'"$project_dir"'/,,' | tr -d '/')
-					name="${project_dirs[$project_dir]}$name"
-					projects["$name"]=$d
-				fi
-			done
-		done
+def kill(session=None):
+    if not sessions:
+        print("no active sessions")
+        exit(1)
 
-		if [[ -n $2 ]]; then
-			sel=$2
-		else
-			projects["NEW"]=""
-			sel=$(printf "%s\n" ${!projects[@]} | fzf --header="project menu" --info="hidden")
-		fi
-		[[ -z $sel ]] && exit 0
+    if not session:
+        session = fzf_menu(sessions + ["TMUX"], "kill")
+        if not session:
+            exit(1)
 
-		# Make new project
-		if [[ $sel = "NEW" ]]; then
-			read -p "project name: " -e name
-			sel_dir=$(printf "%s\n" ${!project_dirs[@]} | fzf --header="parent project directory" --info="hidden")
-			prefixed="${project_dirs[$sel_dir]}$name"
-			[[ -v "projects[$name]" ]] && echo "project already exists" && exit 1
-			mkdir "$sel_dir/$name"
-			tm project $prefixed
-			exit
-		else # not making new project
-			# Project does not exist
-			if [[ ! -v "projects[$sel]" ]]; then
-				for pdir in ${!project_dirs[@]}; do
-					maybe="${project_dirs[$pdir]}$sel"
-					if [[ -v "projects[$maybe]" ]]; then
-						echo -n "did you mean \"$maybe\" (y/n)? "
-						old_stty_cfg=$(stty -g)
-						stty raw -echo
-						answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
-						stty $old_stty_cfg
-						if echo "$answer" | grep -iq "^y"; then
-							echo yes
-							tm project $maybe
-							exit
-						else
-							echo no
-						fi
-					fi
-				done
+    if session == "TMUX":
+        run_cmd('pgrep -f "bash.*tm startup" | xargs -n1 kill tmux kill-server')
+        run_cmd("tmux kill-server")
+    else:
+        run_cmd(f"tmux kill-session -t {session}")
 
-				echo "project \"$sel\" does not exist"
 
-				echo -n "create new project \"$sel\" (y/n)? "
-				old_stty_cfg=$(stty -g)
-				stty raw -echo
-				answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
-				stty $old_stty_cfg
-				if echo "$answer" | grep -iq "^y"; then
-					echo yes
-					sel_dir=$(printf "%s\n" ${!project_dirs[@]} | fzf --header="parent project directory" --info="hidden")
-					mkdir "$sel_dir/$sel"
-					tm project "${project_dirs[$sel_dir]}$sel"
-				else
-					echo no
-				fi
-				exit
-			fi
+def reset():
+    if not in_tmux:
+        print("nothing to reset")
+        exit(1)
+    cur = run_cmd("tmux display-message -p '#S'")
+    tmp = uuid()
+    run_cmd(
+        f'tmux new -s {tmp} -d && tmux switch -t {tmp} && tmux send-keys -t {tmp} "tm kill {cur} && tm a {cur}; tm kill {tmp}" ENTER'
+    )
 
-			# Load project
-			dir=${projects[$sel]}
-			cd $dir
-			attach_session $sel
-			cd - &>/dev/null
-		fi
-		;;
 
-	startup)
-		wtitle=$(wmctrl -l | rg $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $5}' | sed 's/0x//') | awk '{print $4}')
-		if [[ $wtitle == "scratch" ]]; then
-			attach_session "scratch"
-			tm startup
-		else
-			if session_exists "main"; then
-				tm
-				[[ $? != 0 ]] && triangles && printf "\n\n\x1b[31mGoing in raw... 😳\x1b[0m"
-			else
-				attach_session "main"
-			fi
-		fi
-		;;
+def project(proj_dir):
+    if proj_dir.rename:  # rename projects
+        projects = {
+            x.name: x
+            for x in proj_dir.path.iterdir()
+            if x.is_dir() and x not in proj_dir.rename
+        }
+        for path, name in proj_dir.rename.items():
+            projects[name] = path
+    else:
+        projects = {x.name: x for x in proj_dir.path.iterdir() if x.is_dir()}
 
-	list | l)
-		printf "%s\n" $sessions
-		;;
+    projects[proj_dir.name] = proj_dir.path  # add root project dir as an option
+    sel = fzf_menu(list(projects.keys()), title=proj_dir.name)
+    if sel:
+        attach_session(sel, projects[sel])
 
-	menu)
-		sessions="$sessions RESET KILL END PROJECT NEW"
-		printf "%s\n" $sessions
-		;;
 
-	toggle_term)
-		hid() {
-			tmux list-windows -F '#{window_name}' | grep -q ' '
-		}
+def get_menu(refresh=False):
+    project_dirs = [proj_dir.name for proj_dir in PROJECTDIRS]
+    submenus = menus + project_dirs
+    submenus_map = {f"{DIRICON}{sub.upper()}": sub for sub in submenus}
+    options = sessions + list(submenus_map.keys())
 
-		no_bot() {
-			tmux list-panes -F '#{pane_at_left} #{pane_at_top} #{pane_at_bottom}' | grep -q '1 1 1'
-		}
+    if refresh:
+        print("\n".join(options))
 
-		if hid; then
-			tmux select-pane -t 0
-			tmux join-pane -v -l 30% -s ' '
-		elif no_bot; then
-			tmux select-pane -t 0
-			tmux split-window -c "#{pane_current_path}" -v -p 30
-		else
-			tmux select-pane -t 1
-			tmux break-pane -d -n ' ' -t $(($(tmux list-windows -F '#{window_index}' | tail -n1) + 1))
-			[[ $HOSTNAME = "coeus" ]] && sleep 0.01 || sleep 0.3
-			tmux next-window
-			tmux previous-window
-		fi
-		;;
-	icon)
-		sname=$(tmux display-message -p '#S')
-		if [[ $sname == "scratch" ]]; then
-			echo ""
-		else
-			if [[ -d "$HOME/projects/praxis/$sname" ]]; then
-				echo ""
-			else
-				echo ""
-			fi
-		fi
-		;;
+    return options, submenus_map, project_dirs
 
-	*)
-		less <<'END'
-Usage: tm [command]
 
-Run tm without a command to use the main menu.
+def main():
+    if not sessions:  # start tmux if its not running
+        print("starting tmux server...")
+        new()
+        return
 
-Commands
-new [session-name] [start-dir]
-	Creates a new tmux session. If a session name is not provided you will be prompted to enter one. If a start dir is not provided an fzf menu will let you select one, if you exit the menu without selecting a dir the working dir will be used (note this is always your home dir when using the popup).
+    # If args are provided, run them
+    if len(sys.argv) > 1:
+        if sys.argv[1] in globals():
+            globals()[sys.argv[1]](*sys.argv[2:])
+        else:
+            exit(1)
+        exit()
 
-attach [session-name]
-	Attaches to a running tmux session. If a session name is not provided an fzf menu will let you select from your running sessions, or access the new and project commands.
+    options, submenus_map, project_dirs = get_menu()
+    sel = fzf_menu(
+        options,
+        "main menu",
+        binds={
+            "ctrl-d": "execute(tm kill {})+reload(tm get_menu refresh)",
+        },
+    )
 
-project [project-name]
-	Create a new session named after a project, with the project dir as the root dir of the session. Based on the user-defined project list + the dirs in your projects dir ($HOME/projects by default).
+    if not sel:
+        exit(1)
 
-kill [session-name]
-	Kills a tmux session. If a session name is not provided, an fzf menu will allow you to pick from the running sessions. Enter or select \TMUX\ to kill the tmux server.
+    if sel in sessions:  # if sessions selected, attach to it
+        attach_session(sel)
+    else:
+        sel = submenus_map[sel]  # map sel back to lower case name
+        if sel in project_dirs:
+            # Gen a map of top-level projects {name : projects root dir}
+            project_dir_map = {proj_dir.name: proj_dir for proj_dir in PROJECTDIRS}
+            project(project_dir_map[sel])
+        else:
+            globals()[sel]()
 
-end
-	Ends (kills) the current tmux session and opens the attach menu.
 
-reset
-	Resets the current tmux session.
-
-startup
-	Utility command to use as the launch command for your terminal emulator.
-
-END
-		;;
-	esac
-fi
+if __name__ == "__main__":
+    main()

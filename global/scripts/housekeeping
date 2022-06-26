@@ -35,6 +35,7 @@ expected = [
     "guides",
     "cloud",
     "school",
+    "praxis",
 ]
 
 home_path = os.path.expanduser("~")
@@ -47,8 +48,8 @@ if unexpected:
     for f in unexpected:
         if f == "Desktop":
             os.rmdir(os.path.join(home_path, f))
-
-        print(" ", f)
+        else:
+            print(" ", f)
     print()
 
 backups_path = os.path.join(os.path.expanduser("~"), "backup")

@@ -63,6 +63,10 @@ export SSB_HOME="$XDG_DATA_HOME"/zoom
 export GOPATH="$XDG_DATA_HOME"/go
 export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 export AIRFLOW_HOME="$HOME"/projects/praxis/airflow/airflow
+export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
+export PSQL_HISTORY="$XDG_DATA_HOME/pg/psql_history"
+export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
+export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
 
 # Other env variables
 export XONSHRC_DIR="$DOTFILES/.config/xonsh"

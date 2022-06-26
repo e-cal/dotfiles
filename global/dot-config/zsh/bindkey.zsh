@@ -2,7 +2,11 @@ function zvm_after_init() {
     # Load FZF completions
     source /usr/share/fzf/completion.zsh
     source /usr/share/fzf/key-bindings.zsh
+
+	bindkey "^l" vi-forward-word
+	bindkey "^w" vi-forward-blank-word
     bindkey '^h' backward-delete-word
+	# bindkey "^h" vi-backward-word
 
     # C-r -> Reload
     _re_source() { BUFFER="exec zsh"; zle accept-line; }
@@ -40,9 +44,9 @@ function zvm_after_init() {
     bindkey "^t" _rgs
 
     # C-l -> la
-    _la() { BUFFER="la"; zle accept-line }
-    zle -N _la
-    bindkey "^l" _la
+    # _la() { BUFFER="la"; zle accept-line }
+    # zle -N _la
+    # bindkey "^l" _la
 
     # C-a -> get last arg
     bindkey -s "^a" '!$^M' # last arg

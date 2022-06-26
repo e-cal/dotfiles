@@ -13,7 +13,6 @@ alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "v"="nvim"
-alias "vr"="nvim -c 'Dashboard | Telescope oldfiles'"
 alias "vS"="nvim -c 'SessionLoad'"
 alias "clear"="clear;triangles"
 alias "greps"='grep -ri'
@@ -33,9 +32,13 @@ alias "lg"="lazygit"
 alias "gs"="git status"
 alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
 alias "gwa"="git worktree add"
+alias "gpc"='echo $(git log -1 --pretty="%h %B")'
+alias "gpr"='git pull --rebase;printf "\nlast commit: $(git log -1 --pretty="(%h) %B")\n"'
 
 # Util
 alias "fixkeys"="setxkbmap code-dvorak"
+alias "ygb"="setxkbmap code-dvorak"
+alias "qwerty"="setxkbmap us"
 alias "launchbar"="~/.config/polybar/launch.sh"
 
 # Abbreviations
@@ -57,4 +60,3 @@ alias "weather"="curl wttr.in -s | head -n -1"
 # alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
 # alias luamake=/home/ecal/projects/lua-language-server/3rd/luamake/luamake
 alias "prolog"="swipl"
-alias "xae"="setxkbmap us"

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+tm p dbt_google_analytics
+runbg thunderbird
+runbg slack
+
+xdotool set_desktop 2
+runbg firefox -p work --new-window "https://calendar.google.com/calendar/u/0/r"
+sleep 2
+
+xdotool set_desktop 0
+runbg firefox -p work --new-window "https://cloud.getdbt.com/ide/#/accounts/40480/projects/112065/develop/"
+
+sleep 1
+xdotool set_desktop 0

@@ -70,8 +70,8 @@ mkscript() {
     else
         name=$1
     fi
-    echo "#!/usr/bin/env bash" > $name
-    echo "source parseargs\n" >> $name
+    echo "#!/usr/bin/env bash\n" > $name
+    # echo "source parseargs\n" >> $name
     chmod +x $name
     v $name
 }
@@ -111,9 +111,12 @@ rmvenv() {
 
 mkkernel() {
     if [[ -f ".venv" ]]; then
-        pip install jupyter ipykernel jupytext
+        pip install jupyter ipykernel jupytext jupyter_contrib_nbextensions jupyterthemes jupyter_nbextensions_configurator
         name=`cat .venv`
         python -m ipykernel install --name="$name" --user
+		jupyter nbextensions_configurator enable
+		jupyter contrib nbextensions install --user
+		jupyter nbextension enable collapsible_headings/main
     else
         echo "no venv in current dir"
     fi

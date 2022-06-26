@@ -375,19 +375,20 @@ myKeys = [
 	---------------------------------------------------------------------------
 
 	-- Layout
+	, ("M-<Space> f", sendMessage $ JumpToLayout "full")
+	, ("M-<Space> <Esc>", sendMessage $ JumpToLayout "horizontal")
     , ("M-<Space> l n", sendMessage NextLayout)
 	, ("M-<Space> l f", sendMessage $ JumpToLayout "full")
 	, ("M-<Space> l h", sendMessage $ JumpToLayout "horizontal")
 	, ("M-<Space> l v", sendMessage $ JumpToLayout "vertical")
+	, ("M-<Space> l c", sendMessage $ JumpToLayout "cols")
 
 	-- Brightness
 	-- presets
     , ("M-<Space> b d", spawn "brightness set 5")
-    , ("M-<Space> b m", spawn "brightness set 15")
-    , ("M-<Space> b b", spawn "brightness set 30")
-    , ("M-<Space> b B", spawn "brightness set 50")
-    , ("M-<Space> b f", spawn "brightness set 75")
-    , ("M-<Space> b F", spawn "brightness set 100")
+    , ("M-<Space> b m", spawn "brightness set 25")
+    , ("M-<Space> b b", spawn "brightness set 75")
+    , ("M-<Space> b f", spawn "brightness set 100")
 	-- intervals
     , ("M-<Space> b +", spawn "brightness set 10")
     , ("M-<Space> b [", spawn "brightness set 20")
@@ -398,7 +399,7 @@ myKeys = [
     , ("M-<Space> b )", spawn "brightness set 70")
     , ("M-<Space> b }", spawn "brightness set 80")
     , ("M-<Space> b ]", spawn "brightness set 90")
-    , ("M-<Space> b *", spawn "brightness set 0")
+    , ("M-<Space> b *", spawn "brightness set 100")
 
 	-- Volume / Audio Control
 	-- volume
