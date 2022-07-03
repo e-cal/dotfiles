@@ -339,8 +339,12 @@ myKeys = [
     , ("M-.", sendMessage (IncMasterN (-1)))
     , ("M--", withFocused minimizeWindow)
     , ("M-+", withLastMinimized maximizeWindowAndFocus)
-    , ("M-S-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
-    , ("M-f", withFocused toggleFloat)
+
+	, ("M-f", withFocused toggleFloat)
+    , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
+	, ("M-S-f", sendMessage $ JumpToLayout "full")
+	, ("M-S-<Esc>", sendMessage $ JumpToLayout "horizontal")
+
     -- floating
     , ("M-C-<Up>", sendMessage Arrange)
     , ("M-<Up>", sendMessage (MoveUp 20))
@@ -375,8 +379,6 @@ myKeys = [
 	---------------------------------------------------------------------------
 
 	-- Layout
-	, ("M-<Space> f", sendMessage $ JumpToLayout "full")
-	, ("M-<Space> <Esc>", sendMessage $ JumpToLayout "horizontal")
     , ("M-<Space> l n", sendMessage NextLayout)
 	, ("M-<Space> l f", sendMessage $ JumpToLayout "full")
 	, ("M-<Space> l h", sendMessage $ JumpToLayout "horizontal")

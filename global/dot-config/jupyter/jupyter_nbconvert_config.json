@@ -4,7 +4,8 @@
     "template_path": [
       ".",
       "/home/ecal/.local/share/virtualenvs/nlp/lib/python3.9/site-packages/jupyter_contrib_nbextensions/templates",
-      "/home/ecal/.local/share/virtualenvs/praxis/lib/python3.8/site-packages/jupyter_contrib_nbextensions/templates"
+      "/home/ecal/.local/share/virtualenvs/praxis/lib/python3.8/site-packages/jupyter_contrib_nbextensions/templates",
+      "/home/ecal/.local/share/virtualenvs/kaggle/lib/python3.10/site-packages/jupyter_contrib_nbextensions/templates"
     ],
     "preprocessors": [
       "jupyter_contrib_nbextensions.nbconvert_support.CodeFoldingPreprocessor",

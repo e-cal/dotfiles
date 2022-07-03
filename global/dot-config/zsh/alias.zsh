@@ -32,8 +32,8 @@ alias "lg"="lazygit"
 alias "gs"="git status"
 alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
 alias "gwa"="git worktree add"
-alias "gpc"='echo $(git log -1 --pretty="%h %B")'
-alias "gpr"='git pull --rebase;printf "\nlast commit: $(git log -1 --pretty="(%h) %B")\n"'
+alias "gpc"='git --no-pager log -1 --color=always --pretty="%C(dim brightblack)(%ah)%n%Creset%Cblue%an:%Creset %B%Creset"'
+alias "gpr"='git pull --rebase;echo;gpc'
 
 # Util
 alias "fixkeys"="setxkbmap code-dvorak"
@@ -45,6 +45,8 @@ alias "launchbar"="~/.config/polybar/launch.sh"
 alias "rg"="rg -S"
 alias "tmux"="tmux -2"
 alias "docker"="sudo docker"
+alias "dcu"="sudo docker-compose up"
+alias "dcd"="sudo docker-compose down"
 alias "venv"="python -m venv"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "msf"="msfconsole --quiet -x \"db_connect $USER@msf\""

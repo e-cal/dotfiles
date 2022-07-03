@@ -24,7 +24,7 @@ from dataclasses import dataclass
 
 # Set your shell, startcmd, and project folders here
 SHELL = "zsh"
-STARTCMD = "triangles && echo"
+STARTCMD = "sleep 0.1 && triangles && echo"
 DIRICON = ""
 
 
@@ -96,7 +96,7 @@ def session_exists(session):
     return os.popen(f"tmux has-session -t={session} &>/dev/null").close() is None
 
 
-def attach_session(session, start_dir=None):
+def attach(session, start_dir=None):
     attach_cmd = "tmux switch" if in_tmux else "tmux attach"
     if not session_exists(session):
         if start_dir:
@@ -121,7 +121,7 @@ def startup():
     ).strip()
     if wtitle == "scratch":
         print("attaching scratch")
-        attach_session("scratch")
+        attach("scratch")
         startup()
     else:
         if session_exists("main"):
@@ -129,7 +129,7 @@ def startup():
             main()
         else:
             print("attaching main")
-            attach_session("main")
+            attach("main")
 
 
 def new(name=None, start_dir=None, *args):
@@ -139,7 +139,7 @@ def new(name=None, start_dir=None, *args):
             print(f"session {name} already exists.")
             name = None
 
-    attach_session(name, start_dir)
+    attach(name, start_dir)
 
 
 def kill(session=None):
@@ -185,7 +185,7 @@ def project(proj_dir):
     projects[proj_dir.name] = proj_dir.path  # add root project dir as an option
     sel = fzf_menu(list(projects.keys()), title=proj_dir.name)
     if sel:
-        attach_session(sel, projects[sel])
+        attach(sel, projects[sel])
 
 
 def get_menu(refresh=False):
@@ -203,7 +203,7 @@ def get_menu(refresh=False):
 def main():
     if not sessions:  # start tmux if its not running
         print("starting tmux server...")
-        new()
+        startup()
         return
 
     # If args are provided, run them
@@ -227,7 +227,7 @@ def main():
         exit(1)
 
     if sel in sessions:  # if sessions selected, attach to it
-        attach_session(sel)
+        attach(sel)
     else:
         sel = submenus_map[sel]  # map sel back to lower case name
         if sel in project_dirs:

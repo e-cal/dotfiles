@@ -4,8 +4,8 @@ sname=$(tmux display-message -p '#S')
 if [[ $sname == "scratch" ]]; then
 	echo ""
 else
-	if [[ -d "$HOME/projects/praxis/$sname" ]]; then
-		echo ""
+	if [[ -d "$HOME/praxis/$sname" ]]; then
+		echo ""
 	else
 		echo ""
 	fi

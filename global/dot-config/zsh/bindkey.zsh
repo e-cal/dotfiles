@@ -9,7 +9,7 @@ function zvm_after_init() {
 	# bindkey "^h" vi-backward-word
 
     # C-r -> Reload
-    _re_source() { BUFFER="exec zsh"; zle accept-line; }
+    _re_source() { BUFFER='[[ -n $VIRTUAL_ENV ]] && deactivate;exec zsh'; zle accept-line; }
     zle -N _re_source
     bindkey "^r" _re_source
 

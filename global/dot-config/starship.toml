@@ -29,7 +29,6 @@ $nix_shell\
 $conda\
 $memory_usage\
 $aws\
-$gcloud\
 $openstack\
 $env_var\
 $crystal\
@@ -47,6 +46,7 @@ $cmd_duration\
 
 $directory\
 $git_branch\
+$gcloud\
 
         $line_break\
 
@@ -132,6 +132,12 @@ stashed = " "
 staged = " 﫠×${count} "
 renamed = " ×${count} "
 deleted = " ×${count} "
+
+[gcloud]
+format = '[$symbol$account(@$domain)(\($region\))]($style)'
+symbol = ' '
+disabled = true
+
 
 [username]
 show_always = true
