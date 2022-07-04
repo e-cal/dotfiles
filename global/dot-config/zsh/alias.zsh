@@ -17,7 +17,7 @@ alias "vS"="nvim -c 'SessionLoad'"
 alias "clear"="clear;triangles"
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
-alias "sshpi"="[[ $HOST = 'coeus' ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)"
+alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)'
 alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "mvimg"="mv ~/*.png ./"
