@@ -107,6 +107,12 @@ format = "[$symbol$version]($style) "
 symbol = "/ "
 format = "[$symbol$version]($style) "
 
+[rust]
+format = "[$symbol($version)]($style) "
+version_format = "${raw}"
+symbol = "🦀"
+style = "bold red"
+
 [package]
 disabled = true
 

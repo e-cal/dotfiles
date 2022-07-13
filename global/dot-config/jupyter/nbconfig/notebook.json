@@ -45,7 +45,9 @@
         "alt-k": "jupyter-notebook:move-cell-up",
         "alt-shift-r": "jupyter-notebook:confirm-restart-kernel-and-run-all-cells",
         "alt-r": "jupyter-notebook:run-all-cells",
-        "alt-d": "jupyter-notebook:clear-cell-output"
+        "alt-d": "jupyter-notebook:clear-cell-output",
+        "alt-m": "jupyter-notebook:merge-selected-cells",
+        "m": "jupyter-notebook:change-cell-to-markdown"
       },
       "unbind": [
         "shift-o",
@@ -62,7 +64,8 @@
         "shift-j",
         "shift-k",
         "i,i",
-        "shift-m"
+        "shift-m",
+        "m"
       ]
     }
   }

@@ -63,6 +63,7 @@ import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.Minimize
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Column
+import XMonad.Layout.ToggleLayouts
 import qualified XMonad.Layout.BoringWindows as BW
 import XMonad.Layout.Gaps
     ( Direction2D(D, L, R, U),
@@ -151,8 +152,8 @@ vertical  = renamed [Replace "vertical"]
 -- Not using
 accordion = renamed [Replace "Accordion"]
 			$ Accordion
-cols  = renamed [Replace "Columns"]
-            $ subLayout [] (smartBorders Simplest)
+cols  = renamed [Replace "cols"]
+            $ smartBorders
             $ mySpacing 5
             $ minimize . BW.boringWindows
             $ ThreeCol 1 (3/100) (3/7)
@@ -163,10 +164,13 @@ spirals  = renamed [Replace "Spiral"]
 			$ spiral (6/7)
 
 myLayouts =
-	named "horizontal" horizontal |||
-	named "full" full |||
-	named "vertical" vertical |||
-	named "cols" cols
+	toggleLayouts full horizontal |||
+	toggleLayouts full vertical |||
+	toggleLayouts full cols
+	-- named "horizontal" horizontal |||
+	-- named "full" full |||
+	-- named "vertical" vertical |||
+	-- named "cols" cols
 
 myLayoutHook = avoidStruts $ windowArrange $ gaps [(L,0), (R,0), (U,0), (D,0)]
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myLayouts
@@ -294,9 +298,8 @@ myKeys = [
     ("M-<Return>", spawn myTerminal)
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi")
     , ("M-e", spawn "nemo")
-    , ("M-w", spawn "launch-browser")
-    , ("M-S-w", spawn (mainBrowser ++ " -P ecal"))
-    , ("M-C-w", spawn (mainBrowser ++ " -P work"))
+    , ("M-w", spawn "launch-browser default")
+    , ("M-S-w", spawn "launch-browser")
     , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal"))
     , ("M-S-c", spawn (mainBrowser ++ " https://calendar.google.com"))
     , ("M-S-d", spawn "inkscape $HOME/sketch.svg")
@@ -342,8 +345,7 @@ myKeys = [
 
 	, ("M-f", withFocused toggleFloat)
     , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
-	, ("M-S-f", sendMessage $ JumpToLayout "full")
-	, ("M-S-<Esc>", sendMessage $ JumpToLayout "horizontal")
+	, ("M-S-f", sendMessage ToggleLayout)
 
     -- floating
     , ("M-C-<Up>", sendMessage Arrange)
@@ -392,16 +394,16 @@ myKeys = [
     , ("M-<Space> b b", spawn "brightness set 75")
     , ("M-<Space> b f", spawn "brightness set 100")
 	-- intervals
-    , ("M-<Space> b +", spawn "brightness set 10")
-    , ("M-<Space> b [", spawn "brightness set 20")
-    , ("M-<Space> b {", spawn "brightness set 30")
-    , ("M-<Space> b (", spawn "brightness set 40")
-    , ("M-<Space> b &", spawn "brightness set 50")
-    , ("M-<Space> b =", spawn "brightness set 60")
-    , ("M-<Space> b )", spawn "brightness set 70")
-    , ("M-<Space> b }", spawn "brightness set 80")
-    , ("M-<Space> b ]", spawn "brightness set 90")
-    , ("M-<Space> b *", spawn "brightness set 100")
+    , ("M-<Space> +", spawn "brightness set 10")
+    , ("M-<Space> [", spawn "brightness set 20")
+    , ("M-<Space> {", spawn "brightness set 30")
+    , ("M-<Space> (", spawn "brightness set 40")
+    , ("M-<Space> &", spawn "brightness set 50")
+    , ("M-<Space> =", spawn "brightness set 60")
+    , ("M-<Space> )", spawn "brightness set 70")
+    , ("M-<Space> }", spawn "brightness set 80")
+    , ("M-<Space> ]", spawn "brightness set 90")
+    , ("M-<Space> *", spawn "brightness set 100")
 
 	-- Volume / Audio Control
 	-- volume

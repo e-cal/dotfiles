@@ -10,6 +10,7 @@ if [[ $1 == "abort" ]]; then
 fi
 
 launch-bar &
+launch-browser set &
 dropbox &
 redshift &
 eyes &

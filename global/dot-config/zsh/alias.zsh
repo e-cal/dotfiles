@@ -11,19 +11,22 @@ alias "yeet"="yay -Rsn"
 alias "top"="bashtop"
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
+alias "jn"="jupyter notebook"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "v"="nvim"
 alias "vS"="nvim -c 'SessionLoad'"
 alias "clear"="clear;triangles"
+alias "celar"="clear"
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
 alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)'
 alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "mvimg"="mv ~/*.png ./"
+alias "kfs"="killall firefox;sleep 0.2;killall firefox"
 
 # Searching
-alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle"
+alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle | head -c-1 | clip"
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
 alias "aursearch"="yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print $2}\")' | xargs -ro  yay -S"
 

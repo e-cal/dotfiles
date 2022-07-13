@@ -148,3 +148,14 @@ conflicts() {
 	files=`git diff --name-only | uniq`
 	echo "$files" | xargs -d "\n" nvim
 }
+
+jtt() {
+    if [[ -z $2 ]]; then
+        ft="${1##*.}"
+        kernel=""
+        [[ $ft == "py" ]] && jupytext $1 --to ipynb --set-kernel -
+        [[ $ft == "ipynb" ]] && jupytext $1 --to py:percent
+    else
+        jupytext $1 --to $2
+    fi
+}
