@@ -207,6 +207,7 @@ def main():
         return
 
     # If args are provided, run them
+    # TODO: projects and abbrevs
     if len(sys.argv) > 1:
         if sys.argv[1] in globals():
             globals()[sys.argv[1]](*sys.argv[2:])

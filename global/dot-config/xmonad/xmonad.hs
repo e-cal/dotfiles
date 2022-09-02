@@ -103,9 +103,9 @@ myEditor = "nvim"
 
 	-- Browser
 mainBrowser :: String
-mainBrowser = "firefox"
+mainBrowser = "brave"
 altBrowser :: String
-altBrowser = "brave"
+altBrowser = "vieb"
 
     -- Border
 myBorderWidth :: Dimension
@@ -198,7 +198,7 @@ myManageHook = composeAll
     , className =? "Slack"          --> doShift "4"
     , className =? "discord"        --> doShift "4"
     , className =? "Microsoft Teams - Preview" --> doShift "4"
-    , className =? "Thunderbird"    --> doShift "5"
+    , className =? "thunderbird"    --> doShift "5"
     , className =? "barrier"        --> doShift "5"
     , className =? "Spotify"        --> doShift "6"
     , className =? "zoom "           --> doShift "7"
@@ -242,7 +242,7 @@ myScratchPads = [
                         findTerm = title =? "scratch"
 
                         spawnBrowser = altBrowser
-                        findBrowser = className =? "Brave-browser"
+                        findBrowser = className =? "Vieb"
 
                         -- % from left, % from top, width, height
                         manageScratchpad = customFloating $ W.RationalRect l t w h
@@ -312,6 +312,8 @@ myKeys = [
     , ("M-S-m", spawn "thunderbird")
     , ("M-S-t", spawn "launch-comm")
     , ("M-S-n", spawn "obsidian")
+    , ("M-;", spawn "setxkbmap us")
+    , ("M-S-\\", spawn "setxkbmap code-dvorak")
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")

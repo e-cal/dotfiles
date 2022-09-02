@@ -20,10 +20,10 @@ alias "celar"="clear"
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
 alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)'
+alias "sshcloud"='ssh root@155.138.135.131'
 alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "mvimg"="mv ~/*.png ./"
-alias "kfs"="killall firefox;sleep 0.2;killall firefox"
 
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle | head -c-1 | clip"
@@ -37,6 +37,7 @@ alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
 alias "gwa"="git worktree add"
 alias "gpc"='git --no-pager log -1 --color=always --pretty="%C(dim brightblack)(%ah)%n%Creset%Cblue%an:%Creset %B%Creset"'
 alias "gpr"='git pull --rebase;echo;gpc'
+alias "gb"='git --no-pager branch'
 
 # Util
 alias "fixkeys"="setxkbmap code-dvorak"
@@ -50,6 +51,8 @@ alias "tmux"="tmux -2"
 alias "docker"="sudo docker"
 alias "dcu"="sudo docker-compose up"
 alias "dcd"="sudo docker-compose down"
+alias "start-docker"="sudo systemctl start docker"
+alias "stop-docker"="sudo systemctl stop docker"
 alias "venv"="python -m venv"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "msf"="msfconsole --quiet -x \"db_connect $USER@msf\""
@@ -65,3 +68,7 @@ alias "weather"="curl wttr.in -s | head -n -1"
 # alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
 # alias luamake=/home/ecal/projects/lua-language-server/3rd/luamake/luamake
 alias "prolog"="swipl"
+
+# Remove
+unalias gco
+unalias gpu

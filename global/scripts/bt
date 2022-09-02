@@ -63,7 +63,7 @@ toggle | tog | t)
 	dev=$(get_dev $2)
 	[[ -z $dev ]] && echo "Invalid device" && exit 1
 	mac=${devices[$dev]}
-	connected=$(bluetoothctl info | grep "$mac" -A 8 | grep "Connected" | awk '{ print $2 }')
+	connected=$(bluetoothctl info | grep "$mac" -A 10 | grep "Connected" | awk '{ print $2 }')
 	if [[ $connected == 'yes' ]]; then
 		bt disconnect $dev
 	else

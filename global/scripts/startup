@@ -14,7 +14,6 @@ launch-browser set &
 dropbox &
 redshift &
 eyes &
-yay -Syyy &
 config-wacom m &
 
 if [[ $HOSTNAME == "coeus" ]]; then

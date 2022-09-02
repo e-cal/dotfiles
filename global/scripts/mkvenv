@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+source parseargs
+
+if [[ -n ${flags[v]} ]]; then
+	v=${flags[v]}
+	pyexec="python$v"
+	ls /usr/bin | rg "$pyexec" -q
+	[[ $? != 0 ]] && echo "$pyexec not found" && exit 1
+else
+	pyexec="python"
+fi
+echo "using $pyexec"
+
+name=${args[0]}
+if [[ -z $name ]]; then
+	read -p "name: " name
+fi
+[[ -z $name ]] && exit 1
+echo "making venv $name"
+
+eval "$pyexec -m venv '$VIRTUALENV_HOME/$name'"
+echo $name >.venv
+source "$VIRTUALENV_HOME/$name/bin/activate"
+pip install pynvim black ipykernel

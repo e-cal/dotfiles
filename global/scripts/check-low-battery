@@ -3,7 +3,7 @@
 bat=$(acpi | awk '{printf $4}' | tr -d "," | tr -d "%")
 charging=$(acpi | awk '{printf $3}' | tr -d ",")
 
-if [[ $charging == "Charging" ]]; then
+if [[ $charging == "Charging" || $charging == "Full" ]]; then
 	(($bat >= 95)) && notify-send "battery charged" "$bat%"
 	exit
 fi

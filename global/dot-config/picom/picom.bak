@@ -136,6 +136,7 @@ fade-out-step = 0.03;
 # don't need this, we disable fading for all normal windows with wintypes: {}
 fade-exclude = [
   "class_g = 'slop'",   # maim
+  "class_g = 'Firefox' && argb",
 ];
 
 # Do not fade on window open/close.
@@ -180,6 +181,7 @@ focus-exclude = [
   "class_g = 'Cairo-clock'",
   "class_g = 'Bar'",                    # lemonbar
   "class_g = 'slop'",                   # maim
+  "class_g = 'Firefox' && argb",
 ];
 
 # Use fixed inactive dim value, instead of adjusting according to window opacity.
@@ -237,7 +239,6 @@ blur: {
   # requires: https://github.com/ibhagwan/picom
   method = "kawase";
   # method = "kernel";
-  # strength = 20;
   strength = 7;
   # deviation = 1.0;
   # kernel = "11x11gaussian";
@@ -260,7 +261,7 @@ blur-background-exclude = [
   "class_g = 'slop'",
   "class_g ?= 'rofi'",
   "_GTK_FRAME_EXTENTS@:c",
-  # "class_g = 'firefox'",
+  "class_g = 'firefox'",
 ];
 
 

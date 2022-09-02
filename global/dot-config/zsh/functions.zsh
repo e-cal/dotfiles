@@ -1,3 +1,13 @@
+gco() {
+    if [[ $# == 0 ]]; then
+        git checkout $(gb --format "%(refname:short)" | fzf)
+    elif [[ $1 == "-r" ]]; then
+        git checkout $(gb -r --format "%(refname:short)" | sed "s/^origin\///" | tail -n+2 | fzf)
+    else
+        git checkout "$@"
+    fi
+}
+
 cda() {
     cd $1
     la
@@ -76,18 +86,6 @@ mkscript() {
     v $name
 }
 
-mkvenv() {
-    if [[ -z $1 ]]; then
-        name=`read -p "venv name: "`
-    else
-        name=$1
-    fi
-    venv "$VIRTUALENV_HOME/$name"
-    echo $name > .venv
-    source "$VIRTUALENV_HOME/$name/bin/activate"
-    pip install pynvim black ipykernel data-science-types
-}
-
 setvenv() {
     if [[ -z $1 ]]; then
         name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
@@ -96,17 +94,6 @@ setvenv() {
         [[ ! `/usr/bin/ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
     fi
 	[[ -z $name ]] || echo $name > .venv
-}
-
-rmvenv() {
-    if [[ -f ".venv" ]]; then
-		name=`cat .venv`
-		rm .venv
-		deactivate
-		rm -rf "$VIRTUALENV_HOME/$name"
-	else
-		echo "no venv in current dir"
-	fi
 }
 
 mkkernel() {

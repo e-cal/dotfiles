@@ -7,7 +7,11 @@
     "contrib_nbextensions_help_item/main": true,
     "collapsible_headings/main": true,
     "jupyter-js-widgets/extension": true,
-    "collapsible_headings": true
+    "collapsible_headings": true,
+    "jupyter_dash": true,
+    "jupyter_dash/main": true,
+    "jupyter-dash/main": true,
+    "jupyter-dash": true
   },
   "Notebook": {
     "Header": true,
@@ -47,7 +51,9 @@
         "alt-r": "jupyter-notebook:run-all-cells",
         "alt-d": "jupyter-notebook:clear-cell-output",
         "alt-m": "jupyter-notebook:merge-selected-cells",
-        "m": "jupyter-notebook:change-cell-to-markdown"
+        "m": "jupyter-notebook:change-cell-to-markdown",
+        "alt-f": "jupyter-notebook:toggle-cell-output-scrolled",
+        "alt-ctrl-r": "jupyter-notebook:restart-kernel"
       },
       "unbind": [
         "shift-o",

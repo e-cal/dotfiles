@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+MAIN_BROWSER=brave
+
 if [[ $1 == "default" ]]; then
-	firefox
+	$MAIN_BROWSER
 	exit
 fi
 

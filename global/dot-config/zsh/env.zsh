@@ -34,7 +34,7 @@ export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
 export PYENV_ROOT="$XDG_CONFIG_HOME"/pyenv
 
 # lemme use things
-export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$PATH:$XDG_DATA_HOME/cargo/bin
 
 # GET OUT OF MY HOUSE
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
