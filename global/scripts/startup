@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SYNC=false
+SYNC=true
 INTERVAL="1m"
 
 if [[ $1 == "abort" ]]; then
@@ -28,7 +28,7 @@ while [[ $(~/.config/polybar/scripts/pulseaudio) == "    %" ]]; do
 	sleep 0.5
 done
 polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
-volume set 10 -s
+volume set 10
 # TODO: desktop support
 
 if [[ $SYNC == true ]]; then

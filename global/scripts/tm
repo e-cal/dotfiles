@@ -50,8 +50,8 @@ PROJECTDIRS = [
         },
     ),
     ProjectDir(
-        name="praxis",
-        path=Path.home() / "praxis",
+        name="school",
+        path=Path.home() / "school/y4",
     ),
 ]
 
@@ -182,7 +182,6 @@ def project(proj_dir):
     else:
         projects = {x.name: x for x in proj_dir.path.iterdir() if x.is_dir()}
 
-    projects[proj_dir.name] = proj_dir.path  # add root project dir as an option
     sel = fzf_menu(list(projects.keys()), title=proj_dir.name)
     if sel:
         attach(sel, projects[sel])
