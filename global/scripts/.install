@@ -23,11 +23,12 @@ echo
 
 # Install dependencies
 echo "Installing dependencies..."
+sudo pacman -Syy
 packages=("stow" "zsh" "tmux" "neovim" "python")
 for package in ${packages[@]}; do
 	pacman -Q $package &>/dev/null
 	if [[ $? != 0 ]]; then
-		sudo pacman -S "$package"
+		sudo pacman -S "$package" --noconfirm
 	fi
 done
 echo
