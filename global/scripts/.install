@@ -3,6 +3,11 @@
 # Set STOW_DIR
 [[ -z $STOW_DIR ]] && STOW_DIR="$HOME/.dotfiles"
 
+# Set DOTFILES
+[[ -z $DOTFILES ]] && DOTFILES="$HOME/.dotfiles/$HOSTNAME"
+
+[[ ! -d $DOTFILES ]] && echo "dotfile dir for $HOSTNAME does not exist ($DOTFILES)" && exit 1
+
 # Install submodules
 if [[ $1 = "submodule" ]]; then
 	echo "Initializing submodules..."
