@@ -30,6 +30,9 @@ echo
 
 # Install dependencies
 echo "Installing dependencies..."
+
+echo "export ZDOTDIR=/home/ecal/.config/zsh" >/etc/zsh/zshenv
+
 sudo pacman -Syy
 packages=("stow" "zsh" "tmux" "neovim" "python")
 for package in ${packages[@]}; do
