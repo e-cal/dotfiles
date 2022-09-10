@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
-SYNC=true
+SYNC=false
 INTERVAL="1m"
 
 if [[ $1 == "abort" ]]; then
 	dunstify "Startup" "Aborting cloud sync"
 	touch /tmp/force-stop-startup-download
+	exit
+
+elif [[ $# > 0 ]]; then
+	echo "abort is the only valid command"
 	exit
 fi
 
