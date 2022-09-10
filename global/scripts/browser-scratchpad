@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+BROWSER="Brave"
+
+cur=$(xdotool get_desktop)
+
+if [[ $cur == 7 ]]; then
+	if [[ -f /tmp/scratch_prev_ws ]]; then
+		xdotool set_desktop $(cat /tmp/scratch_prev_ws)
+	else # no prev
+		xdotool set_desktop 0
+	fi
+else
+	echo $cur >/tmp/scratch_prev_ws
+	xdotool set_desktop 7
+	if ! $(xdotool getwindowname $(xdotool getactivewindow) | grep "$BROWSER" -q); then
+		xdotool keydown Super
+		xdotool key w
+		xdotool keyup Super
+	fi
+fi

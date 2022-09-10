@@ -119,7 +119,7 @@ focusMouse = True
 -- Workspaces
 --------------------------------------------------------------------------------
 myExtraWorkspaces = ["NSP"]
-myWorkspaces = map show [1..7] ++ myExtraWorkspaces
+myWorkspaces = map show [1..8] ++ myExtraWorkspaces
 
 getSortByIndexNoNSP = fmap (. filter (\(W.Workspace tag _ _) -> not (tag `elem` myExtraWorkspaces))) getSortByIndex
 
@@ -317,7 +317,8 @@ myKeys = [
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
-    , ("M-/", namedScratchpadAction myScratchPads "browser")
+    -- , ("M-/", namedScratchpadAction myScratchPads "browser")
+    , ("M-/", spawn "browser-scratchpad")
 
     -- Kill Windows
     , ("M-q", kill) -- Focused window
