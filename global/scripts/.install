@@ -34,7 +34,7 @@ echo "Installing dependencies..."
 echo "export ZDOTDIR=$HOME/.config/zsh" >/etc/zsh/zshenv
 
 sudo pacman -Syy
-packages=("stow" "zsh" "tmux" "neovim" "python")
+packages=("stow" "zsh" "tmux" "neovim" "python" "lolcat" "starship")
 for package in ${packages[@]}; do
 	pacman -Q $package &>/dev/null
 	if [[ $? != 0 ]]; then
