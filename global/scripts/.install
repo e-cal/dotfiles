@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+# Set STOW_DIR
 [[ -z $STOW_DIR ]] && STOW_DIR="$HOME/.dotfiles"
 
+# Install submodules
 if [[ $1 = "submodule" ]]; then
 	echo "Initializing submodules..."
 	rm -rf ~/.dotfiles/global/dot-config/nvim
@@ -10,8 +12,35 @@ if [[ $1 = "submodule" ]]; then
 	exit 0
 fi
 
-echo "Generating $(hostname) dotfiles..."
-if [[ $(hostname) = "raspberrypi" ]]; then
+# Check distro
+echo "Checking distribution..."
+hostnamectl | grep "Arch Linux" -q
+if [[ $? != 0 ]] && [[ $HOSTNAME != "raspberrypi" ]]; then
+	echo "Install only supports Arch Linux"
+	exit
+fi
+echo
+
+# Install dependencies
+echo "Installing dependencies..."
+packages=("stow" "zsh" "tmux" "neovim" "python")
+for package in ${packages[@]}; do
+	pacman -Q $package &>/dev/null
+	if [[ $? != 0 ]]; then
+		sudo pacman -S "$package"
+	fi
+done
+echo
+
+# Make dirs
+echo "Creating directories..."
+[[ -d $HOME/.config ]] || mkdir $HOME/.config
+[[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
+echo
+
+echo "Generating $HOSTNAME dotfiles..."
+
+if [[ $HOSTNAME = "raspberrypi" ]]; then
 	rm -rf ~/.dotfiles/raspberrypi/.config
 	rm -rf ~/.dotfiles/raspberrypi/scripts
 	mkdir ~/.dotfiles/raspberrypi/.config
@@ -38,8 +67,8 @@ else
 	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
 fi
 
-echo "Linking $(hostname) dotfiles..."
-stow $(hostname) -R
+echo "Linking $HOSTNAME dotfiles..."
+stow $HOSTNAME -R
 
 if [[ ! -d "$HOME/.config/zsh/oh-my-zsh" ]]; then
 	cd ~/.config/zsh
