@@ -2,7 +2,7 @@ export TERM="xterm-kitty"
 export TERMINAL="kitty"
 
 # Useful vars
-export DOTFILES=~/.dotfiles/$HOSTNAME
+export DOTFILES=~/.dotfiles/$HOST
 export STOW_DIR=~/.dotfiles
 export EDITOR=nvim
 export PILOCAL="192.168.2.186"
