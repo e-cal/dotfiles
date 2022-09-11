@@ -86,8 +86,4 @@ stow $HOSTNAME -R
 if [[ ! -d "$HOME/.config/zsh/oh-my-zsh" ]]; then
 	ZSH="$HOME/.config/zsh/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	[[ -f "$HOME/.zshrc" ]] && rm "$HOME/.zshrc"
-	# THIS DOESN'T RUN
-	git clone https://github.com/jeffreytse/zsh-vi-mode ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-vi-mode
-	git clone https://github.com/zdharma/fast-syntax-highlighting ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-	git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-autosuggestions
 fi
