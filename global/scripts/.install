@@ -31,8 +31,6 @@ echo
 # Install dependencies
 echo "Installing dependencies..."
 
-echo "export ZDOTDIR=$HOME/.config/zsh" >/etc/zsh/zshenv
-
 sudo pacman -Syy
 packages=("stow" "zsh" "tmux" "neovim" "python" "lolcat" "starship" "exa")
 for package in ${packages[@]}; do
@@ -84,6 +82,8 @@ echo "Linking $HOSTNAME dotfiles..."
 stow $HOSTNAME -R
 
 if [[ ! -d "$HOME/.config/zsh/oh-my-zsh" ]]; then
+	echo "Installing zsh"
+	install-zsh
 	ZSH="$HOME/.config/zsh/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	[[ -f "$HOME/.zshrc" ]] && rm "$HOME/.zshrc"
 fi
