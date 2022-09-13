@@ -75,6 +75,8 @@ else
 	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
 	if [[ $HOSTNAME != "coeus" ]] && [[ $HOSTNAME != "prometheus" ]]; then
 		sed -i 's/\(export TERM=\).*/\1"screen-256color"/' $DOTFILES/.config/zsh/env.zsh
+		sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
+		sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
 	fi
 fi
 

@@ -200,11 +200,6 @@ def get_menu(refresh=False):
 
 
 def main():
-    if not sessions:  # start tmux if its not running
-        print("starting tmux server...")
-        startup()
-        return
-
     # If args are provided, run them
     # TODO: projects and abbrevs
     if len(sys.argv) > 1:
@@ -213,6 +208,11 @@ def main():
         else:
             exit(1)
         exit()
+
+    if not sessions:  # start tmux if its not running
+        print("starting tmux server...")
+        startup()
+        return
 
     options, submenus_map, project_dirs = get_menu()
     sel = fzf_menu(
