@@ -1,6 +1,20 @@
 #!/bin/bash
-while true
-do
-	sleep 20m
-	dunstify "20 min" "take a break" -u critical
-done
+
+INTERVAL=20
+
+sleep "$INTERVAL"m
+count=$(($1 + $INTERVAL))
+
+ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Take care of your eyes! 👀" "$count min without a break" -i ~/.config/dunst/images/eyes.png -t 300000 -u normal)
+
+case $ACTION in
+default) # left click
+	eyes &
+	;;
+stop) # middle click -> stop
+	exit
+	;;
+1 | 2) # 1=expired, 2=dismissed (right click)
+	eyes $count &
+	;;
+esac

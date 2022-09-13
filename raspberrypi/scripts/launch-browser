@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+MAIN_BROWSER=brave
+
+if [[ $1 == "default" ]]; then
+	$MAIN_BROWSER
+	exit
+fi
+
+if [[ $1 == "set" ]]; then
+	profile=$2
+	if [[ -z $2 ]]; then
+		wd=$(date +"%w")
+		h=$(date +"%k")
+		if [[ $wd -gt 0 ]] && [[ $wd -lt 6 ]] && [[ $h -ge 9 ]] && [[ $h -le 20 ]]; then
+			profile="work"
+		else
+			profile="default"
+		fi
+	fi
+	# cp "$STOW_DIR/global/dot-config/firefox/$profile.ini" "$HOME/.mozilla/firefox/profiles.ini"
+	cp "$CONFIG/firefox/$profile.ini" "$HOME/.mozilla/firefox/profiles.ini"
+	exit
+fi
+
+firefox=""
+work=""
+brave="ﱾ"
+ta="拾"
+
+options="$firefox\n$work\n$brave\n$ta"
+
+sel=$(echo -e "$options" | rofi -no-fixed-num-lines -theme $HOME/.config/rofi/commmenu.rasi -dmenu)
+
+case $sel in
+$firefox)
+	firefox -P ecal
+	;;
+$work)
+	firefox -P work
+	;;
+$brave)
+	brave
+	;;
+$ta)
+	firefox -P ta
+	;;
+esac

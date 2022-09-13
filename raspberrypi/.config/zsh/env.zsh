@@ -1,7 +1,9 @@
 export TERM="screen-256color"
+export TERMINAL="kitty"
 
 # Useful vars
-export DOTFILES=~/.dotfiles/`hostname`
+[[ -z $HOSTNAME ]] && [[ -n $HOST ]] && export HOSTNAME=$HOST
+export DOTFILES=~/.dotfiles/$HOSTNAME
 export STOW_DIR=~/.dotfiles
 export EDITOR=nvim
 export PILOCAL="192.168.2.186"
@@ -33,7 +35,7 @@ export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
 export PYENV_ROOT="$XDG_CONFIG_HOME"/pyenv
 
 # lemme use things
-export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$PATH:$XDG_DATA_HOME/cargo/bin
 
 # GET OUT OF MY HOUSE
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
@@ -48,6 +50,7 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export VSCODE_PORTABLE="$XDG_DATA_HOME"/vscode # Could break vscode
 export VSCODE="$XDG_DATA_HOME"/vscode # Could break vscode
+export XONSHRC_DIR="$DOTFILES"/.config/xonsh
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 export NVM_DIR="$XDG_DATA_HOME"/nvm
@@ -60,12 +63,16 @@ export KAGGLE_CONFIG_DIR="$HOME"/projects/kaggle
 export npm_config_nodedir="$XDG_DATA_HOME"/node
 export SSB_HOME="$XDG_DATA_HOME"/zoom
 export GOPATH="$XDG_DATA_HOME"/go
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
+export AIRFLOW_HOME="$HOME"/projects/praxis/airflow/airflow
+export PSQLRC="$XDG_CONFIG_HOME"/pg/psqlrc
+export PSQL_HISTORY="$XDG_DATA_HOME"/pg/psql_history
+export PGPASSFILE="$XDG_CONFIG_HOME"/pg/pgpass
+export PGSERVICEFILE="$XDG_CONFIG_HOME"/pg/pg_service.conf
+export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 
-# Other env variables
-export XONSHRC_DIR="$DOTFILES/.config/xonsh"
 
 # Start X
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
     startx "$XDG_CONFIG_HOME"/X11/xinitrc
 fi
-

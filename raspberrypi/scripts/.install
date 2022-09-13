@@ -1,51 +1,89 @@
 #!/usr/bin/env bash
 
+# Set STOW_DIR
 [[ -z $STOW_DIR ]] && STOW_DIR="$HOME/.dotfiles"
 
+# Set DOTFILES
+[[ -z $DOTFILES ]] && DOTFILES="$HOME/.dotfiles/$HOSTNAME"
+
+# [[ ! -d $DOTFILES ]] && echo "dotfile dir for $HOSTNAME does not exist ($DOTFILES)"
+
+[[ ! -d $DOTFILES ]] && mkdir $DOTFILES
+
+# Install submodules
 if [[ $1 = "submodule" ]]; then
-    echo "Initializing submodules..."
-    rm -rf ~/.dotfiles/global/dot-config/nvim
-    cd $STOW_DIR
-    git submodule update --init --recursive
-    exit 0
+	echo "Initializing submodules..."
+	rm -rf ~/.dotfiles/global/dot-config/nvim
+	cd $STOW_DIR
+	git submodule update --init --recursive
+	exit 0
 fi
 
-echo "Generating `hostname` dotfiles..."
-if [[ `hostname` = "raspberrypi" ]]; then
-    rm -rf ~/.dotfiles/raspberrypi/.config
-    rm -rf ~/.dotfiles/raspberrypi/scripts
-    mkdir ~/.dotfiles/raspberrypi/.config
+# Check distro
+echo "Checking distribution..."
+hostnamectl | grep "Arch Linux" -q
+if [[ $? != 0 ]] && [[ $HOSTNAME != "raspberrypi" ]]; then
+	echo "Install only supports Arch Linux"
+	exit
+fi
+echo
 
-    ln -s ~/.dotfiles/coeus/.config/starship.toml ~/.dotfiles/raspberrypi/.config/starship.toml
+# Install dependencies
+echo "Installing dependencies..."
 
-    cp -r ~/.dotfiles/global/scripts ~/.dotfiles/raspberrypi/scripts
-    sed -i 's/--info="hidden"//g' ~/.dotfiles/raspberrypi/scripts/tm
+sudo pacman -Syy
+packages=("stow" "zsh" "tmux" "neovim" "python" "lolcat" "starship" "exa")
+for package in ${packages[@]}; do
+	pacman -Q $package &>/dev/null
+	if [[ $? != 0 ]]; then
+		sudo pacman -S "$package" --noconfirm
+	fi
+done
+echo
 
-    cp -r ~/.dotfiles/global/dot-config/nvim ~/.dotfiles/raspberrypi/.config/nvim
-    sed -i 's/require("telescope").load_extension("fzy_native")//' ~/.dotfiles/raspberrypi/.config/nvim/lua/plugins/telescope.lua
+# Make dirs
+echo "Creating directories..."
+[[ -d $HOME/.config ]] || mkdir $HOME/.config
+[[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
+echo
 
-    cp -r ~/.dotfiles/global/dot-config/zsh ~/.dotfiles/raspberrypi/.config
-    sed -i 's/\(export TERM=\).*/\1"screen-256color"/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
-    sed -i 's/\(alias "l"=\).*/\1"COLUMNS=60 exa --group-directories-first"/' ~/.dotfiles/raspberrypi/.config/zsh/alias.zsh
-    sed -i 's/\(export FZF_DEFAULT_OPTS=\).*/\1'"'"'--prompt=" " --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
-    sed -i 's/\(export FZF_INLINE=\).*/\1'"'"'--border --height=50% --layout=reverse'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+echo "Generating $HOSTNAME dotfiles..."
 
+if [[ $HOSTNAME = "raspberrypi" ]]; then
+	rm -rf ~/.dotfiles/raspberrypi/.config
+	rm -rf ~/.dotfiles/raspberrypi/scripts
+	mkdir ~/.dotfiles/raspberrypi/.config
 
-    cp -r ~/.dotfiles/global/dot-config/tmux ~/.dotfiles/raspberrypi/.config
-    sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
-    sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
+	ln -s ~/.dotfiles/coeus/.config/starship.toml ~/.dotfiles/raspberrypi/.config/starship.toml
 
+	cp -r ~/.dotfiles/global/scripts ~/.dotfiles/raspberrypi/scripts
+	sed -i 's/--info="hidden"//g' ~/.dotfiles/raspberrypi/scripts/tm
+
+	cp -r ~/.dotfiles/global/dot-config/nvim ~/.dotfiles/raspberrypi/.config/nvim
+	sed -i 's/require("telescope").load_extension("fzy_native")//' ~/.dotfiles/raspberrypi/.config/nvim/lua/plugins/telescope.lua
+
+	cp -r ~/.dotfiles/global/dot-config/zsh ~/.dotfiles/raspberrypi/.config
+	sed -i 's/\(export TERM=\).*/\1"screen-256color"/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+	sed -i 's/\(alias "l"=\).*/\1"COLUMNS=60 exa --group-directories-first"/' ~/.dotfiles/raspberrypi/.config/zsh/alias.zsh
+	sed -i 's/\(export FZF_DEFAULT_OPTS=\).*/\1'"'"'--prompt=" " --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+	sed -i 's/\(export FZF_INLINE=\).*/\1'"'"'--border --height=50% --layout=reverse'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
+
+	cp -r ~/.dotfiles/global/dot-config/tmux ~/.dotfiles/raspberrypi/.config
+	sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
+	sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
 else
-    stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
+	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
+	if [[ $HOSTNAME != "coeus" ]] && [[ $HOSTNAME != "prometheus" ]]; then
+		sed -i 's/\(export TERM=\).*/\1"screen-256color"/' $DOTFILES/.config/zsh/env.zsh
+	fi
 fi
 
-echo "Linking `hostname` dotfiles..."
-stow `hostname` -R
+echo "Linking $HOSTNAME dotfiles..."
+stow $HOSTNAME -R
 
 if [[ ! -d "$HOME/.config/zsh/oh-my-zsh" ]]; then
-    cd ~/.config/zsh
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    git clone https://github.com/jeffreytse/zsh-vi-mode ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-vi-mode
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.config/zsh/oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	echo "Installing zsh"
+	install-zsh
+	ZSH="$HOME/.config/zsh/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	[[ -f "$HOME/.zshrc" ]] && rm "$HOME/.zshrc"
 fi

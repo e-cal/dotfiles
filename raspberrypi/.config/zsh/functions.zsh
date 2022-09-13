@@ -1,3 +1,13 @@
+gco() {
+    if [[ $# == 0 ]]; then
+        git checkout $(gb --format "%(refname:short)" | fzf)
+    elif [[ $1 == "-r" ]]; then
+        git checkout $(gb -r --format "%(refname:short)" | sed "s/^origin\///" | tail -n+2 | fzf)
+    else
+        git checkout "$@"
+    fi
+}
+
 cda() {
     cd $1
     la
@@ -34,7 +44,7 @@ cdh() {
 cde() {
     dirs=(
         dotfiles $STOW_DIR
-        config $DOTFILES/.config
+        config $STOW_DIR/global/dot-config
         nvim $DOTFILES/.config/nvim
         scripts $STOW_DIR/global/scripts
         uni ~/Dropbox/uni/3F
@@ -71,20 +81,9 @@ mkscript() {
         name=$1
     fi
     echo "#!/usr/bin/env bash\n" > $name
+    # echo "source parseargs\n" >> $name
     chmod +x $name
     v $name
-}
-
-mkvenv() {
-    if [[ -z $1 ]]; then
-        name=`read -p "venv name: "`
-    else
-        name=$1
-    fi
-    venv "$VIRTUALENV_HOME/$name"
-    echo $name > .venv
-    source "$VIRTUALENV_HOME/$name/bin/activate"
-    pip install pynvim black
 }
 
 setvenv() {
@@ -94,11 +93,20 @@ setvenv() {
         name=$1
         [[ ! `/usr/bin/ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
     fi
-    echo $name > .venv
+	[[ -z $name ]] || echo $name > .venv
 }
 
-rmvenv() {
-    echo not implemented
+mkkernel() {
+    if [[ -f ".venv" ]]; then
+        pip install jupyter ipykernel jupytext jupyter_contrib_nbextensions jupyterthemes jupyter_nbextensions_configurator
+        name=`cat .venv`
+        python -m ipykernel install --name="$name" --user
+		jupyter nbextensions_configurator enable
+		jupyter contrib nbextensions install --user
+		jupyter nbextension enable collapsible_headings/main
+    else
+        echo "no venv in current dir"
+    fi
 }
 
 fixap() {
@@ -110,5 +118,31 @@ icat() {
         kitty +kitten icat $@
     else
         echo "Cannot display images in tmux."
+    fi
+}
+
+mknote() {
+	cp -r ~/.dotfiles/global/dot-config/obsidian .obsidian-new
+	if [[ -d ".obsidian" ]]; then
+		cp .obsidian/workspace obsidian-workspace.bak
+		rm -r .obsidian
+		mv obsidian-workspace.bak .obsidian-new/workspace
+	fi
+	mv .obsidian-new .obsidian
+}
+
+conflicts() {
+	files=`git diff --name-only | uniq`
+	echo "$files" | xargs -d "\n" nvim
+}
+
+jtt() {
+    if [[ -z $2 ]]; then
+        ft="${1##*.}"
+        kernel=""
+        [[ $ft == "py" ]] && jupytext $1 --to ipynb --set-kernel -
+        [[ $ft == "ipynb" ]] && jupytext $1 --to py:percent
+    else
+        jupytext $1 --to $2
     fi
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd $STOW_DIR
-changed=`.stat -n -s | awk '{print $2}'`
+changed=`.s -n -s | awk '{print $2}'`
 
 case $1 in
     -a | --all)
@@ -12,7 +12,6 @@ case $1 in
         ;;
 esac
 [[ -z $sel ]] && exit 1
-
 
 for f in $sel; do
     echo >> tmp.diff
@@ -25,6 +24,3 @@ for f in $sel; do
 done
 bat tmp.diff | cat tmp.diff
 rm tmp.diff
-
-
-

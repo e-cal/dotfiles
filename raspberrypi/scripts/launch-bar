@@ -1,7 +1,17 @@
 #!/bin/bash
 
-# Terminate already running bar instances
-killall -q polybar
-sleep 3
+if [[ $# = 0 ]]; then
+    killall -q polybar
+    sleep 3 # wait for polybar to shutdown, should be more than enough time
 
-polybar `hostname` -c $HOME/.config/polybar/config.ini &
+    if [[ `hostname` = "prometheus" ]]; then
+        polybar workspaces -c $HOME/.config/polybar/config.ini &
+        polybar sys -c $HOME/.config/polybar/config.ini &
+        polybar clock -c $HOME/.config/polybar/config.ini &
+        pgrep "spotify" && launch-bar music
+    else
+        polybar top -c $HOME/.config/polybar/config.ini &
+    fi
+else
+    polybar $1 -c $HOME/.config/polybar/config.ini &
+fi

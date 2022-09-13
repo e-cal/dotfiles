@@ -11,8 +11,7 @@ IFS=: read -ra selected < <(
     fzf --ansi \
         --color "hl:-1:underline,hl+:-1:underline:reverse" \
         --delimiter : \
-        --preview 'bat --theme=gruvbox-dark --color=always {1} --highlight-line {2}' \
+        --preview "bat --theme=gruvbox-dark --color=always {1} --highlight-line {2} --wrap=character --terminal-width=`tput cols`" \
         --preview-window 'up,80%,border-bottom,+{2}+3/3,~3'
 )
 [ -n "${selected[0]}" ] && nvim "${selected[0]}" "+${selected[1]}"
-

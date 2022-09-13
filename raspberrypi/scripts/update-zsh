@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+cd ~/.config/zsh/oh-my-zsh && git fetch && git pull
+cd ~/.config/zsh/oh-my-zsh/custom/plugins/zsh-vi-mode && git fetct && git pull
+cd ~/.config/zsh/oh-my-zsh/custom/plugins/zsh-autosuggestions && git fetct && git pull
+cd ~/.config/zsh/oh-my-zsh/custom/plugins/zsh-syntax-highlighting && git fetct && git pull

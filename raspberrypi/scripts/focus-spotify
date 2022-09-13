@@ -3,5 +3,9 @@
 if pgrep -x spotify > /dev/null; then
     wmctrl -x -a spotify
 else
-    spotify --disable-gpu --disable-software-rasterizer
+    launch-bar music
+    spotify --disable-gpu --disable-software-rasterizer &
+    wait
+    pkill -f 'music'
 fi
+
