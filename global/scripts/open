@@ -8,9 +8,6 @@ source parseargs
 
 IFS=""
 for f in ${args[@]}; do
-    if [[ ! -r $f ]]; then
-        echo "$0: cannot open: '$f'" >&2
-    fi
-    xdg-open "$f" &>/dev/null &
-    disown
+	xdg-open "$f" &>/dev/null &
+	disown
 done

@@ -49,7 +49,8 @@ echo
 
 echo "Generating $HOSTNAME dotfiles..."
 
-if [[ $HOSTNAME = "raspberrypi" ]]; then
+case $HOSTNAME in
+raspberrypi)
 	rm -rf ~/.dotfiles/raspberrypi/.config
 	rm -rf ~/.dotfiles/raspberrypi/scripts
 	mkdir ~/.dotfiles/raspberrypi/.config
@@ -71,12 +72,22 @@ if [[ $HOSTNAME = "raspberrypi" ]]; then
 	cp -r ~/.dotfiles/global/dot-config/tmux ~/.dotfiles/raspberrypi/.config
 	sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
 	sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
+	;;
+esac
+
+if [[ $HOSTNAME = "raspberrypi" ]]; then
 else
 	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
+
 	if [[ $HOSTNAME != "coeus" ]] && [[ $HOSTNAME != "prometheus" ]]; then
+		unlink $DOTFILES/.config/zsh/env.zsh
+		cp $STOW_DIR/global/dot-config/zsh/env.zsh $DOTFILES/.config/zsh/env.zsh
 		sed -i 's/\(export TERM=\).*/\1"screen-256color"/' $DOTFILES/.config/zsh/env.zsh
-		sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
-		sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
+
+		rm $DOTFILES/.config/tmux/tmux.conf
+		cp $STOW_DIR/global/dot-config/tmux/tmux.conf $DOTFILES/.config/tmux/tmux.conf
+		sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' $DOTFILES/.config/tmux/tmux.conf
+		sed -i 's/cyan/red/g' $DOTFILES/.config/tmux/tmux.conf
 	fi
 fi
 
