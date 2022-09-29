@@ -74,17 +74,6 @@ uni() {
     fi
 }
 
-mkscript() {
-    if [[ -z $1 ]]; then
-        name=`read -p "script name: "`
-    else
-        name=$1
-    fi
-    echo "#!/usr/bin/env bash\n" > $name
-    # echo "source parseargs\n" >> $name
-    chmod +x $name
-    v $name
-}
 
 setvenv() {
     if [[ -z $1 ]]; then
