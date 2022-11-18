@@ -83,12 +83,15 @@ list | l)
 	cat "$DEVFILE"
 	;;
 menu | m)
-	icons="\n\n蓼"
+	icons="\n\n\n蓼"
 	# printf "%s\n" ${!devices[@]}
 	sel=$(echo -e "$icons" | rofi -no-fixed-num-lines -theme $HOME/.config/bt/btmenu.rasi -dmenu)
 	case $sel in
-	)
+	)
 		dev="airpods"
+		;;
+	)
+		dev="headphones"
 		;;
 	)
 		dev="wacom"

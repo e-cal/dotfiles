@@ -28,8 +28,8 @@ function zvm_after_init() {
     zle -N _jump
     bindkey "^j" _jump
 
-    # C-e -> ve
-    _special() { BUFFER="ve"; zle accept-line }
+    # C-e -> ranger
+    _special() { BUFFER="ranger"; zle accept-line }
     zle -N _special
     bindkey "^e" _special
 

@@ -24,6 +24,7 @@ alias "sshcloud"='ssh root@155.138.135.131'
 alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "mvimg"="mv ~/*.png ./"
+alias "pdfeditor"="masterpdfeditor4"
 
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle | head -c-1 | clip"

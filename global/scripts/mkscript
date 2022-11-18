@@ -6,6 +6,6 @@ else
 	name=$1
 fi
 
-echo "#!/usr/bin/env bash\n" >$name
+echo "#!/usr/bin/env bash" >$name
 chmod +x $name
 nvim $name

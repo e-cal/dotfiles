@@ -87,12 +87,16 @@ setvenv() {
 
 mkkernel() {
     if [[ -f ".venv" ]]; then
-        pip install jupyter ipykernel jupytext jupyter_contrib_nbextensions jupyterthemes jupyter_nbextensions_configurator
+        pip install jupyter ipykernel jupyter_contrib_nbextensions jupyterthemes jupyter_nbextensions_configurator jupyter_ascending # jupytext
         name=`cat .venv`
         python -m ipykernel install --name="$name" --user
 		jupyter nbextensions_configurator enable
 		jupyter contrib nbextensions install --user
 		jupyter nbextension enable collapsible_headings/main
+
+        jupyter nbextension install jupyter_ascending --sys-prefix --py
+        jupyter nbextension enable jupyter_ascending --sys-prefix --py
+        jupyter serverextension enable jupyter_ascending --sys-prefix --py
     else
         echo "no venv in current dir"
     fi
