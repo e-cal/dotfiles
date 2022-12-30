@@ -130,7 +130,7 @@ mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spaci
 mySpacing i = spacingRaw
                 True -- smart border
                      -- T B R L
-                (Border i i i i) False -- screen border
+                (Border 0 i i i) False -- screen border
                 (Border i i i i) True -- window border
 
 horizontal  = renamed [Replace "horizontal"]
