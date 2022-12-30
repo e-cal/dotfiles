@@ -41,7 +41,7 @@ cdh() {
     fi
 }
 
-cde() {
+cdc() {
     dirs=(
         dotfiles $STOW_DIR
         config $STOW_DIR/global/dot-config
