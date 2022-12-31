@@ -139,3 +139,21 @@ jtt() {
         jupytext $1 --to $2
     fi
 }
+
+mknb() {
+    cat > "$1".sync.ipynb <<EOF
+{
+ "cells": [],
+ "metadata": {
+  "jupytext": {
+   "cell_metadata_filter": "-all",
+   "formats": "ipynb,py:percent",
+   "notebook_metadata_filter": "-all"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
+EOF
+    echo "# %%" > "$1".sync.py
+}
