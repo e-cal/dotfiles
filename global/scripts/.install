@@ -76,19 +76,20 @@ raspberrypi)
 esac
 
 if [[ $HOSTNAME = "raspberrypi" ]]; then
+	echo
 else
 	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
 
-	if [[ $HOSTNAME != "coeus" ]] && [[ $HOSTNAME != "prometheus" ]]; then
-		unlink $DOTFILES/.config/zsh/env.zsh
-		cp $STOW_DIR/global/dot-config/zsh/env.zsh $DOTFILES/.config/zsh/env.zsh
-		sed -i 's/\(export TERM=\).*/\1"screen-256color"/' $DOTFILES/.config/zsh/env.zsh
+	#if [[ $HOSTNAME != "coeus" ]] && [[ $HOSTNAME != "prometheus" ]]; then
+	#	unlink $DOTFILES/.config/zsh/env.zsh
+	#	cp $STOW_DIR/global/dot-config/zsh/env.zsh $DOTFILES/.config/zsh/env.zsh
+	#	sed -i 's/\(export TERM=\).*/\1"screen-256color"/' $DOTFILES/.config/zsh/env.zsh
 
-		rm $DOTFILES/.config/tmux/tmux.conf
-		cp $STOW_DIR/global/dot-config/tmux/tmux.conf $DOTFILES/.config/tmux/tmux.conf
-		sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' $DOTFILES/.config/tmux/tmux.conf
-		sed -i 's/cyan/red/g' $DOTFILES/.config/tmux/tmux.conf
-	fi
+	#	rm $DOTFILES/.config/tmux/tmux.conf
+	#	cp $STOW_DIR/global/dot-config/tmux/tmux.conf $DOTFILES/.config/tmux/tmux.conf
+	#	sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' $DOTFILES/.config/tmux/tmux.conf
+	#	sed -i 's/cyan/red/g' $DOTFILES/.config/tmux/tmux.conf
+	#fi
 fi
 
 echo "Linking $HOSTNAME dotfiles..."
