@@ -1,4 +1,4 @@
-export TERM="xterm-kitty"
+export TERM="screen-256color"
 export TERMINAL="kitty"
 
 # Useful vars
