@@ -47,7 +47,7 @@ cdc() {
         config $STOW_DIR/global/dot-config
         nvim $DOTFILES/.config/nvim
         scripts $STOW_DIR/global/scripts
-        uni ~/Dropbox/uni/3F
+        polybar $DOTFILES/.config/polybar
         projects ~/projects
     )
     dir=`printf "%s %s\n" $dirs | fzf --with-nth 1 --border --height=20% --layout=reverse | awk '{print $2}'`
