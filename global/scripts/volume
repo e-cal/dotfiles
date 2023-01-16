@@ -22,11 +22,8 @@ function send_notification {
 }
 
 function update_bar {
-	if [[ $HOSTNAME == "coeus" ]]; then
-		polybar-msg -p "$(pgrep -f "polybar top")" hook volume 1 &>/dev/null
-	elif [[ $HOSTNAME == "prometheus" ]]; then
-		polybar-msg -p "$(pgrep -f "polybar sys")" hook volume 1 &>/dev/null
-	fi
+    pid=$(pgrep -f "polybar sys" || pgrep -f "polybar top")
+    polybar-msg -p $pid hook volume 1 &>/dev/null
 
 }
 
