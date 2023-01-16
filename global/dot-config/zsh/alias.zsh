@@ -7,7 +7,7 @@ alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --col
 alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always"
 alias ".ls"="/usr/bin/ls"
 
-alias "yeet"="yay -Rsn"
+alias "yeet"="paru -Rsn"
 alias "top"="bashtop"
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
@@ -30,7 +30,7 @@ alias "pdfeditor"="masterpdfeditor4"
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle | head -c-1 | clip"
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
-alias "aursearch"="yay -Slq | fzf -m --preview 'cat <(yay -Si {1}) <(yay -Fl {1} | awk \"{print $2}\")' | xargs -ro  yay -S"
+alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk \"{print $2}\")' | xargs -ro  paru -S"
 
 # Git
 alias "lg"="lazygit"
