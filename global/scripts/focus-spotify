@@ -3,8 +3,10 @@
 if pgrep -x spotify > /dev/null; then
     wmctrl -x -a spotify
 else
-    launch-bar music
+    [[ $HOSTNAME == "prometheus" ]] && launch-bar music
     spotify --disable-gpu --disable-software-rasterizer &
+    sleep 0.5
+    wmctrl -x -a spotify
     wait
     pkill -f 'music'
 fi

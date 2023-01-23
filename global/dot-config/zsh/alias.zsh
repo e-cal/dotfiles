@@ -26,6 +26,7 @@ alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "mvimg"="mv ~/*.png ./"
 alias "pdfeditor"="masterpdfeditor4"
+alias "rss"="canto-curses"
 
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle | head -c-1 | clip"
