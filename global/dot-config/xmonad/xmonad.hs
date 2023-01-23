@@ -301,7 +301,6 @@ myKeys = [
     , ("M-w", spawn "launch-browser default")
     , ("M-S-w", spawn "launch-browser")
     , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal"))
-    , ("M-S-c", spawn (mainBrowser ++ " https://calendar.google.com"))
     , ("M-S-d", spawn "inkscape $HOME/sketch.svg")
     , ("M-S-p", spawn "pass -l")
     , ("M-b", spawn "bt menu")
@@ -314,6 +313,7 @@ myKeys = [
     , ("M-S-n", spawn "obsidian")
     , ("M-;", spawn "setxkbmap us")
     , ("M-S-\\", spawn "setxkbmap code-dvorak")
+    , ("M-S-c", spawn "colorpicker")
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
