@@ -37,12 +37,12 @@ if xrandr | grep -q "DP-0 connected"; then
   xrandrcmd+="--output DP-0 --primary --mode 2560x1440 "
 fi
 
-if xrandr | grep -q "HDMI-0 connected"; then
-  xrandrcmd+="--output HDMI-0 --mode 1920x1080 --right-of DP-0 "
+if xrandr | grep -q "DP-2 connected"; then
+    xrandrcmd+="--output DP-2 --mode 1920x1080 --left-of DP-0 --rotate right "
 fi
 
-if xrandr | grep -q "DP-2 connected"; then
-  xrandrcmd+="--output DP-2 --mode 1920x1080 --left-of DP-0 --rotate right "
+if xrandr | grep -q "HDMI-0 connected"; then
+  xrandrcmd+="--output HDMI-0 --mode 1920x1080 --right-of DP-0 "
 fi
 
 xrandr $xrandrcmd
