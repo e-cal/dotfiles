@@ -68,7 +68,7 @@ def run_cmd(cmd):
     """Runs a shell command and returns the output.
     If there is more than one line in the output, a list of the lines is returned.
     """
-    res = os.popen(cmd).read()
+    res = os.popen(cmd).read().strip()
     return res
 
 
@@ -166,7 +166,7 @@ def reset():
     cur = run_cmd("tmux display-message -p '#S'")
     tmp = uuid()
     run_cmd(
-        f'tmux new -s {tmp} -d && tmux switch -t {tmp} && tmux send-keys -t {tmp} "tm kill {cur} && tm a {cur}; tm kill {tmp}" ENTER'
+        f'tmux new -s {tmp} -d && tmux switch -t {tmp} && tmux send-keys -t {tmp} "tm kill {cur} && tm attach {cur}; tm kill {tmp}" ENTER'
     )
 
 
@@ -200,12 +200,24 @@ def get_menu(refresh=False):
 
 
 def main():
-    # If args are provided, run them
-    # TODO: projects and abbrevs
     if len(sys.argv) > 1:
-        if sys.argv[1] in globals():
-            globals()[sys.argv[1]](*sys.argv[2:])
+        op = sys.argv[1]
+        if op not in globals():
+            expand = {
+                "a": "attach",
+                "n": "new",
+                "r": "reset",
+                "k": "kill",
+            }
+            op = expand[op] if op in expand else op
+        if op in globals():
+            try:
+                globals()[op](*sys.argv[2:])
+            except TypeError as e:
+                print(e)
+                exit(1)
         else:
+            print("invalid command")
             exit(1)
         exit()
 
