@@ -19,6 +19,7 @@ import qualified XMonad.StackSet as W
     -- Actions
 import XMonad.Actions.WithAll (killAll)
 import XMonad.Actions.WindowNavigation
+import XMonad.Actions.GroupNavigation
 import XMonad.Actions.CycleWS
 import XMonad.Actions.Minimize
 import XMonad.Actions.MouseResize
@@ -299,7 +300,7 @@ myKeys = [
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi")
     , ("M-e", spawn "nemo")
     , ("M-w", spawn "launch-browser default")
-    , ("M-S-w", spawn "launch-browser")
+    , ("M-S-w", spawn "launch-browser reset")
     , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal"))
     , ("M-S-d", spawn "inkscape $HOME/sketch.svg")
     , ("M-S-p", spawn "pass -l")
@@ -345,6 +346,7 @@ myKeys = [
     , ("M-.", sendMessage (IncMasterN (-1)))
     , ("M--", withFocused minimizeWindow)
     , ("M-+", withLastMinimized maximizeWindowAndFocus)
+    , ("M-M1-h", nextMatch History (return True))
 
 	, ("M-f", withFocused toggleFloat)
     , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
@@ -468,6 +470,7 @@ main = do
         $ myConfig {
          logHook = dynamicLogWithPP (myLogHook dbus)
              >> fadeInactiveLogHook 0.8
+             >> historyHook
         }
 
     xmonad fullConfig
