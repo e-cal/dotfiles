@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-nvim "__tmp.$1"
-rm "__tmp.$1"

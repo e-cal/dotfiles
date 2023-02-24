@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-cd $STOW_DIR
-git fetch
-git submodule update --remote --rebase
-status=`git pull --rebase`
-[[ $? = 0 && $status != "Already up to date." ]] && echo -e "Installing updates..." && .install || echo $status
