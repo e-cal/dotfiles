@@ -31,7 +31,6 @@ echo
 # Install dependencies
 echo "Installing dependencies..."
 
-sudo pacman -Syy
 packages=("stow" "zsh" "tmux" "neovim" "python" "lolcat" "starship" "exa")
 for package in ${packages[@]}; do
 	pacman -Q $package &>/dev/null
