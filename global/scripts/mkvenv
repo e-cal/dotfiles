@@ -17,6 +17,13 @@ if [[ -z $name ]]; then
 	read -p "name: " name
 fi
 [[ -z $name ]] && exit 1
+
+if [[ -d "$VIRTUALENV_HOME/$name" ]]; then
+	echo "venv $name already exists"
+	exit 1
+
+fi
+
 echo "making venv $name"
 
 eval "$pyexec -m venv '$VIRTUALENV_HOME/$name'"
