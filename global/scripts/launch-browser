@@ -8,10 +8,9 @@ case $1 in
         ;;
     reset)
         if [[ $(xdotool getwindowfocus getwindowclassname) == "Brave-browser" ]]; then
-            sleep 0.1
             launch-browser default
-            wait
-            xdotool key Super+Alt+h
+            sleep 0.2
+            xdotool key Super+Shift+U005C
             xdotool key Super+q
         else
             notify-send "window class: $(xdotool getwindowfocus getwindowclassname)"
