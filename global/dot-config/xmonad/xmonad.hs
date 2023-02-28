@@ -265,6 +265,10 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-button3, Set the window to floating mode and resize by dragging
     , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
                                        >> windows W.shiftMaster))
+    -- scroll up
+    , ((modm, button4), (\w -> spawn "volume up"))
+    -- scroll down
+    , ((modm, button5), (\w -> spawn "volume down"))
 	-- click to raise
 	-- , ((0, button1), (\w -> focus w >> do
 	-- 	{ floats <- gets (W.floating . windowset);
@@ -313,7 +317,6 @@ myKeys = [
     , ("M-S-t", spawn "launch-comm")
     , ("M-S-n", spawn "obsidian")
     , ("M-;", spawn "setxkbmap us")
-    , ("M-S-\\", spawn "setxkbmap code-dvorak")
     , ("M-S-c", spawn "colorpicker")
 
     -- Scratchpads
@@ -346,10 +349,11 @@ myKeys = [
     , ("M-.", sendMessage (IncMasterN (-1)))
     , ("M--", withFocused minimizeWindow)
     , ("M-+", withLastMinimized maximizeWindowAndFocus)
-    , ("M-M1-h", nextMatch History (return True))
+    , ("M-S-\\", nextMatch History (return True))
 
 	, ("M-f", withFocused toggleFloat)
     , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
+    , ("M-C-S-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle", broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
 	, ("M-S-f", sendMessage ToggleLayout)
 
     -- floating
