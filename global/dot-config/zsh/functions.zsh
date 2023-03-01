@@ -10,6 +10,7 @@ gco() {
 
 cda() {
     cd $1
+    pwd
     la
 }
 
@@ -45,11 +46,41 @@ cdc() {
     dirs=(
         dotfiles $STOW_DIR
         config $STOW_DIR/global/dot-config
-        nvim $DOTFILES/.config/nvim
+        .config $XDG_CONFIG_HOME
         scripts $STOW_DIR/global/scripts
-        polybar $DOTFILES/.config/polybar
         projects ~/projects
     )
+
+    # Add directories from $STOW_DIR/global/dot-config to the list
+    for dir in "$STOW_DIR/global/dot-config"/*; do
+        if [ -d "$dir" ]; then
+            dir_name=$(basename "$dir")
+            if [[ "$dir_name" == *" "* ]]; then
+                continue
+            fi
+            # Check if the directory name already exists in $dirs
+            if [[ ! " ${dirs[@]} " =~ " ${dir_name} " ]]; then
+                # Append the directory name and path to the $dirs array
+                dirs+=("$dir_name" "$dir")
+            fi
+        fi
+    done
+
+    # Add missing directories from $XDG_CONFIG_HOME to the list
+    for dir in "$XDG_CONFIG_HOME"/*; do
+        if [ -d "$dir" ]; then
+            dir_name=$(basename "$dir")
+            if [[ "$dir_name" == *" "* ]]; then
+                continue
+            fi
+            # Check if the directory name already exists in $dirs
+            if [[ ! " ${dirs[@]} " =~ " ${dir_name} " ]]; then
+                # Append the directory name and path to the $dirs array
+                dirs+=("$dir_name" "$dir")
+            fi
+        fi
+    done
+
     dir=`printf "%s %s\n" $dirs | fzf --with-nth 1 --border --height=20% --layout=reverse | awk '{print $2}'`
     if [[ ! -z $dir ]]; then
         cda $dir
