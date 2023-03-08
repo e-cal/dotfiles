@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-MAIN_BROWSER=brave
+MAIN_BROWSER=microsoft-edge-dev
 
 case $1 in
     default)

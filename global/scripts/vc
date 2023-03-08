@@ -17,6 +17,7 @@ declare -A files=(
 	["kitty"]="$DOTFILES/.config/kitty/kitty.conf"
 	["starship"]="$DOTFILES/.config/starship.toml"
 	["x11"]="$DOTFILES/.config/X11/xinitrc"
+	["picom"]="$DOTFILES/.config/picom/picom.conf"
 
 	["config"]="$STOW_DIR/global/dot-config"
 )
