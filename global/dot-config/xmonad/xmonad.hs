@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 -- =========================================== --
 --  ______     ______     ______     __        --
 -- /\  ___\   /\  ___\   /\  __ \   /\ \       --
@@ -14,6 +15,10 @@
 import XMonad hiding ( (|||) )
 import System.Exit
 import XMonad.ManageHook
+import XMonad.Operations
+import Control.Monad
+import Data.List (isInfixOf)
+import Control.Concurrent (threadDelay)
 import qualified XMonad.StackSet as W
 
     -- Actions
@@ -29,10 +34,12 @@ import qualified XMonad.Actions.Search as S
     -- Data
 import Data.Monoid
 import Data.Ratio
+import Data.Word (Word32)
 import qualified Data.Map as M
 
     -- Hooks
-import XMonad.Hooks.FadeInactive
+-- import XMonad.Hooks.FadeInactive
+import XMonad.Hooks.FadeWindows
 import XMonad.Hooks.Place
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Minimize
@@ -77,6 +84,7 @@ import XMonad.Util.EZConfig (additionalKeysP)
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.WorkspaceCompare
+import XMonad.Util.WindowProperties (getProp32s)
 
     -- DBus
 import qualified DBus as D
@@ -102,7 +110,7 @@ myTerminal = "kitty"
 myEditor :: String
 myEditor = "nvim"
 
-	-- Browser
+    -- Browser
 mainBrowser :: String
 mainBrowser = "brave"
 altBrowser :: String
@@ -144,34 +152,34 @@ horizontal  = renamed [Replace "horizontal"]
 full    = renamed [Replace "full"]
             $ noBorders Full
 vertical  = renamed [Replace "vertical"]
-			$ smartBorders
-			$ minimize . BW.boringWindows
+            $ smartBorders
+            $ minimize . BW.boringWindows
             $ mouseResize
-			$ mySpacing 5
-			$ Column 1.6
+            $ mySpacing 5
+            $ Column 1.6
 
 -- Not using
 accordion = renamed [Replace "Accordion"]
-			$ Accordion
+            $ Accordion
 cols  = renamed [Replace "cols"]
             $ smartBorders
             $ mySpacing 5
             $ minimize . BW.boringWindows
             $ ThreeCol 1 (3/100) (3/7)
 spirals  = renamed [Replace "Spiral"]
-			$ smartBorders
-			$ minimize . BW.boringWindows
-			$ mySpacing 5
-			$ spiral (6/7)
+            $ smartBorders
+            $ minimize . BW.boringWindows
+            $ mySpacing 5
+            $ spiral (6/7)
 
 myLayouts =
-	toggleLayouts full horizontal |||
-	toggleLayouts full vertical |||
-	toggleLayouts full cols
-	-- named "horizontal" horizontal |||
-	-- named "full" full |||
-	-- named "vertical" vertical |||
-	-- named "cols" cols
+    toggleLayouts full horizontal |||
+    toggleLayouts full vertical |||
+    toggleLayouts full cols
+    -- named "horizontal" horizontal |||
+    -- named "full" full |||
+    -- named "vertical" vertical |||
+    -- named "cols" cols
 
 myLayoutHook = avoidStruts $ windowArrange $ gaps [(L,0), (R,0), (U,0), (D,0)]
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myLayouts
@@ -214,12 +222,12 @@ myManageHook = composeAll
 -- bring clicked floating window to the front
 clickFocusFloatHook :: Event -> X All
 clickFocusFloatHook ButtonEvent { ev_window = w } = do
-	withWindowSet $ \s -> do
-		if isFloat w s
-		   then (focus w >> promote)
-		   else return ()
-		return (All True)
-		where isFloat w ss = M.member w $ W.floating ss
+    withWindowSet $ \s -> do
+        if isFloat w s
+           then (focus w >> promote)
+           else return ()
+        return (All True)
+        where isFloat w ss = M.member w $ W.floating ss
 clickFocusFloatHook _ = return (All True)
 
 --------------------------------------------------------------------------------
@@ -269,30 +277,15 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm, button4), (\w -> spawn "volume up"))
     -- scroll down
     , ((modm, button5), (\w -> spawn "volume down"))
-	-- click to raise
-	-- , ((0, button1), (\w -> focus w >> do
-	-- 	{ floats <- gets (W.floating . windowset);
-	-- 		if w `M.member` floats
-	-- 		then (focus w >> promote)
-	-- 		else return ()
-	-- 	}
-	-- ))
+    -- click to raise
+    -- , ((0, button1), (\w -> focus w >> do
+    --  { floats <- gets (W.floating . windowset);
+    --      if w `M.member` floats
+    --      then (focus w >> promote)
+    --      else return ()
+    --  }
+    -- ))
     ]
-
-
-{-
-clickFocusFloatHook :: Event -> X All
-	clickFocusFloatHook ButtonEvent { ev_window = w } = do
-	withWindowSet $ \s -> do
-	if isFloat w s
-		then (focus w >> promote)
-	else return ()
-		return (All True)
-			where isFloat w ss = M.member w $ W.floating ss
-			clickFocusFloatHook _ = return (All True)
--}
-
-
 
 --------------------------------------------------------------------------------
 -- Keybindings
@@ -318,6 +311,7 @@ myKeys = [
     , ("M-S-n", spawn "obsidian")
     , ("M-;", spawn "setxkbmap us")
     , ("M-S-c", spawn "colorpicker")
+    , ("M-t", spawn "picom-trans -c -d")
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
@@ -339,7 +333,7 @@ myKeys = [
         ])
 
     -- Window Management
-	-- tiled
+    -- tiled
     , ("M-C-<Down>", sequence_[sendMessage DeArrange, withFocused $ windows . W.sink]) -- Tile Mode
     , ("M-S-h", sendMessage Shrink)
     , ("M-S-l", sendMessage Expand)
@@ -351,10 +345,10 @@ myKeys = [
     , ("M-+", withLastMinimized maximizeWindowAndFocus)
     , ("M-S-\\", nextMatch History (return True))
 
-	, ("M-f", withFocused toggleFloat)
+    , ("M-f", withFocused toggleFloat)
     , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
-    , ("M-C-S-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle", broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
-	, ("M-S-f", sendMessage ToggleLayout)
+    , ("M-M1-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle", broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
+    , ("M-S-f", sendMessage ToggleLayout)
 
     -- floating
     , ("M-C-<Up>", sendMessage Arrange)
@@ -385,24 +379,24 @@ myKeys = [
     , ("<XF86MonBrightnessDown>", spawn "brightness down")
     , ("<XF86MonBrightnessUp>", spawn "brightness up")
 
-	---------------------------------------------------------------------------
-	-- Leader mappings
-	---------------------------------------------------------------------------
+    ---------------------------------------------------------------------------
+    -- Leader mappings
+    ---------------------------------------------------------------------------
 
-	-- Layout
+    -- Layout
     , ("M-<Space> l n", sendMessage NextLayout)
-	, ("M-<Space> l f", sendMessage $ JumpToLayout "full")
-	, ("M-<Space> l h", sendMessage $ JumpToLayout "horizontal")
-	, ("M-<Space> l v", sendMessage $ JumpToLayout "vertical")
-	, ("M-<Space> l c", sendMessage $ JumpToLayout "cols")
+    , ("M-<Space> l f", sendMessage $ JumpToLayout "full")
+    , ("M-<Space> l h", sendMessage $ JumpToLayout "horizontal")
+    , ("M-<Space> l v", sendMessage $ JumpToLayout "vertical")
+    , ("M-<Space> l c", sendMessage $ JumpToLayout "cols")
 
-	-- Brightness
-	-- presets
+    -- Brightness
+    -- presets
     , ("M-<Space> b d", spawn "brightness set 5")
     , ("M-<Space> b m", spawn "brightness set 25")
     , ("M-<Space> b b", spawn "brightness set 75")
     , ("M-<Space> b f", spawn "brightness set 100")
-	-- intervals
+    -- intervals
     , ("M-<Space> +", spawn "brightness set 10")
     , ("M-<Space> [", spawn "brightness set 20")
     , ("M-<Space> {", spawn "brightness set 30")
@@ -414,8 +408,8 @@ myKeys = [
     , ("M-<Space> ]", spawn "brightness set 90")
     , ("M-<Space> *", spawn "brightness set 100")
 
-	-- Volume / Audio Control
-	-- volume
+    -- Volume / Audio Control
+    -- volume
     , ("M-<Space> v +", spawn "volume set 10")
     , ("M-<Space> v [", spawn "volume set 20")
     , ("M-<Space> v {", spawn "volume set 30")
@@ -427,14 +421,14 @@ myKeys = [
     , ("M-<Space> v ]", spawn "volume set 90")
     , ("M-<Space> v *", spawn "volume set 0")
     , ("M-<Space> v m", spawn "volume mute")
-	-- player
+    -- player
     , ("M-<Space> v p", spawn "playerctl previous")
     , ("M-<Space> v <Space>", spawn "playerctl play-pause")
     , ("M-<Space> v n", spawn "playerctl next")
 
     ]
-	-- Change workspace with function keys
-	++
+    -- Change workspace with function keys
+    ++
     [ (otherModMasks ++ "M-" ++ key, action tag)
         | (tag, key)  <- zip myWorkspaces (map (\x -> "<F" ++ show x ++ ">") [1..12])
         , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
@@ -459,25 +453,6 @@ myWindowNavigation = withWindowNavigationKeys ([
     ((myModMask .|. controlMask, xK_h), WNSwap L),
     ((myModMask .|. controlMask, xK_l), WNSwap R)])
 
---------------------------------------------------------------------------------
--- Main
---------------------------------------------------------------------------------
-main = do
-    dbus <- D.connectSession
-    -- Request access to the DBus name
-    D.requestName dbus (D.busName_ "org.xmonad.Log")
-        [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
-
-    fullConfig <- myWindowNavigation
-        $ ewmh
-        $ docks
-        $ myConfig {
-         logHook = dynamicLogWithPP (myLogHook dbus)
-             >> fadeInactiveLogHook 0.8
-             >> historyHook
-        }
-
-    xmonad fullConfig
 
 --------------------------------------------------------------------------------
 -- Config
@@ -492,16 +467,16 @@ myConfig = def
     { terminal           = myTerminal
     , layoutHook         = myLayoutHook
     , manageHook         = namedScratchpadManageHook myScratchPads
---        <+> fh
+        -- <+> fh
         <+> placeHook(smart(0.5, 0.5))
         <+> manageDocks
         <+> myManageHook
         <+> manageHook def
         <+> insertPosition Below Newer
         <+> (isFullscreen --> doFullFloat)
-    , handleEventHook    = docksEventHook
-        <+> minimizeEventHook
-		<+> clickFocusFloatHook
+    -- , handleEventHook    = docksEventHook
+    , handleEventHook   = minimizeEventHook
+        <+> clickFocusFloatHook
         -- Allows windows to properly fullscreen
         -- breaks flameshot: https://github.com/flameshot-org/flameshot/issues/773#issuecomment-752933143
         -- <+> fullscreenEventHook
@@ -521,13 +496,14 @@ myConfig = def
         where
             wmName = stringProperty "WM_NAME"
 
+
 --------------------------------------------------------------------------------
 -- LogHook (xmonad-log output)
 --------------------------------------------------------------------------------
 myLogHook :: D.Client -> PP
 myLogHook dbus = def
     { ppOutput = dbusOutput dbus
-    , ppSort = fmap (.namedScratchpadFilterOutWorkspace) getSortByTag
+    -- , ppSort = fmap (.namedScratchpadFilterOutWorkspace) getSortByTag
     }
 
 dbusOutput :: D.Client -> String -> IO ()
@@ -540,3 +516,30 @@ dbusOutput dbus str = do
     objectPath = D.objectPath_ "/org/xmonad/Log"
     interfaceName = D.interfaceName_ "org.xmonad.Log"
     memberName = D.memberName_ "Update"
+
+
+myFadeHook = composeAll [
+    isUnfocused --> transparency 0.2, 
+    className =? "Microsoft-edge-dev" --> opaque
+    ]
+
+--------------------------------------------------------------------------------
+-- Main
+--------------------------------------------------------------------------------
+main = do
+    dbus <- D.connectSession
+    -- Request access to the DBus name
+    D.requestName dbus (D.busName_ "org.xmonad.Log")
+        [D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue]
+
+    fullConfig <- myWindowNavigation
+        $ ewmh
+        $ docks
+        $ myConfig {
+         logHook = dynamicLogWithPP (myLogHook dbus)
+             >> fadeWindowsLogHook myFadeHook
+             >> historyHook
+        }
+
+    xmonad fullConfig
+
