@@ -29,6 +29,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.Minimize
 import XMonad.Actions.MouseResize
 import XMonad.Actions.Promote
+import XMonad.Actions.OnScreen
 import qualified XMonad.Actions.Search as S
 
     -- Data
@@ -237,6 +238,10 @@ myStartupHook :: X ()
 myStartupHook = do
     spawnOnce "startup"
     setWMName "LG3D"
+    -- swap left and right monitors
+    windows (greedyViewOnScreen 2 "2")
+    windows (greedyViewOnScreen 1 "3")
+    windows (greedyViewOnScreen 0 "1")
 
 --------------------------------------------------------------------------------
 -- Scratchpads
