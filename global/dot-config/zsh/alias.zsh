@@ -46,7 +46,6 @@ alias "gb"='git --no-pager branch'
 alias "fixkeys"="setxkbmap code-dvorak"
 alias "ygb"="setxkbmap code-dvorak"
 alias "qwerty"="setxkbmap us"
-alias "launchbar"="~/.config/polybar/launch.sh"
 
 # Abbreviations
 alias "rg"="rg -S"
@@ -58,7 +57,6 @@ alias "start-docker"="sudo systemctl start docker"
 alias "stop-docker"="sudo systemctl stop docker"
 alias "venv"="python -m venv"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
-alias "msf"="msfconsole --quiet -x \"db_connect $USER@msf\""
 alias "cddl"="cda ~/Downloads"
 
 # System specific
@@ -68,8 +66,6 @@ alias "bat-stat"="sudo tlp-stat"
 alias "weather"="curl wttr.in -s | head -n -1"
 
 # Other
-# alias ".hack"="/usr/bin/git --git-dir=/opt/.hack --work-tree=/opt"
-# alias luamake=/home/ecal/projects/lua-language-server/3rd/luamake/luamake
 alias "prolog"="swipl"
 
 # Remove

@@ -29,6 +29,9 @@ export FZF_DEFAULT_COMMAND='rg -l ""'
 export FZF_DEFAULT_OPTS='--prompt=" " --pointer="›" --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'
 export FZF_INLINE='--border --height=50% --layout=reverse --no-info'
 
+export NNN_FIFO=/tmp/nnn.fifo
+export NNN_PLUG="p:preview-tui"
+
 # python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init.py
 export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
