@@ -68,6 +68,8 @@ alias "weather"="curl wttr.in -s | head -n -1"
 # Other
 alias "prolog"="swipl"
 
+alias "testlocm"="python ~/projects/macq/tests/extract/test_locm.py"
+
 # Remove
 unalias gco
 unalias gpu
