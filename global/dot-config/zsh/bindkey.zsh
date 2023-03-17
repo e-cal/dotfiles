@@ -6,6 +6,7 @@ function zvm_after_init() {
 	bindkey "^l" vi-forward-word
 	bindkey "^w" vi-forward-blank-word
     bindkey '^h' backward-delete-word
+    bindkey "^j" vi-forward-char
 	# bindkey "^h" vi-backward-word
 
     # C-r -> Reload
@@ -23,15 +24,10 @@ function zvm_after_init() {
     zle -N _dir_files
     bindkey "^p" _dir_files
 
-    # C-j -> cdh
-    _jump() { BUFFER="cdh"; zle accept-line }
-    zle -N _jump
-    bindkey "^j" _jump
-
     # C-e -> ranger
-    _special() { BUFFER="ranger"; zle accept-line }
-    zle -N _special
-    bindkey "^e" _special
+    _explorer() { BUFFER="n"; zle accept-line }
+    zle -N _explorer
+    bindkey "^e" _explorer
 
     # C-o -> cde
     _jump_shortlist() { BUFFER="cde"; zle accept-line }
@@ -50,11 +46,6 @@ function zvm_after_init() {
 
     # C-a -> get last arg
     bindkey -s "^a" '!$^M' # last arg
-
-    # C-g -> lg
-    _lg() { BUFFER="lg"; zle accept-line }
-    zle -N _lg
-    bindkey "^g" _lg
 
     # C-s -> bashtop
     _bashtop() { BUFFER="bashtop"; zle accept-line }
