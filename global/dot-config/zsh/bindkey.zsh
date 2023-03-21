@@ -5,9 +5,10 @@ function zvm_after_init() {
 
 	bindkey "^l" vi-forward-word
 	bindkey "^w" vi-forward-blank-word
-    bindkey '^h' backward-delete-word
+    # bindkey '^h' backward-delete-word
     bindkey "^j" vi-forward-char
 	# bindkey "^h" vi-backward-word
+    bindkey "^h" fzf-history-widget
 
     # C-r -> Reload
     _re_source() { BUFFER='[[ -n $VIRTUAL_ENV ]] && deactivate;exec zsh'; zle accept-line; }
@@ -24,7 +25,7 @@ function zvm_after_init() {
     zle -N _dir_files
     bindkey "^p" _dir_files
 
-    # C-e -> ranger
+    # C-e -> explorer
     _explorer() { BUFFER="n"; zle accept-line }
     zle -N _explorer
     bindkey "^e" _explorer
@@ -51,6 +52,7 @@ function zvm_after_init() {
     _bashtop() { BUFFER="bashtop"; zle accept-line }
     zle -N _bashtop
     bindkey "^s" _bashtop
+
 }
 
 function zvm_after_lazy_keybindings() {
