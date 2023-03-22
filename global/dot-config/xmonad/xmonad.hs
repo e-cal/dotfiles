@@ -112,10 +112,9 @@ myEditor :: String
 myEditor = "nvim"
 
     -- Browser
-mainBrowser :: String
-mainBrowser = "brave"
-altBrowser :: String
-altBrowser = "vieb"
+mainBrowser = "microsoft-edge-dev"
+altBrowser = "brave"
+altBrowserClass = "Brave-browser"
 
     -- Border
 myBorderWidth :: Dimension
@@ -256,7 +255,7 @@ myScratchPads = [
                         findTerm = title =? "scratch"
 
                         spawnBrowser = altBrowser
-                        findBrowser = className =? "Vieb"
+                        findBrowser = className =? altBrowserClass
 
                         -- % from left, % from top, width, height
                         manageScratchpad = customFloating $ W.RationalRect l t w h
@@ -320,8 +319,8 @@ myKeys = [
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
-    -- , ("M-/", namedScratchpadAction myScratchPads "browser")
-    , ("M-/", spawn "browser-scratchpad")
+    , ("M-S-\\", namedScratchpadAction myScratchPads "browser")
+    -- , ("M-/", spawn "browser-scratchpad")
 
     -- Kill Windows
     , ("M-q", kill) -- Focused window
@@ -348,7 +347,7 @@ myKeys = [
     , ("M-.", sendMessage (IncMasterN (-1)))
     , ("M--", withFocused minimizeWindow)
     , ("M-+", withLastMinimized maximizeWindowAndFocus)
-    , ("M-S-\\", nextMatch History (return True))
+    , ("M-M1-\\", nextMatch History (return True))
 
     , ("M-f", withFocused toggleFloat)
     , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
