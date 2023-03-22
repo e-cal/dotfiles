@@ -44,8 +44,13 @@ echo
 echo "Creating directories..."
 [[ -d $HOME/.config ]] || mkdir $HOME/.config
 [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
-echo
 
+# if $HOME/.config/mimeapps.list is not a symlink then remove it
+if [[ ! -L $HOME/.config/mimeapps.list ]]; then
+    [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
+fi
+
+echo
 echo "Generating $HOSTNAME dotfiles..."
 
 case $HOSTNAME in
