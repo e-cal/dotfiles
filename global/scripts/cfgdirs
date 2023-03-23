@@ -1,0 +1,92 @@
+#!/usr/bin/env zsh
+
+dirs=(
+    dotfiles $STOW_DIR
+    config $STOW_DIR/global/dot-config
+    .config $XDG_CONFIG_HOME
+    scripts $STOW_DIR/global/scripts
+    projects ~/projects
+)
+
+# Add directories from $STOW_DIR/global/dot-config to the list
+for dir in "$STOW_DIR/global/dot-config"/*; do
+    if [ -d "$dir" ]; then
+        dir_name=$(basename "$dir")
+        if [[ "$dir_name" == *" "* ]]; then
+            continue
+        fi
+        # Check if the directory name already exists in $dirs
+        if [[ ! " ${dirs[@]} " =~ " ${dir_name} " ]]; then
+            # Append the directory name and path to the $dirs array
+            dirs+=("$dir_name" "$dir")
+        fi
+    fi
+done
+
+# Add missing directories from $XDG_CONFIG_HOME to the list
+for dir in "$XDG_CONFIG_HOME"/*; do
+    if [ -d "$dir" ]; then
+        dir_name=$(basename "$dir")
+        if [[ "$dir_name" == *" "* ]]; then
+            continue
+        fi
+        # Check if the directory name already exists in $dirs
+        if [[ ! " ${dirs[@]} " =~ " ${dir_name} " ]]; then
+            # Append the directory name and path to the $dirs array
+            dirs+=("$dir_name" "$dir")
+        fi
+    fi
+done
+
+# check if called with --tmux
+tmux=false
+file=false
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --tmux) tmux=true ;;
+        --file) file=true ;;
+        *) break ;;
+    esac
+    shift
+done
+
+
+fzfcmd="fzf --with-nth 1"
+
+if [[ $tmux == false ]]; then
+    fzfcmd="$fzfcmd --height=20% --border --layout=reverse"
+fi
+
+sel=`printf "%s %s\n" $dirs | eval "$fzfcmd"`
+name=`echo "$sel" | awk '{print $1}'`
+dir=`echo "$sel" | awk '{print $2}'`
+
+if [[ $file == true ]] ; then
+    [[ -z $dir ]] && exit
+
+    files=`find "$dir" -maxdepth 1 -type f -printf "%f %p\n"`
+    sel=`printf "%s\n" $files | eval "$fzfcmd"`
+    file=`echo "$sel" | awk '{print $2}'`
+
+    if [[ $tmux == true ]] && [[ ! -z $file ]]; then
+        tmux new-window -n "cfg-$name" -c "$dir" -d
+        echo $?
+        tmux send-keys -t "cfg-$name" "nvim $file" ENTER
+        echo $?
+        tmux select-window -t "cfg-$name"
+        echo $?
+    else
+        echo "$file"
+    fi
+
+else
+    if [[ $tmux == true ]] && [[ ! -z $dir ]]; then
+        tmux new-window -n "cfg-$name" -c "$dir" -d
+        tmux send-keys -t "cfg-$name" "clear; la" ENTER
+        tmux select-window -t "cfg-$name"
+    else
+        echo "$dir"
+    fi
+fi
+
+

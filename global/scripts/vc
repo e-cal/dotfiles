@@ -4,48 +4,50 @@
 # reload if a zsh file is edited
 # reload if tmux is edited
 
-declare -A files=(
-	["nvim"]="$DOTFILES/.config/nvim"
-	["scripts"]="$DOTFILES/scripts"
-	["zsh"]="$DOTFILES/.config/zsh"
-	["alias"]="$DOTFILES/.config/zsh/alias.zsh"
+# declare -A files=(
+# 	["nvim"]="$DOTFILES/.config/nvim"
+# 	["scripts"]="$DOTFILES/scripts"
+# 	["zsh"]="$DOTFILES/.config/zsh"
+# 	["alias"]="$DOTFILES/.config/zsh/alias.zsh"
+# 
+# 	["tm"]="$DOTFILES/scripts/tm"
+# 	["tmux"]="$DOTFILES/.config/tmux/tmux.conf"
+# 	["polybar"]="$DOTFILES/.config/polybar"
+# 	["xmonad"]="$DOTFILES/.config/xmonad/xmonad.hs"
+# 	["kitty"]="$DOTFILES/.config/kitty/kitty.conf"
+# 	["starship"]="$DOTFILES/.config/starship.toml"
+# 	["x11"]="$DOTFILES/.config/X11/xinitrc"
+# 	["picom"]="$DOTFILES/.config/picom/picom.conf"
+# 
+# 	["config"]="$STOW_DIR/global/dot-config"
+# )
+# 
+# if [[ -v "files[$1]" ]]; then
+# 	sel=$1
+# else
+# 	sel=$(printf "%s\n" ${!files[@]} | fzf --header="Edit" $FZF_INLINE)
+# 	[[ -z $sel ]] && exit 0
+# fi
+# 
+# file=${files[$sel]}
+# nvim $file
+# 
+# case $sel in
+# zsh | alias | functions)
+# 	echo -e "\nReloading shell..."
+# 	sleep 0.1 && xdotool key Control+r &
+# 	;;
+# tmux)
+# 	sleep 0.1 && xdotool key Control+space R &
+# 	echo -e "\nReloading tmux..."
+# 	;;
+# kitty)
+# 	echo -e "\nRestart terminal"
+# 	;;
+# esac
+# 
+# echo -e "\nDotfiles git status:"
+# cd $STOW_DIR
+# git status -s
 
-	["tm"]="$DOTFILES/scripts/tm"
-	["tmux"]="$DOTFILES/.config/tmux/tmux.conf"
-	["polybar"]="$DOTFILES/.config/polybar"
-	["xmonad"]="$DOTFILES/.config/xmonad/xmonad.hs"
-	["kitty"]="$DOTFILES/.config/kitty/kitty.conf"
-	["starship"]="$DOTFILES/.config/starship.toml"
-	["x11"]="$DOTFILES/.config/X11/xinitrc"
-	["picom"]="$DOTFILES/.config/picom/picom.conf"
-
-	["config"]="$STOW_DIR/global/dot-config"
-)
-
-if [[ -v "files[$1]" ]]; then
-	sel=$1
-else
-	sel=$(printf "%s\n" ${!files[@]} | fzf --header="Edit" $FZF_INLINE)
-	[[ -z $sel ]] && exit 0
-fi
-
-file=${files[$sel]}
-nvim $file
-
-case $sel in
-zsh | alias | functions)
-	echo -e "\nReloading shell..."
-	sleep 0.1 && xdotool key Control+r &
-	;;
-tmux)
-	sleep 0.1 && xdotool key Control+space R &
-	echo -e "\nReloading tmux..."
-	;;
-kitty)
-	echo -e "\nRestart terminal"
-	;;
-esac
-
-echo -e "\nDotfiles git status:"
-cd $STOW_DIR
-git status -s
+nvim `cfgdirs --file`

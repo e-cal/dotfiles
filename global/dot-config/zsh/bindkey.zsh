@@ -30,20 +30,15 @@ function zvm_after_init() {
     zle -N _explorer
     bindkey "^e" _explorer
 
-    # C-o -> cde
-    _jump_shortlist() { BUFFER="cde"; zle accept-line }
-    zle -N _jump_shortlist
-    bindkey "^o" _jump_shortlist
+    # C-. -> cdc
+    _cd_cfg() { BUFFER="cdc"; zle accept-line }
+    zle -N _cd_cfg
+    bindkey "^[." _cd_cfg
 
     # C-t -> rgs
     _rgs() { BUFFER="rgs"; zle accept-line }
     zle -N _rgs
     bindkey "^t" _rgs
-
-    # C-l -> la
-    # _la() { BUFFER="la"; zle accept-line }
-    # zle -N _la
-    # bindkey "^l" _la
 
     # C-a -> get last arg
     bindkey -s "^a" '!$^M' # last arg
