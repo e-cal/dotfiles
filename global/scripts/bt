@@ -2,6 +2,10 @@
 
 DEVFILE=$HOME/.config/bt/devices
 
+pid=$(pgrep "bluetoothctl")
+
+[[ -n $pid ]] && notify-send "bluetoothctl running" "PID: $pid" -i ~/.config/dunst/images/bluetooth.png && exit
+
 # Power on bluetooth controller
 [[ $(bluetoothctl show | rg "Powered" | awk '{print $2}') == "yes" ]] || bluetoothctl power on
 
