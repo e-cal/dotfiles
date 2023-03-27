@@ -45,10 +45,15 @@ fi
 case $1 in
 connect | con | c)
 	dev=$(get_dev $2)
-	echo $dev
 	[[ -z $dev ]] && echo "Invalid device" && exit 1
 	mac=${devices[$dev]}
-	bluetoothctl connect $mac && notify-send "$dev connected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not connect $dev" -i ~/.config/dunst/images/bluetooth.png
+	bluetoothctl connect $mac | tee /tmp/bt.log
+	if $(grep -q "Connection successful" /tmp/bt.log); then
+		notify-send "$dev connected" -i ~/.config/dunst/images/bluetooth.png
+	else
+		notify-send "could not connect $dev" -i ~/.config/dunst/images/bluetooth.png
+		exit 1
+	fi
 	polybar-msg -p "$(pgrep -f "polybar $target_bar")" hook volume 1 &>/dev/null
 	[[ $dev = "wacom" ]] && config-wacom m
 	if [[ $dev = "airpods" ]]; then
@@ -60,7 +65,13 @@ disconnect | discon | d)
 	dev=$(get_dev $2)
 	[[ -z $dev ]] && echo "Invalid device" && exit 1
 	mac=${devices[$dev]}
-	bluetoothctl disconnect $mac && notify-send "$dev disconnected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not disconnect $dev" -i ~/.config/dunst/images/bluetooth.png
+	bluetoothctl disconnect $mac | tee /tmp/bt.log
+	if $(grep -q "Successful disconnected" /tmp/bt.log); then
+		notify-send "$dev disconnected" -i ~/.config/dunst/images/bluetooth.png
+	else
+		notify-send "could not disconnect $dev" -i ~/.config/dunst/images/bluetooth.png
+		exit 1
+	fi
 	polybar-msg -p "$(pgrep -f "polybar $target_bar")" hook volume 1 &>/dev/null
 	;;
 toggle | tog | t)
@@ -74,6 +85,9 @@ toggle | tog | t)
 		bt connect $dev
 	fi
 	;;
+log | l)
+	cat /tmp/bt.log
+	;;
 add | a)
 	[[ -z $2 || -z $3 ]] && echo "Usage: bt add [name] [mac]" && exit 1
 	echo "$2 $3" >>"$DEVFILE" && echo "Sucessfully added $2 ($3) to the list of devices"
@@ -83,7 +97,7 @@ remove)
 	! has_dev $2 && echo "Invalid device \"$2\"" && exit 1
 	sed -i "/^$2 /d" "$DEVFILE"
 	;;
-list | l)
+list)
 	cat "$DEVFILE"
 	;;
 menu | m)
