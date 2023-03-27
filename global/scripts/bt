@@ -45,7 +45,7 @@ connect | con | c)
 	[[ -z $dev ]] && echo "Invalid device" && exit 1
 	mac=${devices[$dev]}
 	bluetoothctl connect $mac && notify-send "$dev connected" -i ~/.config/dunst/images/bluetooth.png || notify-send "could not connect $dev" -i ~/.config/dunst/images/bluetooth.png
-    polybar-msg -p "$(pgrep -f "polybar $target_bar")" hook volume 1 &>/dev/null
+	polybar-msg -p "$(pgrep -f "polybar $target_bar")" hook volume 1 &>/dev/null
 	[[ $dev = "wacom" ]] && config-wacom m
 	if [[ $dev = "airpods" ]]; then
 		pacmd list-cards | grep 'Bean Pods' -m 1 -B 5 | head -1 | xargs | awk '{print $2}' | xargs -I % pacmd set-card-profile % a2dp_sink
@@ -83,10 +83,16 @@ list | l)
 	cat "$DEVFILE"
 	;;
 menu | m)
-	icons="\n\n\n蓼"
+	outermenu="󰂱\n󰂲\n󰜉"
+	op=$(echo -e "$outermenu" | rofi -no-fixed-num-lines -theme $HOME/.config/bt/btmenu.rasi -dmenu)
+	[[ -z $op ]] && exit
+	icons="蓼\n\n\n"
 	# printf "%s\n" ${!devices[@]}
 	sel=$(echo -e "$icons" | rofi -no-fixed-num-lines -theme $HOME/.config/bt/btmenu.rasi -dmenu)
 	case $sel in
+	蓼)
+		dev="heater"
+		;;
 	)
 		dev="airpods"
 		;;
@@ -96,11 +102,18 @@ menu | m)
 	)
 		dev="wacom"
 		;;
-	蓼)
-		dev="heater"
+	esac
+	case $op in
+	󰂱)
+		bt connect $dev
+		;;
+	󰂲)
+		bt disconnect $dev
+		;;
+	󰜉)
+		bt recon $dev
 		;;
 	esac
-	bt toggle $dev && [[ $dev = "wacom" ]] && notify-send "Run config-wacom"
 	;;
 restart | r)
 	sudo killall bluetoothd
