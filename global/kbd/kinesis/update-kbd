@@ -1,12 +1,12 @@
 #!/bin/bash
 
-if [ -z "$(ls -A $HOME/kbd/kinesis/vdrive)" ]
-then
-    sudo mount /dev/sdc $HOME/kbd/kinesis/vdrive
+[[ -d $HOME/kbd/kinesis/vdrive ]] || mkdir $HOME/kbd/kinesis/vdrive
+if [ -z "$(ls -A $HOME/kbd/kinesis/vdrive)" ]; then
+	sudo mount /dev/sdc $HOME/kbd/kinesis/vdrive
 fi
 
 cp $HOME/kbd/kinesis/dvorak.bak ~/kbd/kinesis/dvorak
-cat $HOME/kbd/kinesis/edits >> $HOME/kbd/kinesis/dvorak
+cat $HOME/kbd/kinesis/edits >>$HOME/kbd/kinesis/dvorak
 
 sudo cp $HOME/kbd/kinesis/edits $HOME/kbd/kinesis/vdrive/layouts/layout1.txt
 sudo cp $HOME/kbd/kinesis/dvorak $HOME/kbd/kinesis/vdrive/layouts/layout2.txt
