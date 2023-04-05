@@ -1,27 +1,28 @@
 #!/usr/bin/env bash
 
-song=`get-song`
+song=$(get-song)
 [[ -z $song ]] && exit 0
 len=${#song}
-widx=`tmux display-message -p '#{window_index}'`
-w=`tmux list-windows -F "#{window_index} #{window_width}" | grep -E "^$widx" | awk '{print $2}'`
+widx=$(tmux display-message -p '#{window_index}')
+w=$(tmux list-windows -F "#{window_index} #{window_width}" | grep -E "^$widx" | awk '{print $2}')
 
-sname=`tmux display-message -p '#S'`
+sname=$(tmux display-message -p '#S')
 sname=${#sname}
 
-wnames=`tmux lsw -F \#W`
-wcount=`echo $wnames | wc -w`
+wnames=$(tmux lsw -F \#W)
+wcount=$(echo $wnames | wc -w)
 wnames=${#wnames}
-left_space=$((($sname+5)+wnames+(2*$wcount)))
+left_space=$((($sname + 5) + wnames + (2 * $wcount)))
 
 all_right="  ddd mmm nn   hh:mmPP "
 all_right=${#all_right}
-extra=`tmux-battery get-len`
+extra=$(tmux-battery get-len)
 right_space=$all_right+$extra+1
 
-remaining=$(($w - ($left_space+$right_space+$len+2)))
-if (( $remaining > 1 && $wcount < 4 )); then
-    count=$(($remaining/2))
-    spaces=`printf '%*s' $count`
-    echo "$song$spaces"
+remaining=$(($w - ($left_space + $right_space + $len + 2)))
+# if (( $remaining > 1 && $wcount < 4 )); then
+if (($remaining > 1)); then
+	count=$((($remaining / 2) + $wcount))
+	spaces=$(printf '%*s' $count)
+	echo "$song$spaces"
 fi
