@@ -42,12 +42,6 @@ function zvm_after_init() {
 
     # C-a -> get last arg
     bindkey -s "^a" '!$^M' # last arg
-
-    # C-s -> bashtop
-    _bashtop() { BUFFER="bashtop"; zle accept-line }
-    zle -N _bashtop
-    bindkey "^s" _bashtop
-
 }
 
 function zvm_after_lazy_keybindings() {
