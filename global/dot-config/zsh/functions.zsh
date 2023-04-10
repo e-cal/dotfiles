@@ -79,7 +79,7 @@ setvenv() {
 
 mkkernel() {
     if [[ -f ".venv" ]]; then
-        pip install jupyter ipykernel jupyter_contrib_nbextensions jupyterthemes jupyter_nbextensions_configurator jupyter_ascending # jupytext
+        pip install jupyter ipykernel jupyter_contrib_nbextensions jupyterthemes jupyter_nbextensions_configurator jupyter_ascending
         name=`cat .venv`
         python -m ipykernel install --name="$name" --user
 		jupyter nbextensions_configurator enable
