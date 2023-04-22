@@ -25,6 +25,11 @@ function zvm_after_init() {
     zle -N _dir_files
     bindkey "^p" _dir_files
 
+    # C-o -> vr
+    _open_last() { BUFFER="vr"; zle accept-line }
+    zle -N _open_last
+    bindkey "^o" _open_last
+
     # C-e -> explorer
     _explorer() { BUFFER="n"; zle accept-line }
     zle -N _explorer
