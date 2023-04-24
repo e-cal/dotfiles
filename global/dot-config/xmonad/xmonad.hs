@@ -346,7 +346,7 @@ myKeys = [
     , ("M-,", sendMessage (IncMasterN 1))
     , ("M-.", sendMessage (IncMasterN (-1)))
     , ("M--", withFocused minimizeWindow)
-    , ("M-+", withLastMinimized maximizeWindowAndFocus)
+    , ("M-$", withLastMinimized maximizeWindowAndFocus)
     , ("M-M1-\\", nextMatch History (return True))
 
     , ("M-f", withFocused toggleFloat)
@@ -431,13 +431,22 @@ myKeys = [
     , ("M-<Space> v n", spawn "playerctl next")
 
     ]
-    -- Change workspace with function keys
+    -- Change workspace with number keys
     ++
     [ (otherModMasks ++ "M-" ++ key, action tag)
-        | (tag, key)  <- zip myWorkspaces (map (\x -> "<F" ++ show x ++ ">") [1..12])
-        , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
-                                     , ("S-", windows . W.shift)]
+    | (tag, key)  <- zip myWorkspaces ["+", "[", "{", "(", "&", "=", ")", "}", "]", "*"]
+     , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
+                                  , ("S-", windows . W.shift)]
     ]
+
+    -- Function keys
+    ++
+    [ (otherModMasks ++ "M-" ++ key, action tag)
+    | (tag, key)  <- zip myWorkspaces (map (\x -> "<F" ++ show x ++ ">") [1..12])
+     , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
+                                  , ("S-", windows . W.shift)]
+    ]
+
     where
         _l = 0.95 - _w -- offset from left
         _t = 0.95 - _h -- offset from top
