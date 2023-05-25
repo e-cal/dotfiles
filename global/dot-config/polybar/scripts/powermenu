@@ -30,10 +30,12 @@ ask_sync() {
 
 case $chosen in
 $shutdown)
-	ask_sync && dunstify "Shutting down..." && sleep 1 && sudo poweroff
+	# ask_sync && dunstify "Shutting down..." && sleep 1 && sudo poweroff
+	dunstify "Shutting down..." && sleep 1 && sudo poweroff
 	;;
 $reboot)
-	ask_sync && dunstify "Rebooting..." && sleep 1 && sudo reboot
+	# ask_sync && dunstify "Rebooting..." && sleep 1 && sudo reboot
+	dunstify "Rebooting..." && sleep 1 && sudo reboot
 	;;
 $suspend)
 	#betterlockscreen -l &
@@ -42,6 +44,7 @@ $suspend)
 	;;
 $logout)
 	session=$(loginctl session-status | head -n 1 | awk '{print $1}')
-	ask_sync && dunstify "Returning to tty..." && sleep 1 && loginctl terminate-session $session
+	# ask_sync && dunstify "Returning to tty..." && sleep 1 && loginctl terminate-session $session
+	dunstify "Returning to tty..." && sleep 1 && loginctl terminate-session $session
 	;;
 esac
