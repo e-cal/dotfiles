@@ -1,96 +1,28 @@
 #!/usr/bin/env bash
 source parseargs
 
-get_bucket() {
-	# Get existing bucket
-	buckets=($(rclone lsf cloud: | tr -d "/"))
-	buckets+=" ALL"
+mkdir -p ~/cloud/box ~/cloud/gdrive ~/cloud/storj
 
-	# Select bucket
-	bucket=${args[1]}
-	[[ $bucket == "all" ]] && bucket="ALL"
-	[[ -z $bucket || ! " ${buckets[@]} " =~ " $bucket " ]] &&
-		bucket=$(printf "%s\n" ${buckets[@]} | fzf --header="buckets" --info="hidden")
-	[[ -z $bucket ]] && exit 1
-	[[ $bucket == "ALL" ]] && bucket=""
-}
-
-case ${args[0]} in
-upload | u)
-	# Safety check
-	if pgrep -f "cloud d"; then
-		dunstify "Cloud" "($(date +'%H:%M')) Download in progress, cannot upload" -i ~/.config/dunst/images/warning.png -u critical -r 1111
-		exit 1
-	fi
-	get_bucket
-	dunstify "Cloud" "($(date +'%H:%M')) Uploading..." -i ~/.config/dunst/images/cloud.png -r 1111
-	rclone sync --progress $HOME/cloud/$bucket cloud:$bucket
-	[[ $? != 0 ]] && dunstify "Cloud" "($(date +'%H:%M')) Upload failed" -i ~/.config/dunst/images/warning.png -r 1111 && exit 1
-	dunstify "Cloud" "($(date +'%H:%M')) Upload complete" -i ~/.config/dunst/images/cloud.png -r 1111
+case $1 in
+mount)
+	# if [[ $2 == "gdrive" ]]; then
+	# 	rclone mount $2:local ~/cloud/$2 --daemon --vfs-cache-mode writes
+	# else
+	# fi
+	rclone mount $2: ~/cloud/$2 --daemon --vfs-cache-mode writes
 	;;
-download | d)
-	# Safety check
-	if pgrep -f "cloud u"; then
-		dunstify "Cloud" "($(date +'%H:%M')) Upload in progress, cannot download" -i ~/.config/dunst/images/warning.png -u critical -r 1112
-		exit 1
-	fi
-	get_bucket
-	echo "Downloading..."
-	dunstify "Cloud" "($(date +'%H:%M')) Downloading..." -i ~/.config/dunst/images/cloud.png -r 1112
-	rclone sync --progress cloud:$bucket $HOME/cloud/$bucket
-	[[ $? != 0 ]] && dunstify "Cloud" "($(date +'%H:%M')) Download failed" -i ~/.config/dunst/images/warning.png -r 1112 && exit 1
-	dunstify "Cloud" "($(date +'%H:%M')) Download complete" -i ~/.config/dunst/images/cloud.png -r 1112
-	;;
-backup | b)
-	echo "Backing up..."
-	[[ ! -d $HOME/backup ]] && mkdir $HOME/backup
-	num=$(find ~/backup -name "$(date +'%F')*" | wc -l)
-	if [[ $num > 0 ]]; then
-		cp -r $HOME/cloud $HOME/backup/$(date +"%F")_$num
-	else
-		cp -r $HOME/cloud $HOME/backup/$(date +"%F")
-	fi
-	;;
-autosync)
-	interval=${args[1]}
-	[[ -z $interval ]] && interval=5
-	printf "Starting auto sync at ""$interval""m intervals\n\n"
-	while true; do
-		sleep "$interval""m"
-		ansi --black-intense --faint "$(date +'%H:%M')"
-		cloud upload all
-	done
-	;;
-stat)
-	ps -ef | rg "cloud"
-	pgrep -f "cloud autosync" && echo " cloud autosync is running" || echo " cloud autosync not running"
-	;;
-stop)
-	pkill -f "cloud autosync" && echo " Stopped cloud autosync" || echo " cloud autosync not running"
-	;;
-share)
-	local_path=$(readlink -f $2)
-
-	# safety checks
-	[[ ! -f $local_path ]] && echo "file does not exist" && exit 1
-	[[ ! $local_path =~ ^/home/ecal/cloud/.*$ ]] && echo "cannot share a file not stored in the cloud" && exit 1
-
-	cloud_path=$(echo $local_path | sed 's/\/home\/ecal\/cloud\///')
-
-	time=$3
-	end_char=$(echo $time | tail -c2)
-	[[ ! $end_char =~ ^(s|m|h|d)$ ]] && echo "invalid expiry time" && exit 1
-	if [[ $end_char == "d" ]]; then
-		num_days=${time%d}
-		num_hours=$(($num_days * 24))
-		time="$num_hours""h"
+umount)
+	if [[ $2 == "all" ]]; then
+		for dir in ~/cloud/*; do
+			umount $dir
+		done
+		exit
 	fi
 
-	uplink cp $local_path sj://$cloud_path
-	uplink share sj://$cloud_path --url --public --not-after="+$time"
-	# TODO: copy link to clipboard
+	umount ~/cloud/$2
 	;;
 *)
-	echo "Command not recognized."
+	echo "Invalid command"
+	exit 1
 	;;
 esac
