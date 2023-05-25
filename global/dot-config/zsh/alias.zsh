@@ -15,6 +15,7 @@ alias "jn"="jupyter notebook"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "lskernels"="ls $HOME/.local/share/jupyter/kernels"
 alias "v"="nvim"
+alias "vc"='nvim $(cfgdirs --file)'
 alias "vr"="nvim -c 'OpenLast'"
 alias "clear"="clear;triangles"
 alias "celar"="clear"
