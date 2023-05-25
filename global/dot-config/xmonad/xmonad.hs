@@ -112,7 +112,7 @@ myEditor :: String
 myEditor = "nvim"
 
     -- Browser
-mainBrowser = "microsoft-edge-dev"
+mainBrowser = "firefox"
 altBrowser = "brave"
 altBrowserClass = "Brave-browser"
 
@@ -300,8 +300,7 @@ myKeys = [
     ("M-<Return>", spawn myTerminal)
     , ("M-S-<Return>", spawn "rofi -show drun -config $HOME/.config/rofi/main.rasi")
     , ("M-e", spawn "nemo")
-    , ("M-w", spawn "launch-browser default")
-    , ("M-S-w", spawn "launch-browser reset")
+    , ("M-w", spawn mainBrowser)
     , ("M-S-g", spawn (mainBrowser ++ " https://github.com/e-cal"))
     , ("M-S-d", spawn "inkscape $HOME/sketch.svg")
     , ("M-S-p", spawn "pass -l")
@@ -533,7 +532,9 @@ dbusOutput dbus str = do
 
 myFadeHook = composeAll [
     isUnfocused --> transparency 0.2, 
-    className =? "Microsoft-edge-dev" --> opaque
+    className =? "Microsoft-edge-dev" --> opaque,
+    className =? "firefox-aurora" --> opaque,
+    className =? "Navigator" --> opaque
     ]
 
 --------------------------------------------------------------------------------
