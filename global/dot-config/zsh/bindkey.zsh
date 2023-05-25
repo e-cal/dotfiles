@@ -11,9 +11,9 @@ function zvm_after_init() {
     # bindkey "^r" fzf-history-widget
 
     # C-r -> Reload
-    _re_source() { BUFFER='[[ -n $VIRTUAL_ENV ]] && deactivate;exec zsh'; zle accept-line; }
-    zle -N _re_source
-    bindkey "shift-^r" _re_source
+    _reload() { BUFFER='[[ -n $VIRTUAL_ENV ]] && deactivate;exec zsh'; zle accept-line; }
+    zle -N _reload
+    bindkey "^[R" _reload
 
     # C-k -> Clear
     _clear() { BUFFER="clear"; zle accept-line }
