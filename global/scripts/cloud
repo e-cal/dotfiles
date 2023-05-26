@@ -5,10 +5,13 @@ mkdir -p ~/cloud/box ~/cloud/gdrive ~/cloud/storj
 
 case $1 in
 mount)
-	# if [[ $2 == "gdrive" ]]; then
-	# 	rclone mount $2:local ~/cloud/$2 --daemon --vfs-cache-mode writes
-	# else
-	# fi
+	if [[ $2 == "all" ]]; then
+		for dir in ~/cloud/*; do
+			rclone mount $dir: ~/cloud/$dir --daemon --vfs-cache-mode writes
+		done
+		exit
+	fi
+
 	rclone mount $2: ~/cloud/$2 --daemon --vfs-cache-mode writes
 	;;
 umount)
