@@ -129,7 +129,7 @@ def startup():
         startup()
     elif wtitle == "ask":
         print("attaching ask")
-        attach("ask", run="ask")
+        attach("ask", run="ask;exit")
         startup()
     else:
         if session_exists("main"):
