@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+tmux neww -n "ask" zsh -c "ask -n;zsh"

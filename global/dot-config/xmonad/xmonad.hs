@@ -248,11 +248,15 @@ myStartupHook = do
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [
                     NS "terminal" spawnTerm findTerm manageScratchpad,
+                    NS "ask" spawnAsk findAsk manageScratchpad,
                     NS "browser" spawnBrowser findBrowser manageScratchpad
                 ]
                     where
                         spawnTerm = myTerminal ++ " --title scratch"
                         findTerm = title =? "scratch"
+
+                        spawnAsk= myTerminal ++ " --title ask"
+                        findAsk = title =? "ask"
 
                         spawnBrowser = altBrowser
                         findBrowser = className =? altBrowserClass
@@ -318,6 +322,7 @@ myKeys = [
 
     -- Scratchpads
     , ("M-\\", namedScratchpadAction myScratchPads "terminal")
+    , ("M-/", namedScratchpadAction myScratchPads "ask")
     , ("M-S-\\", namedScratchpadAction myScratchPads "browser")
     -- , ("M-/", spawn "browser-scratchpad")
 

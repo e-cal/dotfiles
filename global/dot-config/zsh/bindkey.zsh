@@ -35,10 +35,15 @@ function zvm_after_init() {
     zle -N _explorer
     bindkey "^e" _explorer
 
-    # C-. -> cdc
+    # alt-. -> cdc
     _cd_cfg() { BUFFER="cdc"; zle accept-line }
     zle -N _cd_cfg
     bindkey "^[." _cd_cfg
+
+    # alt-shift-. -> vc
+    _v_cfg() { BUFFER="vc"; zle accept-line }
+    zle -N _v_cfg
+    bindkey "^[>" _v_cfg
 
     # C-t -> rgs
     _rgs() { BUFFER="rgs"; zle accept-line }
