@@ -113,8 +113,8 @@ myEditor = "nvim"
 
     -- Browser
 mainBrowser = "firefox"
-altBrowser = "brave"
-altBrowserClass = "Brave-browser"
+altBrowser = "microsoft-edge-dev"
+altBrowserClass = "Microsoft-edge-dev"
 
     -- Border
 myBorderWidth :: Dimension
@@ -248,7 +248,7 @@ myStartupHook = do
 myScratchPads :: [NamedScratchpad]
 myScratchPads = [
                     NS "terminal" spawnTerm findTerm manageScratchpad,
-                    NS "ask" spawnAsk findAsk manageScratchpad,
+                    NS "ask" spawnAsk findAsk manageScratchpadSmall,
                     NS "browser" spawnBrowser findBrowser manageScratchpad
                 ]
                     where
@@ -268,6 +268,15 @@ myScratchPads = [
                                 t = 0.95 - h -- offset from top
                                 w = 0.9 -- width
                                 h = 0.9 -- height
+
+                        manageScratchpadSmall = customFloating $ W.RationalRect l t w h
+                            where
+                                l = 0.90 - w -- offset from left
+                                t = 0.90 - h -- offset from top
+                                w = 0.8 -- width
+                                h = 0.8 -- height
+
+
 
 --------------------------------------------------------------------------------
 -- Mouse Bindings
