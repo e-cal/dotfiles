@@ -108,7 +108,7 @@ def start_session(session, start_dir=None, run=None):
             run_cmd(run)
         else:  # is a shell command
             run_cmd(
-                f'tmux send-keys -t {session} "tmux set-option status off && clear && {run}" ENTER'
+                f'tmux send-keys -t {session} "tmux set-option status off && clear && echo && {run}" ENTER'
             )
 
 
@@ -140,7 +140,7 @@ def startup():
             attach("main")
 
 
-def new(name=None, start_dir=None, *args):
+def new(name=None, start_dir=None):
     while not name:
         name = input("session name: ")
         if name in sessions:
