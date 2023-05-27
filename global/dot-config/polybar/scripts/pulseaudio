@@ -28,7 +28,7 @@ print_vol() {
 		elif (($vol < 50)); then
 			icon=󰖀
 		elif (($vol < 75)); then
-			icon=󰕾
+			icon="󰕾 "
 		else
 			icon="   "
 		fi
