@@ -6,8 +6,11 @@ mkdir -p ~/cloud/box ~/cloud/gdrive ~/cloud/storj
 case $1 in
 mount)
 	if [[ $2 == "all" ]]; then
+		# currently dir is the full path, need to modify to just get the end
 		for dir in ~/cloud/*; do
-			rclone mount $dir: ~/cloud/$dir --daemon --vfs-cache-mode writes
+			name=$(basename $dir)
+			echo "Mounting $name"
+			rclone mount $name: $dir --daemon --vfs-cache-mode writes
 		done
 		exit
 	fi
