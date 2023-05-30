@@ -1,10 +1,14 @@
+alias ".."="cd .."
+alias "..."="cd ../.."
+alias "...."="cd ../../.."
+
 alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directories-first --icons'
 alias "la"="ls -a"
 alias "ll"="exa -la --group-directories-first --no-permissions --no-time --git --color=always"
 alias "lla"="exa -la --group-directories-first --git -h --color=always"
 alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=always | less"
 alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always | less"
-alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always"
+alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always -I .git"
 alias ".ls"="/usr/bin/ls"
 
 alias "yeet"="paru -Rsn"
@@ -71,7 +75,3 @@ alias "weather"="curl wttr.in -s | head -n -1"
 alias "prolog"="swipl"
 
 alias "testlocm"="python ~/projects/macq/tests/extract/test_locm.py"
-
-# Remove
-unalias gco
-unalias gpu
