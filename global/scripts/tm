@@ -178,7 +178,7 @@ def reset():
     )
 
 
-def project(proj_dir):
+def project(proj_dir, sel=None):
     if proj_dir.rename:  # rename projects
         projects = {
             x.name: x
@@ -190,9 +190,28 @@ def project(proj_dir):
     else:
         projects = {x.name: x for x in proj_dir.path.iterdir() if x.is_dir()}
 
-    sel = fzf_menu(list(projects.keys()), title=proj_dir.name)
-    if sel:
-        attach(sel, projects[sel])
+    projects["NEW"] = "NEW"
+
+    if not sel:
+        sel = fzf_menu(list(projects.keys()), title=proj_dir.name)
+    if not sel:
+        return
+
+    if sel == "NEW":
+        name = input("project name: ")
+        if not name:
+            return
+
+        if name.startswith("http") or name.startswith("git"):
+            url = name
+            name = name.split("/")[-1].split(".")[0]
+            run_cmd(f"git clone {url} $HOME/projects/{name}")
+
+        proj_dir.path.joinpath(name).mkdir(parents=True, exist_ok=True)
+        attach(name, proj_dir.path.joinpath(name))
+        return
+
+    attach(sel, projects[sel])
 
 
 def get_menu(refresh=False):
@@ -208,6 +227,7 @@ def get_menu(refresh=False):
 
 
 def main():
+    # Handle args
     if len(sys.argv) > 1:
         op = sys.argv[1]
         if op not in globals():
@@ -218,6 +238,12 @@ def main():
                 "k": "kill",
             }
             op = expand[op] if op in expand else op
+        if op in ("p", "project", "projects"):
+            if len(sys.argv) > 2:
+                project(PROJECTDIRS[0], sys.argv[2])
+            else:
+                project(PROJECTDIRS[0])
+            exit()
         if op in globals():
             try:
                 globals()[op](*sys.argv[2:])
@@ -229,6 +255,7 @@ def main():
             exit(1)
         exit()
 
+    # Main menu
     if not sessions:  # start tmux if its not running
         print("starting tmux server...")
         startup()
