@@ -17,9 +17,12 @@ export XDG_DATA_HOME=~/.local/share
 # zsh
 export ZSH_COMPDUMP="$XDG_CACHE_HOME"/zsh/compdump
 export HISTFILE="$XDG_CACHE_HOME"/zsh/history
+export HISTSIZE=10000
+export SAVEHIST=10000
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
+setopt appendhistory
 export PROMPT_EOL_MARK=""
 export PS2="  "
 export ZVM_CURSOR_STYLE_ENABLED=false
