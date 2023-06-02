@@ -26,17 +26,15 @@ alias "celar"="clear"
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
 alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)'
-alias "sshcloud"='ssh root@155.138.135.131'
 alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
-alias "mvimg"="mv ~/*.png ./"
 alias "pdfeditor"="masterpdfeditor4"
-alias "rss"="canto-curses"
 
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle | head -c-1 | clip"
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
 alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk \"{print $2}\")' | xargs -ro  paru -S"
+alias "psrg"="ps -ef | rg"
 
 # Git
 alias "lg"="lazygit"
