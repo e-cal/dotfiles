@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
-icon=$(curl "wttr.in/?format=%c")
 postal=$(cat ~/.cache/postalcode)
+prefix=""
+fmt=""
 
 case $1 in
 temp)
-	[[ -z $postal ]] && notify-send "Weather" "Postal code not set. Using IP" --icon=~/.config/dunst/images/brightness.png
-	temp=$(curl -q "wttr.in/$postal?format=%t")
+	fmt="%t"
 	;;
 feel)
-	[[ -z $postal ]] && notify-send "Weather" "Postal code not set. Using IP" --icon=~/.config/dunst/images/brightness.png
-	temp="~$(curl -q "wttr.in/$postal?format=%f")"
+	fmt="%f"
+	prefix="~"
 	;;
 toggle)
 	CACHE_FILE=~/.cache/polybar/weather
@@ -22,11 +22,13 @@ toggle)
 	nxt=$((3 - cur)) # 2 if cur is 1 // 1 if cur is 2
 	echo $nxt >$CACHE_FILE
 	polybar-msg -p "$(pgrep -f "polybar clock")" hook weather $nxt &>/dev/null
-	;;
-*)
-	temp=$(curl "wttr.in/?format=%t")
+	exit
 	;;
 esac
 
+icon=$(curl "wttr.in/?format=%c")
+[[ -z $postal ]] && notify-send "Weather" "Postal code not set. Using IP" --icon=~/.config/dunst/images/brightness.png
+temp="$(curl -q "wttr.in/$postal?format=$fmt")"
+
 temp=${temp//+/}
-echo "$icon $temp"
+echo "$icon $prefix$temp"
