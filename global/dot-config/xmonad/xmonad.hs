@@ -363,7 +363,7 @@ myKeys = [
     , ("M-M1-\\", nextMatch History (return True))
 
     , ("M-f", withFocused toggleFloat)
-    , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
+    , ("M-C-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-toggle"])
     , ("M-M1-f", sequence_[broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle", broadcastMessage $ ToggleStruts, refresh, spawn "polybar-msg cmd toggle"])
     , ("M-S-f", sendMessage ToggleLayout)
 
@@ -443,14 +443,25 @@ myKeys = [
     , ("M-<Space> v <Space>", spawn "playerctl play-pause")
     , ("M-<Space> v n", spawn "playerctl next")
 
+    , ("M-+", sequence_[windows $ W.greedyView "1", spawn "wsnotify"])
+    , ("M-[", sequence_[windows $ W.greedyView "2", spawn "wsnotify"])
+    , ("M-{", sequence_[windows $ W.greedyView "3", spawn "wsnotify"])
+    , ("M-(", sequence_[windows $ W.greedyView "4", spawn "wsnotify"])
+    , ("M-&", sequence_[windows $ W.greedyView "5", spawn "wsnotify"])
+    , ("M-=", sequence_[windows $ W.greedyView "6", spawn "wsnotify"])
+    , ("M-)", sequence_[windows $ W.greedyView "7", spawn "wsnotify"])
+    , ("M-}", sequence_[windows $ W.greedyView "8", spawn "wsnotify"])
+    , ("M-]", sequence_[windows $ W.greedyView "9", spawn "wsnotify"])
+    , ("M-*", sequence_[windows $ W.greedyView "10", spawn "wsnotify"])
+
     ]
     -- Change workspace with number keys
-    ++
-    [ (otherModMasks ++ "M-" ++ key, action tag)
-    | (tag, key)  <- zip myWorkspaces ["+", "[", "{", "(", "&", "=", ")", "}", "]", "*"]
-     , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
-                                  , ("S-", windows . W.shift)]
-    ]
+    -- ++
+    -- [ (otherModMasks ++ "M-" ++ key, action tag)
+    -- | (tag, key)  <- zip myWorkspaces ["+", "[", "{", "(", "&", "=", ")", "}", "]", "*"]
+    --  , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
+    --                               , ("S-", windows . W.shift)]
+    -- ]
 
     -- Function keys
     ++

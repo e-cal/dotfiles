@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# CACHE_FILE="$HOME/.cache/polybar-toggle-state"
+CACHE_FILE="/tmp/polybar-toggle-state"
+echo "1" >"$CACHE_FILE"
+
 if [[ $# = 0 ]]; then
 	killall -q polybar
 	sleep 3 # wait for polybar to shutdown, should be more than enough time

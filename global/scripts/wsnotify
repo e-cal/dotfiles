@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# CACHE_FILE="$HOME/.cache/polybar-toggle-state"
+CACHE_FILE="/tmp/polybar-toggle-state"
+STATE=$(cat "$CACHE_FILE")
+[[ $STATE == "1" ]] && exit 0
+
+num_workspaces=$(($(xdotool get_num_desktops) - 1))
+declare -A icons
+icons=(
+	[0]=" "
+	[1]=" "
+	[2]=" "
+	[3]="󰍡 󰍥"
+	[4]=" "
+	[5]="󰎄 󰎅"
+	[6]="󰐗 󰐙"
+)
+
+out=""
+for ((i = 0; i < $num_workspaces; i++)); do
+	num_windows=$(wmctrl -l | grep " $i " | wc -l)
+
+	if [[ $num_windows > 0 ]]; then
+		out="$out ${icons[$i]:0:1} "
+	else
+		out="$out ${icons[$i]:2:1} "
+	fi
+
+done
+
+fill=$((15 - $num_workspaces))
+for ((i = 0; i < $fill; i++)); do
+	out=" $out"
+done
+
+NOTIF_CACHE_FILE="/tmp/polybar-toggle-state-notif-id"
+PREV=$(cat "$NOTIF_CACHE_FILE")
+PREV=${PREV:-0}
+
+notify-send "$out" --icon=none --expire-time=1500 --replace-id="$PREV" -p >"$NOTIF_CACHE_FILE"
