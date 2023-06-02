@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 
 icon=$(curl "wttr.in/?format=%c")
+postal=$(cat ~/.cache/postalcode)
 
 case $1 in
 temp)
-	temp=$(curl "wttr.in/?format=%t")
+	[[ -z $postal ]] && notify-send "Weather" "Postal code not set. Using IP" --icon=~/.config/dunst/images/brightness.png
+	temp=$(curl -q "wttr.in/$postal?format=%t")
 	;;
 feel)
-	temp="~$(curl "wttr.in/?format=%f")"
+	[[ -z $postal ]] && notify-send "Weather" "Postal code not set. Using IP" --icon=~/.config/dunst/images/brightness.png
+	temp="~$(curl -q "wttr.in/$postal?format=%f")"
 	;;
 toggle)
 	CACHE_FILE=~/.cache/polybar/weather
