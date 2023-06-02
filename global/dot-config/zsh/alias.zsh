@@ -51,6 +51,8 @@ alias "gb"='git --no-pager branch'
 alias "fixkeys"="setxkbmap code-dvorak"
 alias "ygb"="setxkbmap code-dvorak"
 alias "qwerty"="setxkbmap us"
+alias "aoeu"="setxkbmap us"
+alias "asdf"="setxkbmap code-dvorak"
 
 # Abbreviations
 alias "rg"="rg -S"
