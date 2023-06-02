@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+icon=$(curl "wttr.in/?format=%c")
+
+case $1 in
+temp)
+	temp=$(curl "wttr.in/?format=%t")
+	;;
+feel)
+	temp="~$(curl "wttr.in/?format=%f")"
+	;;
+toggle)
+	CACHE_FILE=~/.cache/polybar/weather
+	if [[ ! -e $CACHE_FILE ]]; then
+		mkdir -p $(dirname $CACHE_FILE)
+		echo "1" >$CACHE_FILE
+	fi
+	cur=$(cat ~/.cache/polybar/weather)
+	nxt=$((3 - cur)) # 2 if cur is 1 // 1 if cur is 2
+	echo $nxt >$CACHE_FILE
+	polybar-msg -p "$(pgrep -f "polybar clock")" hook weather $nxt &>/dev/null
+	;;
+*)
+	temp=$(curl "wttr.in/?format=%t")
+	;;
+esac
+
+temp=${temp//+/}
+echo "$icon $temp"
