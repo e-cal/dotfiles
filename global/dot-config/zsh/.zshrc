@@ -4,8 +4,8 @@ source $HOME/.config/zsh/alias.zsh
 source $HOME/.config/zsh/functions.zsh
 source $HOME/.config/zsh/bindkey.zsh
 
+# Load direnv
+eval "$(direnv hook zsh)"
+
 # Load prompt
 eval "$(starship init zsh)"
-
-# Load pyenv
-# eval "$(pyenv init --path)"
