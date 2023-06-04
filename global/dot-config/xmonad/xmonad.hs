@@ -456,12 +456,13 @@ myKeys = [
 
     ]
     -- Change workspace with number keys
-    -- ++
-    -- [ (otherModMasks ++ "M-" ++ key, action tag)
-    -- | (tag, key)  <- zip myWorkspaces ["+", "[", "{", "(", "&", "=", ")", "}", "]", "*"]
-    --  , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
-    --                               , ("S-", windows . W.shift)]
-    -- ]
+    ++
+    [ (otherModMasks ++ "M-" ++ key, action tag)
+    | (tag, key)  <- zip myWorkspaces ["+", "[", "{", "(", "&", "=", ")", "}", "]", "*"]
+     -- , (otherModMasks, action) <- [ ("", windows . W.greedyView) -- or W.view
+     --                              , ("S-", windows . W.shift)]
+        , (otherModMasks, action) <- [("S-", windows . W.shift)]
+    ]
 
     -- Function keys
     ++
