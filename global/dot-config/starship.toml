@@ -79,40 +79,6 @@ format = "🕙 $time($style) "
 style = "bright-white"
 disabled = true
 
-[python]
-format = '[${symbol}(${version} )(\($virtualenv\) )]($style)'
-symbol = " "
-
-[nodejs]
-symbol = " "
-format = "[$symbol$version]($style) "
-
-[lua]
-symbol = " "
-format = "[$symbol$version]($style) "
-
-[cmake]
-symbol = "喝"
-format = "[$symbol$version]($style) "
-
-[ruby]
-symbol = " "
-format = "[$symbol$version]($style) "
-
-[java]
-symbol = " "
-format = "[$symbol$version]($style) "
-
-[perl]
-symbol = "/ "
-format = "[$symbol$version]($style) "
-
-[rust]
-format = "[$symbol($version)]($style) "
-version_format = "${raw}"
-symbol = "🦀 "
-style = "bold red"
-
 [package]
 disabled = true
 
@@ -180,3 +146,43 @@ bash_indicator = "𝐁 "
 xonsh_indicator = "𝐗 "
 unknown_indicator = " "
 format = "$indicator"
+
+[python]
+symbol = " "
+format = '[${symbol}(${version} )(\($virtualenv\) )]($style)'
+
+[nodejs]
+symbol = " "
+format = "[$symbol$version]($style) "
+style = "bold blue"
+
+[lua]
+symbol = " "
+format = "[$symbol$version]($style) "
+
+[cmake]
+symbol = "喝"
+format = "[$symbol$version]($style) "
+
+[ruby]
+symbol = " "
+format = "[$symbol$version]($style) "
+
+[java]
+symbol = " "
+format = "[$symbol$version]($style) "
+
+[perl]
+symbol = "/ "
+format = "[$symbol$version]($style) "
+
+[rust]
+format = "[$symbol($version)]($style) "
+version_format = "${raw}"
+symbol = "󱘗 "
+style = "bold red"
+
+[golang]
+format = "[$symbol($version)]($style) "
+symbol = " "
+style = "bold blue"
