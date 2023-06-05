@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from uuid import uuid4 as uuid
 
+HOME = Path.home()
+
 # Add this script to your path, and make sure it is executable!
 # (easiest way is to copy it or symlink it to /usr/bin)
 
@@ -43,17 +45,25 @@ class ProjectDir:
 PROJECTDIRS = [
     ProjectDir(
         name="projects",
-        path=Path.home() / "projects",
+        path=HOME / "projects",
         rename={
-            Path.home() / "projects/ecal.dev": "website",
-            Path.home() / "cloud/school/old/y3": "y3",
+            HOME / "projects/ecal.dev": "website",
+            HOME / "cloud/school/old/y3": "y3",
         },
     ),
-    ProjectDir(
-        name="school",
-        path=Path.home() / "school/y4",
-    ),
 ]
+
+# if ~/storj exists
+if (HOME / "storj").exists():
+    PROJECTDIRS.append(
+        ProjectDir(
+            name="school",
+            path=HOME / "storj/masters",
+            rename={
+                HOME / "storj/masters": "masters",
+            },
+        )
+    )
 
 ################################################################################
 # END OF USER CONFIG
