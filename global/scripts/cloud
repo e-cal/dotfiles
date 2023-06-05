@@ -11,21 +11,32 @@ mount)
 			name=$(basename $dir)
 			echo "Mounting $name"
 			rclone mount $name: $dir --daemon --vfs-cache-mode writes
+			cloud link $name
 		done
-		exit
+	else
+		rclone mount $2: ~/cloud/$2 --daemon --vfs-cache-mode writes
+		cloud link $2
 	fi
 
-	rclone mount $2: ~/cloud/$2 --daemon --vfs-cache-mode writes
 	;;
 umount)
 	if [[ $2 == "all" ]]; then
 		for dir in ~/cloud/*; do
 			umount $dir
+			cloud unlink $(basename $dir)
 		done
-		exit
+	else
+		umount ~/cloud/$2 || lsof "$HOME/cloud/$2"
+		cloud unlink $2
 	fi
-
-	umount ~/cloud/$2
+	;;
+link)
+	ln -s ~/cloud/$2 ~
+	;;
+unlink)
+	if [[ -e ~/$2 ]]; then
+		rm ~/$2
+	fi
 	;;
 *)
 	echo "Invalid command"
