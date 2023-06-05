@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+CACHE_FILE=~/.cache/polybar/weather
 postal=$(cat ~/.cache/postalcode)
 prefix=""
 fmt=""
@@ -13,22 +14,31 @@ feel)
 	prefix="~"
 	;;
 toggle)
-	CACHE_FILE=~/.cache/polybar/weather
-	if [[ ! -e $CACHE_FILE ]]; then
-		mkdir -p $(dirname $CACHE_FILE)
-		echo "1" >$CACHE_FILE
-	fi
-	cur=$(cat ~/.cache/polybar/weather)
+	cur=$(cat $CACHE_FILE)
 	nxt=$((3 - cur)) # 2 if cur is 1 // 1 if cur is 2
 	echo $nxt >$CACHE_FILE
 	polybar-msg -p "$(pgrep -f "polybar clock")" hook weather $nxt &>/dev/null
 	exit
 	;;
+start)
+	mkdir -p $(dirname $CACHE_FILE)
+	echo "1" >$CACHE_FILE
+
+	# while internet is down wait in 1m intervals
+	echo "tmp"
+	if ! ping -q -c1 8.8.8.8; then
+		runbg ~/.config/polybar/scripts/weather-wait
+		echo "󱓤     "
+	else
+		polybar-msg -p "$(pgrep -f "polybar clock")" hook weather 1 &>/dev/null
+	fi
+	exit
+	;;
 esac
 
-icon=$(curl "wttr.in/?format=%c")
+icon=$(curl -s "wttr.in/?format=%c")
 [[ -z $postal ]] && notify-send "Weather" "Postal code not set. Using IP" --icon=~/.config/dunst/images/brightness.png
-temp="$(curl -q "wttr.in/$postal?format=$fmt")"
+temp="$(curl -s "wttr.in/$postal?format=$fmt")"
 
 temp=${temp//+/}
 echo "$icon $prefix$temp"
