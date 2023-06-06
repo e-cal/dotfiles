@@ -32,38 +32,25 @@ DIRICON = ""
 
 @dataclass
 class ProjectDir:
-    """Describes a project parent directory, i.e. a directory that stores projects (in sub-directories)."""
+    """Describes the project directory"""
 
     name: str
     path: Path
-    # Optional; rename/add projects to the project directory
-    # format: {"path":"name"}
-    rename: dict[Path, str] | None = None
+    rename: dict[Path, str]  # format: {"path":"name"}
 
 
 # Define top level sub-menu entries for distinct project directories
-PROJECTDIRS = [
-    ProjectDir(
-        name="projects",
-        path=HOME / "projects",
-        rename={
-            HOME / "projects/ecal.dev": "website",
-            HOME / "cloud/school/old/y3": "y3",
-        },
-    ),
-]
+PROJECTDIR = ProjectDir(
+    name="projects",
+    path=HOME / "projects",
+    rename={
+        HOME / "projects/ecal.dev": "website",
+    },
+)
 
-# if ~/storj exists
+# Only add when storj is mounted
 if (HOME / "storj").exists():
-    PROJECTDIRS.append(
-        ProjectDir(
-            name="school",
-            path=HOME / "storj/masters",
-            rename={
-                HOME / "storj/masters": "masters",
-            },
-        )
-    )
+    PROJECTDIR.rename[HOME / "storj/masters"] = "masters"
 
 ################################################################################
 # END OF USER CONFIG
@@ -188,22 +175,22 @@ def reset():
     )
 
 
-def project(proj_dir, sel=None):
-    if proj_dir.rename:  # rename projects
+def project(sel=None):
+    if PROJECTDIR.rename:  # rename projects
         projects = {
             x.name: x
-            for x in proj_dir.path.iterdir()
-            if x.is_dir() and x not in proj_dir.rename
+            for x in PROJECTDIR.path.iterdir()
+            if x.is_dir() and x not in PROJECTDIR.rename
         }
-        for path, name in proj_dir.rename.items():
+        for path, name in PROJECTDIR.rename.items():
             projects[name] = path
     else:
-        projects = {x.name: x for x in proj_dir.path.iterdir() if x.is_dir()}
+        projects = {x.name: x for x in PROJECTDIR.path.iterdir() if x.is_dir()}
 
-    projects["NEW"] = "NEW"
+    projects["NEW"] = "NEW"  # type: ignore
 
     if not sel:
-        sel = fzf_menu(list(projects.keys()), title=proj_dir.name)
+        sel = fzf_menu(list(projects.keys()), title=PROJECTDIR.name)
     if not sel:
         return
 
@@ -217,23 +204,23 @@ def project(proj_dir, sel=None):
             name = name.split("/")[-1].split(".")[0]
             run_cmd(f"git clone {url} $HOME/projects/{name}")
 
-        proj_dir.path.joinpath(name).mkdir(parents=True, exist_ok=True)
-        attach(name, proj_dir.path.joinpath(name))
+        PROJECTDIR.path.joinpath(name).mkdir(parents=True, exist_ok=True)
+        attach(name, PROJECTDIR.path.joinpath(name))
         return
 
     attach(sel, projects[sel])
 
 
 def get_menu(refresh=False):
-    project_dirs = [proj_dir.name for proj_dir in PROJECTDIRS]
-    submenus = menus + project_dirs
+    # project_dirs = [proj_dir.name for proj_dir in PROJECTDIR]
+    submenus = [*menus, PROJECTDIR.name]
     submenus_map = {f"{DIRICON}{sub.upper()}": sub for sub in submenus}
     options = sessions + list(submenus_map.keys())
 
     if refresh:
         print("\n".join(options))
 
-    return options, submenus_map, project_dirs
+    return options, submenus_map
 
 
 def main():
@@ -250,9 +237,9 @@ def main():
             op = expand[op] if op in expand else op
         if op in ("p", "project", "projects"):
             if len(sys.argv) > 2:
-                project(PROJECTDIRS[0], sys.argv[2])
+                project(sys.argv[2])
             else:
-                project(PROJECTDIRS[0])
+                project()
             exit()
         if op in globals():
             try:
@@ -271,7 +258,7 @@ def main():
         startup()
         return
 
-    options, submenus_map, project_dirs = get_menu()
+    options, submenus_map = get_menu()
     sel = fzf_menu(
         options,
         "main menu",
@@ -287,10 +274,8 @@ def main():
         attach(sel)
     else:
         sel = submenus_map[sel]  # map sel back to lower case name
-        if sel in project_dirs:
-            # Gen a map of top-level projects {name : projects root dir}
-            project_dir_map = {proj_dir.name: proj_dir for proj_dir in PROJECTDIRS}
-            project(project_dir_map[sel])
+        if sel == "projects":
+            project()
         else:
             globals()[sel]()
 
