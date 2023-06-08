@@ -9,15 +9,12 @@ thm_black="#1e2030"
 thm_gray="#363a4f"
 thm_magenta="#c6a0f6"
 thm_pink="#f5bde6"
-# thm_red="#ed8796"
+thm_red="#ed8796"
 thm_green="#a6da95"
 thm_yellow="#eed49f"
 thm_blue="#8aadf4"
 thm_orange="#f5a97f"
 thm_black4="#5b6078"
-
-# thm_red=$thm_orange
-thm_red=$thm_magenta
 
 window_tabs_enabled="on"
 date_time_fmt="%H:%M"
@@ -102,13 +99,13 @@ main() {
 
 	# These variables are the defaults so that the setw and set calls are easier to parse.
 	local show_directory
-	readonly show_directory="#[fg=$thm_pink,bg=$thm_bg,nobold,nounderscore,noitalics]$right_separator#[fg=$thm_bg,bg=$thm_pink,nobold,nounderscore,noitalics] #[bg=$thm_gray,fg=$thm_pink]▌#[fg=$thm_fg,bg=$thm_gray] #{b:pane_current_path} " #{?client_prefix,#[fg=$thm_red]
+	readonly show_directory="#[fg=$thm_green,bg=$thm_bg,nobold,nounderscore,noitalics]$right_separator#[fg=$thm_bg,bg=$thm_green,nobold,nounderscore,noitalics] #[bg=$thm_gray,fg=$thm_green]▌#[fg=$thm_fg,bg=$thm_gray] #{b:pane_current_path} " #{?client_prefix,#[fg=$thm_red]
 
 	local show_window
 	readonly show_window="#[fg=$thm_pink,bg=$thm_bg,nobold,nounderscore,noitalics]$right_separator#[fg=$thm_bg,bg=$thm_pink,nobold,nounderscore,noitalics] #[fg=$thm_fg,bg=$thm_gray] #W #{?client_prefix,#[fg=$thm_red]"
 
 	local show_session
-	readonly show_session="#{?client_prefix,#[bg=$thm_red],#[bg=$thm_green]} #{?client_prefix,#[bg=$thm_red],#[bg=$thm_green]}#[fg=$thm_bg] #S #{?client_prefix,#[fg=$thm_red],#[fg=$thm_green]}#[bg=$thm_bg]$left_separator"
+	readonly show_session="#{?client_prefix,#[bg=$thm_red],#[bg=$thm_magenta]} #{?client_prefix,#[bg=$thm_red],#[bg=$thm_magenta]}#[fg=$thm_bg] #S #{?client_prefix,#[fg=$thm_red],#[fg=$thm_magenta]}#[bg=$thm_bg]$left_separator"
 
 	local show_directory_in_window_status
 	#readonly show_directory_in_window_status="#[fg=$thm_bg,bg=$thm_blue] #I #[fg=$thm_fg,bg=$thm_gray] #{b:pane_current_path} "
