@@ -50,7 +50,6 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.InsertPosition
--- import XMonad.Hooks.Focus
 
     -- Layouts
 import XMonad.Layout hiding ( (|||) )
@@ -427,17 +426,17 @@ myKeys = [
 
     -- Volume / Audio Control
     -- volume
-    , ("M-<Space> v +", spawn "volume set 10")
-    , ("M-<Space> v [", spawn "volume set 20")
-    , ("M-<Space> v {", spawn "volume set 30")
-    , ("M-<Space> v (", spawn "volume set 40")
-    , ("M-<Space> v &", spawn "volume set 50")
-    , ("M-<Space> v =", spawn "volume set 60")
-    , ("M-<Space> v )", spawn "volume set 70")
-    , ("M-<Space> v }", spawn "volume set 80")
-    , ("M-<Space> v ]", spawn "volume set 90")
-    , ("M-<Space> v *", spawn "volume set 0")
-    , ("M-<Space> v m", spawn "volume mute")
+    , ("M-<Space> S-+", spawn "volume set 10")
+    , ("M-<Space> S-[", spawn "volume set 20")
+    , ("M-<Space> S-{", spawn "volume set 30")
+    , ("M-<Space> S-(", spawn "volume set 40")
+    , ("M-<Space> S-&", spawn "volume set 50")
+    , ("M-<Space> S-=", spawn "volume set 60")
+    , ("M-<Space> S-)", spawn "volume set 70")
+    , ("M-<Space> S-}", spawn "volume set 80")
+    , ("M-<Space> S-]", spawn "volume set 90")
+    , ("M-<Space> S-*", spawn "volume set 100")
+    , ("M-<Space> m", spawn "volume mute")
     -- player
     , ("M-<Space> v p", spawn "playerctl previous")
     , ("M-<Space> v <Space>", spawn "playerctl play-pause")
