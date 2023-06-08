@@ -94,7 +94,7 @@ def session_exists(session):
 
 
 def start_session(session, start_dir=None, run=None):
-    cmd = [f"tmux new -s {session} -d -n main", f'"{startcmd}"']
+    cmd = [f"tmux new -s {session} -d ", f'"{startcmd}"']
     if start_dir:
         cmd.insert(1, f"-c {start_dir}")
 
