@@ -1,3 +1,0 @@
-new hostnames
-install deletes .config/zsh/env.zsh
-install-zsh doesn't work (scripts not loaded yet)
