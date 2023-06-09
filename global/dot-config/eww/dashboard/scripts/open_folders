@@ -1,0 +1,33 @@
+#!/bin/bash
+
+## Open folders in thunar
+FILE="$HOME/.cache/eww_launch.dashboard"
+CFG="$HOME/.config/eww/dashboard"
+EWW=$(which eww)
+
+close_dash() {
+	${EWW} --config "$CFG" close \
+		background profile system clock cal music github \
+		hackernews twitter youtube weather apps mail logout sleep reboot poweroff folders
+	rm -rf "$FILE"
+}
+
+if [[ "$1" == "--dl" ]]; then
+	close_dash && nemo ~/Downloads &
+
+elif [[ "$1" == "--home" ]]; then
+	close_dash && nemo ~/ &
+
+elif [[ "$1" == "--img" ]]; then
+	close_dash && nemo ~/cloud/box/images &
+
+elif [[ "$1" == "--cloud" ]]; then
+	close_dash && nemo ~/cloud &
+
+elif [[ "$1" == "--cfg" ]]; then
+	close_dash && nemo ~/.config &
+
+elif [[ "$1" == "--local" ]]; then
+	close_dash && nemo ~/.local/share &
+
+fi

@@ -38,9 +38,8 @@ set)
 	elif [[ $HOSTNAME == "prometheus" ]]; then
 		xbacklight -set $2
 	fi
-	notification
 	;;
-get)
+*)
 	if [[ $HOSTNAME == "coeus" ]]; then
 		sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g'
 	elif [[ $HOSTNAME == "prometheus" ]]; then

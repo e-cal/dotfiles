@@ -11,42 +11,42 @@ PLAYER="spotify"
 # Eg. {{ artist }} - {{ album }} - {{ title }}
 # See more attributes here: https://github.com/altdesktop/playerctl/#printing-properties-and-metadata
 
-if [[ -n `playerctl --player=spotify metadata --format "{{artist}}" 2>/dev/null` ]]; then
-    ICON=""
-    FORMAT="{{ title }} - {{ artist }}"
+if [[ -n $(playerctl --player=$PLAYER metadata --format "{{artist}}" 2>/dev/null) ]]; then
+	ICON=""
+	FORMAT="{{ title }} - {{ artist }}"
 else
-    ICON=""
-    FORMAT="{{ title }} - {{ album }}"
+	ICON=""
+	FORMAT="{{ title }} - {{ album }}"
 fi
-
 
 PLAYERCTL_STATUS=$(playerctl --player=$PLAYER status 2>/dev/null)
 EXIT_CODE=$?
 
 if [ $EXIT_CODE -eq 0 ]; then
-    STATUS=$PLAYERCTL_STATUS
+	STATUS=$PLAYERCTL_STATUS
 else
-    STATUS="None"
+	STATUS="None"
 fi
 
 if [[ $1 = "icon" ]]; then
-    [[ ! $STATUS = "None" ]] && echo $ICON || echo 
-    exit
+	[[ ! $STATUS = "None" ]] && echo $ICON || echo 
+	exit
 elif [[ ! $1 = "noicon" ]]; then
-    FORMAT="$ICON $FORMAT"
+	FORMAT="$ICON $FORMAT"
 fi
 
 case $STATUS in
-    Playing)
-        playerctl --player=$PLAYER metadata --format "$FORMAT"
-        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 1 &>/dev/null ||\
-        polybar-msg -p "$(pgrep -f "polybar top")" hook play-pause 1 &>/dev/null
-        ;;
-    Paused)
-        playerctl --player=$PLAYER metadata --format "$FORMAT"
-        polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 2 &>/dev/null ||\
-        polybar-msg -p "$(pgrep -f "polybar top")" hook play-pause 2 &>/dev/null
-        ;;
-    *)
-        echo
+Playing)
+	playerctl --player=$PLAYER metadata --format "$FORMAT"
+	polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 1 &>/dev/null ||
+		polybar-msg -p "$(pgrep -f "polybar top")" hook play-pause 1 &>/dev/null
+	;;
+Paused)
+	playerctl --player=$PLAYER metadata --format "$FORMAT"
+	polybar-msg -p "$(pgrep -f "polybar music")" hook play-pause 2 &>/dev/null ||
+		polybar-msg -p "$(pgrep -f "polybar top")" hook play-pause 2 &>/dev/null
+	;;
+*)
+	echo
+	;;
 esac

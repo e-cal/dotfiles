@@ -45,9 +45,11 @@ echo "Creating directories..."
 [[ -d $HOME/.config ]] || mkdir $HOME/.config
 [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
 
-# if $HOME/.config/mimeapps.list is not a symlink then remove it
 if [[ ! -L $HOME/.config/mimeapps.list ]]; then
-    [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
+	[[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
+fi
+if [[ ! -L $HOME/.config/user-dirs.dirs ]]; then
+	[[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
 fi
 
 echo
@@ -83,25 +85,7 @@ if [[ $HOSTNAME = "raspberrypi" ]]; then
 	echo
 else
 	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
-
-	#if [[ $HOSTNAME != "coeus" ]] && [[ $HOSTNAME != "prometheus" ]]; then
-	#	unlink $DOTFILES/.config/zsh/env.zsh
-	#	cp $STOW_DIR/global/dot-config/zsh/env.zsh $DOTFILES/.config/zsh/env.zsh
-	#	sed -i 's/\(export TERM=\).*/\1"screen-256color"/' $DOTFILES/.config/zsh/env.zsh
-
-	#	rm $DOTFILES/.config/tmux/tmux.conf
-	#	cp $STOW_DIR/global/dot-config/tmux/tmux.conf $DOTFILES/.config/tmux/tmux.conf
-	#	sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' $DOTFILES/.config/tmux/tmux.conf
-	#	sed -i 's/cyan/red/g' $DOTFILES/.config/tmux/tmux.conf
-	#fi
 fi
 
 echo "Linking $HOSTNAME dotfiles..."
 stow $HOSTNAME -R
-
-if [[ ! -d "$HOME/.config/zsh/oh-my-zsh" ]]; then
-	echo "Installing zsh"
-	install-zsh
-	ZSH="$HOME/.config/zsh/oh-my-zsh" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-	[[ -f "$HOME/.zshrc" ]] && rm "$HOME/.zshrc"
-fi

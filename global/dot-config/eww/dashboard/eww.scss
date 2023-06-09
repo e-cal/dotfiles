@@ -1,0 +1,457 @@
+$bg: #2e3440;
+$lightbg: #3a404c;
+$grey: #748199;
+$white: #e5e5e5;
+$red: #bf616a;
+$brightred: #df584e;
+$purple: #b48ead;
+$pink: #d46389;
+$cyan: #8fbcbb;
+$lightcyan: #a6d1dd;
+$green: #a3be8c;
+$yellow: #ebcb8b;
+$blue: #81a1c1;
+$lightblue: #88c0d0;
+
+/** Global *******************************************/
+* {
+  all: unset;
+  font-family: feather;
+  font-family: Iosevka;
+}
+
+/** Background ***************************************/
+.bg {
+  background-image: url("images/bg.png");
+  background-color: #474d59;
+  opacity: 1;
+}
+
+/** Generic window ***********************************/
+.genwin {
+  background-color: $bg;
+  border-radius: 16px;
+}
+
+/** Profile ******************************************/
+.face {
+  background-size: 200px;
+  min-height: 200px;
+  min-width: 200px;
+  margin: 65px 0px 0px 0px;
+  border-radius: 100%;
+}
+
+.fullname {
+  color: $pink;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.username {
+  color: $cyan;
+  font-size: 22px;
+  font-weight: bold;
+  margin: -15px 0px 0px 0px;
+}
+
+/** System ********************************************/
+.iconcpu,
+.iconmem,
+.iconbright,
+.iconvol {
+  font-size: 32px;
+  font-weight: normal;
+}
+.iconcpu {
+  color: $red;
+}
+.iconmem {
+  color: $green;
+  margin-left: 2px;
+  margin-right: -2px;
+}
+.iconbright {
+  color: $yellow;
+}
+.iconvol {
+  color: $lightblue;
+  margin-left: 3px;
+  margin-right: -3px;
+}
+
+.cpubar,
+.membar,
+.brightbar,
+.volbar,
+scale trough {
+  all: unset;
+  background-color: $lightbg;
+  border-radius: 16px;
+  min-height: 28px;
+  min-width: 240px;
+}
+
+.cpubar,
+.membar,
+.brightbar,
+.volbar,
+scale trough highlight {
+  all: unset;
+  border-radius: 16px;
+}
+
+.cpubar scale trough highlight {
+  background-color: $red;
+}
+.membar scale trough highlight {
+  background-color: $green;
+}
+.brightbar scale trough highlight {
+  background-color: $yellow;
+}
+.volbar scale trough highlight {
+  background-color: $lightblue;
+}
+
+/** Clock ********************************************/
+.time_hour,
+.time_min {
+  color: $blue;
+  font-size: 70px;
+  font-weight: bold;
+}
+.time_hour {
+  margin: 15px 0px 0px 20px;
+}
+.time_min {
+  margin: 0px 0px 10px 0px;
+}
+
+.time_mer {
+  color: $green;
+  font-size: 40px;
+  font-weight: bold;
+  margin: 20px 0px 0px 0px;
+}
+
+.time_day {
+  color: $yellow;
+  font-size: 30px;
+  font-weight: normal;
+  margin: 0px 0px 20px -20px;
+}
+
+/** Calendar ********************************************/
+.calmonth {
+  color: $red;
+  font-size: 48px;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+.calday {
+  color: $white;
+  font-size: 32px;
+  font-weight: normal;
+  margin-left: 20px;
+}
+
+.caltime {
+  color: $grey;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 0.7em;
+  margin-bottom: 0.3em;
+}
+
+.calevent {
+  color: $white;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/** Music ***************************************/
+.album_art {
+  background-size: 240px;
+  min-height: 240px;
+  min-width: 240px;
+  margin: 20px;
+  border-radius: 14px;
+}
+
+.song {
+  color: $cyan;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 40px 0px 0px 0px;
+}
+
+.artist {
+  color: $yellow;
+  font-size: 16px;
+  font-weight: normal;
+  margin: 0px 0px 15px 0px;
+}
+
+.btn_prev,
+.btn_play,
+.btn_next {
+  font-family: Iosevka Nerd Font;
+}
+.btn_prev {
+  color: $yellow;
+  font-size: 32px;
+  font-weight: normal;
+}
+.btn_play {
+  color: $green;
+  font-size: 48px;
+  font-weight: bold;
+  margin-right: 0.2em;
+  margin-bottom: 3px;
+}
+.btn_next {
+  color: $yellow;
+  font-size: 32px;
+  font-weight: normal;
+}
+
+.music_bar scale trough highlight {
+  all: unset;
+  background-color: $purple;
+  border-radius: 8px;
+}
+.music_bar scale trough {
+  all: unset;
+  background-color: $lightbg;
+  border-radius: 8px;
+  min-height: 20px;
+  min-width: 310px;
+  margin: 10px 0px 0px 0px;
+}
+
+/** Weather ***************************************/
+.iconweather {
+  font-family: Iosevka Nerd Font;
+  font-size: 120px;
+  font-weight: normal;
+  margin: 30px 0px 0px 30px;
+}
+
+.label_temp {
+  color: $lightcyan;
+  font-size: 80px;
+  font-weight: bold;
+  margin: 0px 30px 0px 0px;
+}
+
+.label_feels {
+  color: $lightcyan;
+  font-size: 25px;
+  // font-weight: bold;
+  /** top right bottom left **/
+  margin: -95px 32px -30px 0px;
+}
+
+.label_stat {
+  color: $red;
+  font-size: 38px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.label_quote {
+  color: $white;
+  font-size: 18px;
+  font-weight: normal;
+}
+
+/** Applications ***************************************/
+.appbox {
+  margin: 15px 0px 0px 25px;
+}
+
+.app_fox,
+.app_spotify,
+.app_discord,
+.app_terminal,
+.app_files,
+.app_gdrive,
+.app_teams,
+.app_slack,
+.app_calendar {
+  background-repeat: no-repeat;
+  background-size: 64px;
+  min-height: 64px;
+  min-width: 64px;
+  margin: 8px 8px 0px 8px;
+}
+
+.app_fox {
+}
+.app_spotify {
+  background-size: 55px;
+  margin: 14px 0px 0px 16px;
+}
+.app_discord {
+}
+.app_terminal {
+}
+.app_files {
+}
+.app_gdrive {
+  background-size: 55px;
+  margin: 16px 0px -4px 12px;
+}
+.app_teams {
+  background-size: 55px;
+  margin: 12px 8px 0px 10px;
+}
+.app_slack {
+  background-size: 50px;
+  // top right bottom left
+  margin: 14px 0px 0px 16px;
+}
+.app_calendar {
+  background-size: 55px;
+  margin: 12px 0px 0px 12px;
+}
+
+/** Links ***************************************/
+.iconweb,
+.iconmail {
+  color: #ffffff;
+  font-family: Iosevka Nerd Font;
+  font-size: 70px;
+  font-weight: normal;
+}
+.iconmail {
+  color: $brightred;
+}
+
+.github {
+  background-color: #24292e;
+  border-radius: 16px;
+}
+.hackernews {
+  background-color: #ff6600;
+  border-radius: 16px;
+}
+.twitter {
+  background-color: #61aad6;
+  border-radius: 16px;
+}
+.youtube {
+  background-color: $brightred;
+  border-radius: 16px;
+}
+
+.mailbox {
+  background-color: $white;
+  border-radius: 10px;
+  margin: 48px 0px 48px 0px;
+}
+.label_mails {
+  color: #404040;
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0px 12px 0px 12px;
+}
+
+/** Power buttons ***************************************/
+.btn_logout,
+.btn_sleep,
+.btn_reboot,
+.btn_poweroff {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.btn_logout {
+  color: $lightblue;
+}
+.btn_sleep {
+  color: $green;
+}
+.btn_reboot {
+  color: $yellow;
+}
+.btn_poweroff {
+  color: $red;
+}
+
+/** Home folders ***************************************/
+.hddbox {
+  background-color: $lightbg;
+  border-radius: 10px;
+  margin: 15px;
+}
+.hddicon {
+  color: $blue;
+  font-family: Iosevka Nerd Font;
+  font-size: 70px;
+  font-weight: normal;
+  margin: 25px 20px 25px 40px;
+}
+.hdd_label {
+  color: $white;
+  font-size: 48px;
+  font-weight: bold;
+  margin: 0px 0px 0px 15px;
+}
+.fs_sep {
+  color: $bg;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.iconfolder1,
+.iconfolder2,
+.iconfolder3,
+.iconfolder4,
+.iconfolder5,
+.iconfolder6 {
+  font-family: Iosevka Nerd Font;
+  font-size: 32px;
+  font-weight: normal;
+  margin: 0px 0px 0px 75px;
+}
+.iconfolder1,
+.label_folder1 {
+  color: $red;
+}
+.iconfolder2,
+.label_folder2 {
+  color: $yellow;
+}
+.iconfolder3,
+.label_folder3 {
+  color: $blue;
+}
+.iconfolder4,
+.label_folder4 {
+  color: $green;
+}
+.iconfolder5,
+.label_folder5 {
+  color: $purple;
+}
+.iconfolder6,
+.label_folder6 {
+  color: $lightblue;
+}
+
+.label_folder1,
+.label_folder2,
+.label_folder3,
+.label_folder4,
+.label_folder5,
+.label_folder6 {
+  font-size: 22px;
+  font-weight: normal;
+  margin: 0px 0px 0px 30px;
+}
+
+/** EOF *************************************************/
+// vim:sw=2:ts=2:sts=2

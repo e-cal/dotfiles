@@ -1,0 +1,34 @@
+#!/bin/bash
+
+## Get Brightness
+get_blight() {
+	CARD=$(ls /sys/class/backlight | head -n 1)
+
+	if [[ "$CARD" == *"intel_"* ]]; then
+		BNESS=$(xbacklight -get)
+		LIGHT=${BNESS%.*}
+	else
+		BNESS=$(blight -d $CARD get brightness)
+		PERC="$(($BNESS * 100 / 255))"
+		LIGHT=${PERC%.*}
+	fi
+
+	echo "$LIGHT"
+}
+
+## Get Battery
+get_battery() {
+	BAT=$(ls /sys/class/power_supply | grep BAT | head -n 1)
+	cat /sys/class/power_supply/${BAT}/capacity
+}
+
+## Execute accordingly
+if [[ "$1" == "--cpu" ]]; then
+	get_cpu
+elif [[ "$1" == "--mem" ]]; then
+	get_mem
+elif [[ "$1" == "--blight" ]]; then
+	get_blight
+elif [[ "$1" == "--bat" ]]; then
+	get_battery
+fi
