@@ -2,9 +2,10 @@
 
 launch-bar &
 redshift &
-config-wacom m &
 eww daemon &
+eyes &
 
+# fix polybar volume display
 while [[ $(~/.config/polybar/scripts/pulseaudio) == "    %" ]]; do
 	sleep 0.5
 done

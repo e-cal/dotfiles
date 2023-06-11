@@ -6,7 +6,7 @@ echo "1" >"$CACHE_FILE"
 
 if [[ $# = 0 ]]; then
 	killall -q polybar
-	sleep 3 # wait for polybar to shutdown, should be more than enough time
+	# sleep 3 # wait for polybar to shutdown, should be more than enough time
 
 	if [[ $(hostname) = "prometheus" ]]; then
 		runbg polybar workspaces -c $HOME/.config/polybar/config.ini
