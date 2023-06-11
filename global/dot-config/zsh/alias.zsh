@@ -69,9 +69,6 @@ alias "untar"="tar xvzf"
 # System specific
 alias "bat-stat"="sudo tlp-stat"
 
-# Fun
-alias "weather"="curl wttr.in -s | head -n -1"
-
 # Other
 alias "prolog"="swipl"
 
