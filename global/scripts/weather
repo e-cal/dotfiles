@@ -1,7 +1,10 @@
 #!/bin/bash
 
 ## Collect data
-cache_dir="$HOME/.cache/eww/weather"
+cache_dir="$HOME/.cache/weather"
+KEY=$(cat "$cache_dir/api-key")
+LAT=$(head -n1 "$cache_dir/loc")
+LON=$(tail -n1 "$cache_dir/loc")
 cache_weather_stat=${cache_dir}/weather-stat
 cache_weather_degree=${cache_dir}/weather-degree
 cache_weather_feels=${cache_dir}/weather-feels
@@ -9,20 +12,19 @@ cache_weather_quote=${cache_dir}/weather-quote
 cache_weather_hex=${cache_dir}/weather-hex
 cache_weather_icon=${cache_dir}/weather-icon
 
-## Weather data
-KEY="965605689030d82160ac8fd635501be5"
-LAT=43.3862
-LON=-79.8371
-UNIT="metric"
-
 ## Make cache dir
 if [[ ! -d "$cache_dir" ]]; then
 	mkdir -p ${cache_dir}
 fi
 
+# check if key, lat, or lon are empty
+if [[ -z "$KEY" ]] || [[ -z "$LAT" ]] || [[ -z "$LON" ]]; then
+	notify-send "Weather" "Missing API key, or location data. \nCheck $cache_dir for api-key and loc."
+fi
+
 ## Get data
 get_weather_data() {
-	weather=$(curl -sf "http://api.openweathermap.org/data/2.5/weather?lat=$LAT&lon=$LON&appid=$KEY&units=$UNIT")
+	weather=$(curl -sf "http://api.openweathermap.org/data/2.5/weather?lat=$LAT&lon=$LON&appid=$KEY&units=metric")
 
 	if [ ! -z "$weather" ]; then
 		weather_temp=$(echo "$weather" | jq ".main.temp" | cut -d "." -f 1)
@@ -55,7 +57,7 @@ get_weather_data() {
 			weather_icon="󰖐 "
 			weather_hex="#adadff"
 		elif [ "$weather_icon_code" == "04d" ]; then
-			weather_icon=" " # 
+			weather_icon=" "
 			weather_hex="#adadff"
 		elif [ "$weather_icon_code" == "04n" ]; then
 			weather_icon=" "
@@ -94,7 +96,7 @@ get_weather_data() {
 		echo "$weather_description" >${cache_weather_stat}
 		echo "$weather_temp""°C" >${cache_weather_degree}
 		echo "$weather_hex" >${cache_weather_hex}
-		echo "feels like $weather_feels°C" >${cache_weather_feels}
+		echo "$weather_feels°C" >${cache_weather_feels}
 	else
 		echo "Weather Unavailable" >${cache_weather_stat}
 		echo " " >${cache_weather_icon}
@@ -106,6 +108,7 @@ get_weather_data() {
 get_weather_data
 if [[ "$1" == "--icon" ]]; then
 	cat ${cache_weather_icon}
+	# echo $weather_icon_code
 elif [[ "$1" == "--temp" ]]; then
 	cat ${cache_weather_degree}
 elif [[ "$1" == "--feels" ]]; then
