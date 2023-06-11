@@ -33,13 +33,13 @@
 (defpoll TTIME :interval "1s" `scripts/music_info --ttime`)
 
 ;; Weather vars
-(defpoll ICON :interval "15m" `scripts/weather_info --icon`)
-(defpoll STAT :interval "15m" `scripts/weather_info --stat`)
-(defpoll TEMP :interval "15m" `scripts/weather_info --temp`)
-(defpoll FEELS :interval "15m" `scripts/weather_info --feels`)
-(defpoll HEX :interval "15m" `scripts/weather_info --hex`)
-(defpoll QUOTE :interval "15m" `scripts/weather_info --quote`)
-(defpoll QUOTE2 :interval "15m" `scripts/weather_info --quote2`)
+(defpoll ICON :interval "15m" `weather --icon`)
+(defpoll STAT :interval "15m" `weather --stat`)
+(defpoll TEMP :interval "15m" `weather --temp`)
+(defpoll FEELS :interval "15m" `weather --feels`)
+(defpoll HEX :interval "15m" `weather --hex`)
+(defpoll QUOTE :interval "15m" `weather --quote`)
+(defpoll QUOTE2 :interval "15m" `weather --quote2`)
 
 ;; Apps vars
 (defpoll MAILS :interval "5m" `scripts/mails`)
@@ -148,7 +148,7 @@
 				(label :class "iconweather" :halign "start" :style "color: ${HEX};" :text ICON)
 				(label :class "label_temp" :halign "end" :text TEMP))
 			(box :orientation "h" :vexpand "false" :hexpand "false" 
-				(label :class "label_feels" :halign "end" :text FEELS))
+				(label :class "label_feels" :halign "end" :text "feels like ${FEELS}"))
 			;;(box :orientation "v" :spacing 10 :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false" 
 				(label :class "label_stat" :text STAT))))
                 ;;)

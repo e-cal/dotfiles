@@ -16,7 +16,7 @@ get_status() {
 
 ## Get song
 get_song() {
-	song=$(playerctl --player=$PLAYER metadata --format "{{ title }}")
+	song=$(playerctl -p spotify metadata --format "{{ title }}")
 	if [[ -z "$song" ]]; then
 		echo "Nothing playing"
 	else
@@ -26,7 +26,7 @@ get_song() {
 
 ## Get artist
 get_artist() {
-	artist=$(playerctl --player=$PLAYER metadata --format "{{ artist }}")
+	artist=$(playerctl -p spotify metadata --format "{{ artist }}")
 	song=$()
 	if [[ -z "$artist" ]]; then
 		echo ""
@@ -36,10 +36,10 @@ get_artist() {
 }
 
 get_time() {
-	time=$(playerctl --player=spotify metadata --format "{{ duration(mpris:length) }}")
+	time=$(playerctl -p spotify metadata --format "{{ duration(mpris:length) }}")
 
-	position=$(playerctl position)
-	length=$(playerctl metadata mpris:length)
+	position=$(playerctl -p spotify position)
+	length=$(playerctl -p spotify metadata mpris:length)
 	length=$(echo "scale=2; $length / 1000000" | bc)
 	time=$(printf "%.0f" $(echo "scale=2; $position / $length * 100" | bc))
 
@@ -50,7 +50,7 @@ get_time() {
 	fi
 }
 get_ctime() {
-	ctime=$(playerctl --player=spotify metadata --format "{{ duration(position) }}")
+	ctime=$(playerctl -p spotify metadata --format "{{ duration(position) }}")
 	if [[ -z "$ctime" ]]; then
 		echo "0:00"
 	else
@@ -58,7 +58,7 @@ get_ctime() {
 	fi
 }
 get_ttime() {
-	ttime=$(playerctl --player=spotify metadata --format "{{ duration(mpris:length) }}")
+	ttime=$(playerctl -p spotify metadata --format "{{ duration(mpris:length) }}")
 	if [[ -z "$ttime" ]]; then
 		echo "0:00"
 	else
@@ -68,7 +68,7 @@ get_ttime() {
 
 ## Get cover
 get_cover() {
-	arturl=$(playerctl --player=spotify metadata --format "{{mpris:artUrl}}")
+	arturl=$(playerctl -p spotify metadata --format "{{mpris:artUrl}}")
 	[[ ! -f $PREVCOVER ]] && touch $PREVCOVER
 	prevarturl=$(cat $PREVCOVER)
 
