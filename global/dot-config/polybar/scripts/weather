@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
 CACHE_FILE=~/.cache/polybar/weather
-postal=$(cat ~/.cache/postalcode)
-prefix=""
-fmt=""
+prefix="  "
+temp="n/a"
 
 case $1 in
 temp)
-	fmt="%t"
+	temp=$(weather --temp)
 	;;
 feel)
-	fmt="%f"
 	prefix="~"
+	temp=$(weather --feels)
 	;;
 toggle)
 	cur=$(cat $CACHE_FILE)
@@ -36,9 +35,5 @@ start)
 	;;
 esac
 
-icon=$(curl -s "wttr.in/?format=%c")
-[[ -z $postal ]] && notify-send "Weather" "Postal code not set. Using IP" --icon=~/.config/dunst/images/brightness.png
-temp="$(curl -s "wttr.in/$postal?format=$fmt")"
-
-temp=${temp//+/}
-echo "$icon $prefix$temp"
+icon=$(weather --icon)
+echo "$icon   $prefix$temp"
