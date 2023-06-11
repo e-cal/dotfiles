@@ -1,14 +1,20 @@
 #!/bin/bash
 
-INTERVAL=20
+INTERVAL=30
 
 sleep "$INTERVAL"m
-count=$(($1 + $INTERVAL))
+count=$(($1 + $INTERVAL)) # count how long its been since taking a break
 
-ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Take care of your eyes! 👀" "$count min without a break" -i ~/.config/dunst/images/eyes.png -t 300000 -u normal)
+# up for 1m
+ACTION=$(dunstify -t 60000 --action="default,run again" --action="stop,stop" "Take care of your eyes! 👀" "$count min without a break" -i ~/.config/dunst/images/eyes.png -u normal)
 
 case $ACTION in
 default) # left click
+	brightness set 0
+	while [[ $(brightness get) == 0 ]]; do
+		sleep 1
+	done
+	notify-send "Welcome back!" -i ~/.config/dunst/images/eyes.png
 	eyes &
 	;;
 stop) # middle click -> stop
