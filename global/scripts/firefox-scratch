@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if ! hyprctl clients | rg "class: firefox-aurora" -B3 | rg "(special:browser)" -q; then
+	firefox
+	sleep 0.5
+	hyprctl dispatch movetoworkspace special:browser
+fi

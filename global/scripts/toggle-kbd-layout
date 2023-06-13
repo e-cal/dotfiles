@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+cur=$(hyprctl devices | rg at-translated-set-2-keyboard -A3 | sed -n 3p | awk '{ print $4 $5 }')
+# keyboards=$(get-keyboards)
+
+keyboards=$(python -c "$(
+	cat <<EOF
+import os
+output = os.popen("hyprctl devices").readlines()
+indices = [i + 1 for i, s in enumerate(output) if "Keyboard" in s]
+output = [
+    output[i].strip() for i in indices if not output[i].strip().startswith("Keyboard")
+]
+print("\n".join(output))
+EOF
+)")
+
+# split lines into array and loop over
+IFS=$'\n' read -rd '' -a lines <<<"$keyboards"
+for line in "${lines[@]}"; do
+	hyprctl switchxkblayout "$line" next &>/dev/null
+done
