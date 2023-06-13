@@ -14,6 +14,10 @@ export CONFIG=$XDG_CONFIG_HOME
 export XDG_CACHE_HOME=~/.cache
 export XDG_DATA_HOME=~/.local/share
 
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+    export MOZ_ENABLE_WAYLAND=1
+fi
+
 # zsh
 export PROMPT_EOL_MARK=""
 export PS2="  "
@@ -77,9 +81,3 @@ export PSQL_HISTORY="$XDG_DATA_HOME"/pg/psql_history
 export PGPASSFILE="$XDG_CONFIG_HOME"/pg/pgpass
 export PGSERVICEFILE="$XDG_CONFIG_HOME"/pg/pg_service.conf
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
-
-
-# Start X
-if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-    startx "$XDG_CONFIG_HOME"/X11/xinitrc
-fi
