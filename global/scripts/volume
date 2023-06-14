@@ -27,8 +27,6 @@ function update_bar {
 
 }
 
-[[ $# = 0 ]] && get_volume && exit 0
-
 case $1 in
 up)
 	pactl set-sink-mute @DEFAULT_SINK@ 0
@@ -54,5 +52,11 @@ set)
 	pactl set-sink-mute @DEFAULT_SINK@ 0
 	pactl set-sink-volume @DEFAULT_SINK@ $2%
 	update_bar
+	;;
+ismuted)
+	is_mute
+	;;
+*)
+	get_volume
 	;;
 esac
