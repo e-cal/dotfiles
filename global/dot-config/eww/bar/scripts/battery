@@ -1,17 +1,48 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-battery() {
-	BAT=`ls /sys/class/power_supply | grep BAT | head -n 1`
-	cat /sys/class/power_supply/${BAT}/capacity
+# set -ex
+
+icons=("󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹")
+num_icons=$(awk -v n="${#icons[@]}" 'BEGIN{print 100 / n}')
+
+geticon() {
+	level=$(awk -v n="$percentage" -v c="$num_icons" 'BEGIN{print int(n/c-1)}')
+	echo "${icons[$level]}"
 }
-battery_stat() {
-	BAT=`ls /sys/class/power_supply | grep BAT | head -n 1`
-	cat /sys/class/power_supply/${BAT}/status
+
+gettime() {
+	if [ "$state" = "Discharging" ]; then
+		echo "$info" | jq -r '.charge_remaining'
+	else
+		echo "$info" | jq -r '.until_charged'
+	fi
+
 }
 
-if [[ "$1" == "--bat" ]]; then
-	battery
-elif [[ "$1" == "--bat-st" ]]; then
-	battery_stat
-fi
+color() {
+	[ "$percentage" -le 20 ] && echo '#f38ba8' || echo '#a6e3a1'
+}
 
+status() {
+	out=""
+	if [ "$state" = "fully-charged" ]; then
+		out+="Fully Charged"
+	else
+		[ "$state" = "Charging" ] && out+="Charging, "
+		out+="$(gettime) left"
+	fi
+	echo "$out"
+}
+
+gen_output() {
+	info="$(acpi | jc --acpi | jq '.[]')"
+	percentage="$(echo "$info" | jq -r '.charge_percent')"
+	state="$(echo "$info" | jq -r '.state')"
+
+	echo '{"icon": "'"$(geticon) "'", "percentage": '"$percentage"', "status": "'"$(status)"'", "color": "'"$(color)"'"}'
+}
+
+while true; do
+	gen_output
+	sleep 3
+done

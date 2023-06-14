@@ -1,0 +1,10 @@
+/* bar volume module */
+.vol-icon {
+  color: $green;
+  font-size: 1.2rem;
+  margin-right: -0.8rem;
+}
+.volbar highlight {
+  background-image: linear-gradient(to right, $teal, $sky);
+  border-radius: 10px;
+}

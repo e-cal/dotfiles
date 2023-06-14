@@ -1,0 +1,7 @@
+(defwidget net []
+  (button
+    :class "module icon net"
+    :onclick "${EWW_CMD} open --toggle system-menu"
+    :tooltip {net.name}
+    :style "color: ${net.color};"
+    {net.icon}))
