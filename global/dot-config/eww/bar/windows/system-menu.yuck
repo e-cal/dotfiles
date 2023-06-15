@@ -194,12 +194,12 @@
         (button
           :halign "end"
           :class "power-button icon"
-          :onclick "shutdown now"
+          :onclick "cloud umount all;shutdown now"
           "")))))
 
 (defwindow system-menu
   :stacking "fg" 
-  :monitor 0
+  :monitor 1
   :geometry (geometry
     :x "0"
     :y "0"

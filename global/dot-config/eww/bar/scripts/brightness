@@ -2,7 +2,7 @@
 
 source "$(dirname "$0")"/utils
 
-icons=("" "" "" "" "" "")
+icons=("󰽤" "󰽥" "󰽣" "󰃞" "󰃟" "󰃝" "󰃠")
 
 date="$XDG_CACHE_HOME/eww/osd_brightness.date"
 

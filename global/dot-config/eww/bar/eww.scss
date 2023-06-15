@@ -33,7 +33,7 @@
   color: $fg;
 
   label {
-    // font-size: 1.2rem;
+    font-size: 1.2rem;
   }
 }
 
@@ -41,6 +41,7 @@ tooltip {
   background: $bg;
   border: 1px solid $border;
   border-radius: 8px;
+  color: $fg;
 
   label {
     font-size: 1rem;
@@ -57,8 +58,8 @@ tooltip {
 .icon,
 .icon label {
   // font-family: NotoSans Nerd Font Propo;
-  // font-family: Material Icons;
-  font-family: Material Symbols Outlined;
+  font-family: Material Icons;
+  // font-family: Material Symbols Outlined;
 }
 
 .module {
@@ -77,19 +78,15 @@ tooltip {
 
 .date {
   color: $flamingo;
-
-  label {
-    font-size: 1.2rem;
-  }
 }
 
 /* right-aligned modules */
 .bright-icon {
-  font-family: Material Icons;
   color: $yellow;
+  font-family: JetBrains Mono;
 }
 .module-bt {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 /* scales */

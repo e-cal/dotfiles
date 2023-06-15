@@ -27,4 +27,5 @@
         (button
           :class "date"
           :onclick "${EWW_CMD} open --toggle calendar"
+          :onrightclick "open https://calendar.cron.com"
           {time.date})))))

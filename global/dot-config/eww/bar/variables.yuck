@@ -1,3 +1,4 @@
+(defvar monitor 1)
 (defvar bright_reveal false)
 (defvar bt_rev false)
 (defvar music_reveal false)
@@ -7,7 +8,7 @@
 (defvar osd-brightness false)
 (defvar osd-volume false)
 
-(defpoll time :interval "5s" `date +'{"date": "%d/%m", "hour": "%H", "minute": "%M", "day": "%A"}'`)
+(defpoll time :interval "5s" `date +'{"date": "%b %d", "hour": "%H", "minute": "%M", "day": "%A"}'`)
 
 (deflisten airplane "scripts/airplane")
 (deflisten battery "scripts/battery")

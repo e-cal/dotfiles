@@ -33,13 +33,13 @@ gen_output() {
 			class="bt-connected"
 		else
 			icon=""
-			text="Disconnected"
+			text="disconnected"
 			color="#45475a"
 			class=""
 		fi
 	else
 		icon=""
-		text="Bluetooth off"
+		text="off"
 		color="#45475a"
 		class=""
 	fi

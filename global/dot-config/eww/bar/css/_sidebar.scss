@@ -54,6 +54,10 @@
   margin: 0.3rem;
 
   button {
+        label {
+          font-size: 1.5rem;
+        }
+      }
     @include rounding;
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -63,10 +67,11 @@
 
 .net-box {
   button {
-    padding: 1rem;
+    padding: 0.8rem;
 
     label {
-      font-size: 1.2rem;
+      // font-size: 1.5rem;
+      margin-right: 0.5rem;
     }
   }
 }
@@ -74,9 +79,9 @@
 .bluetooth-box {
   button {
     padding: 1rem;
-    label {
-      font-size: 1.5rem;
-    }
+//     label {
+//       font-size: 1.5rem;
+//     }
   }
 }
 
@@ -141,7 +146,7 @@
     background-color: $bg1;
     border-radius: 50%;
     margin-bottom: 0.1rem;
-    padding: 0 0.5rem;
+    padding: 0.5rem;
 
     label {
       font-size: 1.5rem;
