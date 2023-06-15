@@ -1,12 +1,18 @@
 #!/bin/bash
 
+if [[ "$1" == "reset" ]]; then
+	pid=$(ps -ef | rg "eyes" | rg -v "rg|reset" | awk '{ print $2 }')
+	kill $pid
+	runbg eyes
+	exit
+fi
+
 INTERVAL=30
 
 sleep "$INTERVAL"m
 count=$(($1 + $INTERVAL)) # count how long its been since taking a break
 
-# up for 1m
-ACTION=$(dunstify -t 60000 --action="default,run again" --action="stop,stop" "Take care of your eyes! 👀" "$count min without a break" -i ~/.config/dunst/images/eyes.png -u normal)
+ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Take care of your eyes! 👀" "$count min without a break" -i ~/.config/dunst/images/eyes.png -u critical)
 
 case $ACTION in
 default) # left click
@@ -14,7 +20,7 @@ default) # left click
 	while [[ $(brightness get) == 0 ]]; do
 		sleep 1
 	done
-	notify-send "Welcome back!" -i ~/.config/dunst/images/eyes.png
+	notify-send "Welcome back!" -t 1000 -i ~/.config/dunst/images/eyes.png
 	eyes &
 	;;
 stop) # middle click -> stop
