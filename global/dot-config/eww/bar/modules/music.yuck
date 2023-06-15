@@ -17,7 +17,7 @@
                     :limit-width 50
                     :show_truncated true
                     :justify "center"
-                    :text "${music.title} - ${music.artist}"))
+                    :text "${music.full}"))
       ; show buttons when hovering
       (revealer
         :transition "slideright"

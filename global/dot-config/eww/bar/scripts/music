@@ -75,7 +75,12 @@ playerctl -p spotify -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:art
 		thisStatus="$(get_status "$status")"
 	fi
 
-	echo '{"artist": "'"$thisArtist"'", "title": "'"$thisTitle"'", "status": "'"$thisStatus"'", "cover": "'"$COVER"'", "border": "'"$border"'", "bg": "'"$bg"'"}'
+	if [[ ! -z "$thisTitle" ]]; then
+		full="$thisTitle - $thisArtist"
+	else
+		full=""
+	fi
+	echo '{"artist": "'"$thisArtist"'", "title": "'"$thisTitle"'", "full": "'"$full"'", "status": "'"$thisStatus"'", "cover": "'"$COVER"'", "border": "'"$border"'", "bg": "'"$bg"'"}'
 
 	prevCover=$cover
 done
