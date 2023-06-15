@@ -160,3 +160,13 @@ n() {
         rm -f "$NNN_TMPFILE" > /dev/null
     fi
 }
+
+barmon() {
+    if [[ $1 != "0" && $1 != "1" ]]; then
+        echo "Usage: barmon [0|1]"
+        return
+    fi
+    new=$1
+    old=$((1 - $new))
+    find . -type f -exec sed -i "s/:monitor $old/:monitor $new/g" {} +
+}
