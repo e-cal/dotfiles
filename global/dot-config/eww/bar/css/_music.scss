@@ -54,6 +54,9 @@
 .song-button {
   margin-left: 0.5rem;
 }
+.song-button:hover {
+  color: $overlay1;
+}
 
 .music-button:hover label {
   color: $fg;
