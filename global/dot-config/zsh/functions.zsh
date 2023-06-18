@@ -168,5 +168,5 @@ barmon() {
     fi
     new=$1
     old=$((1 - $new))
-    find . -type f -exec sed -i "s/:monitor $old/:monitor $new/g" {} +
+    find -L ~/.config/eww/bar -type f -exec sed -i "s/:monitor $old/:monitor $new/g" {} +
 }
