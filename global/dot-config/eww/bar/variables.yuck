@@ -1,4 +1,3 @@
-(defvar monitor 1)
 (defvar bright_reveal false)
 (defvar bt_rev false)
 (defvar music_reveal false)

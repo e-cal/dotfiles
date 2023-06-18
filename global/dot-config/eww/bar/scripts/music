@@ -32,9 +32,12 @@ sanitize() {
 prevCover=''
 prevArtist=''
 prevTitle=''
-prevStatus=''
 
 playerctl -p spotify -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status cover; do
+	if [[ -z "$title" ]]; then
+		IFS="$(printf '\')" read -r title artist status cover <<<$(playerctl -p spotify metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}')
+	fi
+
 	if [ "$cover" != "$prevCover" ]; then
 		COVER=$(get_cover "$cover")
 
@@ -70,17 +73,20 @@ playerctl -p spotify -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:art
 		thisTitle="$(sanitize "$title")"
 	fi
 
-	if [ "$prevStatus" != "$status" ]; then
-		prevStatus="$status"
-		thisStatus="$(get_status "$status")"
-	fi
+	thisStatus="$(get_status "$status")"
+	prevIcon="󰒮"
+	nextIcon="󰒭"
 
 	if [[ ! -z "$thisTitle" ]]; then
 		full="$thisTitle - $thisArtist"
+
 	else
 		full=""
+		thisStatus=""
+		prevIcon=""
+		nextIcon=""
 	fi
-	echo '{"artist": "'"$thisArtist"'", "title": "'"$thisTitle"'", "full": "'"$full"'", "status": "'"$thisStatus"'", "cover": "'"$COVER"'", "border": "'"$border"'", "bg": "'"$bg"'"}'
+	echo '{"artist": "'"$thisArtist"'", "title": "'"$thisTitle"'", "full": "'"$full"'", "status": "'"$thisStatus"'", "cover": "'"$COVER"'", "border": "'"$border"'", "bg": "'"$bg"'", "prevIcon": "'"$prevIcon"'", "nextIcon": "'"$nextIcon"'"}'
 
 	prevCover=$cover
 done
