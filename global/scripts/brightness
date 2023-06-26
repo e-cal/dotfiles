@@ -20,30 +20,34 @@ up)
 	if [[ $HOSTNAME == "coeus" ]]; then
 		sudo ddcutil --bus $monitor setvcp 10 + 10
 	elif [[ $HOSTNAME == "prometheus" ]]; then
-		xbacklight -inc 2
+		# xbacklight -inc 2
+		pkexec brillo -A 2
 	fi
-	notification
+	# notification
 	;;
 down)
 	if [[ $HOSTNAME == "coeus" ]]; then
 		sudo ddcutil --bus $monitor setvcp 10 - 10
 	elif [[ $HOSTNAME == "prometheus" ]]; then
-		xbacklight -dec 2
+		# xbacklight -dec 2
+		pkexec brillo -U 2
 	fi
-	notification
+	# notification
 	;;
 set)
 	if [[ $HOSTNAME == "coeus" ]]; then
 		sudo ddcutil --bus $monitor setvcp 10 $2
 	elif [[ $HOSTNAME == "prometheus" ]]; then
-		xbacklight -set $2
+		# xbacklight -set $2
+		pkexec brillo -S $2
 	fi
 	;;
 *)
 	if [[ $HOSTNAME == "coeus" ]]; then
 		sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g'
 	elif [[ $HOSTNAME == "prometheus" ]]; then
-		xbacklight -get | cut -d '.' -f 1
+		# xbacklight -get | cut -d '.' -f 1
+		pkexec brillo
 	fi
 	;;
 esac
