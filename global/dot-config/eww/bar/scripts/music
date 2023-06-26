@@ -78,7 +78,7 @@ playerctl -p spotify -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:art
 	nextIcon="󰒭"
 
 	if [[ ! -z "$thisTitle" ]]; then
-		full="$thisTitle - $thisArtist"
+		full="$thisTitle – $thisArtist"
 
 	else
 		full=""
