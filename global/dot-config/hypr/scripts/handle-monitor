@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+handle() {
+	case $1 in monitoradded*)
+		hyprctl dispatch moveworkspacetomonitor "1 DP-3"
+		hyprctl dispatch moveworkspacetomonitor "2 DP-3"
+		;;
+	esac
+}
+
+socat - UNIX-CONNECT:$(find /tmp/hypr -name ".socket2.sock") | while read -r line; do handle "$line"; done
