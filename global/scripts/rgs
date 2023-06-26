@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 
 if [[ $# == 0 ]]; then
-    query=`read -p "query: " -e tmp; echo $tmp`
+	query=$(
+		read -p "query: " -e tmp
+		echo $tmp
+	)
 else
-    query=$*
+	query=$*
 fi
 
 IFS=: read -ra selected < <(
-  rg --color=always --line-number --no-heading --smart-case "$query" |
-    fzf --ansi \
-        --color "hl:-1:underline,hl+:-1:underline:reverse" \
-        --delimiter : \
-        --preview "bat --theme=gruvbox-dark --color=always {1} --highlight-line {2} --wrap=character --terminal-width=`tput cols`" \
-        --preview-window 'up,80%,border-bottom,+{2}+3/3,~3'
+	rg --color=always --line-number --no-heading --smart-case "$query" |
+		fzf --ansi \
+			--color "hl:-1:underline,hl+:-1:underline:reverse" \
+			--delimiter : \
+			--preview "bat --color=always {1} --highlight-line {2} --wrap=character --terminal-width=$(tput cols)" \
+			--preview-window 'up,80%,border-bottom,+{2}+3/3,~3'
 )
 [ -n "${selected[0]}" ] && nvim "${selected[0]}" "+${selected[1]}"
