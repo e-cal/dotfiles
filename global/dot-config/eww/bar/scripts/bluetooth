@@ -5,9 +5,14 @@ source "$(dirname "$0")"/utils
 
 toggle() {
 	status=$(rfkill -J | jq -r '.rfkilldevices[] | select(.type == "bluetooth") | .soft' | head -1)
-
-	if [ "$status" = "unblocked" ]; then
-		rfkill block bluetooth
+	if [[ "$status" == "unblocked" ]]; then
+		powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
+		status=$(bluetoothctl info)
+		if [[ $powered == "yes" ]] && [[ "$status" != "Missing device address argument" ]]; then
+			bluetoothctl disconnect
+		else
+			rfkill block bluetooth
+		fi
 	else
 		rfkill unblock bluetooth
 	fi
