@@ -27,7 +27,7 @@ HOME = Path.home()
 # Set your shell, startcmd, and project folders here
 SHELL = "zsh"
 STARTCMD = "sleep 0.1 && triangles && echo"
-DIRICON = ""
+DIRICON = "󱞪 "
 
 
 @dataclass
