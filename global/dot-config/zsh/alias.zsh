@@ -7,18 +7,18 @@ alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --col
 alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always -I .git"
 alias ".ls"="/usr/bin/ls"
 
-alias "yeet"="paru -Rsn"
-alias "top"="bashtop"
-alias "py"="python"
-alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
-alias "jn"="jupyter notebook"
-alias "lsvenvs"="ls ~/.local/share/virtualenvs"
-alias "lskernels"="ls $HOME/.local/share/jupyter/kernels"
+alias "clear"="clear;divider"
 alias "v"="nvim"
 alias "vc"='nvim $(cfgdirs --file)'
 alias "vr"="nvim -c 'OpenLast'"
-alias "clear"="clear;triangles"
+alias "py"="python"
+alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
+alias "jn"="jupyter notebook"
 alias "celar"="clear"
+alias "yeet"="paru -Rsn"
+alias "top"="bashtop"
+alias "lsvenvs"="ls ~/.local/share/virtualenvs"
+alias "lskernels"="ls $HOME/.local/share/jupyter/kernels"
 alias "greps"='grep -ri'
 alias "clip"='xclip -sel clip'
 alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)'
@@ -63,6 +63,7 @@ alias "venv"="python -m venv"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "cddl"="cda ~/Downloads"
 alias "untar"="tar xvzf"
+alias "bat"="bat -n"
 
 # System specific
 alias "bat-stat"="sudo tlp-stat"

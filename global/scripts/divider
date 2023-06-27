@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# ------------------------------------------------------------------------------
+#                                  One Line
+# ------------------------------------------------------------------------------
+# ─ ━ ▔ ▀ 󱨊󱨉 △▽
+# symbol=⌃⌄
+# tput cols / len symbol
+# yes "$symbol" | head -n $(($(tput cols) / ${#symbol})) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.04
+
+# ------------------------------------------------------------------------------
+#                                 Multi Line
+# ------------------------------------------------------------------------------
+# random seed
+seed=$(date +%N)
+
+yes "╮╭╮╭" | head -n $(($(tput cols) / 4)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.04 -S $seed
+# yes "◞◝" | head -n $(($(tput cols) / 1)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.04 -S $seed
+[[ $(($(tput cols) % 4)) != 0 ]] && echo " "
+# yes "◡" | head -n $(($(tput cols) / 1)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.04 -S $seed
+yes "╰╯╰╯" | head -n $(($(tput cols) / 4)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.04 -S $seed
