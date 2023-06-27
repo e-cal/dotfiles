@@ -43,4 +43,5 @@ else
 		background profile system clock cal music github \
 		hackernews twitter youtube weather apps mail logout sleep reboot poweroff folders
 	rm "$FILE"
+	${EWW} -c ~/.config/eww/bar open bar
 fi
