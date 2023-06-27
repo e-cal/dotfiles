@@ -33,7 +33,7 @@
   color: $fg;
 
   label {
-    font-size: 1.2rem;
+    font-size: 1.2em;
   }
 }
 
@@ -52,6 +52,7 @@ tooltip {
 .text,
 .text label {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  font-size: 1em;
 }
 
 /* icon font */
@@ -67,6 +68,11 @@ tooltip {
 }
 
 /* date & time */
+.clock {
+  padding-left: 0.7rem;
+  padding-right: 0.5rem;
+}
+
 .hour {
   font-weight: bold;
   padding-left: 5px;
@@ -77,6 +83,8 @@ tooltip {
 }
 
 .date {
+  font-size: 0.8em;
+  font-weight: bold;
   color: $flamingo;
 }
 
@@ -84,9 +92,6 @@ tooltip {
 .bright-icon {
   color: $yellow;
   font-family: JetBrains Mono;
-}
-.module-bt {
-  font-size: 1.5rem;
 }
 
 /* scales */

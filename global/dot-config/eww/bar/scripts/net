@@ -36,10 +36,13 @@ function gen_wifi() {
 }
 
 function gen_ethernet() {
-	icon=""
+	icon="󰈁"
 	class="net-connected"
 	color="#cba6f7"
 	name=$(echo "$nm" | jq -r 'select(.type == "ethernet") .connection')
+	if [[ "$name" == "Wired connection 1" ]]; then
+		name="Ethernet"
+	fi
 }
 
 function make_content() {

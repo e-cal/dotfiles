@@ -8,7 +8,7 @@
       :class "cpubar"
       :thickness 3
       (button
-        :tooltip "using ${round(EWW_CPU.avg,0)}% cpu"
+        :tooltip "${round(EWW_CPU.avg,0)}%"
         :onclick "${EWW_CMD} open --toggle system-menu"
         (label :class "icon-text" :text "")))
 
@@ -17,12 +17,13 @@
       :class "membar"
       :thickness 3
       (button
-        :tooltip "using ${round(EWW_RAM.used_mem_perc,0)}% ram"
+        :tooltip "${round(EWW_RAM.used_mem_perc,0)}%"
         :onclick "${EWW_CMD} open --toggle system-menu"
         (label :class "icon-text" :text "")))
 
     (circular-progress
       :value {battery.percentage}
+      :visible {hostname == "prometheus"}
       :class "batbar"
       :style "color: ${battery.color};"
       :thickness 3

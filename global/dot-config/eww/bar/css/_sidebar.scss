@@ -35,10 +35,12 @@
 .system-row {
   margin: 0.5rem 0.7rem;
 
-  /* the airplane icon is not properly spaced */
-  .airplane-box button {
-    // padding: 1rem 3rem;
-    padding: 0.7rem;
+  .net-box button {
+    padding-left: 1.2rem;
+  }
+
+  .cloud-box button {
+    padding: 0.7rem 1.2rem 0.9rem 0.7rem;
   }
 
   label {
@@ -172,4 +174,9 @@
 .net-connected {
   background-color: $mauve;
   color: $crust;
+}
+
+.mounted {
+    background-color: $green;
+    color: $crust;
 }

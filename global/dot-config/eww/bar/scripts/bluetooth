@@ -33,13 +33,13 @@ gen_output() {
 			class="bt-connected"
 		else
 			icon=""
-			text="disconnected"
+			text="Disconnected"
 			color="#45475a"
 			class=""
 		fi
 	else
 		icon=""
-		text="off"
+		text="Disabled"
 		color="#45475a"
 		class=""
 	fi

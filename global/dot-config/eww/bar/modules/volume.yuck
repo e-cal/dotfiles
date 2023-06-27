@@ -10,5 +10,5 @@
       :onrightclick "volume mute" ; toggle mute on right click
       (label
         :class "vol-icon"
-        :tooltip "volume ${volume.percent}%"
+        :tooltip "${volume.percent}%"
         :text {volume.icon}))))

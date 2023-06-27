@@ -19,7 +19,7 @@
           :class "day"
           :text {time.day})))
 
-    (centerbox ; wifi/bluetooth/airplane buttons
+    (centerbox ; wifi/bluetooth/cloud buttons
       :class "system-row"
       (box
         :class "net-box"
@@ -28,6 +28,7 @@
         (box
           :class "element icon ${net.class}"
           :space-evenly true
+          :tooltip "󰇚 ${round(EWW_NET.enp3s0.NET_DOWN / 125000 ,0)} Mbps | 󰕒 ${round(EWW_NET.enp3s0.NET_UP / 125000 ,0)} Mbps"
           (button
             :class "net-button"
             :onclick "scripts/net toggle"
@@ -46,6 +47,7 @@
         (box
           :class "element icon ${bluetooth.class}"
           :space-evenly false
+          :tooltip {bluetooth.battery}
           (button
             :class "bluetooth-button"
             :onclick "scripts/bluetooth toggle"
@@ -62,22 +64,22 @@
           :text {bluetooth.text}
           :xalign 0.5
           :justify "center"
-          :tooltip {bluetooth.battery}
           :wrap true))
 
       (box
-        :class "airplane-box"
+        :class "cloud-box"
         :space-evenly false
         :orientation "v"
         (box
-          :class "element"
+          :class "element icon ${cloud.class}"
+          :tooltip {cloud.mounted}
           (button
-            :class "airplane-button"
-            :onclick "scripts/airplane toggle"
-            ""))
+            :class "cloud-button"
+            :onclick "scripts/cloud toggle"
+            {cloud.icon}))
         (label
           :class "text"
-          :text "Airplane Mode"
+          :text {cloud.text}
           :xalign 0.5
           :limit-width 16)))
 

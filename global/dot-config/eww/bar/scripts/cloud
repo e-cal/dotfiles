@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+source "$(dirname "$0")"/utils
+
+mounted=$(cloud mounted)
+
+toggle() {
+	if [[ "$mounted" == "no" ]]; then
+		cloud mount all
+	else
+		cloud umount all
+	fi
+}
+
+gen_output() {
+	mounted=$(cloud mounted)
+	if [[ "$mounted" == "no" ]]; then
+		icon="󰅤"
+		mounted=""
+		text="Unmounted"
+		class="unmounted"
+	else
+		icon="󰅟"
+		# strip trailing newline and replace newlines with /
+		mounted=$(cloud mounted | tr '\n' '/' | sed 's/\/$//')
+		text="Mounted"
+		class="mounted"
+	fi
+	echo '{ "icon": "'"$icon"'", "mounted": "'"$mounted"'", "text": "'"$text"'", "class": "'"$class"'" }'
+}
+
+if [[ "$1" == "toggle" ]]; then
+	toggle
+else
+	gen_output
+	last_time=$(get_time_ms)
+
+	udevadm monitor | while read -r _; do
+		current_time=$(get_time_ms)
+		delta=$((current_time - last_time))
+		# 50ms debounce
+		if [[ $delta -gt 50 ]]; then
+			gen_output
+			# reset debounce timer
+			last_time=$(get_time_ms)
+		else
+			sleep 3
+			gen_output
+			last_time=$(get_time_ms)
+		fi
+	done
+fi

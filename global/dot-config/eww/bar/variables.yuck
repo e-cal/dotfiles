@@ -8,8 +8,9 @@
 (defvar osd-volume false)
 
 (defpoll time :interval "5s" `date +'{"date": "%b %d", "hour": "%H", "minute": "%M", "day": "%A"}'`)
+(defpoll hostname :interval "24h" :run-while false `hostname`)
 
-(deflisten airplane "scripts/airplane")
+(deflisten cloud "scripts/cloud")
 (deflisten battery "scripts/battery")
 (deflisten bluetooth "scripts/bluetooth")
 (deflisten brightness "scripts/brightness")

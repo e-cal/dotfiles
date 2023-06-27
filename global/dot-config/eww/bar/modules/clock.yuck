@@ -5,18 +5,18 @@
     :onhover "${EWW_CMD} update date_rev=true"
     :onhoverlost "${EWW_CMD} update date_rev=false"
     (overlay
-      :class "module"
+      :class "module clock"
       ; the styles make the clock invisible while hovered, and the date is shown instead
       (box
         :space-evenly false
-        :class "text"
+        :class "text clock"
         (label
           :text {time.hour}
           :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}
           :class "hour")
         (label
-          :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}
-          :text ":")
+          :text ":"
+          :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""})
         (label
           :text {time.minute}
           :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}

@@ -16,12 +16,14 @@
       :orientation "v"
       :space-evenly false
       :class "music-box"
+    (button
+      :onclick "hyprctl dispatch workspace 5"
       (label ; title
         :class "music-title text"
         :limit-width 30
         :show_truncated true
         :justify "center"
-        :text {music.title})
+        :text {music.title}))
       (label ; artist
         :class "music-artist text"
         :wrap true

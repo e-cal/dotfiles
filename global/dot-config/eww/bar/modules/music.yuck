@@ -20,9 +20,9 @@
                     :text "${music.full}"))
       ; show buttons when hovering
       (revealer
-        :transition "slideright"
+        :transition "crossfade" ;"slideright"
         :reveal music_reveal
-        :duration "250ms"
+        :duration "500ms";"250ms"
         (box
           :class "icon text"
           (button :class "song-button" :onclick "playerctl -p spotify previous" {music.prevIcon})
