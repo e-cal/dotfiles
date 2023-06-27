@@ -38,6 +38,17 @@ unlink)
 		rm ~/$2
 	fi
 	;;
+mounted)
+	any=0
+	for dir in ~/cloud/*; do
+		name=$(basename $dir)
+		mountpoint -q $dir && echo $name && any=1
+	done
+
+	if [[ $any == 0 ]]; then
+		echo "no"
+	fi
+	;;
 *)
 	echo "Invalid command"
 	exit 1
