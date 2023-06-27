@@ -61,9 +61,9 @@ $character\
 command_timeout = 500
 
 [character]
-success_symbol = "[](bold green)"
-vicmd_symbol = "[](bold yellow)"
-error_symbol = "[](bold red)"
+success_symbol = "[󱞪](bold green)"
+vicmd_symbol = "[](bold blue)"
+error_symbol = "[󱎘](bold red)"
 
 [fill]
 symbol = " "
@@ -83,27 +83,27 @@ disabled = true
 disabled = true
 
 [jobs]
-symbol = ""
+symbol = "󱦟"
 style = "#6A6A6A"
 format = "[$symbol (×$number)]($style) "
 
 [git_branch]
-symbol = " "
+symbol = "󰘬 "
 format = ' [$symbol$branch]($style) '
 
 [git_status]
 format = '([$all_status$ahead_behind]($style))'
 style = "white"
-conflicted = "𥉉 "
-ahead = "落×${count} "
-behind = " ×${count} "
-diverged = "落×${ahead_count}  ×${behind_count} "
-modified = " ×${count} "
-untracked = " ×${count} "
-stashed = " "
-staged = " 﫠×${count} "
-renamed = " ×${count} "
-deleted = " ×${count} "
+conflicted = "󰗖 "
+ahead = "󰐙×${count} "
+behind = "󰍷×${count} "
+diverged = "󰍷×${ahead_count} 󰐙×${behind_count} "
+modified = "󰏫×${count} "
+untracked = "󰈤×${count} "
+stashed = "󰆓 "
+staged = "󰈖×${count} "
+renamed = "󰈝×${count} "
+deleted = "󰩹×${count} "
 
 [gcloud]
 format = '[$symbol$account(@$domain)(\($region\))]($style)'
@@ -140,7 +140,6 @@ disabled = true
 
 [shell]
 disabled = false
-fish_indicator = " "
 zsh_indicator = ""
 bash_indicator = "𝐁 "
 xonsh_indicator = "𝐗 "
@@ -148,28 +147,28 @@ unknown_indicator = " "
 format = "$indicator"
 
 [python]
-symbol = " "
+symbol = "󰌠 "
 format = '[${symbol}(${version} )(\($virtualenv\) )]($style)'
 
 [nodejs]
-symbol = " "
+symbol = "󰎙 "
 format = "[$symbol$version]($style) "
 style = "bold blue"
 
 [lua]
-symbol = " "
+symbol = "󰢱 "
 format = "[$symbol$version]($style) "
 
 [cmake]
-symbol = "喝"
+symbol = "󰔷 "
 format = "[$symbol$version]($style) "
 
 [ruby]
-symbol = " "
+symbol = "󰴭 "
 format = "[$symbol$version]($style) "
 
 [java]
-symbol = " "
+symbol = "󰬷 "
 format = "[$symbol$version]($style) "
 
 [perl]
