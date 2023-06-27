@@ -17,7 +17,7 @@
       :space-evenly false
       :class "music-box"
     (button
-      :onclick "hyprctl dispatch workspace 5"
+      :onclick "hyprctl dispatch workspace 5 && ${EWW_CMD} close music"
       (label ; title
         :class "music-title text"
         :limit-width 30
