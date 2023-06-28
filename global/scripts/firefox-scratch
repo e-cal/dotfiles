@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
-if ! hyprctl clients | rg "class: firefox-aurora" -B3 | rg "(special:browser)" -q; then
-	firefox
+launch=firefox
+ws="special:browser"
+
+if [[ $1 == "ask" ]]; then
+	launch='firefox --new-window "https://ai.com"'
+	ws="special:ask"
+fi
+
+if ! hyprctl clients | rg "class: firefox-aurora|class: firefoxdeveloperedition" -B3 | rg "($ws)" -q; then
+	eval "$launch"
 	sleep 0.5
-	hyprctl dispatch movetoworkspace special:browser
+	hyprctl dispatch movetoworkspace $ws
 fi
