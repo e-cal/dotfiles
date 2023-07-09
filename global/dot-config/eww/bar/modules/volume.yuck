@@ -7,7 +7,7 @@
       :onscroll "echo {} | sed -e 's/up/-/g' -e 's/down/+/g' | xargs volume {}"
       :onclick "${EWW_CMD} open --toggle system-menu"
       ;:onclick "scripts/volume mute" 
-      :onrightclick "volume mute" ; toggle mute on right click
+      :onrightclick "pavucontrol &" ; toggle mute on right click
       (label
         :class "vol-icon"
         :tooltip "${volume.percent}%"
