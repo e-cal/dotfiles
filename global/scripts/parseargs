@@ -61,8 +61,7 @@ boolStr() {
 set -- "${@:1:}" "${args[@]}"
 
 
-# echo booleans: ${!booleans[@]}
-# echo boolean values: ${booleans[@]}
-# echo flags: ${!flags[@]}
-# echo flag values: ${flags[@]}
-# echo args: ${args[@]}
+# booleans: ${!booleans[@]}
+# flags: ${!flags[@]}
+# flag values: ${flags[@]}
+# args: ${args[@]}

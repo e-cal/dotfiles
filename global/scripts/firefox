@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-firefox-developer-edition "$@"
+if [[ $HOSTNAME == "gaius" ]]; then
+	firefox-developer-edition "$@"
+else
+	/bin/firefox "$@"
+fi
