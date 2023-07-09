@@ -150,17 +150,6 @@ EOF
     echo "# %%" > "$1".sync.py
 }
 
-n() {
-    NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
-    \nnn -Pp "$@"
-
-    if [ -f "$NNN_TMPFILE" ]; then
-        echo "Opening file: $(cat "$NNN_TMPFILE")"
-        . "$NNN_TMPFILE"
-        rm -f "$NNN_TMPFILE" > /dev/null
-    fi
-}
-
 barmon() {
     if [[ $1 != "0" && $1 != "1" ]]; then
         echo "Usage: barmon [0|1]"

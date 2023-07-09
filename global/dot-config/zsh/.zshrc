@@ -4,6 +4,8 @@ source $HOME/.config/zsh/alias.zsh
 source $HOME/.config/zsh/functions.zsh
 source $HOME/.config/zsh/bindkey.zsh
 
+fignore=(.ipynb)
+
 # Load direnv
 # eval "$(direnv hook zsh)"
 

@@ -62,7 +62,7 @@ alias "stop-docker"="sudo systemctl stop docker"
 alias "venv"="python -m venv"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "cddl"="cda ~/Downloads"
-alias "untar"="tar xvzf"
+alias "untar"="tar -xvf"
 alias "bat"="bat -n"
 
 # System specific

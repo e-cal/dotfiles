@@ -46,16 +46,14 @@ export FZF_DEFAULT_COMMAND='rg -l ""'
 export FZF_DEFAULT_OPTS='--prompt=" " --pointer="›" --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc --color=marker:#f5e0dc,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8'
 export FZF_INLINE='--border --height=50% --layout=reverse --no-info'
 
-export NNN_FIFO=/tmp/nnn.fifo
-export NNN_PLUG="p:preview-tui"
-
 # python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME"/python/init.py
 export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
 export PYENV_ROOT="$XDG_CONFIG_HOME"/pyenv
 
 # lemme use things
-export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$PATH:$XDG_DATA_HOME/cargo/bin
+export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$XDG_DATA_HOME/cargo/bin:/opt/cuda-11.7/bin:$PATH
+export LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:$LD_LIBRARY_PATH
 
 # GET OUT OF MY HOUSE
 export XMONAD_CONFIG_HOME="$XDG_CONFIG_HOME"/xmonad
@@ -90,3 +88,4 @@ export PSQL_HISTORY="$XDG_DATA_HOME"/pg/psql_history
 export PGPASSFILE="$XDG_CONFIG_HOME"/pg/pgpass
 export PGSERVICEFILE="$XDG_CONFIG_HOME"/pg/pg_service.conf
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export OPAMROOT="$XDG_DATA_HOME/opam"
