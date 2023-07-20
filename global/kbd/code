@@ -16,8 +16,8 @@ xkb_symbols "basic" {
     key <AE08> {[ braceright,   8          ]};
     key <AE09> {[ bracketright, 9          ]};
     key <AE10> {[ asterisk,     0          ]};
-    key <AE11> {[ exclam,       percent    ]};
-    key <AE12> {[ minus,        underscore ]};
+    key <AE11> {[ minus,        underscore ]};
+    key <AE12> {[ exclam,       percent    ]};
 
     key <AD01>	{[	 q,	 Q		]};
     key <AD02>	{[	 w,	 W		]};
