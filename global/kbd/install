@@ -1,18 +1,36 @@
 #!/bin/bash
 
-install_x11() {
-    curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak" > /tmp/code-dvorak
-    sudo cp /tmp/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak || echo "Failed to copy code-dvorak (X11)" 
-    setxkbmap code-dvorak || echo "setxkbmap failed" 
+if [[ $1 == "dvorak" ]]; then
+	install_x11() {
+		curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak" >/tmp/code-dvorak
+		sudo cp /tmp/code-dvorak /usr/share/X11/xkb/symbols/code-dvorak || echo "Failed to copy code-dvorak (X11)"
+		setxkbmap code-dvorak || echo "setxkbmap failed"
 
-}
+	}
 
-install_sys() {
-    curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak.map.gz" > /tmp/code-dvorak.map.gz
-    sudo cp /tmp/code-dvorak.map.gz /usr/share/kbd/keymaps/code-dvorak.map.gz || echo "Failed to copy code-dvorak (system)"
-    localectl set-keymap code-dvorak || echo "localectl set-keymap failed"
+	install_sys() {
+		curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code-dvorak.map.gz" >/tmp/code-dvorak.map.gz
+		sudo cp /tmp/code-dvorak.map.gz /usr/share/kbd/keymaps/code-dvorak.map.gz || echo "Failed to copy code-dvorak (system)"
+		localectl set-keymap code-dvorak || echo "localectl set-keymap failed"
 
-}
+	}
 
+	install_x11 && install_sys && echo "Successfully installed code-dvorak. Happy typing!"
 
-install_x11 && install_sys && echo "Successfully installed code-dvorak. Happy typing!"
+else
+	install_x11() {
+		curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code" >/tmp/code
+		sudo cp /tmp/code /usr/share/X11/xkb/symbols/code || echo "Failed to copy code (X11)"
+		setxkbmap code || echo "setxkbmap failed"
+
+	}
+
+	install_sys() {
+		curl -s "https://raw.githubusercontent.com/e-cal/dotfiles/main/global/kbd/code.map.gz" >/tmp/code.map.gz
+		sudo cp /tmp/code.map.gz /usr/share/kbd/keymaps/code.map.gz || echo "Failed to copy code (system)"
+		localectl set-keymap code || echo "localectl set-keymap failed"
+
+	}
+
+	install_x11 && install_sys && echo "Successfully installed code. Happy typing!"
+fi
