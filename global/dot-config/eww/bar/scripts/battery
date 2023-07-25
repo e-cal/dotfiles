@@ -20,7 +20,11 @@ gettime() {
 }
 
 color() {
-	[ "$percentage" -le 20 ] && echo '#f38ba8' || echo '#a6e3a1'
+    if [[ $state == "Discharging" ]]; then
+        [[ $percentage -le 20 ]] && echo "#f38ba8" || echo "#a6e3a1"
+    else
+        echo "#f9e2af"
+    fi
 }
 
 status() {
