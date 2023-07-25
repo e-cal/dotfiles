@@ -7,5 +7,5 @@
       (button
         :class "bright-icon icon"
         :onclick "${EWW_CMD} open --toggle system-menu"
-        :tooltip "brightness ${round(brightness.percent, 0)}%"
+        :tooltip "${round(brightness.percent, 0)}%"
         {brightness.icon}))))

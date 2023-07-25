@@ -8,7 +8,7 @@
       :class "cpubar"
       :thickness 3
       (button
-        :tooltip "${round(EWW_CPU.avg,0)}%"
+        :tooltip "CPU ${round(EWW_CPU.avg,0)}%"
         :onclick "${EWW_CMD} open --toggle system-menu"
         (label :class "icon-text" :text "")))
 
@@ -17,7 +17,7 @@
       :class "membar"
       :thickness 3
       (button
-        :tooltip "${round(EWW_RAM.used_mem_perc,0)}%"
+        :tooltip "RAM ${round(EWW_RAM.used_mem_perc,0)}%"
         :onclick "${EWW_CMD} open --toggle system-menu"
         (label :class "icon-text" :text "")))
 
@@ -28,6 +28,6 @@
       :style "color: ${battery.color};"
       :thickness 3
       (button
-        :tooltip "battery ${battery.percentage}%"
+        :tooltip {"${battery.status}" == "Discharging" ? "${battery.percentage}%" : "Charging (${battery.percentage}%)"}
         :onclick "${EWW_CMD} open --toggle system-menu"
         (label :class "icon-text" :text "")))))
