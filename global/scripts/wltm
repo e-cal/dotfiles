@@ -205,6 +205,8 @@ def project(sel=None):
             url = name
             name = name.split("/")[-1].split(".")[0]
             run_cmd(f"git clone {url} $HOME/projects/{name}")
+        elif "/" in name:
+            run_cmd(f"gh repo clone {name} $HOME/projects/{name.split('/')[-1]}")
 
         PROJECTDIR.path.joinpath(name).mkdir(parents=True, exist_ok=True)
         attach(name, PROJECTDIR.path.joinpath(name))
