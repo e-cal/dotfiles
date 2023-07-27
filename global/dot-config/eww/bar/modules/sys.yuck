@@ -17,7 +17,7 @@
       :class "membar"
       :thickness 3
       (button
-        :tooltip "RAM ${round(EWW_RAM.used_mem_perc,0)}%"
+        :tooltip "MEM ${round(EWW_RAM.used_mem_perc,0)}%"
         :onclick "${EWW_CMD} open --toggle system-menu"
         (label :class "icon-text" :text "")))
 
