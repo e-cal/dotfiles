@@ -8,7 +8,7 @@ if [[ $1 == "ask" ]]; then
 	ws="special:ask"
 fi
 
-if ! hyprctl clients | rg "class: firefox-aurora|class: firefoxdeveloperedition" -B3 | rg "($ws)" -q; then
+if ! hyprctl clients | rg "class: firefox" -B3 | rg "($ws)" -q; then
 	eval "$launch"
 	sleep 0.5
 	hyprctl dispatch movetoworkspace $ws
