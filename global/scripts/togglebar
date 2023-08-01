@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ $(eww -c ~/.config/eww/bar windows | grep bar | cut -c 1) == "*" ]]; then
+    eww -c ~/.config/eww/bar close bar
+else
+    eww -c ~/.config/eww/bar open bar
+fi
