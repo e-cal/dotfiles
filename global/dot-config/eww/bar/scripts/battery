@@ -32,7 +32,7 @@ status() {
 	if [ "$state" = "fully-charged" ]; then
 		out+="Fully Charged"
 	else
-		[ "$state" = "Charging" ] && out+="Charging, "
+		[[ "$state" == "Charging" ]] && out+="Charging, "
 		out+="$(gettime) left"
 	fi
 	echo "$out"

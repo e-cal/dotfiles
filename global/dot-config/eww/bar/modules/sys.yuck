@@ -28,6 +28,6 @@
       :style "color: ${battery.color};"
       :thickness 3
       (button
-        :tooltip {"${battery.status}" == "Discharging" ? "${battery.percentage}%" : "Charging (${battery.percentage}%)"}
+        :tooltip {"${battery.status}" == "Charging" ? "Charging (${battery.percentage}%)" : "Battery ${battery.percentage}%"}
         :onclick "${EWW_CMD} open --toggle system-menu"
         (label :class "icon-text" :text "")))))
