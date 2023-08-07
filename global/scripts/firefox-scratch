@@ -4,7 +4,7 @@ launch=firefox
 ws="special:browser"
 
 if [[ $1 == "ask" ]]; then
-	launch='firefox --new-window "https://ai.com"'
+	launch='firefox --new-window "https://chat.openai.com"'
 	ws="special:ask"
 fi
 

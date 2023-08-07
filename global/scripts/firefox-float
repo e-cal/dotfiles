@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+res=$(hyprctl monitors | grep "focused: yes" -B 10 | head -n1 | awk '{print $1}' | awk -F@ '{print $1}')
+resx=$(echo $res | awk -Fx '{print $1}')
+resy=$(echo $res | awk -Fx '{print $2}')
+
+sizex=$(echo "$resx * 0.8" | bc | awk -F. '{print $1}')
+sizey=$(echo "$resy * 0.8" | bc | awk -F. '{print $1}')
+
+firefox
+sleep 0.5
+hyprctl --batch "dispatch togglefloating; dispatch resizeactive exact $sizex $sizey; dispatch centerwindow"
