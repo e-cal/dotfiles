@@ -18,7 +18,7 @@ get_position_time() {
 
 prevLength=''
 
-playerctl -p spotify -F metadata -f '{{mpris:length}}\{{position}}' 2>/dev/null | while IFS="$(printf '\')" read -r len pos; do
+playerctl  -F metadata -f '{{mpris:length}}\{{position}}' 2>/dev/null | while IFS="$(printf '\')" read -r len pos; do
 	position="$(get_position "$pos" "${len:-1}")"
 	position_time="$(get_position_time "$pos" "${len:-1}")"
 
