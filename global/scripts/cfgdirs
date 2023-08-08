@@ -43,8 +43,8 @@ tmux=false
 file=false
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --tmux) tmux=true ;;
-        --file) file=true ;;
+        tmux) tmux=true ;;
+        file) file=true ;;
         *) break ;;
     esac
     shift

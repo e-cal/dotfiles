@@ -9,7 +9,7 @@ alias ".ls"="/usr/bin/ls"
 
 alias "clear"="clear;divider"
 alias "v"="nvim"
-alias "vc"='nvim $(cfgdirs --file)'
+alias "vc"='nvim $(cfgdirs file)'
 alias "vr"="nvim -c 'OpenLast'"
 alias "py"="python"
 alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
