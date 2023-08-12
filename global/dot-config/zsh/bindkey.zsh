@@ -39,16 +39,22 @@ function zvm_after_init() {
     _cd_cfg() { BUFFER="cdc"; zle accept-line }
     zle -N _cd_cfg
     bindkey "^[." _cd_cfg
+    bindkey "^." _cd_cfg
 
     # alt-shift-. -> vc
     _v_cfg() { BUFFER="vc"; zle accept-line }
     zle -N _v_cfg
     bindkey "^[>" _v_cfg
 
-    # C-t -> rgs
+    # C-s -> rgs
     _rgs() { BUFFER="rgs"; zle accept-line }
     zle -N _rgs
-    bindkey "^t" _rgs
+    bindkey "^s" _rgs
+
+    # C-t -> toggleterm
+    _toggleterm() { BUFFER="toggleterm"; zle accept-line }
+    zle -N _toggleterm
+    bindkey "^t" _toggleterm
 
     # C-a -> get last arg
     bindkey -s "^a" '!$^M' # last arg
