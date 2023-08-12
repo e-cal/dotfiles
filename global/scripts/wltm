@@ -44,11 +44,10 @@ PROJECTDIR = ProjectDir(
     name="projects",
     path=HOME / "projects",
     rename={
-        HOME / "projects/ecal.dev": "website",
+        # HOME / "projects/ecal.dev": "website",
+        HOME / "storj/masters": "masters"
     },
 )
-
-PROJECTDIR.rename[HOME / "storj/masters"] = "masters"
 
 ################################################################################
 # END OF USER CONFIG
@@ -56,7 +55,7 @@ PROJECTDIR.rename[HOME / "storj/masters"] = "masters"
 
 startcmd = f"exec {SHELL}" if not STARTCMD else f"{STARTCMD} && exec {SHELL}"
 in_tmux = os.getenv("TMUX") is not None
-menus = ["reset", "kill", "new"]
+menus = ["reset", "kill", "new", "config"]
 
 
 def run_cmd(cmd):
@@ -68,7 +67,8 @@ def run_cmd(cmd):
 
 
 # Get list of active sessions
-sessions = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'").splitlines()
+sessions = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'"
+                  ).splitlines()
 
 
 def fzf_menu(options, title="menu", binds=None, fzf_options=""):
@@ -78,6 +78,8 @@ def fzf_menu(options, title="menu", binds=None, fzf_options=""):
         for key, cmd in binds.items():
             binds_txt += f"{key}:{cmd},"
         binds_txt = binds_txt[:-1] + '"'
+
+    options = sorted(options, key=lambda x: (x != "main", x))
     options_str = "\n".join(options)
     try:
         return run_cmd(
@@ -98,32 +100,24 @@ def start_session(session, start_dir=None, run=None):
 
     run_cmd(" ".join(cmd))
 
-    if run:
-        if "tmux" in run:  # is already a tmux command
-            run_cmd(run)
-        else:  # is a shell command
-            run_cmd(
-                f'tmux send-keys -t {session} "tmux set-option status off && clear && echo && {run}" ENTER'
-            )
-
 
 def attach(session, start_dir=None, run=None):
     if not session_exists(session):
         start_session(session, start_dir, run)
     attach_cmd = "tmux switch" if in_tmux else "tmux attach"
     run_cmd(f"{attach_cmd} -t {session}")
+    if run:
+        run_cmd(f"tmux run-shell -t {session} '{run}'")
 
 
 def startup(kind="main"):
-    wtitles = run_cmd("hyprctl clients | rg -s title | awk '{ print $2 }'").splitlines()
+    wtitles = run_cmd("hyprctl clients | rg -s title | awk '{ print $2 }'"
+                     ).splitlines()
 
     if kind == "scratch":
         if "scratch" not in wtitles:
             run_cmd("kitty --title scratch zsh -c 'tm attach scratch'")
     elif kind == "ask":
-        # print("attaching ask")
-        # attach("scratch-ask", run="scratch-ask;exit")
-        # startup()
         if "scratch-ask" not in wtitles:
             run_cmd(
                 'kitty --title scratch-ask zsh -c \'tm attach scratch-ask "" "scratch-ask;exit"\''
@@ -215,6 +209,22 @@ def project(sel=None):
     attach(sel, projects[sel])
 
 
+def config():
+    attach("cfg")
+    # cmd = "tmux neww -t cfg; tmux send-keys -t cfg cdc C-m"
+    cmd = "tmux send-keys -t cfg 'clear && cdc; pwd | xargs basename | xargs tmux rename-window' C-m"
+    if (int(run_cmd("tmux list-windows -t cfg | wc -l")) > 1) or (
+        run_cmd("tmux list-panes -t cfg | awk '{print $4}' | head -c1") != "0"
+    ):
+        cmd = f"tmux neww -t cfg; {cmd}"
+    run_cmd(cmd)
+
+
+# bind-key . run-shell "tmux display-popup -E cfgdirs tmux"
+
+# run_cmd(f"cfgdirs tmux")
+
+
 def get_menu(refresh=False):
     # project_dirs = [proj_dir.name for proj_dir in PROJECTDIR]
     submenus = [*menus, PROJECTDIR.name]
@@ -237,6 +247,7 @@ def main():
                 "n": "new",
                 "r": "reset",
                 "k": "kill",
+                "c": "config",
             }
             op = expand[op] if op in expand else op
         if op in ("p", "project", "projects"):
