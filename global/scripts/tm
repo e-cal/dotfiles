@@ -93,17 +93,17 @@ def session_exists(session):
     return os.popen(f"tmux has-session -t={session} &>/dev/null").close() is None
 
 
-def start_session(session, start_dir=None, run=None):
+def start_session(session, work_dir=None, run=None):
     cmd = [f"tmux new -s {session} -d ", f'"{startcmd}"']
-    if start_dir:
-        cmd.insert(1, f"-c {start_dir}")
+    if work_dir:
+        cmd.insert(1, f"-c {work_dir}")
 
     run_cmd(" ".join(cmd))
 
 
-def attach(session, start_dir=None, run=None):
+def attach(session, work_dir=None, run=None):
     if not session_exists(session):
-        start_session(session, start_dir, run)
+        start_session(session, work_dir, run)
     attach_cmd = "tmux switch" if in_tmux else "tmux attach"
     run_cmd(f"{attach_cmd} -t {session}")
     if run:
@@ -131,14 +131,13 @@ def startup(kind="main"):
             attach("main")
 
 
-def new(name=None, start_dir=None):
+def new(name=None, work_dir=None):
     while not name:
         name = input("session name: ")
-        if name in sessions:
-            print(f"session {name} already exists.")
-            name = None
+    if not work_dir:
+        work_dir = run_cmd("find ~ -maxdepth 5 -type d 2>/dev/null | sed 's/\.\///' | fzf --border --height=50% --layout=reverse") or "~"
 
-    attach(name, start_dir)
+    attach(name, work_dir)
 
 
 def kill(session=None):
