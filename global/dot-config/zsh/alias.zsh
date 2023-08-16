@@ -28,6 +28,7 @@ alias "pdfeditor"="masterpdfeditor4"
 alias "diff"="kitty +kitten diff"
 alias "openbar"="eww -c ~/.config/eww/bar open bar"
 alias "closebar"="eww -c ~/.config/eww/bar close bar"
+alias "code"="code-insiders"
 
 # Searching
 alias "searchsys"="sudo find / 2>/dev/null | fzf -m --bind space:toggle | head -c-1 | clip"
