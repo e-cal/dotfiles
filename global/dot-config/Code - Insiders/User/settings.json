@@ -1,0 +1,14 @@
+{
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.startupEditor": "none",
+    "[markdown]": {
+        "editor.wordWrap": "off"
+    },
+    "editor.minimap.enabled": false,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false
+    },
+}

@@ -1,0 +1,77 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "space e",
+        "command": "workbench.view.explorer",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
+    {
+        "key": "space e",
+        "command": "workbench.action.toggleSidebarVisibility",
+        // "runCommands": [
+        //     "workbench.action.quickOpenNavigatePreviousInFilePicker",
+        //     "workbench.action.toggleSidebarVisibility"
+        // ],
+        "when": "filesExplorerFocus && foldersViewVisible"
+    },
+    {
+        "key": "space f",
+        "command": "editor.action.formatDocument",
+        "when": "neovim.mode == 'normal' && editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+    },
+    {
+        "key": "space",
+        "command": "-filesExplorer.openFilePreserveFocus",
+        "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
+    },
+    {
+        "key": "space a",
+        "command": "vscode-harpoon.addEditor",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
+    {
+        "key": "space h",
+        "command": "vscode-harpoon.editorQuickPick",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
+    {
+        "key": "space j",
+        "command": "vscode-harpoon.gotoEditor1",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
+    {
+        "key": "space k",
+        "command": "vscode-harpoon.gotoEditor2",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
+    {
+        "key": "space l",
+        "command": "vscode-harpoon.gotoEditor3",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
+    {
+        "key": "space ;",
+        "command": "vscode-harpoon.gotoEditor4",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
+    {
+        "key": "shift+o",
+        "command": "notebook.cell.insertCodeCellAboveAndFocusContainer",
+        "when": "notebookEditorFocused && !inputFocus && !notebookOutputInputFocused"
+    },
+    {
+        "key": "a",
+        "command": "-notebook.cell.insertCodeCellAboveAndFocusContainer",
+        "when": "notebookEditorFocused && !inputFocus && !notebookOutputInputFocused"
+    },
+    {
+        "key": "o",
+        "command": "notebook.cell.insertCodeCellBelowAndFocusContainer",
+        "when": "notebookEditorFocused && !inputFocus && !notebookOutputInputFocused"
+    },
+    {
+        "key": "b",
+        "command": "-notebook.cell.insertCodeCellBelowAndFocusContainer",
+        "when": "notebookEditorFocused && !inputFocus && !notebookOutputInputFocused"
+    }
+]
