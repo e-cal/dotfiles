@@ -11,4 +11,5 @@
         "markdown": false,
         "scminput": false
     },
+    "workbench.editor.showTabs": false,
 }
