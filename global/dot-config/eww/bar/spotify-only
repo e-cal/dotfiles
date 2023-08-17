@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+find . -mindepth 2 -type f -exec sed -i 's/playerctl/platerctl -p spotify/g' {} +

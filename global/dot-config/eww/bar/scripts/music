@@ -33,9 +33,9 @@ prevCover=''
 prevArtist=''
 prevTitle=''
 
-playerctl  -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status cover; do
+platerctl -p spotify -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status cover; do
 	if [[ -z "$title" ]]; then
-		IFS="$(printf '\')" read -r title artist status cover <<<$(playerctl  metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}')
+		IFS="$(printf '\')" read -r title artist status cover <<<$(platerctl -p spotify  metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}')
 	fi
 
 	if [ "$cover" != "$prevCover" ]; then

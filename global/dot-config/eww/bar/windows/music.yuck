@@ -32,9 +32,9 @@
       (centerbox ; buttons
         :halign "center"
         :class "music-button-box icon text"
-        (button :class "music-button" :onclick "playerctl  previous" "󰒮")
-        (button :class "music-button" :onclick "playerctl  play-pause" {music.status})
-        (button :class "music-button" :onclick "playerctl  next" "󰒭"))
+        (button :class "music-button" :onclick "platerctl -p spotify  previous" "󰒮")
+        (button :class "music-button" :onclick "platerctl -p spotify  play-pause" {music.status})
+        (button :class "music-button" :onclick "platerctl -p spotify  next" "󰒭"))
       (box ; time info
         :orientation "v"
         (box
@@ -53,7 +53,7 @@
             ; sadly we cannot access a child (highlight) from a parent using :style
             ; :style "background: linear-gradient(to right, ${music.color1}, ${music.color2});"
             ; transform scale position percentage into song position
-            :onchange "playerctl position `awk -v len=$(playerctl metadata mpris:length) 'BEGIN{print {} * len / 1000000 / 100}'`"
+            :onchange "platerctl -p spotify position `awk -v len=$(platerctl -p spotify metadata mpris:length) 'BEGIN{print {} * len / 1000000 / 100}'`"
             :value {music_time.position}))))))
 
 (defwindow music
