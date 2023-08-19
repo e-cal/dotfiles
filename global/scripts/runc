@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# run: make <file> && ./<file>
+# strip .c or .cpp from filename if present
+
+make "${1%.*}" && "./${1%.*}"
