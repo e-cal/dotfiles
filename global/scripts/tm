@@ -135,7 +135,9 @@ def new(name=None, work_dir=None):
     while not name:
         name = input("session name: ")
     if not work_dir:
-        work_dir = run_cmd("find ~ -maxdepth 5 -type d 2>/dev/null | sed 's/\.\///' | fzf --border --height=50% --layout=reverse") or "~"
+        work_dir = run_cmd(
+            "find ~ -maxdepth 5 -type d 2>/dev/null | sed 's/\.\///' | fzf --border --height=50% --layout=reverse"
+        ) or "~"
 
     attach(name, work_dir)
 
@@ -203,6 +205,11 @@ def project(sel=None):
             name = name.split("/")[-1]
 
         PROJECTDIR.path.joinpath(name).mkdir(parents=True, exist_ok=True)
+        if input("init git repo? ").lower() in ("y", "yes"):
+            run_cmd(
+                f"cd $HOME/projects/{name} && touch README.md && git init && git add . && git commit -m 'batman' && gh repo create -s . --push --private"
+            )
+
         attach(name, PROJECTDIR.path.joinpath(name))
         return
 
