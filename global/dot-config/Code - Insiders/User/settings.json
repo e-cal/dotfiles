@@ -12,4 +12,5 @@
         "scminput": false
     },
     "workbench.editor.showTabs": false,
+    "keyboard.dispatch": "keyCode"
 }
