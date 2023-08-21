@@ -1,0 +1,13 @@
+configuration {
+    font: "Fira Code Nerd Font 14";
+    show-icons: true;
+    drun-display-format: "{name}{description}";
+    fullscreen: false;
+    threads: 0;
+    matching: "fuzzy";
+    scroll-method: 1;
+    disable-history: false;
+    fullscreen: false;
+    window-thumbnail: true;
+}
+@theme "themes/main"

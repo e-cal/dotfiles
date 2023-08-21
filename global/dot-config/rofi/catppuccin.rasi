@@ -1,0 +1,16 @@
+* {
+    yellow:         #f9e2af;
+    orange:	        #fab387;
+    red:	        #f38ba8;
+    magenta:	    #eba0ac;
+    violet:	        #cba6f7;
+    blue:	        #89b4fa;
+    cyan:	        #94e2d5;
+    green:	        #a6e3a1;
+    fg:             #cdd6f4aa;
+    bg:             #1e1e2e66;
+    selected-bg:    #eba0ac;
+    selected-fg:    #181825;
+    win-bg:         #1e1e2ecc;
+    border:         #313244;
+}
