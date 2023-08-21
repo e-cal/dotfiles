@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+source parseargs
+
+search_dirs="/usr /home"
+
+if [[ -v booleans["a"] ]]; then
+    search_dirs="/"
+fi
+
+sudo find $search_dirs 2>/dev/null | fzf -m --bind space:toggle --query "${args[*]}" | head -c-1 | wl-copy

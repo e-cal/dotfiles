@@ -62,6 +62,8 @@ set -- "${@:1:}" "${args[@]}"
 
 
 # booleans: ${!booleans[@]}
+# if [[ -v booleans["a"] ]]; then
+
 # flags: ${!flags[@]}
 # flag values: ${flags[@]}
 # args: ${args[@]}
