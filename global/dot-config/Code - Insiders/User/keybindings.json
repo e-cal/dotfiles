@@ -77,7 +77,7 @@
     {
         "key": "ctrl+j",
         "command": "editor.action.inlineSuggest.commit",
-        "when": "inlineSuggestionHasIndentationLessThanTabSize && inlineSuggestionVisible && !editorTabMovesFocus && !suggestWidgetVisible"
+        "when": " inlineSuggestionVisible"
     },
     {
         "key": "tab",
@@ -123,5 +123,13 @@
         "key": "escape",
         "command": "-notebook.cell.quitEdit",
         "when": "notebookEditorFocused && notebookOutputFocused"
+    },
+    {
+        "key": "ctrl+space t",
+        "command": "workbench.action.togglePanel"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "-workbench.action.togglePanel"
     }
 ]
