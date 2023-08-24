@@ -5,6 +5,14 @@ if [[ "$1" == "reset" ]]; then
 	kill $pid
 	runbg eyes
 	exit
+elif [[ "$1" == "toggle" ]]; then
+    pid=$(ps -ef | rg "eyes" | rg -v "rg|toggle" | awk '{ print $2 }')
+    if [[ -n "$pid" ]]; then
+        kill $pid
+    else
+        runbg eyes
+    fi
+    exit
 fi
 
 INTERVAL=30
