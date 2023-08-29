@@ -31,7 +31,7 @@ gen_output() {
 	fi
 
 	if [ "$powered" = "yes" ]; then
-		if [ "$status" != "Missing device address argument" ]; then
+		if [ `$status | head -1` != "Missing device address argument" ]; then
 			icon=""
 			text="$name"
 			color="#89b4fa"
