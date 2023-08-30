@@ -6,6 +6,7 @@ alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=a
 alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always | less"
 alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always -I .git"
 alias ".ls"="/usr/bin/ls"
+alias "less"="bat --style=plain"
 
 alias "clear"="clear;divider"
 alias "v"="nvim"
