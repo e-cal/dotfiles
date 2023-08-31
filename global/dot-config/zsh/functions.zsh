@@ -48,6 +48,14 @@ cdc() {
     fi
 }
 
+vc() {
+    file=`cfgdirs file`
+    if [[ ! -z $file ]]; then
+        cd `dirname $file`
+        nvim $file
+    fi
+}
+
 uni() {
     courses=(
         paradigms cisc360

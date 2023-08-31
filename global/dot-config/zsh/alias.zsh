@@ -10,7 +10,6 @@ alias "less"="bat --style=plain"
 
 alias "clear"="clear;divider"
 alias "v"="nvim"
-alias "vc"='nvim $(cfgdirs file)'
 alias "vr"="nvim -c 'RestoreSession'"
 alias "vl"="nvim -c 'OpenLast'"
 alias "py"="python"
