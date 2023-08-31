@@ -38,7 +38,7 @@ for dir in "$XDG_CONFIG_HOME"/*; do
     fi
 done
 
-# check if called with --tmux
+# get args
 tmux=false
 file=false
 while [[ $# -gt 0 ]]; do
