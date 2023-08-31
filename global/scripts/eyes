@@ -9,8 +9,10 @@ elif [[ "$1" == "toggle" ]]; then
     pid=$(ps -ef | rg "eyes" | rg -v "rg|toggle" | awk '{ print $2 }')
     if [[ -n "$pid" ]]; then
         kill $pid
+        notify-send "Stopped" -i ~/.config/dunst/images/eyes.png -t 500
     else
         runbg eyes
+        notify-send "Started" -i ~/.config/dunst/images/eyes.png -t 500
     fi
     exit
 fi
