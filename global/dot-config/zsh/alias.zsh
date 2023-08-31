@@ -1,13 +1,15 @@
 alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directories-first --icons'
 alias "la"="ls -a"
-alias "ll"="exa -la --group-directories-first --no-permissions --no-time --git --color=always"
+alias "lr"="ls -R"
+alias "ll"="exa -lah --group-directories-first --no-permissions --no-time --no-user --git --color=always"
 alias "lla"="exa -la --group-directories-first --git -h --color=always"
-alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=always | less"
-alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always | less"
+alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=always -I .git | bat --style=plain"
+alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always | bat --style=plain"
 alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always -I .git"
 alias ".ls"="/usr/bin/ls"
 alias "less"="bat --style=plain"
 
+alias "md"="mkdir -p"
 alias "clear"="clear;divider"
 alias "v"="nvim"
 alias "vr"="nvim -c 'RestoreSession'"
@@ -44,13 +46,7 @@ alias "gwa"="git worktree add"
 alias "gpc"='git --no-pager log -1 --color=always --pretty="%C(dim brightblack)(%ah)%n%Creset%Cblue%an:%Creset %B%Creset"'
 alias "gpr"='git pull --rebase;echo;gpc'
 alias "gb"='git --no-pager branch'
-
-# Util
-alias "fixkeys"="setxkbmap code-dvorak"
-alias "ygb"="setxkbmap code-dvorak"
-alias "qwerty"="setxkbmap us"
-alias "aoeu"="setxkbmap us"
-alias "asdf"="setxkbmap code-dvorak"
+alias "gP"='git pull'
 
 # Abbreviations
 alias "rg"="rg -S"
@@ -71,7 +67,6 @@ alias "bat-stat"="sudo tlp-stat"
 
 # Other
 alias "prolog"="swipl"
-
 alias "testlocm"="python ~/projects/macq/tests/extract/test_locm.py"
 
 # Working with dirs
@@ -95,8 +90,6 @@ alias 6='cd -6'
 alias 7='cd -7'
 alias 8='cd -8'
 alias 9='cd -9'
-
-alias md='mkdir -p'
 
 function d () {
   if [[ -n $1 ]]; then
