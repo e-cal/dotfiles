@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+firefox $@
+sleep 0.3
+hyprctl dispatch fakefullscreen
