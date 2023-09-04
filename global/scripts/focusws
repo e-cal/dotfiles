@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+targetws=$1
+wsmon=$(hyprctl workspaces | grep "ID $targetws" | awk '{print $7}' | tr -d ':')
+targetmon=$(hyprctl activeworkspace | awk '{print $7}' | tr -d ':')
+if [[ $wsmon != $targetmon ]]; then 
+    hyprctl dispatch moveworkspacetomonitor $targetws $targetmon
+fi
+hyprctl dispatch workspace $targetws

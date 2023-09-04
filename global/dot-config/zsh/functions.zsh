@@ -167,3 +167,7 @@ barmon() {
     old=$((1 - $new))
     find -L ~/.config/eww/bar -type f -exec sed -i "s/:monitor $old/:monitor $new/g" {} +
 }
+
+mvws() {
+    hyprctl dispatch moveworkspacetomonitor "$1 DP-$2"
+}
