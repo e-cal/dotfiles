@@ -219,11 +219,11 @@ def project(sel=None):
 def config():
     attach("cfg")
     # cmd = "tmux neww -t cfg; tmux send-keys -t cfg cdc C-m"
-    cmd = "tmux send-keys -t cfg 'clear && cdc; pwd | xargs basename | xargs tmux rename-window' C-m"
-    if (int(run_cmd("tmux list-windows -t cfg | wc -l")) > 1) or (
-        run_cmd("tmux list-panes -t cfg | awk '{print $4}' | head -c1") != "0"
-    ):
-        cmd = f"tmux neww -t cfg; {cmd}"
+    cmd = "tmux neww -t cfg; tmux send-keys -t cfg 'clear && cdc; pwd | xargs basename | xargs tmux rename-window' C-m"
+    # if (int(run_cmd("tmux list-windows -t cfg | wc -l")) > 1) or (
+    #     run_cmd("tmux list-panes -t cfg | awk '{print $4}' | head -c1") != "0"
+    # ):
+    #     cmd = f"tmux neww -t cfg; {cmd}"
     run_cmd(cmd)
 
 
