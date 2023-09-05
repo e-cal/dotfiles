@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+hyprctl dispatch workspace 10
 targetws=$1
 wsmon=$(hyprctl workspaces | grep "ID $targetws" | awk '{print $7}' | tr -d ':')
 targetmon=$(hyprctl activeworkspace | awk '{print $7}' | tr -d ':')
