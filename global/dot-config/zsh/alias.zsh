@@ -19,7 +19,6 @@ alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
 alias "jn"="jupyter notebook"
 alias "celar"="clear"
 alias "yeet"="paru -Rsn"
-alias "top"="bashtop"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "lskernels"="ls $HOME/.local/share/jupyter/kernels"
 alias "greps"='grep -ri'
