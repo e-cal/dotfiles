@@ -9,7 +9,8 @@
 					:onclick "hyprctl dispatch workspace ${ws.number}"
 					:class "ws icon"
 					:style "background-color: ${ws.color};"
-					; :tooltip {ws.tooltip}
+					:tooltip "${ws.tooltip}"
 					(box
 						:class `${ws.focused ? "focused" : ""}`
-						:height 3))))))
+						:height 3
+            :width 3))))))

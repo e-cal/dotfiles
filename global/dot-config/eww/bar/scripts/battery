@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-# set -ex
+if ! command -v acpi &>/dev/null; then
+    echo
+    exit
+fi
 
 icons=("󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹")
 num_icons=$(awk -v n="${#icons[@]}" 'BEGIN{print 100 / n}')
@@ -41,6 +44,8 @@ status() {
 gen_output() {
 	info="$(acpi | jc --acpi | jq '.[]')"
 	percentage="$(echo "$info" | jq -r '.charge_percent')"
+    # if percentage not set make it n/a
+    [[ -n $percentage ]] || percentage='100'
 	state="$(echo "$info" | jq -r '.state')"
 
 	echo '{"icon": "'"$(geticon) "'", "percentage": '"$percentage"', "status": "'"$(status)"'", "color": "'"$(color)"'"}'
