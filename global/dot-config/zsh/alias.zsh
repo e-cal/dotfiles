@@ -31,7 +31,7 @@ alias "diff"="kitty +kitten diff"
 alias "openbar"="eww -c ~/.config/eww/bar open bar"
 alias "closebar"="eww -c ~/.config/eww/bar close bar"
 alias "code"="code-insiders"
-alias "rn"="ranger"
+alias "rn"=". ranger"
 
 # Searching
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
