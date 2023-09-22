@@ -1,22 +1,33 @@
 #!/usr/bin/env bash
 
-# Set STOW_DIR
-[[ -z $STOW_DIR ]] && STOW_DIR="$HOME/.dotfiles"
-
 # Set DOTFILES
-[[ -z $DOTFILES ]] && DOTFILES="$HOME/.dotfiles/$HOSTNAME"
+[[ -z $DOTFILES ]] && DOTFILES="$HOME/.dotfiles"
 
-# [[ ! -d $DOTFILES ]] && echo "dotfile dir for $HOSTNAME does not exist ($DOTFILES)"
+# Set HOST_DOTFILES
+[[ -z $HOST_DOTFILES ]] && HOST_DOTFILES="$HOME/.dotfiles/$HOSTNAME"
 
-[[ ! -d $DOTFILES ]] && mkdir $DOTFILES
+# [[ ! -d $HOST_DOTFILES ]] && echo "dotfile dir for $HOSTNAME does not exist ($HOST_DOTFILES)"
+
+[[ ! -d $HOST_DOTFILES ]] && mkdir $HOST_DOTFILES
 
 # Install submodules
-if [[ $1 = "submodule" ]]; then
+# need to set up git ssh key first
+
+# ssh-keygen -t ed25519 -C "ethan@ecal.dev" -N "" -f ~/.ssh/id_ed25519
+# eval "$(ssh-agent -s)"
+# ssh-add ~/.ssh/id_ed25519
+#
+# get github-cli
+# gh auth login -h github.com -p ssh
+# above has to be interactive, needs browser first
+#
+# this whole section has to be post browser install
+
+if [[ -z "$(ls -A ~/.dotfiles/global/dot-config/nvim)" ]]; then
 	echo "Initializing submodules..."
 	rm -rf ~/.dotfiles/global/dot-config/nvim
-	cd $STOW_DIR
+	cd $DOTFILES
 	git submodule update --init --recursive
-	exit 0
 fi
 
 # Check distro
@@ -29,16 +40,28 @@ fi
 echo
 
 # Install dependencies
+# ask to install dependencies, if yes just do them all
+
 echo "Installing dependencies..."
 
-packages=("stow" "zsh" "tmux" "neovim" "python" "lolcat" "starship" "exa")
-for package in ${packages[@]}; do
-	pacman -Q $package &>/dev/null
-	if [[ $? != 0 ]]; then
-		sudo pacman -S "$package" --noconfirm
-	fi
-done
+# paru
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+cd ..
+rm -rf paru
+
+# terminal programs
+sudo pacman -S --noconfirm stow zsh tmux lua go npm zip unzip neovim python lolcat starship exa fzf ripgrep jq jc socat pamixer pulseaudio-alsa alsa-utils inetutils bat lazygit
+
+echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
+chsh -s /usr/bin/zsh
+
+# graphics programs
+paru -S --noconfirm ttf-jetbrains-mono-nerd ttf-fantasque-nerd ttf-material-icons-git hyprland kitty firefox thunderbird eww-wayland pavucontrol slack anki obsidian blueberry
+
 echo
+exit
 
 # Make dirs
 echo "Creating directories..."
@@ -54,38 +77,7 @@ fi
 
 echo
 echo "Generating $HOSTNAME dotfiles..."
-
-case $HOSTNAME in
-raspberrypi)
-	rm -rf ~/.dotfiles/raspberrypi/.config
-	rm -rf ~/.dotfiles/raspberrypi/scripts
-	mkdir ~/.dotfiles/raspberrypi/.config
-
-	ln -s ~/.dotfiles/coeus/.config/starship.toml ~/.dotfiles/raspberrypi/.config/starship.toml
-
-	cp -r ~/.dotfiles/global/scripts ~/.dotfiles/raspberrypi/scripts
-	sed -i 's/--info="hidden"//g' ~/.dotfiles/raspberrypi/scripts/tm
-
-	cp -r ~/.dotfiles/global/dot-config/nvim ~/.dotfiles/raspberrypi/.config/nvim
-	sed -i 's/require("telescope").load_extension("fzy_native")//' ~/.dotfiles/raspberrypi/.config/nvim/lua/plugins/telescope.lua
-
-	cp -r ~/.dotfiles/global/dot-config/zsh ~/.dotfiles/raspberrypi/.config
-	sed -i 's/\(export TERM=\).*/\1"screen-256color"/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
-	sed -i 's/\(alias "l"=\).*/\1"COLUMNS=60 exa --group-directories-first"/' ~/.dotfiles/raspberrypi/.config/zsh/alias.zsh
-	sed -i 's/\(export FZF_DEFAULT_OPTS=\).*/\1'"'"'--prompt=" " --bind tab:down,shift-tab:up,ctrl-y:preview-up,ctrl-e:preview-down'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
-	sed -i 's/\(export FZF_INLINE=\).*/\1'"'"'--border --height=50% --layout=reverse'"'"'/' ~/.dotfiles/raspberrypi/.config/zsh/env.zsh
-
-	cp -r ~/.dotfiles/global/dot-config/tmux ~/.dotfiles/raspberrypi/.config
-	sed -i 's/\(set -g default-terminal\) .*/\1 "screen-256color"/' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
-	sed -i 's/cyan/red/g' ~/.dotfiles/raspberrypi/.config/tmux/tmux.conf
-	;;
-esac
-
-if [[ $HOSTNAME = "raspberrypi" ]]; then
-	echo
-else
-	stow --dir=$STOW_DIR --target=$DOTFILES global --dotfiles -R
-fi
+stow --dir=$DOTFILES --target=$HOST_DOTFILES global --dotfiles -R
 
 echo "Linking $HOSTNAME dotfiles..."
 stow $HOSTNAME -R
