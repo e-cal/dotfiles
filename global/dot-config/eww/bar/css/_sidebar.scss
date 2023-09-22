@@ -35,14 +35,6 @@
 .system-row {
   margin: 0.5rem 0.7rem;
 
-  .net-box button {
-    padding-left: 1.2rem;
-  }
-
-  .cloud-box button {
-    padding: 0.7rem 1.2rem 0.9rem 0.7rem;
-  }
-
   label {
     font-size: 1rem;
     margin: 0 0.1rem;
@@ -64,26 +56,6 @@
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
     }
-  }
-}
-
-.net-box {
-  button {
-    padding: 0.8rem;
-
-    label {
-      // font-size: 1.5rem;
-      margin-right: 0.5rem;
-    }
-  }
-}
-
-.bluetooth-box {
-  button {
-    padding: 1rem;
-//     label {
-//       font-size: 1.5rem;
-//     }
   }
 }
 
@@ -156,13 +128,6 @@
     &:hover {
       background-color: $bg1;
     }
-  }
-}
-
-/* set wifi/bt colors and dim buttons when hovering */
-.element {
-  button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
   }
 }
 

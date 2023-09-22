@@ -58,7 +58,7 @@
           (button
             :class "bluetooth-arrow-btn"
             :onclick "${EWW_CMD} close system-menu && blueberry"
-            ""))
+            "󰅂"))
         (label
           :class "text"
           :text {bluetooth.text}
@@ -213,7 +213,7 @@
 
 (defwindow system-menu
   :stacking "fg" 
-  :monitor 0
+  :monitor 1
   :geometry (geometry
     :x "0"
     :y "0"

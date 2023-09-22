@@ -24,26 +24,26 @@ gen_output() {
 	name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
 	mac=$(echo "$status" | head -1 | awk '{print $2}' | tr ':' '_')
 
-	if [[ "$(echo "$status" | rg Percentage)" != "" ]]; then
+	if [[ $(echo "$status" | rg Percentage) != "" ]]; then
 		battery="$(upower -i /org/freedesktop/UPower/devices/headset_dev_"$mac" | rg percentage | awk '{print $2}' | cut -f 1 -d '%')%"
 	else
 		battery=""
 	fi
 
 	if [ "$powered" = "yes" ]; then
-		if [ `$status | head -1` != "Missing device address argument" ]; then
-			icon=""
+		if [[ `echo $status | head -1` != "Missing device address argument" ]]; then
+			icon="󰂱"
 			text="$name"
 			color="#89b4fa"
 			class="bt-connected"
 		else
-			icon=""
+			icon="󰂲"
 			text="Disconnected"
 			color="#45475a"
 			class=""
 		fi
 	else
-		icon=""
+		icon="󰂯"
 		text="Disabled"
 		color="#45475a"
 		class=""

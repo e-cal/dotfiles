@@ -1,9 +1,9 @@
 (defwidget bluetooth []
   (button
-    :class "module-bt module icon"
+    :class "module icon"
     :onclick "${EWW_CMD} open --toggle system-menu"
     :onrightclick "blueberry" ; clicking opens blueberry
     ;:onrightclick "scripts/bluetooth toggle" ; rightclick to turn bluetooth on/off
     :tooltip "${bluetooth.text} ${bluetooth.battery}"
-    :style "color: ${bluetooth.color};"
+    :style "color: ${bluetooth.color};margin-left: 1em"
     {bluetooth.icon}))

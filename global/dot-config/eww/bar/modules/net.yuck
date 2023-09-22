@@ -3,5 +3,5 @@
     :class "module icon"
     :onclick "${EWW_CMD} open --toggle system-menu"
     :tooltip {net.name}
-    :style "color: ${net.color};"
+    :style "color: ${net.color}; margin-left: 1em"
     "${net.icon} "))

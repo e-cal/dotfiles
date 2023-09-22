@@ -15,7 +15,6 @@
 ; individual windows; bar is in this file
 (include "./windows/calendar.yuck")
 (include "./windows/music.yuck")
-(include "./windows/osd.yuck") ; on-screen-display (volume/brightness)
 (include "./windows/system-menu.yuck")
 
 ; bar modules alignment
@@ -50,7 +49,7 @@
     (right)))
 
 (defwindow bar
-    :monitor 0
+    :monitor 1
     :geometry (geometry :x "0%"
       :y "0%"
       :width "100%"

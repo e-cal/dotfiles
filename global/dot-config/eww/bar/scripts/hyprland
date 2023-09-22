@@ -18,8 +18,6 @@ declare -A workspaces
 # set color for each workspace
 status() {
 	if [ "${o[$1]}" -eq 1 ]; then
-		# mon=${monitormap[${workspaces[$1]}]}
-		# echo -n "${colors[$mon]}"
 		if [[ $(isfocused $1) == "true" ]]; then
 			echo -n "$focused"
 		else
@@ -46,19 +44,13 @@ declare -A applist
 
 update_applist() {
 	for ws in "${!workspaces[@]}"; do
-		apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | .title + "|"' | sed 's/"/\\"/g')
-        echo "$apps"
-		# applist[$ws]="$apps"
-        applist[$ws]="${apps%\\n\\n}"
-        echo "-"
-        echo -En ${applist[$ws]} | tr -d '\n'
-        echo
-        echo "-"
+		apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | .title + "\\n"' | sed 's/"/\\"/g')
+        applist[$ws]="${apps%\\n}"
 	done
 }
 
 applist() {
-	echo -En "${applist[$1]}"
+	echo "${applist[$1]}"
 }
 
 isfocused() {
@@ -98,7 +90,6 @@ generate
 
 # main loop
 socat -u UNIX-CONNECT:/tmp/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | rg --line-buffered "workspace|mon(itor)?|screencast|openwindow|closewindow" | while read -r line; do
-	echo $line
 	case ${line%>>*} in
 	"workspace")
 		workspace_event
