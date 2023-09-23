@@ -5,5 +5,5 @@
     :onrightclick "blueberry" ; clicking opens blueberry
     ;:onrightclick "scripts/bluetooth toggle" ; rightclick to turn bluetooth on/off
     :tooltip "${bluetooth.text} ${bluetooth.battery}"
-    :style "color: ${bluetooth.color};margin-left: 1em"
+    :style "color: ${bluetooth.color}"
     {bluetooth.icon}))
