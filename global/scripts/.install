@@ -52,7 +52,7 @@ cd ..
 rm -rf paru
 
 # terminal programs
-sudo pacman -S --noconfirm stow zsh tmux lua go npm zip unzip neovim python lolcat starship exa fzf ripgrep jq jc socat pamixer pulseaudio-alsa alsa-utils inetutils bat lazygit
+sudo pacman -S --noconfirm stow zsh tmux lua go npm zip unzip neovim python lolcat starship exa fzf ripgrep jq jc socat pamixer pulseaudio-alsa alsa-utils inetutils bat lazygit rclone
 
 echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
 chsh -s /usr/bin/zsh
@@ -81,3 +81,5 @@ stow --dir=$DOTFILES --target=$HOST_DOTFILES global --dotfiles -R
 
 echo "Linking $HOSTNAME dotfiles..."
 stow $HOSTNAME -R
+
+# cleanup home dir?
