@@ -10,6 +10,28 @@
 
 [[ ! -d $HOST_DOTFILES ]] && mkdir $HOST_DOTFILES
 
+confirm() {
+  if [[ $# > 0 ]]; then
+    message="$@ (y/n) "
+  else
+    message="Continue? (y/n) "
+  fi
+
+  printf "$message"
+  old_stty_cfg=$(stty -g)
+  stty raw -echo
+  answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+  stty $old_stty_cfg
+
+  if [ "$answer" != "${answer#[Yy]}" ]; then
+    echo Yes
+    return 0
+  else
+    echo No
+    return 1
+  fi
+}
+
 # Install submodules
 # need to set up git ssh key first
 
@@ -42,49 +64,103 @@ echo
 # Install dependencies
 # ask to install dependencies, if yes just do them all
 
-echo "Installing dependencies..."
+if confirm "Install dependencies?"; then
+	if confirm "Install paru?"; then
+		git clone https://aur.archlinux.org/paru.git
+		cd paru
+		makepkg -si
+		cd ..
+		rm -rf paru
+	fi
 
-# paru
-git clone https://aur.archlinux.org/paru.git
-cd paru
-makepkg -si
-cd ..
-rm -rf paru
+	if confirm "Install terminal programs?"; then
+		sudo pacman -S --noconfirm stow \
+                                   zsh \
+                                   tmux \
+                                   lua \
+                                   go \
+                                   npm \
+                                   zip \
+                                   unzip \
+                                   neovim \
+                                   python \
+                                   lolcat \
+                                   starship \
+                                   exa \
+                                   fzf \
+                                   ripgrep \
+                                   jq \
+                                   jc \
+                                   socat \
+                                   pamixer \
+                                   pulseaudio-alsa \
+                                   alsa-utils \
+                                   inetutils \
+                                   bat \
+                                   lazygit \
+                                   rclone \
+                                   fuse3 \
+                                   ntp \
+                                   wl-clipboard \
+                                   bat \
+                                   imagemagick \
+                                   wget
 
-# terminal programs
-sudo pacman -S --noconfirm stow zsh tmux lua go npm zip unzip neovim python lolcat starship exa fzf ripgrep jq jc socat pamixer pulseaudio-alsa alsa-utils inetutils bat lazygit rclone fuse3 ntp wl-clipboard bat imagemagick wget
+		echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
+		chsh -s /usr/bin/zsh
+	fi
 
-# sync clock
-sudo systemctl enable ntpd.service
-sudo systemctl start ntpd.service
-sudo timedatectl set-ntp true
+	if confirm "Sync clock?"; then
+		sudo systemctl enable ntpd.service
+		sudo systemctl start ntpd.service
+		sudo timedatectl set-ntp true
+	fi
 
-echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
-chsh -s /usr/bin/zsh
-
-# graphics programs
-paru -S --noconfirm ttf-jetbrains-mono-nerd ttf-fantasque-nerd ttf-material-icons-git hyprland hyprpaper kitty firefox thunderbird eww-wayland pavucontrol slack anki obsidian blueberry dunst sweet-cursor-theme-git pipewire wireplumber qt5-wayland qt6-wayland nemo zathura zathura-pdf-mupdf polkit-kde-agent xdg-desktop-portal-hyprland playerctl
+	if confirm "Install graphics programs?"; then
+		paru -S --noconfirm ttf-jetbrains-mono-nerd \
+                            ttf-fantasque-nerd \
+                            ttf-material-icons-git \
+                            noto-fonts-emoji \
+                            hyprland \
+                            hyprpaper \
+                            kitty \
+                            firefox \
+                            thunderbird \
+                            eww-wayland \
+                            pavucontrol \
+                            slack \
+                            anki \
+                            obsidian \
+                            blueberry \
+                            dunst \
+                            sweet-cursor-theme-git \
+                            pipewire wireplumber \
+                            qt5-wayland \
+                            qt6-wayland \
+                            nemo \
+                            zathura \
+                            zathura-pdf-mupdf \
+                            polkit-kde-agent \
+                            xdg-desktop-portal-hyprland \
+                            playerctl
+	fi
+fi
 
 echo
-exit
-
-# Make dirs
-echo "Creating directories..."
+echo "Preparing directories..."
 [[ -d $HOME/.config ]] || mkdir $HOME/.config
 [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
 
-if [[ ! -L $HOME/.config/mimeapps.list ]]; then
-	[[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
-fi
-if [[ ! -L $HOME/.config/user-dirs.dirs ]]; then
-	[[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
-fi
+[[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
+[[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
 
 echo
-echo "Generating $HOSTNAME dotfiles..."
+echo "Generating dotfiles for $HOSTNAME..."
 stow --dir=$DOTFILES --target=$HOST_DOTFILES global --dotfiles -R
 
-echo "Linking $HOSTNAME dotfiles..."
+echo
+echo "Linking dotfiles..."
 stow $HOSTNAME -R
 
-# cleanup home dir?
+echo
+$HOME/scripts/housekeeping
