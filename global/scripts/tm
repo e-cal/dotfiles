@@ -45,9 +45,9 @@ PROJECTDIR = ProjectDir(
     path=HOME / "projects",
     rename={
         # HOME / "projects/ecal.dev": "website",
-        HOME / "storj/masters": "masters"
     },
 )
+
 
 ################################################################################
 # END OF USER CONFIG
@@ -65,10 +65,14 @@ def run_cmd(cmd):
     res = os.popen(cmd).read().strip()
     return res
 
-
 # Get list of active sessions
 sessions = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'"
                   ).splitlines()
+
+mounted = run_cmd("cloud mounted")
+if "storj" in mounted:
+    PROJECTDIR.rename[HOME / "storj/masters"] = "masters"
+    # HOME / "storj/masters": "masters"
 
 
 def fzf_menu(options, title="menu", binds=None, fzf_options=""):

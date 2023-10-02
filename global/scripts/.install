@@ -52,13 +52,18 @@ cd ..
 rm -rf paru
 
 # terminal programs
-sudo pacman -S --noconfirm stow zsh tmux lua go npm zip unzip neovim python lolcat starship exa fzf ripgrep jq jc socat pamixer pulseaudio-alsa alsa-utils inetutils bat lazygit rclone
+sudo pacman -S --noconfirm stow zsh tmux lua go npm zip unzip neovim python lolcat starship exa fzf ripgrep jq jc socat pamixer pulseaudio-alsa alsa-utils inetutils bat lazygit rclone fuse3 ntp wl-clipboard bat imagemagick wget
+
+# sync clock
+sudo systemctl enable ntpd.service
+sudo systemctl start ntpd.service
+sudo timedatectl set-ntp true
 
 echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
 chsh -s /usr/bin/zsh
 
 # graphics programs
-paru -S --noconfirm ttf-jetbrains-mono-nerd ttf-fantasque-nerd ttf-material-icons-git hyprland kitty firefox thunderbird eww-wayland pavucontrol slack anki obsidian blueberry
+paru -S --noconfirm ttf-jetbrains-mono-nerd ttf-fantasque-nerd ttf-material-icons-git hyprland hyprpaper kitty firefox thunderbird eww-wayland pavucontrol slack anki obsidian blueberry dunst sweet-cursor-theme-git pipewire wireplumber qt5-wayland qt6-wayland nemo zathura zathura-pdf-mupdf polkit-kde-agent xdg-desktop-portal-hyprland playerctl
 
 echo
 exit

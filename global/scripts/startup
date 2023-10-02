@@ -5,12 +5,6 @@ redshift &
 eww daemon &
 eyes &
 
-# fix polybar volume display
-while [[ $(~/.config/polybar/scripts/pulseaudio) == "    %" ]]; do
-	sleep 0.5
-done
-polybar-msg -p "$(pgrep -f "polybar $(get-bar)")" hook volume 1 &>/dev/null
-
 if [[ $HOSTNAME == "prometheus" ]]; then
 	volume set 10
 fi
