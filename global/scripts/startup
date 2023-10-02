@@ -8,3 +8,9 @@ eyes &
 if [[ $HOSTNAME == "prometheus" ]]; then
 	volume set 10
 fi
+
+if `hyprctl monitors | grep -q "Dell S2716DG"`; then
+    mon=`hyprctl monitors | grep "Dell S2716DG" -B2 | head -n1 | awk '{print $4}' | head -c1`
+    hyprctl dispatch focusmonitor $mon
+    focusws 1
+fi
