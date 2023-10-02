@@ -10,47 +10,34 @@
 
 [[ ! -d $HOST_DOTFILES ]] && mkdir $HOST_DOTFILES
 
+
+echo "Checking for core dependencies..."
+[[ ! `command -v git` ]] && sudo pacman -S --noconfirm git
+[[ ! `command -v stow` ]] && sudo pacman -S --noconfirm stow
+[[ ! `command -v ssh` ]] && sudo pacman -S --noconfirm openssh
+echo
+
 confirm() {
-  if [[ $# > 0 ]]; then
-    message="$@ (y/n) "
-  else
-    message="Continue? (y/n) "
-  fi
+	if [[ $# > 0 ]]; then
+		message="$@ (y/n) "
+	else
+		message="Continue? (y/n) "
+	fi
 
-  printf "$message"
-  old_stty_cfg=$(stty -g)
-  stty raw -echo
-  answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
-  stty $old_stty_cfg
+	printf "$message"
+	old_stty_cfg=$(stty -g)
+	stty raw -echo
+	answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+	stty $old_stty_cfg
 
-  if [ "$answer" != "${answer#[Yy]}" ]; then
-    echo Yes
-    return 0
-  else
-    echo No
-    return 1
-  fi
+	if [ "$answer" != "${answer#[Yy]}" ]; then
+		echo Yes
+		return 0
+	else
+		echo No
+		return 1
+	fi
 }
-
-# Install submodules
-# need to set up git ssh key first
-
-# ssh-keygen -t ed25519 -C "ethan@ecal.dev" -N "" -f ~/.ssh/id_ed25519
-# eval "$(ssh-agent -s)"
-# ssh-add ~/.ssh/id_ed25519
-#
-# get github-cli
-# gh auth login -h github.com -p ssh
-# above has to be interactive, needs browser first
-#
-# this whole section has to be post browser install
-
-if [[ -z "$(ls -A ~/.dotfiles/global/dot-config/nvim)" ]]; then
-	echo "Initializing submodules..."
-	rm -rf ~/.dotfiles/global/dot-config/nvim
-	cd $DOTFILES
-	git submodule update --init --recursive
-fi
 
 # Check distro
 echo "Checking distribution..."
@@ -65,6 +52,7 @@ echo
 # ask to install dependencies, if yes just do them all
 
 if confirm "Install dependencies?"; then
+    # if git is not installed, install it
 	if confirm "Install paru?"; then
 		git clone https://aur.archlinux.org/paru.git
 		cd paru
@@ -75,36 +63,37 @@ if confirm "Install dependencies?"; then
 
 	if confirm "Install terminal programs?"; then
 		sudo pacman -S --noconfirm stow \
-                                   zsh \
-                                   tmux \
-                                   lua \
-                                   go \
-                                   npm \
-                                   zip \
-                                   unzip \
-                                   neovim \
-                                   python \
-                                   lolcat \
-                                   starship \
-                                   exa \
-                                   fzf \
-                                   ripgrep \
-                                   jq \
-                                   jc \
-                                   socat \
-                                   pamixer \
-                                   pulseaudio-alsa \
-                                   alsa-utils \
-                                   inetutils \
-                                   bat \
-                                   lazygit \
-                                   rclone \
-                                   fuse3 \
-                                   ntp \
-                                   wl-clipboard \
-                                   bat \
-                                   imagemagick \
-                                   wget
+			zsh \
+			tmux \
+			lua \
+			go \
+			npm \
+			zip \
+			unzip \
+			neovim \
+			python \
+			lolcat \
+			starship \
+			exa \
+			fzf \
+			ripgrep \
+			jq \
+			jc \
+			socat \
+			pamixer \
+			pulseaudio-alsa \
+			alsa-utils \
+			inetutils \
+			bat \
+			lazygit \
+			rclone \
+			fuse3 \
+			ntp \
+			wl-clipboard \
+			bat \
+			imagemagick \
+			github-cli \
+			wget
 
 		echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
 		chsh -s /usr/bin/zsh
@@ -118,32 +107,52 @@ if confirm "Install dependencies?"; then
 
 	if confirm "Install graphics programs?"; then
 		paru -S --noconfirm ttf-jetbrains-mono-nerd \
-                            ttf-fantasque-nerd \
-                            ttf-material-icons-git \
-                            noto-fonts-emoji \
-                            hyprland \
-                            hyprpaper \
-                            kitty \
-                            firefox \
-                            thunderbird \
-                            eww-wayland \
-                            pavucontrol \
-                            slack \
-                            anki \
-                            obsidian \
-                            blueberry \
-                            dunst \
-                            sweet-cursor-theme-git \
-                            pipewire wireplumber \
-                            qt5-wayland \
-                            qt6-wayland \
-                            nemo \
-                            zathura \
-                            zathura-pdf-mupdf \
-                            polkit-kde-agent \
-                            xdg-desktop-portal-hyprland \
-                            playerctl
+			ttf-fantasque-nerd \
+			ttf-material-icons-git \
+			noto-fonts-emoji \
+			hyprland \
+			hyprpaper \
+			kitty \
+			firefox \
+			thunderbird \
+			eww-wayland \
+			pavucontrol \
+			slack \
+			anki \
+			obsidian \
+			blueberry \
+			dunst \
+			sweet-cursor-theme-git \
+			pipewire wireplumber \
+			qt5-wayland \
+			qt6-wayland \
+			nemo \
+			zathura \
+			zathura-pdf-mupdf \
+			polkit-kde-agent \
+			xdg-desktop-portal-hyprland \
+			playerctl
 	fi
+fi
+
+if confirm "Set up git?"; then
+	ssh-keygen -t ed25519 -C "ethan@ecal.dev" -N "" -f ~/.ssh/id_ed25519
+	eval "$(ssh-agent -s)"
+	ssh-add ~/.ssh/id_ed25519
+    [[ ! `command -v gh` ]] && sudo pacman -S --noconfirm github-cli
+    [[ ! `command -v firefox` ]] && sudo pacman -S --noconfirm firefox
+    gh auth login -h github.com -p ssh
+fi
+
+if confirm "Install submodules?"; then
+	git submodule update --init --recursive
+fi
+
+if [[ -z "$(ls -A ~/.dotfiles/global/dot-config/nvim)" ]]; then
+	echo "Initializing submodules..."
+	rm -rf ~/.dotfiles/global/dot-config/nvim
+	cd $DOTFILES
+	git submodule update --init --recursive
 fi
 
 echo
