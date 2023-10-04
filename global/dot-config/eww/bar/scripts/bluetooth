@@ -3,12 +3,18 @@
 # shellcheck source=/dev/null
 source "$(dirname "$0")"/utils
 
+something_connected() {
+    powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
+    status=$(bluetoothctl info | head -n1)
+    echo in here
+    echo $status
+    [[ $powered == "yes" ]] && [[ `echo $status | head -1` != "Missing device address argument" ]]
+}
+
 toggle() {
 	status=$(rfkill -J | jq -r '.rfkilldevices[] | select(.type == "bluetooth") | .soft' | head -1)
 	if [[ "$status" == "unblocked" ]]; then
-		powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
-		status=$(bluetoothctl info)
-		if [[ $powered == "yes" ]] && [[ "$status" != "Missing device address argument" ]]; then
+		if something_connected; then
 			bluetoothctl disconnect
 		else
 			rfkill block bluetooth
@@ -30,20 +36,20 @@ gen_output() {
 		battery=""
 	fi
 
-	if [ "$powered" = "yes" ]; then
-		if [[ `echo $status | head -1` != "Missing device address argument" ]]; then
+	if [[ "$powered" == "yes" ]]; then
+		if something_connected; then
 			icon="󰂱"
 			text="$name"
 			color="#89b4fa"
 			class="bt-connected"
 		else
-			icon="󰂲"
+			icon="󰂯"
 			text="Disconnected"
 			color="#45475a"
 			class=""
 		fi
 	else
-		icon="󰂯"
+		icon="󰂲"
 		text="Disabled"
 		color="#45475a"
 		class=""
