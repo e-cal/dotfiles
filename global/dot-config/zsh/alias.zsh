@@ -46,6 +46,7 @@ alias "gwa"="git worktree add"
 alias "gpc"='git --no-pager log -1 --color=always --pretty="%C(dim brightblack)(%ah)%n%Creset%Cblue%an:%Creset %B%Creset"'
 alias "gpr"='git pull --rebase; echo; gpc'
 alias "gpra"='git pull --rebase --autostash; echo; gpc'
+alias "gprs"='git pull --rebase --autostash; echo; gpc'
 alias "gb"='git --no-pager branch'
 alias "gP"='git pull'
 
