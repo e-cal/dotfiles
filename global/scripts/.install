@@ -131,7 +131,9 @@ if confirm "Install dependencies?"; then
 			zathura-pdf-mupdf \
 			polkit-kde-agent \
 			xdg-desktop-portal-hyprland \
-			playerctl
+			playerctl \
+            rofi \
+            drun
 	fi
 fi
 
