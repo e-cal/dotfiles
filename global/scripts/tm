@@ -207,12 +207,13 @@ def project(sel=None):
         elif "/" in name:
             run_cmd(f"gh repo clone {name} $HOME/projects/{name.split('/')[-1]}")
             name = name.split("/")[-1]
-
-        PROJECTDIR.path.joinpath(name).mkdir(parents=True, exist_ok=True)
-        if input("init git repo? ").lower() in ("y", "yes"):
-            run_cmd(
-                f"cd $HOME/projects/{name} && touch README.md && git init && git add . && git commit -m 'batman' && gh repo create -s . --push --private"
-            )
+        else:
+            PROJECTDIR.path.joinpath(name).mkdir(parents=True, exist_ok=True)
+            if input("init git repo? ").lower() in ("y", "yes"):
+                run_cmd(
+                    f"cd $HOME/projects/{name} && touch README.md && git init && git add . && git commit -m 'batman' && gh repo create -s . --push --private"
+                )
+                print("Initialized a private repo.")
 
         attach(name, PROJECTDIR.path.joinpath(name))
         return
