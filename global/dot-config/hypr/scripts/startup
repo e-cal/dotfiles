@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 barmon 0
+[[ `hyprctl monitors | rg -e "ID \d+\):" | wc -l` == 1 ]] && exit
+
 if `hyprctl monitors | grep -q "Dell S2716DG"`; then
     mon=`hyprctl monitors | grep "Dell S2716DG" -B2 | head -n1 | awk '{print $4}' | head -c1`
     hyprctl dispatch focusmonitor $mon
