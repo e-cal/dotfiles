@@ -1,19 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# if pgrep -x spotify > /dev/null; then
-#     wmctrl -x -a spotify
-# else
-#     [[ $HOSTNAME == "prometheus" ]] && launch-bar music
-#     spotify --disable-gpu --disable-software-rasterizer &
-#     sleep 0.5
-#     wmctrl -x -a spotify
-#     wait
-#     pkill -f 'music'
-# fi
-
-
-if pgrep -x spotify > /dev/null; then
-    focusws 6
-else
+focusws 6
+if ! pgrep -x spotify > /dev/null; then
     spotify --disable-gpu --disable-software-rasterizer &
 fi

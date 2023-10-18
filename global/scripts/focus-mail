@@ -1,17 +1,6 @@
 #!/usr/bin/env bash
 
-# runbg thunderbird
-# wmctrl -x -a Thunderbird
-# sleep 0.5
-
-# if [[ ! $(xdotool getactivewindow getwindowname) == *"Thunderbird"* ]]; then
-# 	sleep 2.5
-# 	wmctrl -x -a Thunderbird
-# fi
-
-
-if pgrep -x thunderbird > /dev/null; then
-    focusws 5
-else
+focusws 5
+if ! pgrep -x thunderbird > /dev/null; then
     thunderbird
 fi
