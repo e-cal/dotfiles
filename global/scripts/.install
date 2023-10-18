@@ -161,6 +161,8 @@ echo
 echo "Preparing directories..."
 [[ -d $HOME/.config ]] || mkdir $HOME/.config
 [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
+[[ -d $HOME/.config/jupyter ]] || mkdir $HOME/.config/jupyter
+[[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
 
 [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
 [[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
