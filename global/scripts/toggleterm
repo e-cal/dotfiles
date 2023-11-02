@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+PERCENT=20
+
 hidden_term() {
 	tmux list-windows -F '#{window_name}' | grep -q ' '
 }
@@ -24,9 +26,9 @@ case $d in
 h)
 	if [[ $(get_panes_below | wc -l) -eq 0 ]]; then
 		if hidden_term; then
-			tmux join-pane -v -l 30% -s $(get_hid_term)
+			tmux join-pane -v -l "$PERCENT"% -s $(get_hid_term)
 		else
-			tmux split-window -c "#{pane_current_path}" -v -p 30
+			tmux split-window -c "#{pane_current_path}" -v -p $PERCENT
 		fi
 	else
 		tmux select-pane -D
@@ -36,9 +38,9 @@ h)
 v)
 	if [[ $(get_panes_beside | wc -l) -eq 0 ]]; then
 		if hidden_term; then
-			tmux join-pane -h -l 30% -s $(get_hid_term)
+			tmux join-pane -h -l "$PERCENT"% -s $(get_hid_term)
 		else
-			tmux split-window -c "#{pane_current_path}" -h -p 30
+			tmux split-window -c "#{pane_current_path}" -v -p $PERCENT
 		fi
 	else
 		tmux select-pane -R
@@ -49,17 +51,3 @@ v)
 	echo "invalid dir: h or v"
 	;;
 esac
-
-# if hidden_term; then
-# 	tmux select-pane -t 0
-# 	tmux join-pane -v -l 30% -s ' '
-# elif no_bot; then
-# 	tmux select-pane -t 0
-# 	tmux split-window -c "#{pane_current_path}" -v -p 30
-# else
-# 	tmux select-pane -t 1
-# 	tmux break-pane -d -n ' ' -t $(($(tmux list-windows -F '#{window_index}' | tail -n1) + 1))
-# 	[[ $HOSTNAME = "coeus" ]] && sleep 0.01 || sleep 0.3
-# 	tmux next-window
-# 	tmux previous-window
-# fi
