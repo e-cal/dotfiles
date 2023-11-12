@@ -133,7 +133,10 @@ if confirm "Install dependencies?"; then
 			xdg-desktop-portal-hyprland \
 			playerctl \
             rofi \
-            drun
+            drun \
+            grim \
+            slurp \
+            flameshot-git \
 	fi
 fi
 
