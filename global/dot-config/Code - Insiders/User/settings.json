@@ -12,5 +12,8 @@
         "scminput": false
     },
     "workbench.editor.showTabs": false,
-    "keyboard.dispatch": "keyCode"
+    "keyboard.dispatch": "keyCode",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    }
 }
