@@ -24,7 +24,7 @@ gettime() {
 
 color() {
     if [[ $state == "Discharging" ]]; then
-        [[ $percentage -le 20 ]] && echo "#f38ba8" || echo "#a6e3a1"
+        [[ $percentage -le 15 ]] && echo "#f38ba8" || echo "#a6e3a1"
     else
         echo "#f9e2af"
     fi
@@ -44,7 +44,6 @@ status() {
 gen_output() {
 	info="$(acpi | jc --acpi | jq '.[]')"
 	percentage="$(echo "$info" | jq -r '.charge_percent')"
-    # if percentage not set make it n/a
     [[ -n $percentage ]] || percentage='100'
 	state="$(echo "$info" | jq -r '.state')"
 
