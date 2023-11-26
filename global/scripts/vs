@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 
 if [[ $# > 0 ]]; then
-	searchFrom=$1
+    # Non-interactive search for args
+	pattern="$*"
+	file=$(find -L . -type f 2>/dev/null | grep -v ".git" | fzf --filter="$pattern" | head -n 1)
 else
+	# Interactive search
 	searchFrom="."
+	if [[ $searchFrom == "$HOME" || ($searchFrom == "." && $PWD == "$HOME") ]]; then
+		depth="-maxdepth 3"
+	fi
+	file=$(find -L $searchFrom $depth -type f 2>/dev/null | grep -v ".git" | sed 's/\.\///' | fzf --preview "bat -n --color=always {}" $FZF_INLINE)
 fi
-
-if [[ $searchFrom == "$HOME" || ($searchFrom == "." && $PWD == "$HOME") ]]; then
-	depth="-maxdepth 3"
-fi
-
-file=$(find -L $searchFrom $depth -type f 2>/dev/null | grep -v ".git" | sed 's/\.\///' | fzf --preview "bat -n --color=always {}" $FZF_INLINE)
 
 if [[ ! -z $file ]]; then
 	nvim $file
