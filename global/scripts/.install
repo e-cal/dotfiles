@@ -136,7 +136,7 @@ if confirm "Install dependencies?"; then
             drun \
             grim \
             slurp \
-            flameshot-git \
+            flameshot-git
 	fi
 fi
 
