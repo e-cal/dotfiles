@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+runbg firefox --new-window https://guest01.networkauth.queensu.ca/guest/Guest_Self_Register_login.php?cmd=login&mac=9c:b6:d0:ba:55:dd&ip=10.219.9.173&essid=QueensU%2DGuest&apname=MITCHA-3rd-19&apgroup=MASTER_default&url=http%3A%2F%2Fdetectportal%2Efirefox%2Ecom%2Fcanonical%2Ehtml&_browser=1
+sleep 3
+wtype -M shift -P tab -p tab -m shift
+wtype -P return -p return
+sleep 1
+wtype a
+wtype -P tab -p tab
+wtype a@a.com
+wtype -P tab -p tab
+wtype -P space -p space
+wtype -P tab -p tab
+wtype -P tab -p tab
+wtype -P return -p return
+sleep 1
+wtype -P tab -p tab
+wtype -P tab -p tab
+wtype -P return -p return
