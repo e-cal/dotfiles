@@ -26,11 +26,11 @@ ACTION=$(dunstify --action="default,run again" --action="stop,stop" "Take care o
 
 case $ACTION in
 default) # left click
-	brightness set 0
-	while [[ $(brightness get) == 0 ]]; do
-		sleep 1
-	done
-	notify-send "Welcome back!" -t 1000 -i ~/.config/dunst/images/eyes.png
+	# brightness set 0
+	# while [[ $(brightness get) == 0 ]]; do
+	# 	sleep 1
+	# done
+	# notify-send "Welcome back!" -t 1000 -i ~/.config/dunst/images/eyes.png
 	eyes &
 	;;
 stop) # middle click -> stop
