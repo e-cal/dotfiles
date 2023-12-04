@@ -1,64 +1,62 @@
 #!/usr/bin/env bash
 
-# define colors
-#        red       peach     green     blue
-colors=("#f38ba8" "#fab387" "#a6e3a1" "#89b4fa")
-focused="#fab387"
-unfocused="#f2cdcd"
-
+focused="#F9A876"
+unfocused="#F1B89B"
+background="#e3c1c1"
 empty="#313244"
 
-# get initial focused workspace
 focusedws=$(hyprctl -j monitors | jq -r '.[] | select(.focused == true) | .activeWorkspace.id')
 
 declare -A o=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0)
-declare -A monitormap
 declare -A workspaces
 
-# set color for each workspace
 status() {
 	if [ "${o[$1]}" -eq 1 ]; then
 		if [[ $(isfocused $1) == "true" ]]; then
 			echo -n "$focused"
 		else
-			echo -n "$unfocused"
+			if [[ $(onmonitor $1) == "true" ]]; then
+				echo -n "$unfocused"
+			else
+				echo -n "$background"
+			fi
 		fi
 	else
 		echo -n "$empty"
 	fi
 }
 
-# handle workspace create/destroy
+isfocused() {
+	[[ "$focusedws" == "$1" ]] && echo "true" || echo "false"
+}
+
+onmonitor() {
+	res=$(hyprctl -j monitors | jq -r '.[] | select(.activeWorkspace.id == '"$1"') | .id')
+	if [[ "$res" != "$focusedws" ]] && [[ "$res" != "" ]]; then
+		echo "true"
+	else
+		echo "false"
+	fi
+}
+
 workspace_event() {
+	# handle workspace create/destroy
 	while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | jq -jr '.[] | .id, " ", .monitor, "\n"')
 }
 
-# handle monitor (dis)connects
-monitor_event() {
-	while read -r k v; do monitormap["$k"]=$v; done < <(hyprctl -j monitors | jq -jr '.[] | .name, " ", .id, "\n"')
-}
-
-# get all apps titles in a workspace
-
+# get all app titles in a workspace
 declare -A applist
-
 update_applist() {
-    lim=39
+	lim=39
 	for ws in "${!workspaces[@]}"; do
 		apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | .class + (if .class == "Spotify" or .class == "thunderbird" then "" else ": " + (.title | .[0:'"$lim"']) + (if .title | length > '"$lim"' then "..." else "" end) end) + "\\n"' | sed 's/"/\\"/g')
 		applist[$ws]="${apps%\\n}"
 	done
 }
-
 applist() {
 	echo "${applist[$1]}"
 }
 
-isfocused() {
-	[[ "$focusedws" == "$1" ]] && echo "true" || echo "false"
-}
-
-# generate the json for eww
 generate() {
 	echo -n '{"workspaces": ['
 
@@ -70,23 +68,14 @@ generate() {
 }
 
 # setup
-
-# add monitors
-monitor_event
-
-# add workspaces
 workspace_event
-
 update_applist
-
-# screen is not shared by default
 screencast=false
 
 # check occupied workspaces
 for num in "${!workspaces[@]}"; do
 	o[$num]=1
 done
-# generate initial widget
 generate
 
 # main loop
@@ -104,9 +93,6 @@ socat -u UNIX-CONNECT:/tmp/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - |
 		;;
 	"destroyworkspace")
 		o[${line#*>>}]=0
-		;;
-	"monitor"*)
-		monitor_event
 		;;
 	"screencast")
 		screencast=$([ "$(echo "${line#*>>}" | awk -F, '{print $1}')" -eq 1 ] && echo true || echo false)
