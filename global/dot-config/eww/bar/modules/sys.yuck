@@ -9,7 +9,7 @@
       :thickness 3
       (button
         :tooltip "CPU ${round(EWW_CPU.avg,0)}%"
-        :onclick "${EWW_CMD} open --toggle system-menu"
+        :onclick "${EWW_CMD} open --toggle --screen 0 system-menu"
         (label :class "icon-text" :text "")))
 
     (circular-progress
@@ -18,7 +18,7 @@
       :thickness 3
       (button
         :tooltip "MEM ${round(EWW_RAM.used_mem_perc,0)}%"
-        :onclick "${EWW_CMD} open --toggle system-menu"
+        :onclick "${EWW_CMD} open --toggle --screen 0 system-menu"
         (label :class "icon-text" :text "")))
 
     (circular-progress
@@ -29,5 +29,5 @@
       :thickness 3
       (button
         :tooltip {"${battery.status}" == "Charging" ? "Charging (${battery.percentage}%)" : "Battery ${battery.percentage}%"}
-        :onclick "${EWW_CMD} open --toggle system-menu"
+        :onclick "${EWW_CMD} open --toggle --screen 0 system-menu"
         (label :class "icon-text" :text "")))))

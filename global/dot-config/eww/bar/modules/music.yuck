@@ -11,7 +11,7 @@
       (button
         :class "module text"
         :limit-width 20
-        :onclick "${EWW_CMD} open --toggle music"
+        :onclick "${EWW_CMD} open --toggle --screen 0 music"
             (label ; title
                     :class "module text"
                     :limit-width 50

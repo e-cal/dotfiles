@@ -5,7 +5,7 @@
       ; scroll over the icon to change volume
       ; low increment so that scrolling with a touchpad doesn't shatter your eardrums
       :onscroll "echo {} | sed -e 's/up/-/g' -e 's/down/+/g' | xargs volume {}"
-      :onclick "${EWW_CMD} open --toggle system-menu"
+      :onclick "${EWW_CMD} open --toggle --screen 0 system-menu"
       ;:onclick "scripts/volume mute" 
       :onrightclick "pavucontrol &" ; toggle mute on right click
       (label

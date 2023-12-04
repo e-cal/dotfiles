@@ -26,6 +26,6 @@
         :transition "crossfade"
         (button
           :class "date"
-          :onclick "${EWW_CMD} open --toggle calendar"
+          :onclick "${EWW_CMD} open --toggle --screen 0 calendar"
           :onrightclick "open https://calendar.cron.com"
           {time.date})))))
