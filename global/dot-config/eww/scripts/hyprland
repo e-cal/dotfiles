@@ -3,7 +3,7 @@
 focused="#F9A876"
 unfocused="#F1B89B"
 background="#e3c1c1"
-empty="#313244"
+empty="#383646"
 
 focusedws=$(hyprctl -j monitors | jq -r '.[] | select(.focused == true) | .activeWorkspace.id')
 
