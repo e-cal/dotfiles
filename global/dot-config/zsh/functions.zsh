@@ -161,3 +161,7 @@ EOF
 mvws() {
     hyprctl dispatch moveworkspacetomonitor "$1 DP-$2"
 }
+
+diff() {
+    wdiff -n $1 $2 | colordiff | less
+}

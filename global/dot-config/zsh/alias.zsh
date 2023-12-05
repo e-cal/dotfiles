@@ -15,7 +15,6 @@ alias "vl"="nvim -c 'OpenLast'"
 alias "clear"="clear;divider"
 alias "celar"="clear"
 alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
-alias "diff"="kitty +kitten diff"
 alias "psrg"="ps -ef | rg"
 
 alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)'
