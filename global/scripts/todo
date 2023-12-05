@@ -1,64 +1,51 @@
 #!/usr/bin/env bash
 
 TODO_FILE="$HOME/.cache/todo"
-
-if [[ ! -f "$TODO_FILE" ]]; then
-	touch "$TODO_FILE"
-fi
+if [[ ! -f "$TODO_FILE" ]]; then touch "$TODO_FILE"; fi
 
 if [[ $# -eq 0 ]]; then
 	echo "--- TODO ---"
 	cat -n $TODO_FILE
 	exit 0
-fi
-
-if [[ $1 == "-c" ]]; then
-	>$TODO_FILE
-	echo "Cleared all todos"
-	exit 0
-fi
-
-if [[ $1 == "-a" ]]; then
-	shift
-	# treat $@ as a single string
-	todo_item="$@"
-	# split on newlines
-	IFS=$'\n'
-	read -ra todo_lines <<<"$todo_item"
-	# add each line to todo file
-	for line in "${todo_lines[@]}"; do
-		if [[ -z "$line" ]]; then
-			continue
-		fi
-		echo "$line" >>"$TODO_FILE"
-	done
-
-	todo
-	exit 0
-fi
-
-if [[ $1 == "-e" || $1 == "e" ]]; then
-	nvim $TODO_FILE
-fi
-
-if [[ $1 == "-d" ]]; then
-	shift
-	if [[ $1 =~ ^[0-9]+-[0-9]+$ ]]; then
-		start=$(echo $1 | cut -d'-' -f1)
-		end=$(echo $1 | cut -d'-' -f2)
-		count=0
-		n=$(($end - $start))
-		for ((i = $start; i <= $end; i++)); do
-			sed -i "$start"d $TODO_FILE
+else
+	case $1 in
+	e | edit)
+		nvim $TODO_FILE
+		;;
+	c | clear)
+		>$TODO_FILE
+		echo "Cleared all todos"
+		;;
+	a | add)
+		shift
+		todo_item="$@"
+		IFS=$'\n'
+		read -ra todo_lines <<<"$todo_item"
+		for line in "${todo_lines[@]}"; do
+			if [[ -z "$line" ]]; then
+				continue
+			fi
+			echo "$line" >>"$TODO_FILE"
 		done
-	else
-		sed -i "$1d" $TODO_FILE
-	fi
-	# if a range n-m is passed delete all in range
-
-	# sed -i "$1d" $TODO_FILE
-	# echo "Deleted todo: $1"
-	# echo
-	todo
-	exit 0
+		todo
+		;;
+	d | del | delete)
+		shift
+		if [[ $1 =~ ^[0-9]+-[0-9]+$ ]]; then
+			start=$(echo $1 | cut -d'-' -f1)
+			end=$(echo $1 | cut -d'-' -f2)
+			count=0
+			n=$(($end - $start))
+			for ((i = $start; i <= $end; i++)); do
+				sed -i "$start"d $TODO_FILE
+			done
+		else
+			sed -i "$1d" $TODO_FILE
+		fi
+		todo
+		;;
+	*)
+		todo add "$@"
+		;;
+	esac
 fi
