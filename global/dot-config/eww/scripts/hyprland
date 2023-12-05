@@ -32,11 +32,7 @@ isfocused() {
 
 onmonitor() {
 	res=$(hyprctl -j monitors | jq -r '.[] | select(.activeWorkspace.id == '"$1"') | .id')
-	if [[ "$res" != "$focusedws" ]] && [[ "$res" != "" ]]; then
-		echo "true"
-	else
-		echo "false"
-	fi
+	[[ "$res" != "" ]] && echo "true" || echo "false"
 }
 
 workspace_event() {
