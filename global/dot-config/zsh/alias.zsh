@@ -32,6 +32,8 @@ alias "jn"="jupyter notebook"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "lskernels"="ls $HOME/.local/share/jupyter/kernels"
 alias "venv"="python -m venv"
+alias "pynb"="jupytext --to ipynb"
+alias "nbpy"="jupytext --to py"
 
 alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directories-first --icons'
 alias "la"="ls -a"
