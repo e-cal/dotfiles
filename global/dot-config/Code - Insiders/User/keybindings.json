@@ -105,24 +105,9 @@
         "when": "editorTextFocus && neovim.ctrlKeysInsert && neovim.mode == 'insert'"
     },
     {
-        "key": "shift+escape",
-        "command": "notebook.cell.quitEdit",
-        "when": "inputFocus && notebookEditorFocused && !editorHasMultipleSelections && !editorHasSelection && !editorHoverVisible"
-    },
-    {
         "key": "escape",
-        "command": "-notebook.cell.quitEdit",
-        "when": "inputFocus && notebookEditorFocused && !editorHasMultipleSelections && !editorHasSelection && !editorHoverVisible"
-    },
-    {
-        "key": "shift+escape",
         "command": "notebook.cell.quitEdit",
-        "when": "notebookEditorFocused && notebookOutputFocused"
-    },
-    {
-        "key": "escape",
-        "command": "-notebook.cell.quitEdit",
-        "when": "notebookEditorFocused && notebookOutputFocused"
+        "when": "notebookEditorFocused && notebookOutputFocused && neovim.mode == 'normal'"
     },
     {
         "key": "ctrl+space t",
@@ -131,5 +116,35 @@
     {
         "key": "ctrl+j",
         "command": "-workbench.action.togglePanel"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "editor.action.marker.next",
+        "when": "editorFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "-workbench.action.files.newUntitledFile",
+        "when": "editorFocus"
+    },
+    {
+        "key": "alt+f8",
+        "command": "-editor.action.marker.next",
+        "when": "editorFocus"
+    },
+    {
+        "key": "space n",
+        "command": "workbench.action.files.newUntitledFile",
+        "when": "editorFocus && neovim.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "terminal.active"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "-workbench.action.terminal.toggleTerminal",
+        "when": "terminal.active"
     }
 ]
