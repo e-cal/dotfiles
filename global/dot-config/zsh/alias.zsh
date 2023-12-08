@@ -27,7 +27,7 @@ alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacma
 alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk \"{print $2}\")' | xargs -ro  paru -S"
 
 alias "py"="python"
-alias "ipy"="ipython --TerminalInteractiveShell.editing_mode=vi"
+alias "ipy"="ipython"
 alias "jn"="jupyter notebook"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "lskernels"="ls $HOME/.local/share/jupyter/kernels"
