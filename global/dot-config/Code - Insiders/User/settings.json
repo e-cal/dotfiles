@@ -1,5 +1,5 @@
 {
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Catppuccin Mocha",
     "workbench.startupEditor": "none",
     "[markdown]": {
         "editor.wordWrap": "off"
@@ -11,9 +11,23 @@
         "markdown": false,
         "scminput": false
     },
-    "workbench.editor.showTabs": "single",
     "keyboard.dispatch": "keyCode",
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
-    }
+    },
+    "workbench.editor.enablePreview": false,
+    "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.wordBasedSuggestions": "off",
+        "editor.defaultFormatter": "eeyore.yapf"
+    },
+    "yapf.args": [
+        "--style",
+        "{ based_on_style: facebook, column_limit: 85, join_multiple_lines: true, indent_dictionary_value: false, allow_split_before_default_or_named_assigns: false, allow_split_before_dict_value: false, coalesce_brackets: true}"
+    ],
+    "editor.lineNumbers": "relative",
+    "window.menuBarVisibility": "toggle",
+    "workbench.editor.showTabs": "single",
+    "explorer.openEditors.visible": 1,
+    "workbench.editor.revealIfOpen": true
 }

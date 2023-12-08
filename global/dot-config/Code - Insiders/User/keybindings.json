@@ -146,5 +146,72 @@
         "key": "ctrl+`",
         "command": "-workbench.action.terminal.toggleTerminal",
         "when": "terminal.active"
-    }
+    },
+    {
+        "key": "alt+l",
+        "command": "workbench.action.focusRightGroup"
+    },
+    {
+        "key": "ctrl+k ctrl+right",
+        "command": "-workbench.action.focusRightGroup"
+    },
+    {
+        "key": "alt+h",
+        "command": "workbench.action.focusLeftGroup"
+    },
+    {
+        "key": "ctrl+k ctrl+left",
+        "command": "-workbench.action.focusLeftGroup"
+    },
+    {
+        "key": "alt+k",
+        "command": "workbench.action.focusAboveGroup"
+    },
+    {
+        "key": "ctrl+k ctrl+up",
+        "command": "-workbench.action.focusAboveGroup"
+    },
+    {
+        "key": "alt+j",
+        "command": "workbench.action.focusBelowGroup"
+    },
+    {
+        "key": "ctrl+k ctrl+down",
+        "command": "-workbench.action.focusBelowGroup"
+    },
+    {
+        "key": "shift+tab",
+        "command": "-insertPrevSuggestion",
+        "when": "hasOtherSuggestions && textInputFocus && !inSnippetMode && !suggestWidgetVisible && config.editor.tabCompletion == 'on'"
+    },
+    {
+        "key": "shift+tab",
+        "command": "selectPrevSuggestion",
+        "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
+    },
+    {
+        "key": "alt+k",
+        "command": "workbench.action.navigateUp",
+        "when": "!editorTextFocus ||  (editorTextFocus && neovim.mode == 'normal')"
+    },
+    {
+        "key": "alt+j",
+        "command": "workbench.action.navigateDown",
+        "when": "!editorTextFocus ||  (editorTextFocus && neovim.mode == 'normal')"
+    },
+    {
+        "key": "alt+h",
+        "command": "workbench.action.navigateLeft",
+        "when": "!editorTextFocus ||  (editorTextFocus && neovim.mode == 'normal')"
+    },
+    {
+        "key": "alt+l",
+        "command": "workbench.action.navigateRight",
+        "when": "!editorTextFocus ||  (editorTextFocus && neovim.mode == 'normal')"
+    },
+    {
+        "key": "space shift+f",
+        "command": "workbench.action.quickOpen",
+        "when": "neovim.mode == 'normal' && editorTextFocus"
+    },
 ]
