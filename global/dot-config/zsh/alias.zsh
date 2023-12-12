@@ -21,6 +21,7 @@ alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short e
 alias "pdfeditor"="masterpdfeditor4"
 alias "code"="code-insiders"
 alias "untar"="tar -xvf"
+alias "dock"="bt discon adv; bt con adv; bt discon mouse; bt con mouse"
 
 alias "yeet"="paru -Rsn"
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
