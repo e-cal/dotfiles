@@ -138,13 +138,8 @@ restart | r)
 	sudo systemctl restart bluetooth
 	;;
 recon | rc)
-	mac=""
-	if [[ -n $2 ]]; then
-		dev=$(get_dev $2)
-		[[ -z $dev ]] && echo "Invalid device" && exit 1
-		mac=${devices[$dev]}
-	fi
-	bt-reconnect $mac
+    bt disconnect $2
+    bt connect $2
 	;;
 *)
 	bluetoothctl $@
