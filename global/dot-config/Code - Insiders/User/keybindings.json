@@ -214,4 +214,17 @@
         "command": "workbench.action.quickOpen",
         "when": "neovim.mode == 'normal' && editorTextFocus"
     },
+    {
+        "key": "ctrl+w q",
+        "command": "workbench.action.closeEditorsInGroup"
+    },
+    {
+        "key": "ctrl+k w",
+        "command": "-workbench.action.closeEditorsInGroup"
+    },
+    {
+        "key": "ctrl+w q",
+        "command": "-workbench.action.closeActiveEditor",
+        "when": "!editorTextFocus && !filesExplorerFocus && !searchViewletFocus && !terminalFocus"
+    },
 ]
