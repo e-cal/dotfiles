@@ -55,7 +55,7 @@ PROJECTDIR = ProjectDir(
 
 startcmd = f"exec {SHELL}" if not STARTCMD else f"{STARTCMD} && exec {SHELL}"
 in_tmux = os.getenv("TMUX") is not None
-menus = ["reset", "kill", "new", "config"]
+menus = ["reset", "kill", "new"]
 
 
 def run_cmd(cmd):
@@ -244,22 +244,6 @@ def project(sel=None):
     attach(sel, projects[sel])
 
 
-def config():
-    attach("cfg")
-    # cmd = "tmux neww -t cfg; tmux send-keys -t cfg cdc C-m"
-    cmd = "tmux neww -t cfg; tmux send-keys -t cfg 'clear && cdc; pwd | xargs basename | xargs tmux rename-window' C-m"
-    # if (int(run_cmd("tmux list-windows -t cfg | wc -l")) > 1) or (
-    #     run_cmd("tmux list-panes -t cfg | awk '{print $4}' | head -c1") != "0"
-    # ):
-    #     cmd = f"tmux neww -t cfg; {cmd}"
-    run_cmd(cmd)
-
-
-# bind-key . run-shell "tmux display-popup -E cfgdirs tmux"
-
-# run_cmd(f"cfgdirs tmux")
-
-
 def get_menu(refresh=False):
     # project_dirs = [proj_dir.name for proj_dir in PROJECTDIR]
     submenus = [*menus, PROJECTDIR.name]
@@ -282,7 +266,6 @@ def main():
                 "n": "new",
                 "r": "reset",
                 "k": "kill",
-                "c": "config",
             }
             op = expand[op] if op in expand else op
         if op in ("p", "project", "projects"):
