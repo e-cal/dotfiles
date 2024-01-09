@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# restore_date="2023-12-28"
+# restore_data=`cat /var/log/pacman.log | grep "$restore_date" | grep "upgraded"`
+restore_data=`cat /var/log/pacman.log | grep "2023-12-13" | grep "upgraded" | rg "blue|alsa|pulse|audio|sound"` 
+restore_data=`printf '%s\n' "$restore_data" | awk '{print $4,$5,$7}' | sed 's/(\|)//g'`
+
+pac_cache=`ls /var/cache/pacman/pkg`
+
+# loop through lines in restore_data
+packages=""
+while IFS= read -r line; do
+    package=`echo $line | awk '{print $1}'`
+    prev=`echo $line | awk '{print $2}'`
+    
+    # check if package in /var/cache/pacman/pkg
+    if `printf '%s\n' "$pac_cache" | grep -q "^$package"`; then
+        package=`printf '%s\n' "$pac_cache" | grep "^$package-$prev.*\.zst$"`
+        package="/var/cache/pacman/pkg/$package"
+    else
+        file=`ls /home/ecal/.cache/paru/clone/$package | grep "^$package-$prev.*\.zst$"`
+        package="/home/ecal/.cache/paru/clone/$package/$file"
+        echo $package
+    fi
+    packages="file://$package $packages"
+    # paru -U $package --noconfirm
+
+    # else get from /home/ecal/.cache/paru/clone/<package>
+
+done <<< "$restore_data"
+echo "paru --noconfirm -U $packages"
+paru --noconfirm -U $packages

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ $(eww windows | grep bar | cut -c 1 | head -n1) == "*" ]]; then
+if [[ $(eww windows | grep bar | cut -c 1 | tail -n1) == "*" ]]; then
     eww close bar
     eww close bar2
 else

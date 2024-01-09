@@ -241,7 +241,7 @@ def project(sel=None):
         attach(name, PROJECTDIR.path.joinpath(name))
         return
 
-    attach(sel, projects[sel])
+    attach(sel.replace(".", "_"), projects[sel])
 
 
 def get_menu(refresh=False):
