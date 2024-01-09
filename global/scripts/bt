@@ -62,6 +62,13 @@ connect | con | c)
 	fi
 	;;
 disconnect | discon | d)
+    if [[ $2 == "all" ]]; then
+        for dev in ${!devices[@]}; do
+            bt disconnect $dev
+        done
+        exit
+    fi
+
 	dev=$(get_dev $2)
 	[[ -z $dev ]] && echo "Invalid device" && exit 1
 	mac=${devices[$dev]}
