@@ -35,6 +35,10 @@
   font-weight: bold;
   margin: 0.5rem;
 }
+.music-title:hover {
+  color: $subtext0;
+  background: none;
+}
 
 .music-artist {
   color: $subtext1;
@@ -52,7 +56,8 @@
   margin-left: 0.5rem;
 }
 .music-button:hover {
-  color: $subtext1;
+  color: $subtext0;
+  background: none;
 }
 
 .music-time {
@@ -80,5 +85,5 @@
   margin-left: 0.5rem;
 }
 .song-button:hover {
-  color: $subtext1;
+  color: $subtext0;
 }
