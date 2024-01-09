@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 
 # put ws 1 on main monitor
-[[ `hyprctl monitors | rg -e "ID \d+\):" | wc -l` == 1 ]] && exit
-if `hyprctl monitors | grep -q "Dell S2716DG"`; then
-    mon=`hyprctl monitors | grep "Dell S2716DG" -B2 | head -n1 | awk '{print $4}' | head -c1`
-    hyprctl dispatch focusmonitor $mon
-    focusws 1
-elif `hyprctl monitors | grep -q "LC32T55"`; then
-    mon=`hyprctl monitors | grep "LC32T55" -B2 | head -n1 | awk '{print $4}' | head -c1`
-    hyprctl dispatch focusmonitor $mon
-    focusws 1
-fi
+[[ $(hyprctl monitors | rg -e "ID \d+\):" | wc -l) == 1 ]] && exit
+
+eww open bar
+n_monitors=$(hyprctl monitors -j | jq '. | length')
+[[ $n_monitors -gt 1 ]] && eww open bar2
+
+main_monitors=("Dell S2716DG" "LC32T55")
+
+for mon in "${main_monitors[@]}"; do
+	if $(hyprctl monitors | grep -q "$mon"); then
+		mon=$(hyprctl monitors | grep "$mon" -B2 | head -n1 | awk '{print $4}' | head -c1)
+		hyprctl dispatch focusmonitor $mon
+		focusws 1
+
+		if [[ $(hostname) == "prometheus" ]]; then
+			bt recon adv
+			bt recon mouse
+		fi
+
+		exit
+	fi
+done
