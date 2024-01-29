@@ -22,3 +22,4 @@ x-scheme-handler/unknown=firefox.desktop
 application/pdf=org.pwmt.zathura.desktop
 x-scheme-handler/postman=Postman.desktop
 x-scheme-handler/webcal=firefox.desktop
+x-scheme-handler/texts=texts.desktop
