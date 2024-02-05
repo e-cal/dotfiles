@@ -9,14 +9,14 @@ if [[ $# -eq 0 ]]; then
 	exit 0
 else
 	case $1 in
-	e | edit)
+	e | -e)
 		nvim $TODO_FILE
 		;;
-	c | clear)
+	c | -c)
 		>$TODO_FILE
 		echo "Cleared all todos"
 		;;
-	a | add)
+	a | -a)
 		shift
 		todo_item="$@"
 		IFS=$'\n'
@@ -29,7 +29,7 @@ else
 		done
 		todo
 		;;
-	d | del | delete)
+	d | -d)
 		shift
 		if [[ $1 =~ ^[0-9]+-[0-9]+$ ]]; then
 			start=$(echo $1 | cut -d'-' -f1)
@@ -45,7 +45,12 @@ else
 		todo
 		;;
 	*)
-		todo add "$@"
+        # check - not in the first arg
+        if [[ $1 =~ ^- ]]; then
+            echo "Invalid option"
+            exit 1
+        fi
+		todo a "$@"
 		;;
 	esac
 fi
