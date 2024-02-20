@@ -30,5 +30,6 @@
     "workbench.editor.showTabs": "single",
     "explorer.openEditors.visible": 1,
     "workbench.editor.revealIfOpen": true,
-    "update.showReleaseNotes": false
+    "update.showReleaseNotes": false,
+    "python.defaultInterpreterPath": "/home/ecal/.local/share/virtualenvs/ai"
 }
