@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-# put ws 1 on main monitor
+eww open bar
 [[ $(hyprctl monitors | rg -e "ID \d+\):" | wc -l) == 1 ]] && exit
 
-eww open bar
 n_monitors=$(hyprctl monitors -j | jq '. | length')
 [[ $n_monitors -gt 1 ]] && eww open bar2
 
