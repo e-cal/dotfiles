@@ -2,7 +2,7 @@
 
 # restore_date="2023-12-28"
 # restore_data=`cat /var/log/pacman.log | grep "$restore_date" | grep "upgraded"`
-restore_data=`cat /var/log/pacman.log | grep "2023-12-13" | grep "upgraded" | rg "blue|alsa|pulse|audio|sound"` 
+restore_data=`cat /var/log/pacman.log | grep "2023-02-14" | grep "upgraded" | rg "linux|nvidia"` 
 restore_data=`printf '%s\n' "$restore_data" | awk '{print $4,$5,$7}' | sed 's/(\|)//g'`
 
 pac_cache=`ls /var/cache/pacman/pkg`

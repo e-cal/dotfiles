@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# bash script to periodically check if connected to wifi
+# if not, run `nmcli net off; sleep 3; nmcli net on`
+
+while true; do
+    if ! nmcli -t -f DEVICE,STATE dev | grep -q "wlp59s0:connected"; then
+        nmcli net off; sleep 3; nmcli net on
+    fi
+    sleep 10
+done
