@@ -2,7 +2,7 @@
 
 PERCENT=20
 
-hidden_term() {
+term_hidden() {
 	tmux list-windows -F '#{window_name}' | grep -q ' '
 }
 
@@ -25,10 +25,10 @@ d=${1:-h}
 case $d in
 h)
 	if [[ $(get_panes_below | wc -l) -eq 0 ]]; then
-		if hidden_term; then
+		if term_hidden; then
 			tmux join-pane -v -l "$PERCENT"% -s $(get_hid_term)
 		else
-			tmux split-window -c "#{pane_current_path}" -v -p $PERCENT
+			tmux split-window -c "#{pane_current_path}" -v -l $PERCENT
 		fi
 	else
 		tmux select-pane -D
@@ -37,10 +37,10 @@ h)
 	;;
 v)
 	if [[ $(get_panes_beside | wc -l) -eq 0 ]]; then
-		if hidden_term; then
+		if term_hidden; then
 			tmux join-pane -h -l "$PERCENT"% -s $(get_hid_term)
 		else
-			tmux split-window -c "#{pane_current_path}" -v -p $PERCENT
+			tmux split-window -c "#{pane_current_path}" -v -l $PERCENT
 		fi
 	else
 		tmux select-pane -R

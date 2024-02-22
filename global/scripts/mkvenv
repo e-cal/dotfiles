@@ -29,4 +29,5 @@ echo "making venv $name"
 eval "$pyexec -m venv '$VIRTUALENV_HOME/$name'"
 echo $name >.venv
 source "$VIRTUALENV_HOME/$name/bin/activate"
+pip install --upgrade pip
 pip install pynvim
