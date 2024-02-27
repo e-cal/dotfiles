@@ -6,7 +6,7 @@ function zvm_after_init() {
 	bindkey "^l" vi-forward-word
 	bindkey "^w" vi-forward-blank-word
     # bindkey '^h' backward-delete-word
-    bindkey "^j" vi-forward-char
+    # bindkey "^j" vi-forward-char
 	# bindkey "^h" vi-backward-word
     # bindkey "^r" fzf-history-widget
 
