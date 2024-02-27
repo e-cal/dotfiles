@@ -57,7 +57,7 @@
             :text "│")
           (button
             :class "bluetooth-arrow-btn"
-            :onclick "${EWW_CMD} close system-menu && blueberry"
+            :onclick "eww close system-menu && blueberry"
             "󰅂"))
         (label
           :class "text"

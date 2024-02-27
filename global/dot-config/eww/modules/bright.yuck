@@ -6,6 +6,6 @@
       :onscroll "echo {} | sed -e 's/up/-A 1/g' -e 's/down/-U 1/g' | xargs pkexec brillo"
       (button
         :class "bright-icon icon"
-        :onclick "${EWW_CMD} open --toggle --screen 0 system-menu"
+        :onclick "~/.config/eww/scripts/toggle system-menu"
         :tooltip "${round(brightness.percent, 0)}%"
         {brightness.icon}))))
