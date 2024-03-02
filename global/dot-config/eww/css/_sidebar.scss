@@ -48,18 +48,17 @@
   margin: 0.3rem;
 
   button {
-        label {
-          font-size: 1.5rem;
-        }
-      }
+    label {
+      font-size: 1.5rem;
+    }
     @include rounding;
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
     }
-  }
     button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-}
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
 }
 
 /* volume & brightness sliders */

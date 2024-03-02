@@ -4,10 +4,10 @@ prevMic=""
 prevScreen=""
 
 gen_output() {
-	mic=$(eww -c ~/.config/eww/bar get volume)
+	mic=$(eww -c ~/.config/eww get volume)
 	# no standard way of getting camera info
 	# camerareveal=$(eww get camerareveal)
-	screen=$(eww -c ~/.config/eww/bar get hyprland)
+	screen=$(eww -c ~/.config/eww get hyprland)
 
 	if [ "$screen" != "$prevScreen" ] || [ "$mic" != "$prevMic" ]; then
 		micreveal=$(echo "$mic" | jq -r '.in_use')

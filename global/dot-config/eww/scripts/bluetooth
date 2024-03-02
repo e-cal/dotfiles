@@ -6,8 +6,8 @@ source "$(dirname "$0")"/utils
 something_connected() {
     powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
     status=$(bluetoothctl info | head -n1)
-    echo in here
-    echo $status
+    # echo in here
+    # echo $status
     [[ $powered == "yes" ]] && [[ `echo $status | head -1` != "Missing device address argument" ]]
 }
 
