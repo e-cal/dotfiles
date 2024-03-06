@@ -1,0 +1,192 @@
+{
+  "main": {
+    "id": "e9c50d7100e7b6fd",
+    "type": "split",
+    "children": [
+      {
+        "id": "cb825cfcab47b7e2",
+        "type": "tabs",
+        "dimension": 57.610117749672916,
+        "children": [
+          {
+            "id": "f17b3bcdbb37199d",
+            "type": "leaf",
+            "state": {
+              "type": "pdf",
+              "state": {
+                "file": "papers/machine-unlearning.pdf",
+                "page": 1,
+                "zoom": 1
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "1f4fd01d6a5d292b",
+        "type": "tabs",
+        "dimension": 42.389882250327084,
+        "children": [
+          {
+            "id": "dde927740731a0f7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "papers/Machine Unlearning.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "278ffc1331a64906",
+    "type": "split",
+    "children": [
+      {
+        "id": "c2341f9339c1e16d",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1dcbc1a9298c55dd",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "7d72b760a17b877c",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "d31b3764d4da096e",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 200,
+    "collapsed": true
+  },
+  "right": {
+    "id": "38f597b51aa8d5f6",
+    "type": "split",
+    "children": [
+      {
+        "id": "abd7c67058559bbd",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "60e74374039f7915",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "papers/Machine Unlearning.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "ff3bc977ecb10747",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "papers/Machine Unlearning.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e78e8397bd09c7cd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "0ca0ba5bfd592cfd",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "papers/Machine Unlearning.md"
+              }
+            }
+          },
+          {
+            "id": "8822534467928ce7",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "pdf-plus:PDF++: Toggle \"select text to copy\" mode": false,
+      "pdf-plus:PDF++: Toggle auto-focus": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "dde927740731a0f7",
+  "lastOpenFiles": [
+    "papers/machine-unlearning.pdf",
+    "papers/Machine Unlearning.md",
+    "Tokenizers.md",
+    "papers",
+    "test.md"
+  ]
+}

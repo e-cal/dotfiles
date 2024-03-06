@@ -1,0 +1,3 @@
+sharded
+stateful
+checksum_v1 = 1cda03f38b6c750458ea127aeb0d6a46

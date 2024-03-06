@@ -1,0 +1,6 @@
+nmap j gj
+nmap k gk
+nmap ^ g0
+nmap $ g$
+nmap [[ :pHead
+nmap ]] :nHead
