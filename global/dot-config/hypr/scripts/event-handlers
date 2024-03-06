@@ -11,4 +11,4 @@ handle() {
     esac
 }
 
-socat - UNIX-CONNECT:$(find /tmp/hypr -name ".socket2.sock") | while read -r line; do handle "$line"; done
+socat - UNIX-CONNECT:$(find /tmp/hypr -name ".socket2.sock" | sort | tail -n1) | while read -r line; do handle "$line"; done
