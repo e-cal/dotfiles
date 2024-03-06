@@ -1,6 +1,0 @@
-pip install ipykernel
-ipykernel install --user --name=ENVNAME
-
-jupyter kernelspec list
-
-jupyter kernelspec uninstall ENVNAME
