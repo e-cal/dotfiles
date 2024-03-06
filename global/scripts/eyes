@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [[ "$1" == "reset" ]]; then
 	pid=$(ps -ef | rg "eyes" | rg -v "rg|reset" | awk '{ print $2 }')

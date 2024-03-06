@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source parseargs
 
-search_dirs="/usr /home"
+search_dirs="/usr /home /nix"
 
 if [[ -v booleans["a"] ]]; then
     search_dirs="/"

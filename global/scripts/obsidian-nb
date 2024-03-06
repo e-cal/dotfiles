@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if pgrep -f "bash --rcfile /tmp/nix-shell.*" || pgrep -f "nix develop"; then
+    notify-send "Obsidian NB" "Nix shell is already running"
+    exit 1
+fi
+
+if ! $(cloud mounted | grep -q "box"); then
+    notify-send "Mounting box"
+    cloud mount box
+fi
+
+notify-send "Obsidian NB" "Launching in dev environment"
+cd ~/box/notes
+nix develop 

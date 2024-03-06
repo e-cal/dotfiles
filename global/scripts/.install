@@ -10,13 +10,6 @@
 
 [[ ! -d $HOST_DOTFILES ]] && mkdir $HOST_DOTFILES
 
-
-echo "Checking for core dependencies..."
-[[ ! `command -v git` ]] && sudo pacman -S --noconfirm git
-[[ ! `command -v stow` ]] && sudo pacman -S --noconfirm stow
-[[ ! `command -v ssh` ]] && sudo pacman -S --noconfirm openssh
-echo
-
 confirm() {
 	if [[ $# > 0 ]]; then
 		message="$@ (y/n) "
@@ -27,7 +20,7 @@ confirm() {
 	printf "$message"
 	old_stty_cfg=$(stty -g)
 	stty raw -echo
-	answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+	answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
 	stty $old_stty_cfg
 
 	if [ "$answer" != "${answer#[Yy]}" ]; then
@@ -39,20 +32,8 @@ confirm() {
 	fi
 }
 
-# Check distro
-echo "Checking distribution..."
-hostnamectl | grep "Arch Linux" -q
-if [[ $? != 0 ]] && [[ $HOSTNAME != "raspberrypi" ]]; then
-	echo "Install only supports Arch Linux"
-	exit
-fi
-echo
-
 # Install dependencies
-# ask to install dependencies, if yes just do them all
-
-if confirm "Install dependencies?"; then
-    # if git is not installed, install it
+if [[ `hostnamectl | grep -q "Arch Linux"` ]] && confirm "Install dependencies?"; then
 	if confirm "Install paru?"; then
 		git clone https://aur.archlinux.org/paru.git
 		cd paru
@@ -138,14 +119,20 @@ if confirm "Install dependencies?"; then
             slurp \
             flameshot-git
 	fi
+elif hostnamectl | grep -q "NixOS" && confirm "Copy configuration.nix and switch?"; then
+    sudo cp ~/.dotfiles/global/dot-config/nixos/configuration.nix /etc/nixos/configuration.nix
+    sudo nixos-rebuild switch
+    # ~/.dotfiles/global/scripts/rebuild
 fi
 
-if confirm "Set up git?"; then
+# Check for core dependencies
+[[ ! `command -v git` ]] && echo "missing git" && exit 1
+[[ ! `command -v stow` ]] && echo "missing stow" && exit 1
+
+if confirm "Set up github ssh?"; then
 	ssh-keygen -t ed25519 -C "ethan@ecal.dev" -N "" -f ~/.ssh/id_ed25519
 	eval "$(ssh-agent -s)"
 	ssh-add ~/.ssh/id_ed25519
-    [[ ! `command -v gh` ]] && sudo pacman -S --noconfirm github-cli
-    [[ ! `command -v firefox` ]] && sudo pacman -S --noconfirm firefox
     gh auth login -h github.com -p ssh
 fi
 
@@ -153,30 +140,30 @@ if confirm "Install submodules?"; then
 	git submodule update --init --recursive
 fi
 
-if [[ -z "$(ls -A ~/.dotfiles/global/dot-config/nvim)" ]]; then
-	echo "Initializing submodules..."
-	rm -rf ~/.dotfiles/global/dot-config/nvim
-	cd $DOTFILES
-	git submodule update --init --recursive
+
+if confirm 'Prepare directories? (Recommended to avoid conflicts)'; then
+    # Make dirs
+    [[ -d $HOME/.config ]] || mkdir $HOME/.config
+    [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
+    [[ -d $HOME/.config/jupyter ]] || mkdir $HOME/.config/jupyter
+    [[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
+    [[ -d $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
+
+    # Remove common conflicts
+    [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
+    [[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
+    [[ ! -L $HOME/.config/hypr/hyprland.conf ]] && [[ -f $HOME/.config/hypr/hyprland.conf ]] && rm $HOME/.config/hypr/hyprland.conf
+
 fi
 
-echo
-echo "Preparing directories..."
-[[ -d $HOME/.config ]] || mkdir $HOME/.config
-[[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
-[[ -d $HOME/.config/jupyter ]] || mkdir $HOME/.config/jupyter
-[[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
+if confirm "Generate dotfiles for $HOSTNAME?"; then
+    stow --dir=$DOTFILES --target=$HOST_DOTFILES global --dotfiles -R
+fi
 
-[[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
-[[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
+if confirm "Link dotfiles?"; then
+    stow $HOSTNAME -R
+fi
 
-echo
-echo "Generating dotfiles for $HOSTNAME..."
-stow --dir=$DOTFILES --target=$HOST_DOTFILES global --dotfiles -R
-
-echo
-echo "Linking dotfiles..."
-stow $HOSTNAME -R
-
-echo
-$HOME/scripts/housekeeping
+if confirm "Run housekeeping?"; then
+    $HOME/scripts/housekeeping
+fi

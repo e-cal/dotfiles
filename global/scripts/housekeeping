@@ -1,14 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import os
 import re
 from datetime import date, datetime
 
 expected = [
-    ".msf4",
     ".ssh",
     "kbd",
-    "sketch.svg",
     "projects",
     ".cache",
     ".local",
@@ -17,22 +15,11 @@ expected = [
     ".dotfiles",
     "scripts",
     "Downloads",
-    ".matlab",
-    "videos",
-    ".zoom",
-    "images",
-    "fixes",
     ".config",
     ".ghc",
     ".pki",
     ".minecraft",
-    "todo",
-    "files",
-    "backup",
-    "guides",
     "cloud",
-    "school",
-    "praxis",
 ]
 
 home_path = os.path.expanduser("~")
@@ -48,46 +35,3 @@ if unexpected:
         else:
             print(" ", f)
     print()
-
-# backups_path = os.path.join(os.path.expanduser("~"), "backup")
-# backups = os.listdir(backups_path)
-
-# today = date.today()
-
-# most_recent = float("inf")
-# old = []
-# semi_old = []
-# for b in backups:
-#     clean = re.sub("_.*$", "", b)  # strip _n suffix
-#     sp = map(int, clean.split("-"))  # split into [y,m,d]
-#     b_date = date(*sp)  # convert to date
-#     diff = (today - b_date).days  # get diff from today
-#     if diff < most_recent and diff != 0:
-#         most_recent = diff
-#     if diff >= 7:
-#         old.append(os.path.join(backups_path, b))
-#     elif diff >= 3:
-#         semi_old.append(os.path.join(backups_path, b))
-
-# if most_recent != float("inf"):
-#     print(f"Most recent backup (other than today) is {most_recent} day old")
-
-# if most_recent < 7 and old:
-#     print("Deleting backups over a week old...")
-#     for b in old:
-#         os.system(f"rm -rf {b}")
-#     print()
-
-# if semi_old:
-#     print(f"{len(semi_old)} backups >=3 days old")
-#     ans = ""
-#     while ans not in ["y", "n"]:
-#         ans = input("Delete old backups? (y/n): ").lower()
-#     delete = True if ans == "y" else False
-#     if delete:
-#         print("Deleting...")
-#         for b in semi_old:
-#             os.system(f"rm -rf {b}")
-
-# if not unexpected and not old and not semi_old:
-#     print("The house is clean")

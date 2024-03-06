@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # CACHE_FILE="$HOME/.cache/polybar-toggle-state"
 CACHE_FILE="/tmp/polybar-toggle-state"

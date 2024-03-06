@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 monitor=$(sudo ddcutil detect | grep DEL -B 2 | head -n 1 | awk '{print $3}' | tail -c 3)
 

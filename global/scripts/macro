@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function left() {
 	for ((i = 0; i < $1; i++)); do

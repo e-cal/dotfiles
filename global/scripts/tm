@@ -67,8 +67,7 @@ def run_cmd(cmd):
 
 
 # Get list of active sessions
-sessions = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'"
-                  ).splitlines()
+sessions = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'").splitlines()
 
 mounted = run_cmd("cloud mounted")
 if "storj" in mounted:
@@ -87,10 +86,8 @@ def fzf_menu(options, title="menu", binds=None, fzf_options=""):
     options = sorted(options, key=lambda x: (x != "main", x))
     options_str = "\n".join(options)
     try:
-        return run_cmd(
-            f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {binds_txt}'
-        ).strip()
-    except:
+        return run_cmd(f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {binds_txt}').strip()
+    except:  # noqa
         exit(1)
 
 
@@ -99,6 +96,7 @@ def session_exists(session):
 
 
 def start_session(session, work_dir=None, run=None):
+    if work_dir and not work_dir.exists(): exit(1)
     cmd = [f"tmux new -s {session} -d ", f'"{startcmd}"']
     if work_dir:
         cmd.insert(1, f"-c {work_dir}")
@@ -107,6 +105,7 @@ def start_session(session, work_dir=None, run=None):
 
 
 def attach(session, work_dir=None, run=None):
+    session = session.replace(".", "_")
     if not session_exists(session):
         start_session(session, work_dir, run)
     attach_cmd = "tmux switch" if in_tmux else "tmux attach"
@@ -116,17 +115,14 @@ def attach(session, work_dir=None, run=None):
 
 
 def startup(kind="main"):
-    wtitles = run_cmd("hyprctl clients | rg -s title | awk '{ print $2 }'"
-                     ).splitlines()
+    wtitles = run_cmd("hyprctl clients | rg -s title | awk '{ print $2 }'").splitlines()
 
     if kind == "scratch":
         if "scratch" not in wtitles:
             run_cmd("kitty --title scratch zsh -c 'tm attach scratch'")
     elif kind == "ask":
         if "scratch-ask" not in wtitles:
-            run_cmd(
-                'kitty --title scratch-ask zsh -c \'tm attach scratch-ask "" "scratch-ask;exit"\''
-            )
+            run_cmd('kitty --title scratch-ask zsh -c \'tm attach scratch-ask "" "scratch-ask;exit"\'')
     else:
         if session_exists("main"):
             sys.argv = []
@@ -199,30 +195,27 @@ def reset():
 
 def project(sel=None):
     if PROJECTDIR.rename:  # rename projects
-        projects = {
-            x.name: x
-            for x in PROJECTDIR.path.iterdir()
-            if x.is_dir() and x not in PROJECTDIR.rename
-        }
+        projects = {x.name: x for x in PROJECTDIR.path.iterdir() if x.is_dir() and x not in PROJECTDIR.rename}
         for path, name in PROJECTDIR.rename.items():
             projects[name] = path
     else:
         projects = {x.name: x for x in PROJECTDIR.path.iterdir() if x.is_dir()}
 
-    projects["NEW"] = "NEW"  # type: ignore
+    projects["NEW"] = None  # type: ignore
 
     if not sel:
         sel = fzf_menu(list(projects.keys()), title=PROJECTDIR.name)
-        if sel == "masters" and not (HOME / "storj").exists():
-            run_cmd("cloud mount storj")
     if not sel:
         return
 
-    if sel == "NEW":
-        name = input("project name: ")
+    if sel.upper() == "NEW":
+        name = input("project name / repo: ")
         if not name:
             return
 
+        if name in ["git", "gh", "repo", "github", "search", "clone"]:
+            repos = run_cmd("gh repo list --limit 1000 --json name -q '.[].name'")
+            name = "e-cal/" + fzf_menu(repos.split(), "repo")
         if name.startswith("http") or name.startswith("git"):
             url = name
             name = name.split("/")[-1].split(".")[0]
