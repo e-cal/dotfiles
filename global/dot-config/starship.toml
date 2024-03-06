@@ -1,5 +1,6 @@
 format = """
 $time\
+$nix_shell\
 $hg_branch\
 $docker_context\
 $package\
@@ -25,7 +26,6 @@ $rust\
 $swift\
 $terraform\
 $zig\
-$nix_shell\
 $conda\
 $memory_usage\
 $aws\
@@ -145,6 +145,10 @@ bash_indicator = "𝐁 "
 xonsh_indicator = "𝐗 "
 unknown_indicator = " "
 format = "$indicator"
+
+[nix_shell]
+format = '[$symbol$state( \($name\))]($style) '
+symbol = '  '
 
 [python]
 symbol = "󰌠 "
