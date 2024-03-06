@@ -27,6 +27,7 @@ alias "yeet"="paru -Rsn"
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
 alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk \"{print $2}\")' | xargs -ro  paru -S"
 
+# alias "python"="LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH python"
 alias "py"="python"
 alias "pydb"="python -m pdb -c continue"
 alias "ipy"="ipython"

@@ -1,7 +1,7 @@
 function zvm_after_init() {
     # Load FZF completions
-    source /usr/share/fzf/completion.zsh
-    source /usr/share/fzf/key-bindings.zsh
+    source "$(fzf-share)/key-bindings.zsh"
+    source "$(fzf-share)/completion.zsh"
 
 	bindkey "^l" vi-forward-word
 	bindkey "^w" vi-forward-blank-word
