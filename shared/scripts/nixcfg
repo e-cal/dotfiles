@@ -27,8 +27,7 @@ git diff -U0 *.nix
 echo "NixOS Rebuilding..."
 
 # Rebuild, output simplified errors, log trackebacks
-sudo cp configuration.nix /etc/nixos/
-sudo cp packages.nix /etc/nixos/
+sudo cp *.nix /etc/nixos/
 sudo nixos-rebuild switch &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
 
 # Get current generation metadata
