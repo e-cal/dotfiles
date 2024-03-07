@@ -1,5 +1,5 @@
-[submodule "global/dot-config/nvim"]
-	path = global/dot-config/nvim
+[submodule "global/.config/nvim"]
+	path = global/.config/nvim
 	url = git@github.com:e-cal/evim.git
 	branch = ecal
 [submodule "global/kbd/Adv360-Pro-ZMK"]

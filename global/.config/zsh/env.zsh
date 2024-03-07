@@ -3,8 +3,9 @@ export TERMINAL="kitty"
 
 # Useful vars
 [[ -z $HOSTNAME ]] && [[ -n $HOST ]] && export HOSTNAME=$HOST
-export DOTFILES=~/.dotfiles/$HOSTNAME
-export STOW_DIR=~/.dotfiles
+export DOTFILES="$HOME/.dotfiles"
+export HOST_DOTFILES="$HOME/.dotfiles/$HOSTNAME"
+export GLOBAL_DOTFILES="$HOME/.dotfiles/global"
 export EDITOR=nvim
 export PILOCAL="192.168.2.186"
 
