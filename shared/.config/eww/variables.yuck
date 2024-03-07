@@ -8,7 +8,7 @@
 (defvar osd-volume false)
 
 (defpoll time :interval "5s" `date +'{"date": "%b %d", "hour": "%H", "minute": "%M", "day": "%A"}'`)
-(defpoll hostname :interval "24h" :run-while false `hostname`)
+(defpoll laptop :interval "24h" `command -v acpi && echo "true" || echo "false"`)
 
 (deflisten cloud "scripts/cloud")
 (deflisten battery "scripts/battery")

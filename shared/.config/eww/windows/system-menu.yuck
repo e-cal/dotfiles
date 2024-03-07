@@ -100,6 +100,7 @@
           :onchange "volume set {}"))
       (box
         :class "brightness-slider-box"
+        :visible {laptop}
         :space-evenly false
         (button
           :class "brightness-slider-icon icon"
@@ -108,7 +109,7 @@
           :class "brightness-slider" 
           :value {brightness.percent} 
           :marks true 
-          :onchange "brillo -S {}")))
+          :onchange "brightness set {}")))
 
     (box ; cpu & memory info
       :class "system-info-box"

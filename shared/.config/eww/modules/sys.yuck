@@ -23,7 +23,7 @@
 
     (circular-progress
       :value {battery.percentage}
-      :visible {hostname == "prometheus"}
+      :visible {laptop}
       :class "batbar"
       :style "color: ${battery.color};"
       :thickness 3
