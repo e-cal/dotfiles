@@ -1,53 +1,16 @@
 #!/usr/bin/env bash
 
-monitor=$(sudo ddcutil detect | grep DEL -B 2 | head -n 1 | awk '{print $3}' | tail -c 3)
-
-function notification() {
-	if [[ $HOSTNAME == "coeus" ]]; then
-		brightness=$(sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g')
-		polybar-msg -p "$(pgrep -f "polybar top")" hook brightness 1 &>/dev/null
-	elif [[ $HOSTNAME == "prometheus" ]]; then
-		brightness=$(xbacklight -get | cut -d '.' -f 1)
-		polybar-msg -p "$(pgrep -f "polybar sys")" hook brightness 1 &>/dev/null
-	fi
-
-	bar=$(seq -s "─" 0 $((brightness / 3)) | sed 's/[0-9]//g')
-	dunstify "Brightness" -h int:value:"$brightness" --icon ~/.config/dunst/images/brightness.png -r 1235
-}
-
 case $1 in
 up)
-	if [[ $HOSTNAME == "coeus" ]]; then
-		sudo ddcutil --bus $monitor setvcp 10 + 10
-	elif [[ $HOSTNAME == "prometheus" ]]; then
-		# xbacklight -inc 2
-		pkexec brillo -A 2
-	fi
-	# notification
+    sudo brillo -A 2
 	;;
 down)
-	if [[ $HOSTNAME == "coeus" ]]; then
-		sudo ddcutil --bus $monitor setvcp 10 - 10
-	elif [[ $HOSTNAME == "prometheus" ]]; then
-		# xbacklight -dec 2
-		pkexec brillo -U 2
-	fi
-	# notification
+    sudo brillo -U 2
 	;;
 set)
-	if [[ $HOSTNAME == "coeus" ]]; then
-		sudo ddcutil --bus $monitor setvcp 10 $2
-	elif [[ $HOSTNAME == "prometheus" ]]; then
-		# xbacklight -set $2
-		pkexec brillo -S $2
-	fi
+    sudo brillo -S $2
 	;;
 *)
-	if [[ $HOSTNAME == "coeus" ]]; then
-		sudo ddcutil getvcp 10 | awk '{ print $9 }' | sed 's/,//g'
-	elif [[ $HOSTNAME == "prometheus" ]]; then
-		# xbacklight -get | cut -d '.' -f 1
-		pkexec brillo
-	fi
+    sudo brillo
 	;;
 esac
