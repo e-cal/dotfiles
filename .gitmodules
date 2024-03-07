@@ -1,7 +1,6 @@
 [submodule "shared/.config/nvim"]
 	path = shared/.config/nvim
-	url = git@github.com:e-cal/evim.git
-	branch = ecal
+	url = git@github.com:e-cal/evim
 [submodule "shared/kbd/Adv360-Pro-ZMK"]
 	path = shared/kbd/Adv360-Pro-ZMK
-	url = git@github.com:e-cal/Adv360-Pro-ZMK.git
+	url = git@github.com:e-cal/Adv360-Pro-ZMK
