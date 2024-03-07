@@ -104,6 +104,10 @@ in
     ];
   };
 
+  services.udev.packages = with pkgs; [
+    vial
+  ];
+
   # install dynamic libraries for unpackaged programs
   # https://nix.dev/guides/faq.html
   programs.nix-ld.enable = true;
