@@ -1,15 +1,16 @@
 #!/usr/bin/env zsh
 
 dirs=(
-    dotfiles $STOW_DIR
-    config $STOW_DIR/global/dot-config
-    .config $XDG_CONFIG_HOME
-    scripts $STOW_DIR/global/scripts
+    dotfiles $DOTFILES
+    host $HOST_DOTFILES
+    "local" $XDG_CONFIG_HOME
+    global $GLOBAL_DOTFILES
+    scripts $HOST_DOTFILES/scripts
     projects ~/projects
 )
 
-# Add directories from $STOW_DIR/global/dot-config to the list
-for dir in "$STOW_DIR/global/dot-config"/*; do
+# Add directories from $ to the list
+for dir in "$HOST_DOTFILES/.config"/*; do
     if [ -d "$dir" ]; then
         dir_name=$(basename "$dir")
         if [[ "$dir_name" == *" "* ]]; then

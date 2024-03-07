@@ -1,3 +1,0 @@
-#!/bin/bash
-
-rofi -show drun -config $HOME/.config/polybar/themes/search.rasi

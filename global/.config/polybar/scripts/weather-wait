@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-while ! ping -q -c1 8.8.8.8; do
-	sleep 1m
-done
-polybar-msg -p "$(pgrep -f "polybar clock")" hook weather 1 &>/dev/null

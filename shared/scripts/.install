@@ -1,0 +1,170 @@
+#!/usr/bin/env bash
+
+DOTFILES="$HOME/.dotfiles"
+HOST_DOTFILES="$HOME/.dotfiles/$HOSTNAME"
+SHARED_DOTFILES="$HOME/.dotfiles/shared"
+
+# [[ ! -d $HOST_DOTFILES ]] && echo "dotfile dir for $HOSTNAME does not exist ($HOST_DOTFILES)"
+
+# [[ ! -d $HOST_DOTFILES ]] && mkdir $HOST_DOTFILES
+
+confirm() {
+	if [[ $# > 0 ]]; then
+		message="$@ (y/n) "
+	else
+		message="Continue? (y/n) "
+	fi
+
+	printf "$message"
+	old_stty_cfg=$(stty -g)
+	stty raw -echo
+	answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+	stty $old_stty_cfg
+
+	if [ "$answer" != "${answer#[Yy]}" ]; then
+		echo Yes
+		return 0
+	else
+		echo No
+		return 1
+	fi
+}
+
+if confirm "Install submodules?"; then
+    pushd $DOTFILES
+	git submodule update --init --recursive
+    popd
+fi
+
+if confirm "Prepare local .config?"; then
+    # Make dirs that shouldn't be pure symlinks
+    [[ -d $HOME/.config ]] || mkdir $HOME/.config
+    [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
+    [[ -d $HOME/.config/jupyter ]] || mkdir $HOME/.config/jupyter
+    [[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
+
+    # Make sure there's a wgetrc
+    [[ -f $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
+
+    # Remove common conflicts
+    [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
+    [[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
+    [[ ! -L $HOME/.config/hypr/hyprland.conf ]] && [[ -f $HOME/.config/hypr/hyprland.conf ]] && rm $HOME/.config/hypr/hyprland.conf
+    [[ ! -L $HOME/.config/lazygit/config.yml ]] && [[ -f $HOME/.config/lazygit/config.yml ]] && rm $HOME/.config/lazygit/config.yml
+fi
+
+if hostnamectl | grep -q "NixOS" && confirm "Setup NixOS?"; then
+    [[ ! `command -v stow` ]] && echo "first install stow" && exit 1
+
+    read -p "hostname: " hostname
+    HOST_DOTFILES="$HOME/.dotfiles/$hostname"
+    echo $HOST_DOTFILES
+
+    if [[ ! -d $HOST_DOTFILES ]]; then # generate dotfiles for host
+        echo "Generating dotfiles for $hostname"
+        mkdir -p $HOST_DOTFILES/.config/nixos
+        cp $DOTFILES/shared/.config/nixos/host-template.nix $HOST_DOTFILES/.config/nixos/host.nix
+        stow -R --dir=$SHARED_DOTFILES .config --target=$HOST_DOTFILES/.config --ignore=host-template.nix
+        stow -R --dir=$DOTFILES shared --target=$HOST_DOTFILES --ignore=.config
+    fi
+    echo "Linking dotfiles to local system"
+    stow -R --dir=$DOTFILES $HOSTNAME --target=$HOME
+    echo "Copying nix config to /etc/nixos"
+    sudo cp ~/.config/nixos/*.nix /etc/nixos
+    sudo nixos-rebuild switch
+
+elif [[ `hostnamectl | grep -q "Arch Linux"` ]] && confirm "Install dependencies?"; then
+	if confirm "Install paru?"; then
+		git clone https://aur.archlinux.org/paru.git
+		cd paru
+		makepkg -si
+		cd ..
+		rm -rf paru
+	fi
+
+	if confirm "Install terminal programs?"; then
+		sudo pacman -S --noconfirm stow \
+			zsh \
+			tmux \
+			lua \
+			go \
+			npm \
+			zip \
+			unzip \
+			neovim \
+			python \
+			lolcat \
+			starship \
+			exa \
+			fzf \
+			ripgrep \
+			jq \
+			jc \
+			socat \
+			pamixer \
+			pulseaudio-alsa \
+			alsa-utils \
+			inetutils \
+			bat \
+			lazygit \
+			rclone \
+			fuse3 \
+			ntp \
+			wl-clipboard \
+			bat \
+			imagemagick \
+			github-cli \
+			wget
+
+		echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
+		chsh -s /usr/bin/zsh
+	fi
+
+	if confirm "Sync clock?"; then
+		sudo systemctl enable ntpd.service
+		sudo systemctl start ntpd.service
+		sudo timedatectl set-ntp true
+	fi
+
+	if confirm "Install graphics programs?"; then
+		paru -S --noconfirm ttf-jetbrains-mono-nerd \
+			ttf-fantasque-nerd \
+			ttf-material-icons-git \
+			noto-fonts-emoji \
+			hyprland \
+			hyprpaper \
+			kitty \
+			firefox \
+			thunderbird \
+			eww-wayland \
+			pavucontrol \
+			slack \
+			anki \
+			obsidian \
+			blueberry \
+			dunst \
+			sweet-cursor-theme-git \
+			pipewire wireplumber \
+			qt5-wayland \
+			qt6-wayland \
+			nemo \
+			zathura \
+			zathura-pdf-mupdf \
+			polkit-kde-agent \
+			xdg-desktop-portal-hyprland \
+			playerctl \
+            rofi \
+            drun \
+            grim \
+            slurp \
+            flameshot-git
+	fi
+
+    if confirm "Generate dotfiles for $HOSTNAME?"; then
+     stow --dir=$DOTFILES --target=$HOST_DOTFILES shared --dotfiles -R
+    fi
+
+    if confirm "Link dotfiles to local .config?"; then
+     stow $HOSTNAME -R
+    fi
+fi

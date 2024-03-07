@@ -1,7 +1,7 @@
-[submodule "global/.config/nvim"]
-	path = global/.config/nvim
+[submodule "shared/.config/nvim"]
+	path = shared/.config/nvim
 	url = git@github.com:e-cal/evim.git
 	branch = ecal
-[submodule "global/kbd/Adv360-Pro-ZMK"]
-	path = global/kbd/Adv360-Pro-ZMK
+[submodule "shared/kbd/Adv360-Pro-ZMK"]
+	path = shared/kbd/Adv360-Pro-ZMK
 	url = git@github.com:e-cal/Adv360-Pro-ZMK.git
