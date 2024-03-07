@@ -4,13 +4,16 @@
 set -e
 
 # cd to your config dir
-pushd ~/.dotfiles/global/dot-config/nixos &>/dev/null
+pushd $HOST_DOTFILES/.config/nixos &>/dev/null
 
 # Edit your config
 FILE=configuration.nix
 case $1 in
     packages)
         FILE=packages.nix
+        ;;
+    host)
+        FILE=host.nix
         ;;
 esac
 nvim $FILE
