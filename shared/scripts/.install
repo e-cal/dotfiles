@@ -60,10 +60,12 @@ if hostnamectl | grep -q "NixOS" && confirm "Setup NixOS?"; then
     HOST_DOTFILES="$HOME/.dotfiles/$hostname"
     echo $HOST_DOTFILES
 
-    if [[ ! -d $HOST_DOTFILES ]]; then # generate dotfiles for host
+    if [[ ! -d $HOST_DOTFILES ]] || confirm "Re-generate dotfiles for $hostname?"; then # generate dotfiles for host
         echo "Generating dotfiles for $hostname"
         mkdir -p $HOST_DOTFILES/.config/nixos
-        cp $DOTFILES/shared/.config/nixos/host-template.nix $HOST_DOTFILES/.config/nixos/host.nix
+        if [[ ! -f $HOST_DOTFILES/.config/nixos/host.nix ]] || confirm "Replace host.nix with blank template?"; then
+            cp $DOTFILES/shared/.config/nixos/host-template.nix $HOST_DOTFILES/.config/nixos/host.nix
+        fi
         stow -R --dir=$SHARED_DOTFILES .config --target=$HOST_DOTFILES/.config --ignore=host-template.nix
         stow -R --dir=$DOTFILES shared --target=$HOST_DOTFILES --ignore=.config
     fi
