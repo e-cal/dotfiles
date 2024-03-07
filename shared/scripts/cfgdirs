@@ -1,17 +1,18 @@
 #!/usr/bin/env zsh
 
+# list of top level config dirs
 dirs=(
-    dotfiles $DOTFILES
+    shared $SHARED_DOTFILES
     host $HOST_DOTFILES
     "local" $XDG_CONFIG_HOME
-    global $GLOBAL_DOTFILES
+    dotfiles $DOTFILES
     scripts $HOST_DOTFILES/scripts
     projects ~/projects
 )
 
-# Add directories from $ to the list
+# Add tracked host config dirs
 for dir in "$HOST_DOTFILES/.config"/*; do
-    if [ -d "$dir" ]; then
+    if [[ -d "$dir" ]]; then
         dir_name=$(basename "$dir")
         if [[ "$dir_name" == *" "* ]]; then
             continue
@@ -24,7 +25,7 @@ for dir in "$HOST_DOTFILES/.config"/*; do
     fi
 done
 
-# Add missing directories from $XDG_CONFIG_HOME to the list
+# Add any untracked local config dirs
 for dir in "$XDG_CONFIG_HOME"/*; do
     if [ -d "$dir" ]; then
         dir_name=$(basename "$dir")
@@ -39,6 +40,11 @@ for dir in "$XDG_CONFIG_HOME"/*; do
     fi
 done
 
+# print everything in dirs (key and value)
+# for (( i=1; i<=$#dirs; i+=2 )); do
+#     echo "${dirs[$i]}: ${dirs[$i+1]}"
+# done
+
 # get args
 tmux=false
 file=false
@@ -51,21 +57,21 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-
 fzfcmd="fzf --with-nth 1"
-
 if [[ $tmux == false ]]; then
     fzfcmd="$fzfcmd --height=20% --border --layout=reverse"
 fi
 
+# select top level dir
 sel=`printf "%s %s\n" $dirs | eval "$fzfcmd"`
 name=`echo "$sel" | awk '{print $1}'`
 dir=`echo "$sel" | awk '{print $2}'`
 
+# select file
 if [[ $file == true ]] ; then
     [[ -z $dir ]] && exit
 
-    files=`find "$dir" -type f -printf "%f %p\n"`
+    files=`find -L "$dir" -type f -printf "%f %p\n"`
     sel=`printf "%s\n" $files | eval "$fzfcmd"`
     file=`echo "$sel" | awk '{print $2}'`
 
