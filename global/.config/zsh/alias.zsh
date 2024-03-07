@@ -1,32 +1,30 @@
-# Auto flags
+# Auto add flags
 alias "rg"="rg -S"
 alias "tmux"="tmux -2"
 alias "docker"="sudo docker"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "bat"="bat -n"
 
-alias "md"="mkdir -p"
-alias "mvdl"="mv ~/Downloads/mv/* ./"
-alias "cddl"="cd ~/Downloads"
+# shortcuts
 alias "v"="nvim"
 alias "vr"="nvim -c 'RestoreSession'"
 alias "vl"="nvim -c 'OpenLast'"
-
-alias "clear"="clear;divider"
-alias "celar"="clear"
-alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
-alias "psrg"="ps -ef | rg"
-
-alias "sshpi"='[[ $HOST = "coeus" ]] && ssh pi@$PILOCAL || ssh pi@$(dig +short ecal.dev)'
+alias "md"="mkdir -p"
+alias "mvdl"="mv ~/Downloads/mv/* ./"
+alias "cddl"="cd ~/Downloads"
 alias "pdfeditor"="masterpdfeditor4"
-alias "code"="code-insiders"
-alias "untar"="tar -xvf"
+alias "hist"="history | awk '{ \$1=\"\"; print }'| fzf"
 alias "dock"="bt discon adv; bt con adv; bt discon mouse; bt con mouse"
+alias "psrg"="ps -ef | rg"
+alias "untar"="tar -xvf"
+alias "unstow"="stow -D --dir=$DOTFILES $HOSTNAME --target=$HOME"
 
+# arch
 alias "yeet"="paru -Rsn"
 alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
 alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk \"{print $2}\")' | xargs -ro  paru -S"
 
+# python
 # alias "python"="LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH python"
 alias "py"="python"
 alias "pydb"="python -m pdb -c continue"
@@ -38,6 +36,13 @@ alias "venv"="python -m venv"
 alias "pynb"="jupytext --to ipynb"
 alias "nbpy"="jupytext --to py"
 
+# repurpose
+alias "clear"="clear;divider"
+alias "celar"="clear"
+alias "less"="bat --style=plain"
+alias "code"="code-insiders"
+
+# ls
 alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directories-first --icons'
 alias "la"="ls -a"
 alias "lr"="ls -R"
@@ -46,9 +51,9 @@ alias "lla"="exa -la --group-directories-first --git -h --color=always"
 alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=always -I .git | bat --style=plain"
 alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always | bat --style=plain"
 alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always -I .git"
-alias ".ls"="/usr/bin/ls"
-alias "less"="bat --style=plain"
+alias ".ls"="/usr/bin/env ls"
 
+# git
 alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
 alias "gs"="git status"
 alias "gwa"="git worktree add"
