@@ -8,7 +8,10 @@ in
   networking.hostName = "nixtogo";
 
   # Global
-  # environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [
+    brillo
+    acpi
+  ];
 
   # fonts.packages = with pkgs; [ ];
 
