@@ -5,6 +5,7 @@ import re
 from datetime import date, datetime
 
 expected = [
+    ".zshrc",
     ".ssh",
     "kbd",
     "projects",
