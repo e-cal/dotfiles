@@ -5,7 +5,7 @@ export TERMINAL="kitty"
 [[ -z $HOSTNAME ]] && [[ -n $HOST ]] && export HOSTNAME=$HOST
 export DOTFILES="$HOME/.dotfiles"
 export HOST_DOTFILES="$HOME/.dotfiles/$HOSTNAME"
-export GLOBAL_DOTFILES="$HOME/.dotfiles/global"
+export SHARED_DOTFILES="$HOME/.dotfiles/shared"
 export EDITOR=nvim
 export PILOCAL="192.168.2.186"
 
