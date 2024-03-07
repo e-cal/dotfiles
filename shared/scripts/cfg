@@ -8,6 +8,7 @@ dirs=(
     dotfiles $DOTFILES
     scripts $HOST_DOTFILES/scripts
     projects ~/projects
+    adv ~/kbd/Adv360-Pro-ZMK
 )
 
 # Add tracked host config dirs

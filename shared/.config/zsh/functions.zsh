@@ -42,14 +42,14 @@ cdh() {
 }
 
 cdc() {
-    dir=`cfgdirs cd`
+    dir=`cfg cd`
     if [[ ! -z $dir ]]; then
         cda $dir
     fi
 }
 
 vc() {
-    file=`cfgdirs file`
+    file=`cfg file`
     if [[ ! -z $file ]]; then
         cd `dirname $file`
         nvim $file
