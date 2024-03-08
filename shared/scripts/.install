@@ -53,7 +53,8 @@ fi
 if hostnamectl | grep -q "NixOS" && confirm "Setup NixOS?"; then
     [[ ! `command -v stow` ]] && echo "first install stow" && exit 1
 
-    read -p "hostname: " hostname
+    read -p "hostname (leave empty to use current $HOSTNAME): " hostname
+    hostname="${hostname:-$HOSTNAME}"
     HOST_DOTFILES="$HOME/.dotfiles/$hostname"
     echo $HOST_DOTFILES
 
