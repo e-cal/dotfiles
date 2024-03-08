@@ -38,6 +38,7 @@ if confirm "Prepare local .config?"; then
     [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
     [[ -d $HOME/.config/jupyter ]] || mkdir $HOME/.config/jupyter
     [[ -d $HOME/.config/lazygit ]] || mkdir $HOME/.config/lazygit
+    [[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
     [[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
 
     # Make sure there's a wgetrc

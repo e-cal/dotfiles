@@ -1,76 +1,80 @@
 { config, lib, pkgs, inputs, ... }:
 let
-  unstable = import
-    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
-    { config = config.nixpkgs.config; };
-in
-{
+  unstable = import (builtins.fetchTarball
+    "https://github.com/nixos/nixpkgs/tarball/nixos-unstable") {
+      config = config.nixpkgs.config;
+    };
+in {
   imports = [ inputs.home-manager.nixosModules.default ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
-  ];
+  nixpkgs.config.permittedInsecurePackages = [ "electron-25.9.0" ];
 
   # Global
   environment.systemPackages = with pkgs; [
-      # core
-      unstable.neovim
-      git
-      wget
-      tmux
-      zsh
-      stow
+    # core
+    unstable.neovim
+    git
+    wget
+    tmux
+    zsh
+    stow
 
-      # languages
-      python3
-      python311Packages.pip
-      python311Packages.yapf
+    # languages
+    python3
+    python311Packages.pip
 
-      gcc
-      gnumake
-      cmake
-      lua
-      go
-      nodejs_21
+    gcc
+    gnumake
+    cmake
+    lua
+    go
+    nodejs_21
 
-      # services
-      socat
-      dbus
-      ntp
-      alsa-utils
-      pulseaudio
-      pamixer
-      pavucontrol
-      playerctl
-      libnotify
-      dunst
-      wl-clipboard
-      pipewire
-      wireplumber
-      grim
-      slurp
-      swappy
+    # formatters
+    yapf
+    shfmt
+    # alejandra
+    nixfmt
+    nodePackages.prettier
 
-      # tools
-      nix-index
-      eza
-      bat
-      fzf
-      ripgrep
-      jq
-      jc
-      zip
-      unzip
-      lazygit
-      rclone
-      github-cli
-      podman
-      
-      # aesthetics
-      starship
-      hyprpaper
-      lolcat
+    # services
+    socat
+    dbus
+    ntp
+    alsa-utils
+    pulseaudio
+    pamixer
+    pavucontrol
+    playerctl
+    libnotify
+    dunst
+    wl-clipboard
+    pipewire
+    wireplumber
+    grim
+    slurp
+    swappy
+
+    # tools
+    nix-index
+    eza
+    bat
+    fzf
+    ripgrep
+    jq
+    jc
+    zip
+    unzip
+    lazygit
+    rclone
+    github-cli
+    podman
+
+    # aesthetics
+    starship
+    hyprpaper
+    lolcat
   ];
 
   fonts.packages = with pkgs; [
@@ -108,14 +112,12 @@ in
     users = { "ecal" = import ./home.nix; };
   };
 
-  services.udev.packages = with pkgs; [
-    vial
-  ];
+  services.udev.packages = with pkgs; [ vial ];
 
   # install dynamic libraries for unpackaged programs
   # https://nix.dev/guides/faq.html
   programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = with pkgs; [ 
+  programs.nix-ld.libraries = with pkgs; [
     alsa-lib
     at-spi2-atk
     at-spi2-core
@@ -156,7 +158,7 @@ in
     zlib
   ];
 
- environment.sessionVariables = {
+  environment.sessionVariables = {
     LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib";
   };
 }

@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 let
-  unstable = import
-    (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
-    { config = config.nixpkgs.config; };
-in
-{
+  unstable = import (builtins.fetchTarball
+    "https://github.com/nixos/nixpkgs/tarball/nixos-unstable") {
+      config = config.nixpkgs.config;
+    };
+in {
   networking.hostName = "nixos";
 
   # Global
@@ -23,7 +23,7 @@ in
   # https://nix.dev/guides/faq.html
   # programs.nix-ld.libraries = with pkgs; [ ];
 
- # environment.sessionVariables = {
- #    LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib";
- #  };
+  # environment.sessionVariables = {
+  #    LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib";
+  #  };
 }

@@ -1,11 +1,5 @@
-{ config, lib, pkgs, ... }:
-{
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./packages.nix
-      ./host.nix
-    ];
+{ config, lib, pkgs, ... }: {
+  imports = [ ./hardware-configuration.nix ./packages.nix ./host.nix ];
 
   # Use GRUB as the bootloader
   boot.loader.grub.enable = true;
@@ -26,28 +20,25 @@
   };
 
   programs.hyprland = {
-      enable = true;
-      enableNvidiaPatches = true;
-      xwayland.enable = true;
+    enable = true;
+    enableNvidiaPatches = true;
+    xwayland.enable = true;
   };
   hardware.opengl.enable = true;
   hardware.nvidia.modesetting.enable = true;
   xdg.portal = {
-      enable = true;
-      wlr.enable = true;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
   qt.enable = true;
-  
 
   sound.enable = true;
   # hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   hardware.bluetooth.settings = {
-    General = {
-      Enable = "Source,Sink,Media,Socket";
-    };
+    General = { Enable = "Source,Sink,Media,Socket"; };
   };
 
   services.xserver.libinput.enable = true;
@@ -77,14 +68,13 @@
     pulse.enable = true;
     jack.enable = true;
   };
-  
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   programs.zsh = {
     enable = true;
     autosuggestions.enable = true;
   };
   users.defaultUserShell = pkgs.zsh;
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
