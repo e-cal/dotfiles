@@ -7,15 +7,13 @@ set -e
 pushd ~/.config/nixos &>/dev/null
 
 # Edit your config
-FILE=configuration.nix
-case $1 in
-    packages)
-        FILE=packages.nix
-        ;;
-    host)
-        FILE=host.nix
-        ;;
-esac
+if [[ -z $1 ]]; then
+    FILE=$(find . -type f,l | sed 's|^\./||' | fzf)
+else
+    FILE=$1
+fi
+[[ -z $FILE ]] && exit 1
+[[ $FILE != *.nix ]] && FILE="$FILE.nix"
 nvim $FILE
 
 # Autoformat your nix files

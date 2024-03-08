@@ -1,10 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 let
   unstable = import
     (builtins.fetchTarball https://github.com/nixos/nixpkgs/tarball/nixos-unstable)
     { config = config.nixpkgs.config; };
 in
 {
+  imports = [ inputs.home-manager.nixosModules.default ];
+
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0"
@@ -98,10 +100,12 @@ in
       anki
       obsidian
       vial
-
-      nwg-look
-      sweet
     ];
+  };
+
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = { "ecal" = import ./home.nix; };
   };
 
   services.udev.packages = with pkgs; [
@@ -152,7 +156,7 @@ in
     zlib
   ];
 
- # environment.sessionVariables = {
- #    LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib";
- #  };
+ environment.sessionVariables = {
+    LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib";
+  };
 }
