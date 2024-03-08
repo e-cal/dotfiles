@@ -5,7 +5,7 @@ let
     { config = config.nixpkgs.config; };
 in
 {
-  networking.hostName = "nixtogo";
+  networking.hostName = "nixos";
 
   # Global
   # environment.systemPackages = with pkgs; [ ];
