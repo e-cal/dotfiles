@@ -4,7 +4,7 @@
 set -e
 
 # cd to your config dir
-pushd $HOST_DOTFILES/.config/nixos &>/dev/null
+pushd ~/.config/nixos &>/dev/null
 
 # Edit your config
 FILE=configuration.nix
@@ -28,7 +28,8 @@ echo "NixOS Rebuilding..."
 
 # Rebuild, output simplified errors, log trackebacks
 sudo cp *.nix /etc/nixos/
-sudo nixos-rebuild switch &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
+sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
+
 
 # Get current generation metadata
 # current=$(nixos-rebuild list-generations | grep current)
