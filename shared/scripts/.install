@@ -70,7 +70,7 @@ if hostnamectl | grep -q "NixOS" && confirm "Setup NixOS?"; then
         stow -R --dir=$DOTFILES shared --target=$HOST_DOTFILES --ignore=.config
     fi
     echo "Linking dotfiles to local system"
-    stow -R --dir=$DOTFILES $HOSTNAME --target=$HOME
+    stow -R --dir=$DOTFILES $HOSTNAME --target=$HOME || exit 1
     echo "Copying nix config to /etc/nixos"
     sudo cp ~/.config/nixos/*.nix /etc/nixos
     sudo nixos-rebuild switch
