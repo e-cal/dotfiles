@@ -13,6 +13,7 @@ else
     FILE=$1
 fi
 [[ -z $FILE ]] && exit 1
+[[ $FILE == "config" ]] && FILE="configuration.nix"
 [[ $FILE != *.nix ]] && FILE="$FILE.nix"
 nvim $FILE
 
@@ -20,7 +21,9 @@ nvim $FILE
 # alejandra . &>/dev/null
 
 # Shows your changes
+pushd $HOST_DOTFILES/.config/nixos
 git diff -U0 *.nix
+popd
 
 echo "NixOS Rebuilding..."
 
