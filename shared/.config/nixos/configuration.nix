@@ -34,7 +34,6 @@
   qt.enable = true;
 
   sound.enable = true;
-  # hardware.pulseaudio.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   hardware.bluetooth.settings = {
@@ -46,18 +45,6 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
   services.openssh.enable = true;
-
-  # Custom systemd services
-  # https://nixos.wiki/wiki/Extend_NixOS
-  # systemd.services.irc = {
-  #     serviceConfig = {
-  #       Type = "simple";
-  #       User = "ecal";
-  #       ExecStart = ""; # on start command
-  #       ExecStop = ""; # on stop command
-  #     };
-  #     wantedBy = ["multi-user.target"];
-  # }
 
   security.sudo.wheelNeedsPassword = false;
   security.rtkit.enable = true;
@@ -73,6 +60,7 @@
   programs.zsh = {
     enable = true;
     autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
   };
   users.defaultUserShell = pkgs.zsh;
 
@@ -83,6 +71,18 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  # Custom systemd services
+  # https://nixos.wiki/wiki/Extend_NixOS
+  # systemd.services.irc = {
+  #     serviceConfig = {
+  #       Type = "simple";
+  #       User = "ecal";
+  #       ExecStart = ""; # on start command
+  #       ExecStop = ""; # on stop command
+  #     };
+  #     wantedBy = ["multi-user.target"];
+  # }
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

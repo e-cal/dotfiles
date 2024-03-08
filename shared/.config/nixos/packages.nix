@@ -157,8 +157,4 @@ in {
     vulkan-loader
     zlib
   ];
-
-  environment.sessionVariables = {
-    LD_LIBRARY_PATH = lib.mkForce "${pkgs.stdenv.cc.cc.lib}/lib";
-  };
 }
