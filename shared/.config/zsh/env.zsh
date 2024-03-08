@@ -30,6 +30,10 @@ if [[ $HOSTNAME == "gaius" ]] then
 fi
 
 # zsh
+[[ -d "$XDG_CACHE_HOME"/zsh ]] || mkdir -p "$XDG_CACHE_HOME"/zsh
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
+
 export PROMPT_EOL_MARK=""
 export PS2="  "
 export ZVM_CURSOR_STYLE_ENABLED=false
@@ -43,9 +47,6 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt appendhistory
 setopt hist_verify
 
-if [[ ! -d "$XDG_CACHE_HOME"/zsh ]]; then
-    mkdir "$XDG_CACHE_HOME"/zsh
-fi
 
 # fzf
 export FZF_DEFAULT_COMMAND='rg -l ""'
