@@ -1,0 +1,180 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+// https://zmk.dev/docs/codes
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/backlight.h>
+
+/ {
+    behaviors {
+      #include "macros.dtsi"
+      #include "version.dtsi"
+      #ifndef VERSION_MACRO
+      macro_ver: macro_ver {
+        compatible = "zmk,behavior-macro";
+        label = "macro_version";
+        #binding-cells = <0>;
+        bindings = <&kp RET>;
+      };
+      #endif
+
+    hm: homerow_mods {
+        compatible = "zmk,behavior-hold-tap";
+        label = "HOMEROW_MODS";
+        #binding-cells = <2>;
+        tapping-term-ms = <200>;
+        quick_tap_ms = <175>;
+        flavor = "tap-preferred";
+        bindings = <&kp>, <&kp>;
+    };
+
+    slash_excl: slash_excl {
+        compatible = "zmk,behavior-tap-dance";
+        label = "SLASH_EXCL";
+        #binding-cells = <0>;
+        tapping-term-ms = <200>;
+        bindings = <&kp FSLH>, <&kp EQUAL>;
+
+    };
+
+    sticky_shift: sticky_shift {
+        compatible = "zmk,behavior-tap-dance";
+        label = "STICKY_SHIFT";
+        #binding-cells = <0>;
+        tapping-term-ms = <200>;
+        bindings = <&kp LSHIFT>, <&caps_word>;
+
+    };
+
+    back_del: back_del {
+        compatible = "zmk,behavior-mod-morph";
+        label = "BACK_DEL";
+        #binding-cells = <0>;
+        bindings = <&kp BACKSPACE>, <&kp DELETE>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+
+    n1: plus_1 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "plus_1";
+        bindings = <&kp LS(EQUAL)>, <&kp N1>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n2: lbkt_2 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "lbkt_2";
+        bindings = <&kp LBKT>, <&kp N2>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n3: lbrc_3 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "lbrc_3";
+        bindings = <&kp LS(LBKT)>, <&kp N3>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n4: lpar_4 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "lpar_4";
+        bindings = <&kp LS(N9)>, <&kp N4>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n5: hash_5 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "hash_5";
+        bindings = <&kp LS(N3)>, <&kp N5>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n6: equal_6 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "equal_6";
+        bindings = <&kp EQUAL>, <&kp N6>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n7: rpar_7 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "rpar_7";
+        bindings = <&kp LS(N0)>, <&kp N7>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n8: rbrc_8 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "rbrc_8";
+        bindings = <&kp LS(RBKT)>, <&kp N8>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n9: rbkt_9 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "rbkt_9";
+        bindings = <&kp RBKT>, <&kp N9>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+    n0: astk_0 {
+        compatible = "zmk,behavior-mod-morph";
+        #binding-cells = <0>;
+        label = "astk_0";
+        bindings = <&kp LS(N8)>, <&kp N0>;
+        mods = <(MOD_LSFT|MOD_RSFT)>;
+    };
+  };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+
+        layer_0 {
+bindings = <
+&kp GRAVE     &n1           &n2           &n3            &n4              &n5         &tog 1                                                              &mo 3         &n6        &n7              &n8           &n9            &n0          &kp DELETE
+&kp TAB       &kp Q         &kp W         &kp E          &kp R            &kp T       &kp K_COPY                                                          &kp C_VOL_UP  &kp Y      &kp U            &kp I         &kp O          &kp P        &kp BSLH
+&lt 2 ESC     &kp A         &kp S         &hm LSHIFT D   &kp F            &kp G       &kp K_PASTE     &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS    &kp C_VOL_DN  &kp H      &kp J            &hm RSHIFT K  &kp L          &kp SEMI     &kp SQT
+&sticky_shift &kp Z         &kp X         &kp C          &kp V            &kp B                                   &none            &none                                &kp N      &kp M            &kp COMMA     &kp DOT        &kp FSLH     &kp RSHFT
+&kp LCTRL     &kp LS(GRAVE) &kp LS(N2)    &kp LS(N5)     &kp LS(N7)                   &kp BACKSPACE   &kp LMETA   &mo 1            &mo 1      &kp ENTER   &kp SPACE                &kp MINUS        &kp LS(N6)    &kp LS(N4)     &kp LS(N1)   &kp RCTRL
+>;                                                                                                                                                                                                                     
+        };                                                                                                                                                                                                             
+                                                                                                                                                                                                                       
+        layer_1 {                                                                                                                                                                                                 
+bindings = <                                                                                                                                                                                               
+&kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
+&none       &none          &none         &none          &none          &none           &none                                                               &none         &none          &none        &none         &none         &none        &none 
+&tog 1      &n1            &n2           &n3            &n4            &n5             &none           &none       &none            &tog 1     &none       &none         &n6            &n7          &n8           &n9           &n0          &none 
+&none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
+&none       &none          &none         &none          &none                          &none           &none       &none            &none      &none       &none                        &none        &none         &none         &none        &none 
+>;
+        };
+
+        layer_2 {
+bindings = <                                                                                                                                                                                               
+&none       &none          &none         &none          &none          &none           &none                                                               &none         &none          &none        &none         &none         &none        &none 
+&none       &none          &none         &none          &none          &none           &none                                                               &none         &kp LS(LEFT)   &kp LS(LEFT) &none         &kp LS(RIGHT) &none        &none     
+&none       &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LEFT       &kp DOWN     &kp UP        &kp RIGHT     &none        &none  
+&none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
+&none       &none          &none         &none          &none                          &kp DELETE      &none       &none            &none      &none       &none                        &none        &none         &none         &none        &none 
+>;
+        };
+
+        layer_3_bootloader {
+bindings = <
+&none  &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4                  &none                                                                          &trans   &none       &none       &none   &none   &none   &none
+&none         &none         &none         &none         &none         &none            &bootloader                                                                           &none   &none       &none       &none   &none   &none   &none
+&none         &none         &none         &none         &none         &none                  &none   &none   &none                  &bt BT_CLR       &none  &rgb_ug RGB_MEFS_CMD 5   &none       &none       &none   &none   &none   &none
+&none         &none         &none         &none         &none         &none                                  &none                       &none                                       &none       &none       &none   &none   &none   &none
+&none         &none         &none         &none         &none                                &none   &none   &none                       &none  &bl BL_TOG         &rgb_ug RGB_TOG          &bl BL_DEC  &bl BL_INC   &none   &none   &none
+            >;
+        };
+    };
+};

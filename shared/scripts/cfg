@@ -2,29 +2,14 @@
 
 # list of top level config dirs
 dirs=(
+    "local" $XDG_CONFIG_HOME
+    scripts $HOST_DOTFILES/scripts
+    kbd ~/kbd/Adv360-Pro-ZMK
     shared $SHARED_DOTFILES
     host $HOST_DOTFILES
-    "local" $XDG_CONFIG_HOME
     dotfiles $DOTFILES
-    scripts $HOST_DOTFILES/scripts
     projects ~/projects
-    adv ~/kbd/Adv360-Pro-ZMK
 )
-
-# Add tracked host config dirs
-for dir in "$HOST_DOTFILES/.config"/*; do
-    if [[ -d "$dir" ]]; then
-        dir_name=$(basename "$dir")
-        if [[ "$dir_name" == *" "* ]]; then
-            continue
-        fi
-        # Check if the directory name already exists in $dirs
-        if [[ ! " ${dirs[@]} " =~ " ${dir_name} " ]]; then
-            # Append the directory name and path to the $dirs array
-            dirs+=("$dir_name" "$dir")
-        fi
-    fi
-done
 
 # Add any untracked local config dirs
 for dir in "$XDG_CONFIG_HOME"/*; do
