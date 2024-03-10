@@ -45,6 +45,7 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
   services.openssh.enable = true;
+  services.mullvad-vpn.enable = true;
 
   security.sudo.wheelNeedsPassword = false;
   security.rtkit.enable = true;

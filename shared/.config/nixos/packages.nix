@@ -70,6 +70,8 @@ in {
     rclone
     github-cli
     podman
+    htop
+    openfortivpn # queens
 
     # aesthetics
     starship
@@ -90,13 +92,13 @@ in {
     packages = with pkgs; [
       kitty
       firefox
+      opera
       eww-wayland
       cinnamon.nemo
       albert
       unstable.flameshot
       hyprpicker
       networkmanagerapplet
-      nnn
 
       spotify
       thunderbird
@@ -105,6 +107,10 @@ in {
       obsidian
       vial
     ];
+  };
+
+  programs.steam = {
+    enable = true;
   };
 
   home-manager = {
