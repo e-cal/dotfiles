@@ -23,6 +23,7 @@ in {
     # languages
     python3
     python311Packages.pip
+    python311Packages.ipython
 
     gcc
     gnumake
