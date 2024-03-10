@@ -41,8 +41,10 @@ if confirm "Prepare local .config?"; then
     [[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
     [[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
 
-    # Make sure there's a wgetrc
+
+    # Make files
     [[ -f $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
+    echo 'export ZDOTDIR=$HOME/.config/zsh' > ~/.zshenv
 
     # Remove common conflicts
     [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
