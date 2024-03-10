@@ -213,9 +213,11 @@ def project(sel=None):
         if not name:
             return
 
-        if name in ["git", "gh", "repo", "github", "search", "clone"]:
+        if name in ["repo", "repos", "list", "search", "clone"]:
             repos = run_cmd("gh repo list --limit 1000 --json name -q '.[].name'")
-            name = "e-cal/" + fzf_menu(repos.split(), "repo")
+            repo = fzf_menu(repos.split(), "repo")
+            if not repo: exit(1)
+            name = "e-cal/" + repo
         if name.startswith("http") or name.startswith("git"):
             url = name
             name = name.split("/")[-1].split(".")[0]
