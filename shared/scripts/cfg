@@ -4,10 +4,11 @@
 dirs=(
     "local" $XDG_CONFIG_HOME
     scripts $HOST_DOTFILES/scripts
-    kbd ~/kbd/Adv360-Pro-ZMK
+    kbd ~/kbd
+    adv ~/kbd/adv360
     shared $SHARED_DOTFILES
     host $HOST_DOTFILES
-    dotfiles $DOTFILES
+    dotfiles_root $DOTFILES
     projects ~/projects
 )
 
