@@ -44,7 +44,7 @@ if confirm "Prepare local .config?"; then
 
     # Make files
     [[ -f $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
-    echo 'export ZDOTDIR=$HOME/.config/zsh' > ~/.zshenv
+    # echo 'export ZDOTDIR=$HOME/.config/zsh' > ~/.zshenv
 
     # Remove common conflicts
     [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
