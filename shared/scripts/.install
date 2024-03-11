@@ -40,6 +40,7 @@ if confirm "Prepare local .config?"; then
     [[ -d $HOME/.config/lazygit ]] || mkdir $HOME/.config/lazygit
     [[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
     [[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
+    [[ -d "$HOME/projects" ]] || mkdir "$HOME/projects"
 
 
     # Make files
