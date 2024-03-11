@@ -11,6 +11,7 @@ in
   environment.systemPackages = with pkgs; [
     brillo
     acpi
+    wtype
   ];
 
   # fonts.packages = with pkgs; [ ];
