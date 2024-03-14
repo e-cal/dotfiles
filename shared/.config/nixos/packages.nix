@@ -24,7 +24,8 @@ in {
     python3
     python311Packages.pip
     python311Packages.ipython
-
+    cudaPackages.cudatoolkit
+    cudaPackages.cudnn
     gcc
     gnumake
     cmake
@@ -35,7 +36,6 @@ in {
     # formatters
     yapf
     shfmt
-    # alejandra
     nixfmt
     nodePackages.prettier
 
@@ -99,7 +99,8 @@ in {
       albert
       unstable.flameshot
       hyprpicker
-      networkmanagerapplet
+      zathura
+      (ollama.override { acceleration = "cuda"; })
 
       spotify
       thunderbird
