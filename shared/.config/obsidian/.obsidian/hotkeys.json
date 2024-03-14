@@ -67,9 +67,45 @@
   "editor:open-link-in-new-leaf": [
     {
       "modifiers": [
+        "Alt"
+      ],
+      "key": "G"
+    }
+  ],
+  "execute-code:run-all-code-blocks-in-file": [
+    {
+      "modifiers": [
+        "Mod",
         "Shift"
       ],
       "key": "Enter"
     }
-  ]
+  ],
+  "editor:open-link-in-new-split": [],
+  "editor:open-link-in-new-window": [],
+  "outline:open": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "/"
+    }
+  ],
+  "app:toggle-left-sidebar": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "E"
+    }
+  ],
+  "highlightr-plugin:highlighter-plugin-menu": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "H"
+    }
+  ],
+  "editor:open-search-replace": []
 }

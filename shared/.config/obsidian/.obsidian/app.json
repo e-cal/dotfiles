@@ -2,5 +2,11 @@
   "vimMode": true,
   "useTab": false,
   "readableLineLength": true,
-  "showLineNumber": false
+  "showLineNumber": false,
+  "trashOption": "system",
+  "promptDelete": false,
+  "attachmentFolderPath": "media",
+  "alwaysUpdateLinks": true,
+  "autoPairBrackets": true,
+  "autoPairMarkdown": false
 }

@@ -1,0 +1,41 @@
+/* .markdown-source-view.mod-cm6.is-readable-line-width .cm-sizer { */
+/*   max-width: 1200px; */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
+/* } */
+
+/* .is-readable-line-width { */
+/* 	max-width: 1500px; */
+/* 	margin: auto; */
+/* 	--file-line-width: 75rem; */
+/* } */
+
+img[alt*="center"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* @settings
+
+name: Main Style
+id: a-unique-id
+settings:
+    - 
+        id: my-title
+        title: Settings
+        type: heading
+        level: 3
+    - 
+        id: file-line-width
+        title: Line Length
+        description: "`Readable Line Length` line length (real default is 700, can use the cssclass `full-width` on individual notes)"
+        markdown: true
+        type: variable-number-slider
+        default: 950
+        min: 300
+        max: 2500
+        step: 25
+        format: px
+*/

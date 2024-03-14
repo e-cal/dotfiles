@@ -2,7 +2,7 @@
   "accentColor": "#f3a639",
   "theme": "obsidian",
   "enabledCssSnippets": [
-    "width"
+    "custom"
   ],
   "baseFontSizeAction": true,
   "baseFontSize": 16
