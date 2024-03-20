@@ -8,6 +8,7 @@ in {
   imports = [ inputs.home-manager.nixosModules.default ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = (_: true);
   nixpkgs.config.permittedInsecurePackages = [ "electron-25.9.0" ];
 
   # Global
@@ -108,6 +109,8 @@ in {
       anki
       obsidian
       vial
+      vscode.fhs
+      masterpdfeditor4
     ];
   };
 
