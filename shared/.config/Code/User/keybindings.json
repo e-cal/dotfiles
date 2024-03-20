@@ -3,7 +3,7 @@
     {
         "key": "space e",
         "command": "workbench.view.explorer",
-        "when": "neovim.mode == 'normal' && editorTextFocus"
+        "when": "editorTextFocus && neovim.mode == 'normal' && !foldersViewVisible"
     },
     {
         "key": "space e",
@@ -12,7 +12,7 @@
         //     "workbench.action.quickOpenNavigatePreviousInFilePicker",
         //     "workbench.action.toggleSidebarVisibility"
         // ],
-        "when": "filesExplorerFocus && foldersViewVisible"
+        "when": "foldersViewVisible && (( editorTextFocus && neovim.mode == 'normal') || sideBarFocus )"
     },
     {
         "key": "space f",
@@ -32,26 +32,6 @@
     {
         "key": "space h",
         "command": "vscode-harpoon.editorQuickPick",
-        "when": "neovim.mode == 'normal' && editorTextFocus"
-    },
-    {
-        "key": "space j",
-        "command": "vscode-harpoon.gotoEditor1",
-        "when": "neovim.mode == 'normal' && editorTextFocus"
-    },
-    {
-        "key": "space k",
-        "command": "vscode-harpoon.gotoEditor2",
-        "when": "neovim.mode == 'normal' && editorTextFocus"
-    },
-    {
-        "key": "space l",
-        "command": "vscode-harpoon.gotoEditor3",
-        "when": "neovim.mode == 'normal' && editorTextFocus"
-    },
-    {
-        "key": "space ;",
-        "command": "vscode-harpoon.gotoEditor4",
         "when": "neovim.mode == 'normal' && editorTextFocus"
     },
     {
@@ -164,10 +144,6 @@
         "command": "-workbench.action.focusLeftGroup"
     },
     {
-        "key": "alt+k",
-        "command": "workbench.action.focusAboveGroup"
-    },
-    {
         "key": "ctrl+k ctrl+up",
         "command": "-workbench.action.focusAboveGroup"
     },
@@ -188,11 +164,6 @@
         "key": "shift+tab",
         "command": "selectPrevSuggestion",
         "when": "suggestWidgetMultipleSuggestions && suggestWidgetVisible && textInputFocus || suggestWidgetVisible && textInputFocus && !suggestWidgetHasFocusedSuggestion"
-    },
-    {
-        "key": "alt+k",
-        "command": "workbench.action.navigateUp",
-        "when": "!editorTextFocus ||  (editorTextFocus && neovim.mode == 'normal')"
     },
     {
         "key": "alt+j",
@@ -227,4 +198,109 @@
         "command": "-workbench.action.closeActiveEditor",
         "when": "!editorTextFocus && !filesExplorerFocus && !searchViewletFocus && !terminalFocus"
     },
+    {
+        "key": "ctrl+space s",
+        "command": "notebook.cell.split",
+        "when": "editorTextFocus && notebookCellEditable && notebookEditable && notebookEditorFocused"
+    },
+    {
+        "key": "ctrl+k ctrl+shift+\\",
+        "command": "-notebook.cell.split",
+        "when": "editorTextFocus && notebookCellEditable && notebookEditable && notebookEditorFocused"
+    },
+    {
+        "key": "alt+j",
+        "command": "notebook.focusNextEditor",
+        "when": "notebookEditorFocused"
+    },
+    {
+        "key": "alt+k",
+        "command": "notebook.focusPreviousEditor",
+        "when": "notebookEditorFocused"
+    },
+    {
+        "key": "up",
+        "command": "notebook.focusPreviousEditor",
+        "when": "notebookEditorFocused"
+    },
+    {
+        "key": "up",
+        "command": "-notebook.focusPreviousEditor",
+        "when": "config.notebook.navigation.allowNavigateToSurroundingCells && editorTextFocus && inputFocus && notebookEditorFocused && !accessibilityModeEnabled && !isEmbeddedDiffEditor && notebookEditorCursorAtBoundary != 'bottom' && notebookEditorCursorAtBoundary != 'none'"
+    },
+    {
+        "key": "ctrl+g",
+        "command": "github.copilot.generate",
+        "when": "editorTextFocus && github.copilot.activated && !inInteractiveInput && !interactiveEditorFocused"
+    },
+    {
+        "key": "ctrl+enter",
+        "command": "-github.copilot.generate",
+        "when": "editorTextFocus && github.copilot.activated && !inInteractiveInput && !interactiveEditorFocused"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "editor.action.inlineSuggest.trigger",
+        "when": "config.github.copilot.inlineSuggest.enable && editorTextFocus && !editorHasSelection && !inlineSuggestionsVisible"
+    },
+    {
+        "key": "alt+\\",
+        "command": "-editor.action.inlineSuggest.trigger",
+        "when": "config.github.copilot.inlineSuggest.enable && editorTextFocus && !editorHasSelection && !inlineSuggestionsVisible"
+    },
+    {
+        "key": "space /",
+        "command": "editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly && neovim.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+/",
+        "command": "-editor.action.commentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "f",
+        "command": "-notebook.find",
+        "when": "notebookEditorFocused && !inputFocus && !notebookOutputInputFocused"
+    },
+    {
+        "key": "space f",
+        "command": "notebook.formatCell",
+        "when": "editorHasDocumentFormattingProvider && editorTextFocus && inCompositeEditor && notebookEditable && !editorReadonly && activeEditor == 'workbench.editor.notebook' && neovim.mode == 'normal'"
+    },
+    {
+        "key": "ctrl+enter",
+        "command": "-notebook.cell.executeAndFocusContainer",
+        "when": "notebookCellListFocused || editorTextFocus && inputFocus && notebookEditorFocused"
+    },
+    {
+        "key": "ctrl+enter",
+        "command": "notebook.cell.execute",
+        "when": "notebookCellListFocused && notebookMissingKernelExtension && !notebookCellExecuting && notebookCellType == 'code' || notebookCellListFocused && !notebookCellExecuting && notebookCellType == 'code' && notebookKernelCount > 0 || notebookCellListFocused && !notebookCellExecuting && notebookCellType == 'code' && notebookKernelSourceCount > 0"
+    },
+    {
+        "key": "meta+enter",
+        "command": "-notebook.cell.execute",
+        "when": "notebookCellListFocused && notebookMissingKernelExtension && !notebookCellExecuting && notebookCellType == 'code' || notebookCellListFocused && !notebookCellExecuting && notebookCellType == 'code' && notebookKernelCount > 0 || notebookCellListFocused && !notebookCellExecuting && notebookCellType == 'code' && notebookKernelSourceCount > 0"
+    },
+    {
+        "key": "right",
+        "command": "editor.action.inlineSuggest.acceptNextWord",
+        "when": "inlineSuggestionVisible && !editorReadonly"
+    },
+    {
+        "key": "ctrl+right",
+        "command": "-editor.action.inlineSuggest.acceptNextWord",
+        "when": "inlineSuggestionVisible && !editorReadonly"
+    },
+    {
+        "key": "space r",
+        "command": "editor.action.rename",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly && neovim.mode == 'normal'"
+    },
+    {
+        "key": "f2",
+        "command": "-editor.action.rename",
+        "when": "editorHasRenameProvider && editorTextFocus && !editorReadonly"
+    }
 ]
