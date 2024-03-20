@@ -60,9 +60,7 @@ export PYENV_ROOT="$XDG_CONFIG_HOME"/pyenv
 
 # lemme use things
 export PATH=$HOME/.local/bin:$HOME/scripts:$PYENV_ROOT/bin:$XDG_DATA_HOME/cargo/bin:/opt/cuda-11.7/bin:$PATH
-export LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:$LD_LIBRARY_PATH
-
-# Theme
+# export LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:$NIX_LD_LIBRARY_PATH:$LD_LIBRARY_PATH
 export GTK_THEME=Adwaita:dark
 
 # GET OUT OF MY HOUSE

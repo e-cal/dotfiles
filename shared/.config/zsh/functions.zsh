@@ -77,10 +77,10 @@ uni() {
 
 setvenv() {
     if [[ -z $1 ]]; then
-        name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
+        name=`/usr/bin/env ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
     else
         name=$1
-        [[ ! `/usr/bin/ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
+        [[ ! `/usr/bin/env ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
     fi
 	[[ -z $name ]] || echo $name > .venv
 }

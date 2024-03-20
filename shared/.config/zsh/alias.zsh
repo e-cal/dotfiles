@@ -25,7 +25,6 @@ alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacma
 alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk \"{print $2}\")' | xargs -ro  paru -S"
 
 # python
-# alias "python"="LD_LIBRARY_PATH=$NIX_LD_LIBRARY_PATH python"
 alias "py"="python"
 alias "pydb"="python -m pdb -c continue"
 alias "ipy"="ipython"
@@ -40,7 +39,7 @@ alias "nbpy"="jupytext --to py"
 alias "clear"="clear;divider"
 alias "celar"="clear"
 alias "less"="bat --style=plain"
-alias "code"="code-insiders"
+# alias "code"="NIXOS_OZONE_WL= code"
 
 # ls
 alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directories-first --icons'
