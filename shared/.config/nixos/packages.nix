@@ -20,6 +20,7 @@ in {
     tmux
     zsh
     stow
+    zoxide
 
     # languages
     python3
@@ -38,6 +39,7 @@ in {
     yapf
     shfmt
     nixfmt
+    stylua
     nodePackages.prettier
 
     # services
@@ -70,7 +72,7 @@ in {
     unzip
     lazygit
     rclone
-    github-cli
+    unstable.github-cli
     podman
     htop
     openfortivpn # queens
@@ -112,10 +114,6 @@ in {
       vscode.fhs
       masterpdfeditor4
     ];
-  };
-
-  programs.steam = {
-    enable = true;
   };
 
   home-manager = {
