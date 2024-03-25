@@ -7,11 +7,11 @@ source $HOME/.config/zsh/bindkey.zsh
 
 fignore=(.ipynb)
 
-# Load direnv
-# eval "$(direnv hook zsh)"
-
 # Load prompt
 eval "$(starship init zsh)"
+
+# Load zoxide and alias cd
+eval "$(zoxide init zsh --cmd cd)"
 
 # Start display server
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then

@@ -18,6 +18,8 @@ alias "dock"="bt discon adv; bt con adv; bt discon mouse; bt con mouse"
 alias "psrg"="ps -ef | rg"
 alias "untar"="tar -xvf"
 alias "unstow"="stow -D --dir=$DOTFILES $HOSTNAME --target=$HOME"
+alias "expl"="gh copilot explain"
+alias "ask"="gh copilot explain"
 
 # arch
 alias "yeet"="paru -Rsn"
