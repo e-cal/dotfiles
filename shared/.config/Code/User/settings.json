@@ -38,5 +38,6 @@
   "github.copilot.advanced": {
 
   },
-  "editor.suggest.selectionMode": "never"
+  "editor.suggest.selectionMode": "never",
+  "notebook.output.scrolling": true
 }
