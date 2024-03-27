@@ -28,7 +28,7 @@ h)
 		if term_hidden; then
 			tmux join-pane -v -l "$PERCENT"% -s $(get_hid_term)
 		else
-			tmux split-window -c "#{pane_current_path}" -v -l $PERCENT
+			tmux split-window -c "#{pane_current_path}" -v -l "$PERCENT"%
 		fi
 	else
 		tmux select-pane -D

@@ -37,6 +37,7 @@ if confirm "Prepare local .config?"; then
     [[ -d $HOME/.config ]] || mkdir $HOME/.config
     [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
     [[ -d $HOME/.config/jupyter ]] || mkdir -p $HOME/.config/jupyter/profile_default
+    [[ -d $HOME/.config/obsidian ]] || mkdir -p $HOME/.config/obsidian
     [[ -d $HOME/.config/lazygit ]] || mkdir $HOME/.config/lazygit
     [[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
     [[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
@@ -52,6 +53,7 @@ if confirm "Prepare local .config?"; then
     [[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
     [[ ! -L $HOME/.config/hypr/hyprland.conf ]] && [[ -f $HOME/.config/hypr/hyprland.conf ]] && rm $HOME/.config/hypr/hyprland.conf
     [[ ! -L $HOME/.config/lazygit/config.yml ]] && [[ -f $HOME/.config/lazygit/config.yml ]] && rm $HOME/.config/lazygit/config.yml
+    [[ ! -L $HOME/.zshenv ]] && [[ -f $HOME/.zshenv ]] && rm $HOME/.zshenv
 fi
 
 if hostnamectl | grep -q "NixOS" && confirm "Setup NixOS?"; then
