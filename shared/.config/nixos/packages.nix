@@ -96,7 +96,6 @@ in {
     packages = with pkgs; [
       kitty
       firefox
-      opera
       eww-wayland
       cinnamon.nemo
       albert
