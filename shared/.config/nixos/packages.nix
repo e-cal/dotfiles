@@ -112,6 +112,7 @@ in {
       vial
       vscode.fhs
       masterpdfeditor4
+      zotero
     ];
   };
 
