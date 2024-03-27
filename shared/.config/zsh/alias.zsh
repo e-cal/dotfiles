@@ -30,6 +30,7 @@ alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl 
 alias "py"="python"
 alias "pydb"="python -m pdb -c continue"
 alias "ipy"="ipython"
+alias "ldpy"='LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:$NIX_LD_LIBRARY_PATH python'
 alias "jn"="jupyter notebook"
 alias "lsvenvs"="ls ~/.local/share/virtualenvs"
 alias "lskernels"="ls $HOME/.local/share/jupyter/kernels"
@@ -38,7 +39,7 @@ alias "pynb"="jupytext --to ipynb"
 alias "nbpy"="jupytext --to py"
 
 # repurpose
-alias "clear"="clear;divider"
+# alias "clear"="clear;divider"
 alias "celar"="clear"
 alias "less"="bat --style=plain"
 # alias "code"="NIXOS_OZONE_WL= code"
