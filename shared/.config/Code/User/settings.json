@@ -39,5 +39,6 @@
 
   },
   "editor.suggest.selectionMode": "never",
-  "notebook.output.scrolling": true
+  "notebook.output.scrolling": true,
+  "remote.SSH.connectTimeout": 30
 }
