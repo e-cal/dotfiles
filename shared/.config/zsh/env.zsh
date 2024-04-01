@@ -18,6 +18,7 @@ export XDG_DATA_HOME=~/.local/share
 # Wayland things
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     export MOZ_ENABLE_WAYLAND=1
+    export NIXOS_OZONE_WL=
 fi
 
 if [[ $HOSTNAME == "gaius" ]] then
