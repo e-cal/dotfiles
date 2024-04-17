@@ -2,6 +2,11 @@
 #include "version.h"
 #define MOON_LED_LEVEL LED_LEVEL
 
+void keyboard_post_init_user(void) {
+  rgblight_enable_noeeprom();
+  rgblight_sethsv_noeeprom(100, 255, 255);
+}
+
 enum custom_keycodes {
   RGB_SLD = ML_SAFE_RANGE,
   HSV_0_245_245,
@@ -47,8 +52,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRAVE,        KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_DELETE,
     KC_TAB,          KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLS,
     LT(2,KC_ESCAPE), KC_A,           KC_S,           MT(MOD_LSFT, KC_D),KC_F,           KC_G,                                           KC_H,           KC_J,           MT(MOD_RSFT, KC_K),KC_L,           KC_SCLN,        MT(MOD_RSFT, KC_QUOTE),
-    TD(DANCE_0),     MT(MOD_LALT, KC_Z),KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         MT(MOD_RALT, KC_SLASH),KC_RIGHT_CTRL,
-                                                    LT(1,KC_BSPC),  KC_LEFT_GUI,                                    KC_ENTER,       LT(1,KC_SPACE)
+    KC_LEFT_CTRL,     MT(MOD_LALT, KC_Z),KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         MT(MOD_RALT, KC_SLASH),KC_RIGHT_CTRL,
+                                                    LT(1,KC_BSPC),  TD(DANCE_0),                                    KC_ENTER,       LT(1,KC_SPACE)
   ),
   [1] = LAYOUT_voyager(
     KC_F12,         KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,
@@ -139,31 +144,44 @@ uint8_t dance_step(tap_dance_state_t *state) {
 }
 
 
+void on_dance_0(tap_dance_state_t *state, void *user_data);
 void dance_0_finished(tap_dance_state_t *state, void *user_data);
 void dance_0_reset(tap_dance_state_t *state, void *user_data);
+
+void on_dance_0(tap_dance_state_t *state, void *user_data) {
+    if(state->count == 3) {
+        tap_code16(KC_LEFT_GUI);
+        tap_code16(KC_LEFT_GUI);
+        tap_code16(KC_LEFT_GUI);
+    }
+    if(state->count > 3) {
+        tap_code16(KC_LEFT_GUI);
+    }
+}
 
 void dance_0_finished(tap_dance_state_t *state, void *user_data) {
     dance_state[0].step = dance_step(state);
     switch (dance_state[0].step) {
-        case SINGLE_HOLD: register_code16(KC_LEFT_CTRL); break;
+        case SINGLE_TAP: register_code16(KC_LEFT_GUI); break;
+        case SINGLE_HOLD: register_code16(KC_LEFT_GUI); break;
         case DOUBLE_TAP: register_code16(KC_CAPS); break;
+        case DOUBLE_HOLD: register_code16(KC_LEFT_GUI); break;
+        case DOUBLE_SINGLE_TAP: tap_code16(KC_LEFT_GUI); register_code16(KC_LEFT_GUI);
     }
 }
 
 void dance_0_reset(tap_dance_state_t *state, void *user_data) {
     wait_ms(10);
     switch (dance_state[0].step) {
-        case SINGLE_HOLD: unregister_code16(KC_LEFT_CTRL); break;
+        case SINGLE_TAP: unregister_code16(KC_LEFT_GUI); break;
+        case SINGLE_HOLD: unregister_code16(KC_LEFT_GUI); break;
         case DOUBLE_TAP: unregister_code16(KC_CAPS); break;
+        case DOUBLE_HOLD: unregister_code16(KC_LEFT_GUI); break;
+        case DOUBLE_SINGLE_TAP: unregister_code16(KC_LEFT_GUI); break;
     }
     dance_state[0].step = 0;
 }
 
 tap_dance_action_t tap_dance_actions[] = {
-        [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_0_finished, dance_0_reset),
+        [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_0, dance_0_finished, dance_0_reset),
 };
-
-void keyboard_post_init_user(void) {
-  rgblight_enable_noeeprom();
-  rgblight_sethsv_noeeprom(100, 255, 255);
-}
