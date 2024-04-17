@@ -67,18 +67,6 @@
         bindings = <&kp>, <&kp>;
     };
 
-
-
-
-    slash_excl: slash_excl {
-        compatible = "zmk,behavior-tap-dance";
-        label = "SLASH_EXCL";
-        #binding-cells = <0>;
-        tapping-term-ms = <200>;
-        bindings = <&kp FSLH>, <&kp EQUAL>;
-
-    };
-
     sticky_shift: sticky_shift {
         compatible = "zmk,behavior-tap-dance";
         label = "STICKY_SHIFT";

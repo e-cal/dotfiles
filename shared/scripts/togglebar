@@ -1,9 +1,21 @@
 #!/usr/bin/env bash
 
-if [[ $(eww windows | grep bar | cut -c 1 | tail -n1) == "*" ]]; then
-    eww close bar
-    eww close bar2
+eww ping &>/dev/null
+if ! [[ $? -eq 0 ]]; then
+	eww open bar
+	eww open bar2
+	exit 0
+fi
+
+open=$(eww windows | grep bar | grep "*" | wc -l)
+echo "$open open"
+
+if [[ $open -eq 0 ]]; then
+	echo "Opening"
+	eww open bar 2>/dev/null
+	eww open bar2 2>/dev/null
 else
-    eww open bar
-    eww open bar2
+	echo "Closing"
+	eww close bar 2>/dev/null
+	eww close bar2 2>/dev/null
 fi
