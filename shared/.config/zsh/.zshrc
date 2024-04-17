@@ -1,4 +1,5 @@
 autoload -Uz compinit
+compinit -i
 source $HOME/.config/zsh/env.zsh
 source $HOME/.config/zsh/plugins.zsh
 source $HOME/.config/zsh/alias.zsh
