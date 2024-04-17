@@ -9,7 +9,7 @@ in {
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (_: true);
-  nixpkgs.config.permittedInsecurePackages = [ "electron-25.9.0" ];
+  nixpkgs.config.permittedInsecurePackages = [ "electron-25.9.0" "qtwebkit-5.212.0-alpha4" "openssl-1.1.1w" ];
 
   # Global
   environment.systemPackages = with pkgs; [
@@ -25,6 +25,7 @@ in {
     # languages
     python3
     python311Packages.pip
+    poetry
     python311Packages.ipython
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
@@ -76,6 +77,7 @@ in {
     podman
     htop
     openfortivpn # queens
+    wkhtmltopdf-bin
 
     # aesthetics
     starship
@@ -91,37 +93,53 @@ in {
   # users and user packages (gui)
   users.users.ecal = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kitty
       firefox
+      chromium
+      spotify
+
       eww-wayland
       cinnamon.nemo
       albert
-      unstable.flameshot
       hyprpicker
-      zathura
-      (ollama.override { acceleration = "cuda"; })
+      unstable.flameshot
 
-      spotify
+      vial
+      unstable.keymapp
+      unstable.wally-cli
+      qmk
+
       thunderbird
       slack
-      anki
+
       obsidian
-      vial
-      vscode.fhs
-      masterpdfeditor4
       zotero
+      anki
+      zathura
+      masterpdfeditor4
+
+      vscode.fhs
+      (ollama.override { acceleration = "cuda"; })
     ];
   };
+
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     users = { "ecal" = import ./home.nix; };
   };
 
-  services.udev.packages = with pkgs; [ vial ];
+  virtualisation.docker.enable = true;
+
+  services.udev.packages = with pkgs; [ 
+    unstable.zsa-udev-rules 
+    vial
+  ];
+
+  # services.postgresql.enable = true;
 
   # install dynamic libraries for unpackaged programs
   # https://nix.dev/guides/faq.html
@@ -140,6 +158,7 @@ in {
     freetype
     fuse3
     gdk-pixbuf
+    ghostscript
     glib
     gtk3
     icu
@@ -164,6 +183,7 @@ in {
     stdenv.cc.cc
     systemd
     vulkan-loader
+    webkitgtk
     zlib
   ];
 }
