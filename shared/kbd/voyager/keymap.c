@@ -3,17 +3,20 @@
 #define MOON_LED_LEVEL LED_LEVEL
 
 void keyboard_post_init_user(void) {
-  rgblight_enable_noeeprom();
-  rgblight_sethsv_noeeprom(100, 255, 255);
+    rgblight_enable();
+    rgblight_sethsv(0, 255, 255);
+    rgblight_set_speed(25);
+    rgblight_mode(2);
 }
 
 enum custom_keycodes {
-  RGB_SLD = ML_SAFE_RANGE,
-  HSV_0_245_245,
-  HSV_103_233_255,
-  HSV_144_236_246,
-  HSV_188_255_255,
-  HSV_26_255_255,
+    RGB_SLD = ML_SAFE_RANGE,
+    RGB_NEXT,
+    RED,
+    GREEN,
+    BLUE,
+    PURPLE,
+    ORANGE,
 };
 
 const key_override_t n1_override = ko_make_basic(MOD_MASK_SHIFT, KC_1, KC_PLUS);
@@ -52,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_GRAVE,        KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_DELETE,
     KC_TAB,          KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLS,
     LT(2,KC_ESCAPE), KC_A,           KC_S,           MT(MOD_LSFT, KC_D),KC_F,           KC_G,                                           KC_H,           KC_J,           MT(MOD_RSFT, KC_K),KC_L,           KC_SCLN,        MT(MOD_RSFT, KC_QUOTE),
-    KC_LEFT_CTRL,     MT(MOD_LALT, KC_Z),KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         MT(MOD_RALT, KC_SLASH),KC_RIGHT_CTRL,
+    KC_LEFT_CTRL,     MT(MOD_LALT, KC_Z),KC_X,       KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         MT(MOD_RALT, KC_SLASH),KC_RIGHT_CTRL,
                                                     LT(1,KC_BSPC),  TD(DANCE_0),                                    KC_ENTER,       LT(1,KC_SPACE)
   ),
   [1] = LAYOUT_voyager(
@@ -63,9 +66,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
   ),
   [2] = LAYOUT_voyager(
-    RGB_TOG,        HSV_0_245_245,  HSV_103_233_255,HSV_144_236_246,HSV_188_255_255,HSV_26_255_255,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, TOGGLE_LAYER_COLOR,RGB_SPI,        RGB_VAI,        RGB_HUI,        RGB_SAI,                                        KC_TRANSPARENT, LSFT(KC_LEFT),  KC_TRANSPARENT, LSFT(KC_RIGHT), KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, RGB_MODE_FORWARD,RGB_SPD,        RGB_VAD,        RGB_HUD,        RGB_SAD,                                        KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       KC_TRANSPARENT, KC_TRANSPARENT,
+    RGB_TOG,        RED,            GREEN,          BLUE,           PURPLE,         ORANGE,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
+    KC_TRANSPARENT, TOGGLE_LAYER_COLOR,RGB_SPI,     RGB_VAI,        RGB_HUI,        RGB_SAI,                                        KC_HOME, LSFT(KC_LEFT),  KC_TRANSPARENT, LSFT(KC_RIGHT), KC_END, KC_TRANSPARENT,
+    KC_TRANSPARENT, RGB_NEXT,       RGB_SPD,        RGB_VAD,        RGB_HUD,        RGB_SAD,                                        KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       KC_TRANSPARENT, KC_TRANSPARENT,
     KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_UNDS,        KC_MINUS,       KC_CIRC,        KC_DLR,         KC_EXLM,        KC_TRANSPARENT,
                                                     KC_DELETE,      KC_ENTER,                                       KC_TRANSPARENT, KC_TRANSPARENT
   ),
@@ -76,37 +79,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case RGB_SLD:
       if (record->event.pressed) {
-        rgblight_mode(1);
+        rgblight_mode_noeeprom(1);
       }
       return false;
-    case HSV_0_245_245:
+    case RGB_NEXT:
       if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(0,245,245);
+        rgblight_step_noeeprom();
       }
       return false;
-    case HSV_103_233_255:
+    case RED:
       if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(103,233,255);
+        rgblight_mode_noeeprom(1);
+        rgblight_sethsv_noeeprom(0, 255, 255);
       }
       return false;
-    case HSV_144_236_246:
+    case GREEN:
       if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(144,236,246);
+        rgblight_mode_noeeprom(1);
+        rgblight_sethsv_noeeprom(80, 255, 255);
       }
       return false;
-    case HSV_188_255_255:
+    case BLUE:
       if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(188,255,255);
+        rgblight_mode_noeeprom(1);
+        rgblight_sethsv_noeeprom(115, 255, 255);
       }
       return false;
-    case HSV_26_255_255:
+    case PURPLE:
       if (record->event.pressed) {
-        rgblight_mode(1);
-        rgblight_sethsv(26,255,255);
+        rgblight_mode_noeeprom(1);
+        rgblight_sethsv_noeeprom(220, 255, 255);
+      }
+      return false;
+    case ORANGE:
+      if (record->event.pressed) {
+        rgblight_mode_noeeprom(1);
+        rgblight_sethsv_noeeprom(15, 255, 255);
       }
       return false;
   }
