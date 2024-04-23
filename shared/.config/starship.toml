@@ -3,6 +3,7 @@ $time\
 $nix_shell\
 $hg_branch\
 $docker_context\
+$container\
 $package\
 $cmake\
 $dart\
