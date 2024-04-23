@@ -56,7 +56,7 @@ if confirm "Prepare local .config?"; then
     [[ ! -L $HOME/.zshenv ]] && [[ -f $HOME/.zshenv ]] && rm $HOME/.zshenv
 fi
 
-if hostnamectl | grep -q "NixOS" && confirm "Setup NixOS?"; then
+if hostnamectl | grep -q "NixOS" && confirm "Setup system config?"; then
     [[ ! `command -v stow` ]] && echo "first install stow" && exit 1
 
     read -p "hostname (leave empty to use current $HOSTNAME): " hostname
@@ -76,8 +76,10 @@ if hostnamectl | grep -q "NixOS" && confirm "Setup NixOS?"; then
     echo "Linking dotfiles to local system"
     stow -R --dir=$DOTFILES $HOSTNAME --target=$HOME || exit 1
     if confirm "Copy and rebuild nix config?"; then
-        sudo cp ~/.config/nixos/*.nix /etc/nixos
-        sudo nixos-rebuild switch
+        pushd ~/.config/nixos &>/dev/null
+        sudo cp *.nix /etc/nixos/
+        sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
+        popd &>/dev/null
     fi
 
 elif [[ `hostnamectl | grep -q "Arch Linux"` ]] && confirm "Install dependencies?"; then
