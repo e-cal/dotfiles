@@ -1,0 +1,44 @@
+[
+    {
+        "iconPath": ":github",
+        "id": "0545f974",
+        "name": "GitHub",
+        "trigger": "gh",
+        "url": "https://github.com/search?utf8=✓&q=%s"
+    },
+    {
+        "iconPath": ":google",
+        "id": "2d816222",
+        "name": "Google",
+        "trigger": "gg",
+        "url": "https://www.google.com/search?q=%s"
+    },
+    {
+        "iconPath": ":maps",
+        "id": "3fd3a7b6",
+        "name": "Google Maps",
+        "trigger": "maps",
+        "url": "https://www.google.com/maps/search/%s/"
+    },
+    {
+        "iconPath": ":scholar",
+        "id": "77525698",
+        "name": "Google Scholar",
+        "trigger": "scholar",
+        "url": "https://scholar.google.com/scholar?q=%s"
+    },
+    {
+        "iconPath": ":default",
+        "id": "aacd9102",
+        "name": "nixopt",
+        "trigger": "nixopt",
+        "url": "https://search.nixos.org/options?query=%s"
+    },
+    {
+        "iconPath": ":default",
+        "id": "1407f9fd",
+        "name": "nixpkg",
+        "trigger": "nix",
+        "url": "https://search.nixos.org/packages?query=%s"
+    }
+]
