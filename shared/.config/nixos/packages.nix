@@ -35,6 +35,7 @@ in {
     lua
     go
     nodejs_21
+    docker
 
     # formatters
     yapf
@@ -132,13 +133,14 @@ in {
     users = { "ecal" = import ./home.nix; };
   };
 
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   services.udev.packages = with pkgs; [ 
     unstable.zsa-udev-rules 
     vial
   ];
 
+  # services.mullvad-vpn.enable = true;
   # services.postgresql.enable = true;
 
   # install dynamic libraries for unpackaged programs
