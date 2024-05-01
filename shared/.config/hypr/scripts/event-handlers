@@ -6,6 +6,8 @@ handle() {
             # focus albert when it opens
             if [[ $1 == *"albert"* ]]; then
                 hyprctl dispatch focuswindow "albert"
+                sleep 0.1
+                hyprctl dispatch focuswindow "albert"
             fi
             ;;
     esac
