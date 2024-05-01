@@ -9,7 +9,8 @@ in {
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (_: true);
-  nixpkgs.config.permittedInsecurePackages = [ "electron-25.9.0" "qtwebkit-5.212.0-alpha4" "openssl-1.1.1w" ];
+  nixpkgs.config.permittedInsecurePackages =
+    [ "electron-25.9.0" "qtwebkit-5.212.0-alpha4" "openssl-1.1.1w" ];
 
   # Global
   environment.systemPackages = with pkgs; [
@@ -35,7 +36,6 @@ in {
     lua
     go
     nodejs_21
-    docker
 
     # formatters
     yapf
@@ -61,6 +61,7 @@ in {
     grim
     slurp
     swappy
+    feh
 
     # tools
     nix-index
@@ -99,7 +100,6 @@ in {
     packages = with pkgs; [
       kitty
       firefox
-      chromium
       spotify
 
       eww-wayland
@@ -127,18 +127,21 @@ in {
     ];
   };
 
-
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
     users = { "ecal" = import ./home.nix; };
   };
 
-  # virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = false;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 
-  services.udev.packages = with pkgs; [ 
-    unstable.zsa-udev-rules 
-    vial
-  ];
+  services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
 
   # services.mullvad-vpn.enable = true;
   # services.postgresql.enable = true;
