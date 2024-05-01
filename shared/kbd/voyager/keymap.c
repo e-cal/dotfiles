@@ -50,27 +50,37 @@ enum tap_dance_codes {
   DANCE_0,
 };
 
+#define TRANS KC_TRANSPARENT
+#define HRM_D MT(MOD_LSFT, KC_D)
+#define HRM_K MT(MOD_RSFT, KC_K)
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
-    KC_GRAVE,        KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_DELETE,
-    KC_TAB,          KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLS,
-    LT(2,KC_ESCAPE), KC_A,           KC_S,           MT(MOD_LSFT, KC_D),KC_F,           KC_G,                                           KC_H,           KC_J,           MT(MOD_RSFT, KC_K),KC_L,           KC_SCLN,        MT(MOD_RSFT, KC_QUOTE),
-    KC_LEFT_CTRL,     MT(MOD_LALT, KC_Z),KC_X,       KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         MT(MOD_RALT, KC_SLASH),KC_RIGHT_CTRL,
-                                                    LT(1,KC_BSPC),  TD(DANCE_0),                                    KC_ENTER,       LT(1,KC_SPACE)
+    // ~               1                   2     3      4     5            6     7     8         9       0                        ●
+    KC_GRAVE,        KC_1,               KC_2, KC_3,  KC_4, KC_5,        KC_6, KC_7, KC_8,     KC_9,   KC_0,                   KC_DELETE,
+    KC_TAB,          KC_Q,               KC_W, KC_E,  KC_R, KC_T,        KC_Y, KC_U, KC_I,     KC_O,   KC_P,                   KC_BSLS,
+    LT(2,KC_ESCAPE), KC_A,               KC_S, HRM_D, KC_F, KC_G,        KC_H, KC_J, HRM_K,    KC_L,   KC_SCLN,                MT(MOD_RSFT, KC_QUOTE),
+    KC_LEFT_CTRL,    MT(MOD_LALT, KC_Z), KC_X, KC_C,  KC_V, KC_B,        KC_N, KC_M, KC_COMMA, KC_DOT, MT(MOD_RALT, KC_SLASH), KC_RIGHT_CTRL,
+
+                                     LT(1,KC_BSPC),  TD(DANCE_0),        KC_ENTER,  LT(1,KC_SPACE)
   ),
-  [1] = LAYOUT_voyager(
-    KC_F12,         KC_F1,          KC_F2,          KC_F3,          KC_F4,          KC_F5,                                          KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,
-    KC_TRANSPARENT, KC_1,           KC_2,           KC_3,           KC_4,           KC_5,                                           KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_PLUS,        KC_LBRC,        KC_LCBR,        KC_LPRN,        KC_HASH,                                        KC_EQUAL,       KC_RPRN,        KC_RCBR,        KC_RBRC,        KC_ASTR,        KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TILD,        KC_AT,          KC_PERC,        KC_AMPR,        KC_TRANSPARENT,                                 KC_UNDS,        KC_MINUS,       KC_CIRC,        KC_DLR,         KC_EXLM,        KC_TRANSPARENT,
-                                                    KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
+  [1] = LAYOUT_voyager( // thumb
+    // ~      1        2       3        4        5               6        7         8        9        0        ●
+    KC_F12, KC_F1,   KC_F2,  KC_F3,   KC_F4,   KC_F5,          KC_F6,   KC_F7,    KC_F8,   KC_F9,   KC_F10,  KC_F11,
+    TRANS,  TRANS,   TRANS,  C(KC_E), TRANS,   TRANS,          C(KC_Y), TRANS,    TRANS,   TRANS,   TRANS,   TRANS,
+    TRANS,  TRANS,   TRANS,  TRANS,   TRANS,   TRANS,          A(KC_H),  A(KC_J), A(KC_K), A(KC_L), TRANS,   TRANS,
+    TRANS,  KC_TILD, KC_AT,  KC_PERC, KC_AMPR, TRANS,          KC_UNDS, KC_MINUS, KC_CIRC, KC_DLR,  KC_EXLM, TRANS,
+
+                                       TRANS,  TRANS,          TRANS,  TRANS
   ),
-  [2] = LAYOUT_voyager(
-    RGB_TOG,        RED,            GREEN,          BLUE,           PURPLE,         ORANGE,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, TOGGLE_LAYER_COLOR,RGB_SPI,     RGB_VAI,        RGB_HUI,        RGB_SAI,                                        KC_HOME, LSFT(KC_LEFT),  KC_TRANSPARENT, LSFT(KC_RIGHT), KC_END, KC_TRANSPARENT,
-    KC_TRANSPARENT, RGB_NEXT,       RGB_SPD,        RGB_VAD,        RGB_HUD,        RGB_SAD,                                        KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       KC_TRANSPARENT, KC_TRANSPARENT,
-    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_UNDS,        KC_MINUS,       KC_CIRC,        KC_DLR,         KC_EXLM,        KC_TRANSPARENT,
-                                                    KC_DELETE,      KC_ENTER,                                       KC_TRANSPARENT, KC_TRANSPARENT
+  [2] = LAYOUT_voyager( // esc
+    // ~      1                    2        3         4        5              6        7              8        9               0        ●
+    RGB_TOG, RED,                GREEN,   BLUE,    PURPLE,  ORANGE,         TRANS,   TRANS,         TRANS,   TRANS,          TRANS,   TRANS,
+    TRANS,   TOGGLE_LAYER_COLOR, RGB_SPI, RGB_VAI, RGB_HUI, RGB_SAI,        KC_HOME, LSFT(KC_LEFT), TRANS,   LSFT(KC_RIGHT), KC_END,  TRANS,
+    TRANS,   RGB_NEXT,           RGB_SPD, RGB_VAD, RGB_HUD, RGB_SAD,        KC_LEFT, KC_DOWN,       KC_UP,   KC_RIGHT,       TRANS,   TRANS,
+    TRANS,   TRANS,              TRANS,   TRANS,   TRANS,   TRANS,          KC_UNDS, KC_MINUS,      KC_CIRC, KC_DLR,         KC_EXLM, TRANS,
+
+                                               KC_DELETE,  KC_ENTER,        TRANS,  TRANS
   ),
 };
 
@@ -193,3 +203,5 @@ void dance_0_reset(tap_dance_state_t *state, void *user_data) {
 tap_dance_action_t tap_dance_actions[] = {
         [DANCE_0] = ACTION_TAP_DANCE_FN_ADVANCED(on_dance_0, dance_0_finished, dance_0_reset),
 };
+
+// ex: ft=c
