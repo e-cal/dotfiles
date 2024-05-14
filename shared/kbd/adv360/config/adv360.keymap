@@ -88,70 +88,70 @@
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "plus_1";
-        bindings = <&kp LS(EQUAL)>, <&kp N1>;
+        bindings = <&kp N1>, <&kp LS(EQUAL)>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n2: lbkt_2 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "lbkt_2";
-        bindings = <&kp LBKT>, <&kp N2>;
+        bindings = <&kp N2>, <&kp LBKT>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n3: lbrc_3 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "lbrc_3";
-        bindings = <&kp LS(LBKT)>, <&kp N3>;
+        bindings = <&kp N3>, <&kp LS(LBKT)>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n4: lpar_4 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "lpar_4";
-        bindings = <&kp LS(N9)>, <&kp N4>;
+        bindings = <&kp N4>, <&kp LS(N9)>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n5: hash_5 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "hash_5";
-        bindings = <&kp LS(N3)>, <&kp N5>;
+        bindings = <&kp N5>, <&kp LS(N3)>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n6: equal_6 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "equal_6";
-        bindings = <&kp EQUAL>, <&kp N6>;
+        bindings = <&kp N6>, <&kp EQUAL>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n7: rpar_7 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "rpar_7";
-        bindings = <&kp LS(N0)>, <&kp N7>;
+        bindings = <&kp N7>, <&kp LS(N0)>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n8: rbrc_8 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "rbrc_8";
-        bindings = <&kp LS(RBKT)>, <&kp N8>;
+        bindings = <&kp N8>, <&kp LS(RBKT)>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n9: rbkt_9 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "rbkt_9";
-        bindings = <&kp RBKT>, <&kp N9>;
+        bindings = <&kp N9>, <&kp RBKT>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
     n0: astk_0 {
         compatible = "zmk,behavior-mod-morph";
         #binding-cells = <0>;
         label = "astk_0";
-        bindings = <&kp LS(N8)>, <&kp N0>;
+        bindings = <&kp N0>, <&kp LS(N8)>;
         mods = <(MOD_LSFT|MOD_RSFT)>;
     };
   };
@@ -162,19 +162,19 @@
 
         layer_0 {
 bindings = <
-&kp GRAVE     &n1           &n2           &n3            &n4              &n5         &tog 1                                                              &mo 3         &n6        &n7              &n8           &n9            &n0          &kp DELETE
-&kp TAB       &kp Q         &kp W         &kp E          &kp R            &kp T       &kp K_COPY                                                          &kp C_VOL_UP  &kp Y      &kp U            &kp I         &kp O          &kp P        &kp BSLH
-&lt 2 ESC     &kp A         &kp S         &hml LSHIFT D  &kp F            &kp G       &kp K_PASTE     &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS    &kp C_VOL_DN  &kp H      &kp J            &hmr RSHIFT K &kp L          &kp SEMI     &kp SQT
-&sticky_shift &kp Z         &kp X         &kp C          &kp V            &kp B                                   &none            &none                                &kp N      &kp M            &kp COMMA     &kp DOT        &kp FSLH     &kp RSHFT
-&kp LCTRL     &kp LS(GRAVE) &kp LS(N2)    &kp LS(N5)     &kp LS(N7)                   &kp BACKSPACE   &kp LMETA   &mo 1            &mo 1      &kp ENTER   &kp SPACE                &kp MINUS        &kp LS(N6)    &kp LS(N4)     &kp LS(N1)   &kp RCTRL
+&kp GRAVE     &n1           &n2           &n3            &n4              &n5         &tog 1                                                              &mo 3         &n6        &n7              &n8           &n9            &n0            &kp DELETE
+&kp TAB       &kp Q         &kp W         &kp E          &kp R            &kp T       &kp K_COPY                                                          &kp C_VOL_UP  &kp Y      &kp U            &kp I         &kp O          &kp P          &kp BSLH
+&lt 2 ESC     &kp A         &kp S         &hml LSHIFT D  &kp F            &kp G       &kp K_PASTE     &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS    &kp C_VOL_DN  &kp H      &kp J            &hmr RSHIFT K &kp L          &kp SEMI       &kp SQT
+&sticky_shift &hmr LALT Z   &kp X         &kp C          &kp V            &kp B                                   &none            &none                                &kp N      &kp M            &kp COMMA     &kp DOT        &hmr RALT FSLH &kp RSHFT
+&kp LCTRL     &kp LS(GRAVE) &kp LS(N2)    &kp LS(N5)     &kp LS(N7)                   &kp BACKSPACE   &kp LMETA   &mo 1            &mo 1      &kp ENTER   &kp SPACE                &kp MINUS        &kp LS(N6)    &kp LS(N4)     &kp LS(N1)     &kp RCTRL
 >;                                                                                                                                                                                                                     
         };                                                                                                                                                                                                             
                                                                                                                                                                                                                        
         layer_1 {                                                                                                                                                                                                 
 bindings = <                                                                                                                                                                                               
 &kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
-&none       &none          &none         &none          &none          &none           &none                                                               &none         &none          &none        &none         &none         &none        &none 
-&tog 1      &n1            &n2           &n3            &n4            &n5             &none           &none       &none            &tog 1     &none       &none         &n6            &n7          &n8           &n9           &n0          &none 
+&none       &none          &none         &kp LC(E)      &none          &none           &none                                                               &none         &kp LC(Y)      &none        &none         &none         &none        &none 
+&tog 1      &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LA(H)      &kp LA(J)    &kp LA(K)     &kp LA(L)     &none        &none 
 &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
 &none       &none          &none         &none          &none                          &none           &none       &none            &none      &none       &none                        &none        &none         &none         &none        &none 
 >;
@@ -183,10 +183,10 @@ bindings = <
         layer_2 {
 bindings = <                                                                                                                                                                                               
 &none       &none          &none         &none          &none          &none           &none                                                               &none         &none          &none        &none         &none         &none        &none 
-&none       &none          &none         &none          &none          &none           &none                                                               &none         &kp LS(LEFT)   &kp LS(LEFT) &none         &kp LS(RIGHT) &none        &none     
+&none       &none          &none         &none          &none          &none           &none                                                               &none         &kp HOME       &kp LS(LEFT) &none         &kp LS(RIGHT) &kp END      &none     
 &none       &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LEFT       &kp DOWN     &kp UP        &kp RIGHT     &none        &none  
 &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
-&none       &none          &none         &none          &none                          &kp DELETE      &none       &none            &none      &none       &none                        &none        &none         &none         &none        &none 
+&none       &none          &none         &none          &none                          &kp DELETE      &none       &none            &none      &none       &none                        &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
 >;
         };
 
