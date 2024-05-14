@@ -14,24 +14,21 @@ gen_output() {
 		icon="󰸈"
 	else
 		icon="${volicons[$lvl]}"
-        [[ -z $icon ]] && icon="${volicons[-1]}"
+		[[ -z $icon ]] && icon="${volicons[-1]}"
 	fi
 
-    # check if a source is running 
-    running=$(pamixer --list-sources | grep Running)
-    if [[ -n $running ]]; then
-        # and that the only one running is not analog-stereo.monitor
-        if [[ $(echo "$running" | wc -l) -eq 1 ]] && [[ $(echo "$running" | grep analog-stereo.monitor) ]]; then
-            in_use=0
-        else
-            in_use=1
-        fi
-    else
-        in_use=0
-    fi
-    
-	# pamixer --list-sources | rg -q Running
-	# [ $? -eq 1 ] && in_use=0 || in_use=1
+	# check if a source is running
+	running=$(pamixer --list-sources | grep Running)
+	if [[ -n $running ]]; then
+		# and that the only one running is not analog-stereo.monitor or AirFly
+		if [[ $(echo "$running" | wc -l) -eq 1 ]] && ([[ $(echo "$running" | grep -q "analog-stereo.monitor") ]] || $(echo "$running" | grep -q "AirFly Pro")); then
+			in_use=0
+		else
+			in_use=1
+		fi
+	else # nothing running
+		in_use=0
+	fi
 
 	echo '{"icon": "'"$icon "'", "percent": "'"$percent"'", "in_use": "'"$in_use"'"}'
 }
