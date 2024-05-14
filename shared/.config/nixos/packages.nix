@@ -35,7 +35,7 @@ in {
     cmake
     lua
     go
-    nodejs_21
+    nodejs_22
 
     # formatters
     yapf

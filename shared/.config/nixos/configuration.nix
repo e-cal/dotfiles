@@ -21,7 +21,6 @@
 
   programs.hyprland = {
     enable = true;
-    enableNvidiaPatches = true;
     xwayland.enable = true;
   };
   hardware.opengl.enable = true;
