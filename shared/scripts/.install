@@ -45,15 +45,17 @@ if confirm "Prepare local .config?"; then
 
 
     # Make files
-    [[ -f $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
+    # [[ -f $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
     # echo 'export ZDOTDIR=$HOME/.config/zsh' > ~/.zshenv
 
     # Remove common conflicts
+    [[ ! -L $HOME/.config/wgetrc ]] && [[ -f $HOME/.config/wgetrc ]] && rm $HOME/.config/wgetrc
     [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
     [[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
     [[ ! -L $HOME/.config/hypr/hyprland.conf ]] && [[ -f $HOME/.config/hypr/hyprland.conf ]] && rm $HOME/.config/hypr/hyprland.conf
     [[ ! -L $HOME/.config/lazygit/config.yml ]] && [[ -f $HOME/.config/lazygit/config.yml ]] && rm $HOME/.config/lazygit/config.yml
     [[ ! -L $HOME/.zshenv ]] && [[ -f $HOME/.zshenv ]] && rm $HOME/.zshenv
+
 fi
 
 if hostnamectl | grep -q "NixOS" && confirm "Setup system config?"; then
@@ -74,7 +76,7 @@ if hostnamectl | grep -q "NixOS" && confirm "Setup system config?"; then
         stow -R --dir=$DOTFILES shared --target=$HOST_DOTFILES --ignore=.config
     fi
     echo "Linking dotfiles to local system"
-    stow -R --dir=$DOTFILES $HOSTNAME --target=$HOME || exit 1
+    stow -R --dir=$DOTFILES $hostname --target=$HOME || exit 1
     if confirm "Copy and rebuild nix config?"; then
         pushd ~/.config/nixos &>/dev/null
         sudo cp *.nix /etc/nixos/
@@ -169,11 +171,11 @@ elif [[ `hostnamectl | grep -q "Arch Linux"` ]] && confirm "Install dependencies
             flameshot-git
 	fi
 
-    if confirm "Generate dotfiles for $HOSTNAME?"; then
+    if confirm "Generate dotfiles for $hostname?"; then
      stow --dir=$DOTFILES --target=$HOST_DOTFILES shared --dotfiles -R
     fi
 
     if confirm "Link dotfiles to local .config?"; then
-     stow $HOSTNAME -R
+     stow $hostname -R
     fi
 fi
