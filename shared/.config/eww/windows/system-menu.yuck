@@ -201,7 +201,15 @@
         (button
           :halign "end"
           :class "power-button icon"
-          :onclick "cloud umount all;reboot"
+          :onclick "systemctl suspend"
+          "󰒲"))
+      (box
+        :space-evenly false
+        :halign "end"
+        (button
+          :halign "end"
+          :class "power-button icon"
+          :onclick "cloud umount all && reboot || notify-send 'Could not unmount and reboot'"
           "󰜉"))
       (box ; power button
         :space-evenly false
@@ -209,7 +217,7 @@
         (button
           :halign "end"
           :class "power-button icon"
-          :onclick "cloud umount all;shutdown now"
+          :onclick "cloud umount all && shutdown now || notify-send 'Could not unmount and shutdown'"
           "󰐥"))))))
 
 (defwindow system-menu
