@@ -1,0 +1,1 @@
+../../../shared/.config/nixos/flake.nix
