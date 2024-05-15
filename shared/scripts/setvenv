@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+#!/usr/bin/env bash
+
+VIRTUALENV_HOME=${VIRTUALENV_HOME:-~/.virtualenvs}
+NEW_SYMBOL="󱧕"
+
+# Get the list of virtual environments, adding the new option
+get_venv_list() {
+  /usr/bin/env ls $VIRTUALENV_HOME
+  echo "$NEW_SYMBOL new"
+}
+
+if [[ -z $1 ]]; then
+  name=$(get_venv_list | fzf --header "virtual envs")
+else
+  name=$1
+  if [[ ! $(/usr/bin/env ls $VIRTUALENV_HOME) =~ .*"$name".* ]]; then
+    name=$(get_venv_list | fzf --header "virtual envs")
+  fi
+fi
+
+if [[ "$name" == "$NEW_SYMBOL new" ]]; then
+    mkvenv
+    exit
+fi
+
+if [[ -z $name ]]; then
+  echo "No virtual environment selected. Aborting."
+  exit 1
+fi
+
+if [[ -n "$name" ]]; then
+  echo "$name" > .venv
+  VENV_PATH="$VIRTUALENV_HOME/$name"
+  if [[ -d "$VENV_PATH" ]]; then
+    source "$VENV_PATH/bin/activate"
+  else
+    echo "Virtual environment $name not found. Aborting."
+    exit 1
+  fi
+fi

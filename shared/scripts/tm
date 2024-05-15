@@ -13,7 +13,7 @@ IN_TMUX = os.getenv("TMUX") is not None
 SHELL = "zsh"
 STARTCMD = f"sleep 0.1 && triangles && echo; exec {SHELL}"
 
-ACTION_ICON = "󱞪 "
+ACTION_ICON = " "
 
 PROJECT_DIR = HOME / "projects"
 
@@ -30,6 +30,58 @@ actions: dict[str, Callable] = {}
 def action(func):
     actions[func.__name__] = func
     return func
+
+
+NIX_PYTHON_SHELL = """{ pkgs ? import <nixpkgs> { } }:
+
+let
+  myPython = pkgs.python311;
+  pythonPackages = pkgs.python311Packages;
+
+  pythonWithPkgs = myPython.withPackages (pythonPkgs:
+    with pythonPkgs; [
+      ipython
+      pip
+      setuptools
+      virtualenvwrapper
+      wheel
+      black
+    ]);
+
+  # troublesome packages go here
+  extraBuildInputs = with pkgs; [
+    # pythonPackages.pandas
+    # pythonPackages.numpy
+    # pythonPackages.torch
+  ];
+
+  buildInputs = with pkgs;
+    [ clang llvmPackages_16.bintools rustup ] ++ extraBuildInputs;
+
+  lib-path = with pkgs; lib.makeLibraryPath buildInputs;
+
+in pkgs.mkShell {
+  buildInputs = [
+    pythonWithPkgs
+    pkgs.readline
+    pkgs.libffi
+    pkgs.openssl
+    pkgs.git
+    pkgs.openssh
+    pkgs.rsync
+  ] ++ extraBuildInputs;
+
+  shellHook = ''
+    SOURCE_DATE_EPOCH=$(date +%s)
+    export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib-path}"
+    [[ ! -f .venv ]] && setvenv
+    VENV=$(cat .venv)
+    source $VIRTUALENV_HOME/$VENV/bin/activate
+    deactivate
+    exec zsh
+  '';
+}
+"""
 
 
 def fzf_menu(options: list[str], title="menu", binds: dict[str, str] | None = None, fzf_options=""):
@@ -63,14 +115,15 @@ def start_session(session, work_dir: Path | None = None, run=None):
     run_cmd(" ".join(cmd))
 
 
-def attach(session, work_dir: Path | None = None, run=None):
+def attach(session, work_dir: Path | None = None):
     session = session.replace(".", "_")
     if not session_exists(session):
-        start_session(session, work_dir, run)
+        start_session(session, work_dir)
     attach_cmd = "tmux switch" if IN_TMUX else "tmux attach"
     run_cmd(f"{attach_cmd} -t {session}")
-    if run:
-        run_cmd(f"tmux run-shell -t {session} '{run}'")
+
+    if work_dir and (work_dir / "shell.nix").exists():
+        run_cmd(f"tmux send-keys -t {session} 'nix-shell' ENTER")
 
 
 def startup(kind="main"):
@@ -135,13 +188,13 @@ def kill(session=None):
         exit()
 
     if not session:
-        opts = [s for s in ACTIVE_SESSIONS if s != "main"] + [f"{ACTION_ICON}TMUX", f"{ACTION_ICON}SELF"]
+        opts = [s for s in ACTIVE_SESSIONS if s != "main"] + [f"{ACTION_ICON}tmux", f"{ACTION_ICON}current"]
         session = fzf_menu(opts, "kill")
 
-    if session == f"{ACTION_ICON}TMUX":
+    if session == f"{ACTION_ICON}tmux":
         run_cmd('pgrep -f "bash.*tm startup" | xargs -n1 kill tmux kill-server')
         run_cmd("tmux kill-server")
-    elif session == f"{ACTION_ICON}SELF":
+    elif session == f"{ACTION_ICON}current":
         session = run_cmd("tmux display-message -p '#S'")
         attach("main")
         run_cmd(f"tmux kill-session -t {session}")
@@ -166,15 +219,14 @@ def reset():
 def project(sel=None):
     projects = {x.name: x for x in PROJECT_DIR.iterdir() if x.is_dir()}
 
-    projects["NEW"] = None  # type: ignore
+    projects[f"{ACTION_ICON}new"] = None  # type: ignore
 
     if not sel:
         sel = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
 
-    if sel.upper() == "NEW":
+    if sel.upper() == f"{ACTION_ICON}new":
         name = input("project name / repo: ")
-        if not name:
-            return
+        if not name: return
 
         if name in ["repo", "repos", "list", "search", "clone"]:
             repos = run_cmd("gh repo list --limit 1000 --json name -q '.[].name'")
@@ -194,6 +246,11 @@ def project(sel=None):
                     f"cd $HOME/projects/{name} && touch README.md && git init && git add . && git commit -m 'Batman' && gh repo create -s . --push --private"
                 )
                 print("Initialized a private repo.")
+
+        if input("init python nix shell? ").lower() in ("y", "yes"):
+            with open(PROJECT_DIR.joinpath(name, "shell.nix"), "w") as f:
+                f.write(NIX_PYTHON_SHELL)
+            print("Initialized python nix shell.")
 
         attach(name, PROJECT_DIR.joinpath(name))
         return
