@@ -162,6 +162,7 @@ def reset():
         f'tmux new -s {tmp} -d && tmux switch -t {tmp} && tmux send-keys -t {tmp} "tm kill {cur} && tm attach {cur}; tm kill {tmp}" ENTER'
     )
 
+
 PYTHON_NIX_SHELL = """{ pkgs ? import <nixpkgs> { } }:
 
 let
@@ -216,20 +217,26 @@ in pkgs.mkShell {
 """
 
 
-
 @action
 def project(sel=None):
     projects = {x.name: x for x in PROJECT_DIR.iterdir() if x.is_dir()}
 
     projects[f"{ACTION_ICON}new"] = None  # type: ignore
+    projects[f"{ACTION_ICON}remove"] = None  # type: ignore
 
-    if not sel:
+    if not sel: sel = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
+
+    if sel == f"{ACTION_ICON}remove":
+        del projects[f"{ACTION_ICON}new"]
+        del projects[f"{ACTION_ICON}remove"]
         sel = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
+        if input(f"delete {sel}? ").lower() in ["y", "yes"]:
+            run_cmd(f"rm -rf {projects[sel]}")
+        return
 
     if sel == f"{ACTION_ICON}new":
-        name = input("project name / repo: ")
+        name = input("project: ")
         if not name: return
-
         if name in ["repo", "repos", "list", "search", "clone"]:
             repos = run_cmd("gh repo list --limit 1000 --json name -q '.[].name'")
             repo = fzf_menu(repos.split(), "repo")
