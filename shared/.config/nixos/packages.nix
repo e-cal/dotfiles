@@ -93,7 +93,15 @@ in {
   ];
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    (nerdfonts.override {
+      fonts = [
+        "FantasqueSansMono"
+        "FiraCode"
+        "JetBrainsMono"
+        "CommitMono"
+        "CascadiaCode"
+      ];
+    })
     material-icons
   ];
 
