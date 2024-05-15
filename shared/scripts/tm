@@ -3,90 +3,49 @@
 import os
 import sys
 import readline
-from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable
 from uuid import uuid4 as uuid
 
 HOME = Path.home()
+IN_TMUX = os.getenv("TMUX") is not None
 
-# Add this script to your path, and make sure it is executable!
-# (easiest way is to copy it or symlink it to /usr/bin)
-
-# To auto-launch with your terminal, add:
-# -c "tm startup || exec [shell]"
-# to your shell in your terminal config.
-# (see global/dot-config/kitty/kitty.conf for an example)
-
-# To enable the floating window in tmux, add this line to your tmux.conf:
-# bind-key Enter display-popup -E "tm"
-# this binds the popup to <prefix>Enter.
-
-################################################################################
-# USER CONFIG
-################################################################################
-
-# Set your shell, startcmd, and project folders here
 SHELL = "zsh"
-STARTCMD = "sleep 0.1 && triangles && echo"
-DIRICON = "󱞪 "
+STARTCMD = f"sleep 0.1 && triangles && echo; exec {SHELL}"
 
+ACTION_ICON = "󱞪 "
 
-@dataclass
-class ProjectDir:
-    """Describes the project directory"""
-
-    name: str
-    path: Path
-    rename: dict[Path, str]  # format: {"path":"name"}
-
-
-# Define top level sub-menu entries for distinct project directories
-PROJECTDIR = ProjectDir(
-    name="projects",
-    path=HOME / "projects",
-    rename={
-        # HOME / "projects/ecal.dev": "website",
-    },
-)
-
-################################################################################
-# END OF USER CONFIG
-################################################################################
-
-startcmd = f"exec {SHELL}" if not STARTCMD else f"{STARTCMD} && exec {SHELL}"
-in_tmux = os.getenv("TMUX") is not None
-menus = ["reset", "kill", "new"]
+PROJECT_DIR = HOME / "projects"
 
 
 def run_cmd(cmd):
-    """Runs a shell command and returns the output.
-    If there is more than one line in the output, a list of the lines is returned.
-    """
-    res = os.popen(cmd).read().strip()
-    return res
+    return os.popen(cmd).read().strip()
 
 
-# Get list of active sessions
-sessions = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'").splitlines()
+ACTIVE_SESSIONS = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'").splitlines()
 
-mounted = run_cmd("cloud mounted")
-if "storj" in mounted:
-    PROJECTDIR.rename[HOME / "storj/masters"] = "masters"
-    # HOME / "storj/masters": "masters"
+actions: dict[str, Callable] = {}
 
 
-def fzf_menu(options, title="menu", binds=None, fzf_options=""):
-    binds_txt = ""
+def action(func):
+    actions[func.__name__] = func
+    return func
+
+
+def fzf_menu(options: list[str], title="menu", binds: dict[str, str] | None = None, fzf_options=""):
+    fzf_binds = ""
     if binds:
-        binds_txt = '--bind="'
+        fzf_binds = '--bind="'
         for key, cmd in binds.items():
-            binds_txt += f"{key}:{cmd},"
-        binds_txt = binds_txt[:-1] + '"'
+            fzf_binds += f"{key}:{cmd},"
+        fzf_binds = fzf_binds[:-1] + '"'
 
-    options = sorted(options, key=lambda x: (x != "main", x))
+    options = sorted(options, key=lambda x: (ACTION_ICON in x, x != "main", -len(x), x))
     options_str = "\n".join(options)
     try:
-        return run_cmd(f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {binds_txt}').strip()
+        res = run_cmd(f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {fzf_binds}').strip()
+        if not res: exit()
+        return res
     except:  # noqa
         exit(1)
 
@@ -95,20 +54,20 @@ def session_exists(session):
     return os.popen(f"tmux has-session -t={session} &>/dev/null").close() is None
 
 
-def start_session(session, work_dir=None, run=None):
+def start_session(session, work_dir: Path | None = None, run=None):
     if work_dir and not work_dir.exists(): exit(1)
-    cmd = [f"tmux new -s {session} -d ", f'"{startcmd}"']
+    cmd = [f"tmux new -s {session} -d ", f'"{STARTCMD}"']
     if work_dir:
         cmd.insert(1, f"-c {work_dir}")
 
     run_cmd(" ".join(cmd))
 
 
-def attach(session, work_dir=None, run=None):
+def attach(session, work_dir: Path | None = None, run=None):
     session = session.replace(".", "_")
     if not session_exists(session):
         start_session(session, work_dir, run)
-    attach_cmd = "tmux switch" if in_tmux else "tmux attach"
+    attach_cmd = "tmux switch" if IN_TMUX else "tmux attach"
     run_cmd(f"{attach_cmd} -t {session}")
     if run:
         run_cmd(f"tmux run-shell -t {session} '{run}'")
@@ -132,6 +91,7 @@ def startup(kind="main"):
             attach("main")
 
 
+@action
 def new(name=None, work_dir=None):
     if not work_dir:
         work_dir = run_cmd(
@@ -154,7 +114,9 @@ def new(name=None, work_dir=None):
         )
     if not work_dir: exit()
 
-    name = work_dir.split("/")[-1]
+    work_dir = Path(work_dir).expanduser()
+    name = work_dir.name
+
     readline.set_startup_hook(lambda: readline.insert_text(name))  # type: ignore
     try:
         name = input("session name: ")
@@ -162,30 +124,37 @@ def new(name=None, work_dir=None):
         readline.set_startup_hook()
     if not name: exit()
 
+    print(work_dir)
     attach(name, work_dir)
 
 
+@action
 def kill(session=None):
-    if not sessions:
+    if not ACTIVE_SESSIONS:
         print("no active sessions")
-        exit(1)
+        exit()
 
     if not session:
-        session = fzf_menu(sessions + ["TMUX"], "kill")
-        if not session:
-            exit(1)
+        opts = [s for s in ACTIVE_SESSIONS if s != "main"] + [f"{ACTION_ICON}TMUX", f"{ACTION_ICON}SELF"]
+        session = fzf_menu(opts, "kill")
 
-    if session == "TMUX":
+    if session == f"{ACTION_ICON}TMUX":
         run_cmd('pgrep -f "bash.*tm startup" | xargs -n1 kill tmux kill-server')
         run_cmd("tmux kill-server")
+    elif session == f"{ACTION_ICON}SELF":
+        session = run_cmd("tmux display-message -p '#S'")
+        attach("main")
+        run_cmd(f"tmux kill-session -t {session}")
     else:
+        if session == run_cmd("tmux display-message -p '#S'"): attach("main")
         run_cmd(f"tmux kill-session -t {session}")
 
 
+@action
 def reset():
-    if not in_tmux:
-        print("nothing to reset")
-        exit(1)
+    if not IN_TMUX:
+        print("not in tmux")
+        exit()
     cur = run_cmd("tmux display-message -p '#S'")
     tmp = uuid()
     run_cmd(
@@ -193,20 +162,14 @@ def reset():
     )
 
 
+@action
 def project(sel=None):
-    if PROJECTDIR.rename:  # rename projects
-        projects = {x.name: x for x in PROJECTDIR.path.iterdir() if x.is_dir() and x not in PROJECTDIR.rename}
-        for path, name in PROJECTDIR.rename.items():
-            projects[name] = path
-    else:
-        projects = {x.name: x for x in PROJECTDIR.path.iterdir() if x.is_dir()}
+    projects = {x.name: x for x in PROJECT_DIR.iterdir() if x.is_dir()}
 
     projects["NEW"] = None  # type: ignore
 
     if not sel:
-        sel = fzf_menu(list(projects.keys()), title=PROJECTDIR.name)
-    if not sel:
-        return
+        sel = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
 
     if sel.upper() == "NEW":
         name = input("project name / repo: ")
@@ -216,7 +179,6 @@ def project(sel=None):
         if name in ["repo", "repos", "list", "search", "clone"]:
             repos = run_cmd("gh repo list --limit 1000 --json name -q '.[].name'")
             repo = fzf_menu(repos.split(), "repo")
-            if not repo: exit(1)
             name = "e-cal/" + repo
         if name.startswith("http") or name.startswith("git"):
             url = name
@@ -226,67 +188,57 @@ def project(sel=None):
             run_cmd(f"gh repo clone {name} $HOME/projects/{name.split('/')[-1]}")
             name = name.split("/")[-1]
         else:
-            PROJECTDIR.path.joinpath(name).mkdir(parents=True, exist_ok=True)
+            PROJECT_DIR.joinpath(name).mkdir(parents=True, exist_ok=True)
             if input("init git repo? ").lower() in ("y", "yes"):
                 run_cmd(
-                    f"cd $HOME/projects/{name} && touch README.md && git init && git add . && git commit -m 'batman' && gh repo create -s . --push --private"
+                    f"cd $HOME/projects/{name} && touch README.md && git init && git add . && git commit -m 'Batman' && gh repo create -s . --push --private"
                 )
                 print("Initialized a private repo.")
 
-        attach(name, PROJECTDIR.path.joinpath(name))
+        attach(name, PROJECT_DIR.joinpath(name))
         return
 
     attach(sel.replace(".", "_"), projects[sel])
 
 
-def get_menu(refresh=False):
-    # project_dirs = [proj_dir.name for proj_dir in PROJECTDIR]
-    submenus = [*menus, PROJECTDIR.name]
-    submenus_map = {f"{DIRICON}{sub.upper()}": sub for sub in submenus}
-    options = sessions + list(submenus_map.keys())
-
-    if refresh:
-        print("\n".join(options))
-
-    return options, submenus_map
+def handle_args():
+    op = sys.argv[1]
+    if op not in globals():
+        expand = {
+            "a": "attach",
+            "n": "new",
+            "r": "reset",
+            "k": "kill",
+        }
+        op = expand.get(op, op)
+    if op in ("p", "project", "projects"):
+        if len(sys.argv) > 2:
+            project(sys.argv[2])
+        else:
+            project()
+        exit()
+    elif op in globals():
+        try:
+            globals()[op](*sys.argv[2:])
+        except TypeError as e:
+            print(e)
+            exit(1)
+    else:
+        print("invalid command")
+        exit(1)
 
 
 def main():
-    # Handle args
     if len(sys.argv) > 1:
-        op = sys.argv[1]
-        if op not in globals():
-            expand = {
-                "a": "attach",
-                "n": "new",
-                "r": "reset",
-                "k": "kill",
-            }
-            op = expand[op] if op in expand else op
-        if op in ("p", "project", "projects"):
-            if len(sys.argv) > 2:
-                project(sys.argv[2])
-            else:
-                project()
-            exit()
-        elif op in globals():
-            try:
-                globals()[op](*sys.argv[2:])
-            except TypeError as e:
-                print(e)
-                exit(1)
-        else:
-            print("invalid command")
-            exit(1)
+        handle_args()
         exit()
 
-    # Main menu
-    if not sessions:  # start tmux if its not running
+    if len(ACTIVE_SESSIONS) == 0:
         print("starting tmux server...")
         startup()
         return
 
-    options, submenus_map = get_menu()
+    options = ACTIVE_SESSIONS + [ACTION_ICON + a for a in actions]
     sel = fzf_menu(
         options,
         "main menu",
@@ -294,19 +246,12 @@ def main():
             "ctrl-d": "execute(tm kill {})+reload(tm get_menu refresh)",
         },
     )
+    if not sel: exit()
 
-    if not sel:
-        exit(1)
+    sel = sel.replace(ACTION_ICON, "")
 
-    if sel in sessions:  # if sessions selected, attach to it
-        attach(sel)
-    else:
-        sel = submenus_map[sel]  # map sel back to lower case name
-        if sel == "projects":
-            project()
-        else:
-            globals()[sel]()
+    if sel in ACTIVE_SESSIONS: attach(sel)
+    else: actions[sel]()
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": main()
