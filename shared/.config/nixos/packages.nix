@@ -1,5 +1,10 @@
 { config, lib, pkgs, inputs, ... }:
 let
+  stable = import (builtins.fetchTarball
+    "https://github.com/nixos/nixpkgs/tarball/nixos-23.11") {
+      config = config.nixpkgs.config;
+    };
+
   unstable = import (builtins.fetchTarball
     "https://github.com/nixos/nixpkgs/tarball/nixos-unstable") {
       config = config.nixpkgs.config;
@@ -104,9 +109,10 @@ in {
 
       eww-wayland
       cinnamon.nemo
-      albert
+      stable.albert
       hyprpicker
       unstable.flameshot
+      unstable.satty
 
       vial
       unstable.keymapp
