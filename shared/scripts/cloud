@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 source parseargs
 
-mkdir -p ~/cloud/box ~/cloud/gdrive ~/cloud/storj
+[[ -d ~/cloud ]] || mkdir ~/cloud
+[[ -d ~/cloud/box ]] || mkdir ~/cloud/box
+[[ -d ~/cloud/gdrive ]] || mkdir ~/cloud/gdrive
 
 case $1 in
 mount)
@@ -30,6 +32,9 @@ umount)
 		cloud unlink $2
 	fi
 	;;
+setup)
+    rclone config
+    ;;
 link)
 	ln -s ~/cloud/$2 ~
 	;;
