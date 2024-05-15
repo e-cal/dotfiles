@@ -75,16 +75,6 @@ uni() {
 }
 
 
-setvenv() {
-    if [[ -z $1 ]]; then
-        name=`/usr/bin/env ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
-    else
-        name=$1
-        [[ ! `/usr/bin/env ls $VIRTUALENV_HOME` =~ .*"$name".* ]] && name=`/usr/bin/ls $VIRTUALENV_HOME | fzf --header "virtual envs"`
-    fi
-	[[ -z $name ]] || echo $name > .venv
-}
-
 mkkernel() {
     if [[ -f ".venv" ]]; then
         pip install jupyter ipykernel jupyter_contrib_nbextensions jupyterthemes jupyter_nbextensions_configurator jupyter_ascending
