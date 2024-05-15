@@ -32,58 +32,6 @@ def action(func):
     return func
 
 
-NIX_PYTHON_SHELL = """{ pkgs ? import <nixpkgs> { } }:
-
-let
-  myPython = pkgs.python311;
-  pythonPackages = pkgs.python311Packages;
-
-  pythonWithPkgs = myPython.withPackages (pythonPkgs:
-    with pythonPkgs; [
-      ipython
-      pip
-      setuptools
-      virtualenvwrapper
-      wheel
-      black
-    ]);
-
-  # troublesome packages go here
-  extraBuildInputs = with pkgs; [
-    # pythonPackages.pandas
-    # pythonPackages.numpy
-    # pythonPackages.torch
-  ];
-
-  buildInputs = with pkgs;
-    [ clang llvmPackages_16.bintools rustup ] ++ extraBuildInputs;
-
-  lib-path = with pkgs; lib.makeLibraryPath buildInputs;
-
-in pkgs.mkShell {
-  buildInputs = [
-    pythonWithPkgs
-    pkgs.readline
-    pkgs.libffi
-    pkgs.openssl
-    pkgs.git
-    pkgs.openssh
-    pkgs.rsync
-  ] ++ extraBuildInputs;
-
-  shellHook = ''
-    SOURCE_DATE_EPOCH=$(date +%s)
-    export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib-path}"
-    [[ ! -f .venv ]] && setvenv
-    VENV=$(cat .venv)
-    source $VIRTUALENV_HOME/$VENV/bin/activate
-    deactivate
-    exec zsh
-  '';
-}
-"""
-
-
 def fzf_menu(options: list[str], title="menu", binds: dict[str, str] | None = None, fzf_options=""):
     fzf_binds = ""
     if binds:
@@ -214,6 +162,60 @@ def reset():
         f'tmux new -s {tmp} -d && tmux switch -t {tmp} && tmux send-keys -t {tmp} "tm kill {cur} && tm attach {cur}; tm kill {tmp}" ENTER'
     )
 
+PYTHON_NIX_SHELL = """{ pkgs ? import <nixpkgs> { } }:
+
+let
+  name = "NAME";
+
+  python = pkgs.python311;
+  pythonPackages = pkgs.python311Packages;
+
+  pythonWithPkgs = python.withPackages (pythonPkgs:
+    with pythonPkgs; [
+      ipython
+      pip
+      setuptools
+      wheel
+    ]);
+
+  # troublesome packages go here
+  extraBuildInputs = with pkgs; [
+    # pythonPackages.pandas
+    # pythonPackages.numpy
+    # pythonPackages.torch
+  ];
+
+  buildInputs = with pkgs;
+    [ clang llvmPackages_16.bintools rustup ] ++ extraBuildInputs;
+
+  lib-path = with pkgs; lib.makeLibraryPath buildInputs;
+
+in pkgs.mkShell {
+  name = name;
+
+  buildInputs = [
+    pythonWithPkgs
+    pkgs.readline
+    pkgs.libffi
+    pkgs.openssl
+    pkgs.git
+    pkgs.openssh
+    pkgs.rsync
+  ] ++ extraBuildInputs;
+
+  shellHook = ''
+    SOURCE_DATE_EPOCH=$(date +%s)
+    export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib-path}"
+    [[ ! -f .venv ]] && setvenv
+    VENV=$(cat .venv)
+    source $VIRTUALENV_HOME/$VENV/bin/activate
+    deactivate
+    exec zsh
+  '';
+}
+"""
+
+
 
 @action
 def project(sel=None):
@@ -224,7 +226,7 @@ def project(sel=None):
     if not sel:
         sel = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
 
-    if sel.upper() == f"{ACTION_ICON}new":
+    if sel == f"{ACTION_ICON}new":
         name = input("project name / repo: ")
         if not name: return
 
@@ -249,7 +251,7 @@ def project(sel=None):
 
         if input("init python nix shell? ").lower() in ("y", "yes"):
             with open(PROJECT_DIR.joinpath(name, "shell.nix"), "w") as f:
-                f.write(NIX_PYTHON_SHELL)
+                f.write(PYTHON_NIX_SHELL.replace("NAME", name))
             print("Initialized python nix shell.")
 
         attach(name, PROJECT_DIR.joinpath(name))
