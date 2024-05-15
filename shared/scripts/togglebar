@@ -7,7 +7,8 @@ if ! [[ $? -eq 0 ]]; then
 	exit 0
 fi
 
-open=$(eww windows | grep bar | grep "*" | wc -l)
+# open=$(eww windows | grep bar | grep "*" | wc -l)
+open=`eww active-windows | grep bar | wc -l`
 echo "$open open"
 
 if [[ $open -eq 0 ]]; then
