@@ -1,5 +1,4 @@
 format = """
-$time\
 $nix_shell\
 $hg_branch\
 $docker_context\
@@ -34,13 +33,11 @@ $openstack\
 $env_var\
 $crystal\
 $lua\
-
 $jobs\
 
     $fill\
-$cmd_duration\
-
-        $line_break\
+    $cmd_duration\
+    $line_break\
 
 $directory\
 $git_branch\
@@ -48,7 +45,9 @@ $git_commit\
 $git_state\
 $git_status\
 
-        $line_break\
+    $fill\
+    $time\
+    $line_break\
 
 $username\
 $hostname\
@@ -61,49 +60,51 @@ $character\
 command_timeout = 500
 
 [character]
-success_symbol = "[󱞪](bold green)"
-vicmd_symbol = "[](bold blue)"
+success_symbol = "[](bold green)"
+vicmd_symbol = "[](bold #fab387)"
 error_symbol = "[󱎘](bold red)"
+
+
 
 [fill]
 symbol = " "
 
 [cmd_duration]
 min_time = 1_000
-style = "#6A6A6A"
-format = "[$duration]($style) "
+style = "#72778C"
+format = "[󱦟 $duration]($style) "
 
 [time]
-time_format = "%I:%M%p"
-format = "🕙 $time($style) "
-style = "bright-white"
-disabled = true
+time_format = "%H:%M"
+format = "[$time]($style) "
+style = "#72778C"
+disabled = false
 
 [package]
 disabled = true
 
 [jobs]
 symbol = "󱦟"
-style = "#6A6A6A"
+style = "#72778C"
 format = "[$symbol (×$number)]($style) "
 
 [git_branch]
 symbol = "󰘬 "
-format = ' [$symbol$branch]($style) '
+format = '[$symbol$branch]($style) '
 
 [git_status]
 format = '([$all_status$ahead_behind]($style))'
-style = "white"
+style = "#898FA6"
+stashed = "󰆓 "
 conflicted = "󰗖 "
 ahead = "󰐙 ×${count} "
 behind = "󰍷 ×${count} "
 diverged = "󰐙 ×${ahead_count} 󰍷 ×${behind_count} "
-modified = "󰏫 ×${count} "
+modified = "󱇧 ×${count} "
 untracked = "󱀶 ×${count} "
-stashed = "󰆓 "
-staged = "󰈖 ×${count} "
-renamed = "󰈝 ×${count} "
-deleted = "󰩹 ×${count} "
+staged = "󰝒 ×${count} "
+renamed = "󰪹 ×${count} "
+deleted = "󱀭 ×${count} "
 
 [gcloud]
 format = '[$symbol$account(@$domain)(\($region\))]($style)'
@@ -128,8 +129,6 @@ read_only = " "
 
 [directory.substitutions]
 "~/projects" = "projects"
-"~/Dropbox/uni" = "uni"
-".dotfiles" = "dotfiles"
 
 [custom.lvl]
 command = "show_sh_lvl"
