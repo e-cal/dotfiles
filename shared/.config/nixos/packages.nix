@@ -94,16 +94,14 @@ in {
 
   fonts.packages = with pkgs; [
     (nerdfonts.override {
-      fonts = [
-        "FantasqueSansMono"
-        "FiraCode"
-        "JetBrainsMono"
-        "CommitMono"
-        "CascadiaCode"
-      ];
+      fonts = [ "JetBrainsMono" "FantasqueSansMono" "FiraCode" ];
     })
     material-icons
+    noto-fonts
+    dejavu_fonts
+    liberation_ttf
   ];
+
 
   # users and user packages (gui)
   users.users.ecal = {
@@ -114,6 +112,7 @@ in {
       kitty
       firefox
       spotify
+      chromium
 
       eww-wayland
       cinnamon.nemo
