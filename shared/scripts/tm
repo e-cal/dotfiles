@@ -72,6 +72,7 @@ def attach(session, work_dir: Path | None = None):
 
     if work_dir and (work_dir / "shell.nix").exists():
         run_cmd(f"tmux send-keys -t {session} 'nix-shell' ENTER")
+        run_cmd(f"tmux send-keys -t {session} 'clear; triangles' ENTER")
 
 
 def startup(kind="main"):
