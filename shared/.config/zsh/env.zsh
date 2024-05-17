@@ -30,23 +30,27 @@ if [[ $HOSTNAME == "gaius" ]] then
 
 fi
 
-# zsh
+# completions
+export ZSH_COMPDUMP="$XDG_CACHE_HOME"/zsh/compdump
 [[ -d "$XDG_CACHE_HOME"/zsh ]] || mkdir -p "$XDG_CACHE_HOME"/zsh
-zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
 
+# prompt
 export PROMPT_EOL_MARK=""
 export PS2="  "
 export ZVM_CURSOR_STYLE_ENABLED=false
-export ZSH_COMPDUMP="$XDG_CACHE_HOME"/zsh/compdump
+
+# history
 export HISTFILE="$XDG_CACHE_HOME"/zsh/history
 export HISTSIZE=10000
-export SAVEHIST=10000
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
+export SAVEHIST=$HISTSIZE
+export HISTDUP=erase
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_find_no_dups
+setopt hist_ignore_space
 setopt appendhistory
-setopt hist_verify
+setopt sharehistory
 
 
 # fzf

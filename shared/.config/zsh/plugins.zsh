@@ -1,19 +1,22 @@
+autoload -Uz compinit
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
+compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
+zstyle ':completion:*' menu no
+setopt globdots
 # ------------------------------------------------------------------------------
 #                              Load git plugins
 # ------------------------------------------------------------------------------
+# custom plugin manager hell yea
 
-autoload -Uz compinit
-compinit
-
-GIT_AUTO_FETCH_INTERVAL=300 # auto-fetch every 5m
-zstyle :omz:plugins:ssh-agent identities id_ed25519
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'COLUMNS=$((`tput cols` / 2)) exa --group-directories-first --icons --color=always -a $realpath'
 
 declare -A plugins
 plugins=(
         ["zsh-autosuggestions"]="https://github.com/zsh-users/zsh-autosuggestions"
         ["zsh-vi-mode"]="https://github.com/jeffreytse/zsh-vi-mode"
         ["fast-syntax-highlighting"]="https://github.com/zdharma-continuum/fast-syntax-highlighting"
+        ["fzf-tab"]="https://github.com/Aloxaf/fzf-tab"
     )
 
 if [[ ! -d "$HOME/.config/zsh/plugins" ]]; then
@@ -24,12 +27,12 @@ for plugin in "${(@k)plugins}"; do
     if [[ ! -d "$HOME/.config/zsh/plugins/$plugin" ]]; then
         git clone "${plugins[$plugin]}" "$HOME/.config/zsh/plugins/$plugin"
     fi
-    # no ".plugin" infix
-    if [[ "$plugin" == "zsh-autosuggestions" ]]; then
+    # autosuggestions has no ".plugin" infix
+    if [[ "$plugin" == "zsh-autosuggestions" ]]; then  
         source "$HOME/.config/zsh/plugins/$plugin/$plugin.zsh"
-        continue
+    else
+        source "$HOME/.config/zsh/plugins/$plugin/$plugin.plugin.zsh"
     fi
-    source "$HOME/.config/zsh/plugins/$plugin/$plugin.plugin.zsh"
 done
 
 # -----------------------------------------------------------------------------
@@ -132,6 +135,8 @@ zle -N zle-line-init _git-auto-fetch_zle-line-init
 # -----------------------------------------------------------------------------
 #                                     Git
 # ----------------------------------------------------------------------------- 
+GIT_AUTO_FETCH_INTERVAL=300
+
 # Git version checking
 autoload -Uz is-at-least
 git_version="${${(As: :)$(git version 2>/dev/null)}[3]}"
@@ -774,6 +779,8 @@ unset git_version
 # -----------------------------------------------------------------------------
 #                                  SSH Agent
 # -----------------------------------------------------------------------------
+zstyle :omz:plugins:ssh-agent identities id_ed25519
+
 # Get the filename to store/lookup the environment from
 ssh_env_cache="$HOME/.ssh/environment-$SHORT_HOST"
 
@@ -914,9 +921,10 @@ fi
 unset CASE_SENSITIVE HYPHEN_INSENSITIVE
 
 # Complete . and .. special directories
-zstyle ':completion:*' special-dirs true
+# zstyle ':completion:*' special-dirs true
 
-zstyle ':completion:*' list-colors ''
+# zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
 
 if [[ "$OSTYPE" = solaris* ]]; then

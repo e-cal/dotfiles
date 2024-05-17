@@ -3,6 +3,9 @@ function zvm_after_init() {
     source "$(fzf-share)/key-bindings.zsh"
     source "$(fzf-share)/completion.zsh"
 
+    bindkey "${terminfo[kcuu1]}" history-search-backward
+    bindkey "${terminfo[kcud1]}" history-search-forward
+
 	bindkey "^l" vi-forward-word
 	bindkey "^w" vi-forward-blank-word
     # bindkey '^h' backward-delete-word
