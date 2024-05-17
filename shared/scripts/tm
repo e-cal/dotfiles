@@ -16,6 +16,10 @@ STARTCMD = f"sleep 0.1 && divider && echo; exec {SHELL}"
 ACTION_ICON = " "
 
 PROJECT_DIR = HOME / "projects"
+projects = {x.name: x for x in PROJECT_DIR.iterdir() if x.is_dir()}
+projects[f"{ACTION_ICON}new"] = None  # type: ignore
+projects[f"{ACTION_ICON}remove"] = None  # type: ignore
+
 
 
 def run_cmd(cmd):
@@ -48,6 +52,13 @@ def fzf_menu(options: list[str], title="menu", binds: dict[str, str] | None = No
         return res
     except:  # noqa
         exit(1)
+
+
+def refresh(menu):
+    if menu == "main_menu":
+        print("\n".join(ACTIVE_SESSIONS + [ACTION_ICON + a for a in actions]))
+    elif menu == "projects":
+        print("\n".join(projects.keys()))
 
 
 def session_exists(session):
@@ -185,10 +196,8 @@ let
   extraBuildInputs = with pkgs; [
     # pythonPackages.numpy
     # pythonPackages.pandas
-    # pythonPackages.torch
-    # pythonPackages.jax
-    # cudatoolkit
-    # cudaPackages.cudnn
+    # pythonPackages.torch-bin
+    # pythonPackages.pillow
   ];
 
   buildInputs = with pkgs;
@@ -222,22 +231,27 @@ in pkgs.mkShell {
 """
 
 
-@action
-def project(sel=None):
-    projects = {x.name: x for x in PROJECT_DIR.iterdir() if x.is_dir()}
-
-    projects[f"{ACTION_ICON}new"] = None  # type: ignore
-    projects[f"{ACTION_ICON}remove"] = None  # type: ignore
-
-    if not sel: sel = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
-
-    if sel == f"{ACTION_ICON}remove":
+def del_project(name=None):
+    if not name:
         del projects[f"{ACTION_ICON}new"]
         del projects[f"{ACTION_ICON}remove"]
-        sel = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
-        if input(f"delete {sel}? ").lower() in ["y", "yes"]:
-            run_cmd(f"rm -rf {projects[sel]}")
-        return
+        name = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
+    if name in ACTIVE_SESSIONS: run_cmd(f"tm kill {name}")
+    run_cmd(f"rm -rf {projects[name]}")
+
+
+@action
+def project(sel=None):
+    if not sel:
+        sel = fzf_menu(
+            list(projects.keys()),
+            title=PROJECT_DIR.name,
+            binds={
+                "ctrl-d": "execute(tm del_project {})+reload(tm refresh projects)",
+            },
+        )
+
+    if sel == f"{ACTION_ICON}remove": del_project()
 
     if sel == f"{ACTION_ICON}new":
         name = input("project: ")
@@ -275,12 +289,7 @@ def project(sel=None):
 def handle_args():
     op = sys.argv[1]
     if op not in globals():
-        expand = {
-            "a": "attach",
-            "n": "new",
-            "r": "reset",
-            "k": "kill",
-        }
+        expand = {"a": "attach", "n": "new", "r": "reset", "k": "kill"}
         op = expand.get(op, op)
     if op in ("p", "project", "projects"):
         if len(sys.argv) > 2:
@@ -295,7 +304,7 @@ def handle_args():
             print(e)
             exit(1)
     else:
-        print("invalid command")
+        print(f"invalid command: {op}")
         exit(1)
 
 
@@ -314,7 +323,7 @@ def main():
         options,
         "main menu",
         binds={
-            "ctrl-d": "execute(tm kill {})+reload(tm get_menu refresh)",
+            "ctrl-d": "execute(tm kill {})+reload(tm refresh main_menu)",
         },
     )
     if not sel: exit()
