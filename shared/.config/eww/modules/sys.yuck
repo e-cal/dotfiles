@@ -3,6 +3,7 @@
     :class "module"
     :space-evenly false
     :spacing 10
+
     (circular-progress
       :value {EWW_CPU.avg}
       :class "cpubar"
@@ -21,6 +22,16 @@
         :onclick "~/.config/eww/scripts/toggle system-menu"
         (label :class "icon-text" :text "")))
 
+
+   (circular-progress
+        :value {gpu.percent}
+        :class "gpubar"
+        :thickness 3
+        (button
+          :tooltip "GPU ${gpu.percent}%"
+          :onclick "~/.config/eww/scripts/toggle system-menu"
+          (label :class "icon-text" :text "")))
+
     (circular-progress
       :value {battery.percentage}
       :visible {laptop}
@@ -30,4 +41,6 @@
       (button
         :tooltip {"${battery.status}" == "Charging" ? "Charging (${battery.percentage}%)" : "Battery ${battery.percentage}%"}
         :onclick "~/.config/eww/scripts/toggle system-menu"
-        (label :class "icon-text" :text "")))))
+        (label :class "icon-text" :text "")))
+
+))

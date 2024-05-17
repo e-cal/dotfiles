@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+total=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits)
+
+to_gb() {
+	echo $(awk -v mem="$1" 'BEGIN{print mem/1024}')
+}
+
+while true; do
+	used=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits)
+	perc=$(awk -v used="$used" -v total="$total" 'BEGIN{print sprintf("%.f", used/total*100)}')
+
+	total_gb=$(to_gb "$total")
+	used_gb=$(to_gb "$used")
+
+	echo '{"total": "'"${total_gb}"'", "used": "'"${used_gb}"'", "percent": '"$perc"'}'
+	sleep 3
+done

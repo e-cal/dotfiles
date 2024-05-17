@@ -5,6 +5,9 @@
 .membar {
   color: $peach;
 }
+.gpubar {
+  color: $mauve;
+}
 .batbar {
   color: $green;
 }
@@ -32,12 +35,14 @@
   color: $text;
 }
 
+.sys-text-gpu,
 .sys-text-mem,
 .sys-text-cpu {
   font-size: 1rem;
   font-weight: bold;
 }
 
+.sys-icon-gpu,
 .sys-icon-mem,
 .sys-icon-cpu {
   font-size: 1.5rem;
@@ -52,9 +57,17 @@
   padding: 0.5rem;
 }
 
+.sys-gpu,
 .sys-mem,
 .sys-cpu {
   background-color: $bg;
+  margin-bottom: 1em;
+}
+
+.sys-icon-gpu,
+.sys-text-gpu,
+.sys-gpu {
+  color: $mauve;
 }
 
 .sys-icon-mem,

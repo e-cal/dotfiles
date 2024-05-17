@@ -111,14 +111,15 @@
           :marks true 
           :onchange "brightness set {}")))
 
-    (box ; cpu & memory info
+    (box ; cpu & memory & gpu info
       :class "system-info-box"
 
       ; cpu
       (box
         :class "sys-box"
         :space-evenly false
-        :halign "start"
+        :halign "baseline"
+        :orientation "v"
         (circular-progress
           :value "${EWW_CPU.avg}"
           :class "sys-cpu"
@@ -130,24 +131,26 @@
           :class "text"
           :orientation "v"
           :vexpand false
+          ;; (label
+          ;;   :text "cpu"
+          ;;   :halign "start"
+          ;;   :class "sys-text-cpu")
+          ;; (label
+          ;;   :text "${round(EWW_CPU.avg,2)}%"
+          ;;   :halign "start"
+          ;;   :class "sys-text-sub")
           (label
-            :text "cpu"
-            :halign "start"
-            :class "sys-text-cpu")
-          (label
-            :text "${round(EWW_CPU.avg,2)}%"
-            :halign "start"
+            :text "${round(EWW_CPU.avg,1)}/${EWW_CPU.cores[0].freq}MHz"
+            :halign "center"
             :class "sys-text-sub")
-          (label
-            :text "${EWW_CPU.cores[0].freq} MHz"
-            :halign "start"
-            :class "sys-text-sub")))
+        ))
 
       ; memory
       (box
         :class "sys-box"
         :space-evenly false
-        :halign "end"
+        :halign "fill"
+        :orientation "v"
         (circular-progress
           :value "${round(EWW_RAM.used_mem_perc,0)}"
           :class "sys-mem"
@@ -159,17 +162,44 @@
           :class "text"
           :orientation "v"
           (label
-            :text "memory"
-            :halign "start"
-            :class "sys-text-mem")
-          (label
-            :text "${round(EWW_RAM.used_mem /1024/1024/1024,1)}GB used"
-            :halign "start"
+            :text "${round(EWW_RAM.used_mem /1024/1024/1024,1)}/${round(EWW_RAM.total_mem /1024/1024/1024,0)}GB"
+            :halign "center"
             :class "sys-text-sub")
+          ;; (label
+            ;; :text "${round(EWW_RAM.total_mem /1024/1024/1024,0)}GB"
+            ;; :halign "start"
+            ;; :class "sys-text-sub")
+      ))
+
+      ; gpu
+      (box
+        :class "sys-box"
+        :space-evenly false
+        :halign "fill"
+        :orientation "v"
+        (circular-progress
+          :value "${round(gpu.percent,0)}"
+          :class "sys-gpu"
+          :thickness 3
           (label
-            :text "${round(EWW_RAM.total_mem /1024/1024/1024,0)}GB total"
-            :halign "start"
-            :class "sys-text-sub"))))
+            :text "󰢮"
+            :class "sys-icon-gpu icon"))
+        (box
+          :class "text"
+          :orientation "v"
+          ;; (label
+          ;;   :text "gpu"
+          ;;   :halign "start"
+          ;;   :class "sys-text-gpu")
+          (label
+            :text "${round(gpu.used, 1)}/${round(gpu.total, 0)}GB"
+            :halign "center"
+            :class "sys-text-sub")
+          ;; (label
+          ;;   :text "${round(gpu.total, 0)}GB total"
+          ;;   :halign "start"
+          ;;   :class "sys-text-sub")
+        )))
 
     (centerbox ; battery info & power button
       :class "bottom-row"
