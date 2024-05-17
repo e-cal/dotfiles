@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-percentage=$1
-length=$(playerctl -p spotify metadata --format '{{ mpris:length }}')
-length=$(echo "$length / 1000000" | bc)
-timestamp=$(echo "$length * $percentage / 100" | bc)
-playerctl -p spotify position $timestamp

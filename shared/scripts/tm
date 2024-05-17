@@ -11,7 +11,7 @@ HOME = Path.home()
 IN_TMUX = os.getenv("TMUX") is not None
 
 SHELL = "zsh"
-STARTCMD = f"sleep 0.1 && triangles && echo; exec {SHELL}"
+STARTCMD = f"sleep 0.1 && divider && echo; exec {SHELL}"
 
 ACTION_ICON = " "
 
@@ -72,7 +72,8 @@ def attach(session, work_dir: Path | None = None):
 
     if work_dir and (work_dir / "shell.nix").exists():
         run_cmd(f"tmux send-keys -t {session} 'nix-shell' ENTER")
-        run_cmd(f"tmux send-keys -t {session} 'clear; triangles' ENTER")
+        if (work_dir / ".venv").exists():
+            run_cmd(f"tmux send-keys -t {session} 'clear; divider' ENTER")
 
 
 def startup(kind="main"):
@@ -182,9 +183,12 @@ let
 
   # troublesome packages go here
   extraBuildInputs = with pkgs; [
-    # pythonPackages.pandas
     # pythonPackages.numpy
+    # pythonPackages.pandas
     # pythonPackages.torch
+    # pythonPackages.jax
+    # cudatoolkit
+    # cudaPackages.cudnn
   ];
 
   buildInputs = with pkgs;

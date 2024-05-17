@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-DRI_PRIME=1 "$@"

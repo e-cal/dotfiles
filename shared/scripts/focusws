@@ -2,24 +2,40 @@
 
 targetws=$1
 
-# monitor the target workspace is currently on
-targetws_mon=$(hyprctl workspaces | grep "ID $targetws" | awk '{print $7}' | tr -d ':')
-targetws_mon_active=$(hyprctl monitors | grep "$targetws_mon" -A6 | grep "active workspace" | awk '{print $3}')
-
-# active monitor
-thismon=$(hyprctl activeworkspace | head -n1 | awk '{print $7}' | tr -d ':')
-
-# if targetws is active, just swap
-if [[ $targetws_mon_active == $targetws ]]; then
-	hyprctl dispatch swapactiveworkspaces $thismon $targetws_mon
-else
-	# if targetws isn't on this monitor, move it
-	if [[ $targetws_mon != $thismon ]]; then
-		hyprctl dispatch moveworkspacetomonitor $targetws $thismon
+case $targetws in
+email)
+	focusws 5
+	if ! pgrep thunderbird >/dev/null; then
+		thunderbird
 	fi
-	hyprctl dispatch workspace $targetws
-fi
+	;;
+spotify)
+	focusws 6
+	if ! pgrep spotify >/dev/null; then
+		spotify --disable-gpu --disable-software-rasterizer &
+	fi
+	;;
+*)
+	# monitor the target workspace is currently on
+	targetws_mon=$(hyprctl workspaces | grep "ID $targetws" | awk '{print $7}' | tr -d ':')
+	targetws_mon_active=$(hyprctl monitors | grep "$targetws_mon" -A6 | grep "active workspace" | awk '{print $3}')
 
-# refresh focus
-hyprctl dispatch focusmonitor $targetws_mon
-hyprctl dispatch focusmonitor $thismon
+	# active monitor
+	thismon=$(hyprctl activeworkspace | head -n1 | awk '{print $7}' | tr -d ':')
+
+	# if targetws is active, just swap
+	if [[ $targetws_mon_active == $targetws ]]; then
+		hyprctl dispatch swapactiveworkspaces $thismon $targetws_mon
+	else
+		# if targetws isn't on this monitor, move it
+		if [[ $targetws_mon != $thismon ]]; then
+			hyprctl dispatch moveworkspacetomonitor $targetws $thismon
+		fi
+		hyprctl dispatch workspace $targetws
+	fi
+
+	# refresh focus
+	hyprctl dispatch focusmonitor $targetws_mon
+	hyprctl dispatch focusmonitor $thismon
+	;;
+esac
