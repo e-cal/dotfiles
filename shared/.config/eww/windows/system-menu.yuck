@@ -140,7 +140,7 @@
           ;;   :halign "start"
           ;;   :class "sys-text-sub")
           (label
-            :text "${round(EWW_CPU.avg,1)}/${EWW_CPU.cores[0].freq}MHz"
+            :text "${EWW_CPU.cores[0].freq}MHz"
             :halign "center"
             :class "sys-text-sub")
         ))
