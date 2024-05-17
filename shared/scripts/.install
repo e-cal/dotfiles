@@ -40,8 +40,8 @@ if confirm "Prepare local .config?"; then
     [[ -d $HOME/.config/obsidian ]] || mkdir -p $HOME/.config/obsidian
     [[ -d $HOME/.config/lazygit ]] || mkdir $HOME/.config/lazygit
     [[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
-    [[ -d "$HOME/.config/Code - Insiders" ]] || mkdir "$HOME/.config/Code - Insiders"
-    [[ -d "$HOME/projects" ]] || mkdir "$HOME/projects"
+    [[ -d "$HOME/.config/Code/User" ]] || mkdir -p $HOME/.config/Code/User
+    [[ -d "$HOME/projects" ]] || mkdir $HOME/projects
 
 
     # Make files
@@ -52,13 +52,13 @@ if confirm "Prepare local .config?"; then
     [[ ! -L $HOME/.config/wgetrc ]] && [[ -f $HOME/.config/wgetrc ]] && rm $HOME/.config/wgetrc
     [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
     [[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
-    [[ ! -L $HOME/.config/hypr/hyprland.conf ]] && [[ -f $HOME/.config/hypr/hyprland.conf ]] && rm $HOME/.config/hypr/hyprland.conf
+    # [[ ! -L $HOME/.config/hypr/hyprland.conf ]] && [[ -f $HOME/.config/hypr/hyprland.conf ]] && rm $HOME/.config/hypr/hyprland.conf
     [[ ! -L $HOME/.config/lazygit/config.yml ]] && [[ -f $HOME/.config/lazygit/config.yml ]] && rm $HOME/.config/lazygit/config.yml
     [[ ! -L $HOME/.zshenv ]] && [[ -f $HOME/.zshenv ]] && rm $HOME/.zshenv
 
 fi
 
-if hostnamectl | grep -q "NixOS" && confirm "Setup system config?"; then
+if hostnamectl | grep -q "NixOS" && confirm "Stow config?"; then
     [[ ! `command -v stow` ]] && echo "first install stow" && exit 1
 
     read -p "hostname (leave empty to use current $HOSTNAME): " hostname
@@ -66,7 +66,7 @@ if hostnamectl | grep -q "NixOS" && confirm "Setup system config?"; then
     HOST_DOTFILES="$HOME/.dotfiles/$hostname"
     echo $HOST_DOTFILES
 
-    if [[ ! -d $HOST_DOTFILES ]] || confirm "Re-generate dotfiles for $hostname?"; then # generate dotfiles for host
+    if [[ ! -d $HOST_DOTFILES ]] || confirm "Re-generate dotfiles for $hostname from shared?"; then # generate dotfiles for host
         echo "Generating dotfiles for $hostname"
         mkdir -p $HOST_DOTFILES/.config/nixos
         if [[ ! -f $HOST_DOTFILES/.config/nixos/host.nix ]] || confirm "Replace host.nix with blank template?"; then
@@ -77,7 +77,7 @@ if hostnamectl | grep -q "NixOS" && confirm "Setup system config?"; then
     fi
     echo "Linking dotfiles to local system"
     stow -R --dir=$DOTFILES $hostname --target=$HOME || exit 1
-    if confirm "Copy and rebuild nix config?"; then
+    if confirm "Rebuild nixos?"; then
         pushd ~/.config/nixos &>/dev/null
         sudo cp *.nix /etc/nixos/
         sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
