@@ -125,6 +125,7 @@ in {
       unstable.keymapp
       unstable.wally-cli
       qmk
+      solaar
 
       thunderbird
       slack
@@ -139,6 +140,8 @@ in {
       (ollama.override { acceleration = "cuda"; })
     ];
   };
+
+  services.input-remapper.enable = true;
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
