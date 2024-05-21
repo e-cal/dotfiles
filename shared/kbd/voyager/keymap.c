@@ -75,12 +75,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [2] = LAYOUT_voyager( // esc
     // ~      1                    2        3         4        5              6        7              8        9               0        ●
-    RGB_TOG, RED,                GREEN,   BLUE,    PURPLE,  ORANGE,         TRANS,   TRANS,         TRANS,   TRANS,          TRANS,   TRANS,
+    RGB_TOG, RED,                GREEN,   BLUE,    PURPLE,  ORANGE,         TRANS,   TRANS,         TRANS,   TRANS,          TRANS,   TG(3),
     TRANS,   TOGGLE_LAYER_COLOR, RGB_SPI, RGB_VAI, RGB_HUI, RGB_SAI,        KC_HOME, LSFT(KC_LEFT), TRANS,   LSFT(KC_RIGHT), KC_END,  TRANS,
     TRANS,   RGB_NEXT,           RGB_SPD, RGB_VAD, RGB_HUD, RGB_SAD,        KC_LEFT, KC_DOWN,       KC_UP,   KC_RIGHT,       TRANS,   TRANS,
     TRANS,   TRANS,              TRANS,   TRANS,   TRANS,   TRANS,          KC_UNDS, KC_MINUS,      KC_CIRC, KC_DLR,         KC_EXLM, TRANS,
 
                                                KC_DELETE,  KC_ENTER,        TRANS,  TRANS
+  ),
+  [3] = LAYOUT_voyager( // gaming
+    // ~            1     2     3      4     5            6     7     8         9       0         ●
+    KC_GRAVE,     KC_1, KC_2, KC_3,  KC_4, KC_5,        KC_6, KC_7, KC_8,     KC_9,   KC_0,     TG(3),    
+    KC_TAB,       KC_Q, KC_W, KC_E,  KC_R, KC_T,        KC_Y, KC_U, KC_I,     KC_O,   KC_P,     KC_BSLS,
+    KC_ESCAPE,    KC_A, KC_S, KC_D,  KC_F, KC_G,        KC_H, KC_J, KC_K,     KC_L,   KC_SCLN,  KC_QUOTE,
+    KC_LEFT_CTRL, KC_Z, KC_X, KC_C,  KC_V, KC_B,        KC_N, KC_M, KC_COMMA, KC_DOT, KC_SLASH, KC_RIGHT_CTRL,
+
+                         KC_SPACE,  KC_LEFT_ALT,        KC_ENTER, KC_RIGHT_ALT
   ),
 };
 
