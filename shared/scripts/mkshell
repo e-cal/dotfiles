@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-name=${1:-"nix-shell"}
-
-cat << 'EOF' > shell.nix
+cat <<'EOF' >shell.nix
 { pkgs ? import <nixpkgs> { config = { allowUnfree = true; }; } }:
 
 let
@@ -67,5 +65,12 @@ in pkgs.mkShell {
   '';
 }
 EOF
+
+if [[ -z "$1" ]]; then
+	read -p "Enter name [nix-shell]: " name
+	name=${name:-"nix-shell"}
+else
+	name=$1
+fi
 
 sed -i "s/NAME/${name}/" shell.nix
