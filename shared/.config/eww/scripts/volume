@@ -21,7 +21,8 @@ gen_output() {
 	running=$(pamixer --list-sources | grep Running)
 	if [[ -n $running ]]; then
 		# and that the only one running is not analog-stereo.monitor or AirFly
-		if [[ $(echo "$running" | wc -l) -eq 1 ]] && ([[ $(echo "$running" | grep -q "analog-stereo.monitor") ]] || $(echo "$running" | grep -q "AirFly Pro")); then
+		notify-send "$running"
+		if [[ $(echo "$running" | wc -l) -eq 1 ]] && { echo "$running" | grep -q "Built-in" || echo "$running" | grep -q "AirFly Pro"; }; then
 			in_use=0
 		else
 			in_use=1
