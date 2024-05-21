@@ -21,7 +21,6 @@ projects[f"{ACTION_ICON}new"] = None  # type: ignore
 projects[f"{ACTION_ICON}remove"] = None  # type: ignore
 
 
-
 def run_cmd(cmd):
     return os.popen(cmd).read().strip()
 
@@ -176,61 +175,6 @@ def reset():
     )
 
 
-PYTHON_NIX_SHELL = """{ pkgs ? import <nixpkgs> { } }:
-
-let
-  name = "NAME";
-
-  python = pkgs.python311;
-  pythonPackages = pkgs.python311Packages;
-
-  pythonWithPkgs = python.withPackages (pythonPkgs:
-    with pythonPkgs; [
-      ipython
-      pip
-      setuptools
-      wheel
-    ]);
-
-  # troublesome packages go here
-  extraBuildInputs = with pkgs; [
-    # pythonPackages.numpy
-    # pythonPackages.pandas
-    # pythonPackages.torch-bin
-    # pythonPackages.pillow
-  ];
-
-  buildInputs = with pkgs;
-    [ clang llvmPackages_16.bintools rustup ] ++ extraBuildInputs;
-
-  lib-path = with pkgs; lib.makeLibraryPath buildInputs;
-
-in pkgs.mkShell {
-  name = name;
-
-  buildInputs = [
-    pythonWithPkgs
-    pkgs.readline
-    pkgs.libffi
-    pkgs.openssl
-    pkgs.git
-    pkgs.openssh
-    pkgs.rsync
-  ] ++ extraBuildInputs;
-
-  shellHook = ''
-    SOURCE_DATE_EPOCH=$(date +%s)
-    export "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib-path}"
-    [[ ! -f .venv ]] && setvenv
-    VENV=$(cat .venv)
-    source $VIRTUALENV_HOME/$VENV/bin/activate
-    deactivate
-    exec zsh
-  '';
-}
-"""
-
-
 def del_project(name=None):
     if not name:
         del projects[f"{ACTION_ICON}new"]
@@ -276,8 +220,10 @@ def project(sel=None):
                 print("Initialized a private repo.")
 
         if input("init python nix shell? ").lower() in ("y", "yes"):
-            with open(PROJECT_DIR.joinpath(name, "shell.nix"), "w") as f:
-                f.write(PYTHON_NIX_SHELL.replace("NAME", name))
+            # with open(PROJECT_DIR.joinpath(name, "shell.nix"), "w") as f:
+            #     f.write(PYTHON_NIX_SHELL.replace("NAME", name))
+            # cd to the project and run mkshell
+            run_cmd(f"cd $HOME/projects/{name} && mkshell {name}")
             print("Initialized python nix shell.")
 
         attach(name, PROJECT_DIR.joinpath(name))

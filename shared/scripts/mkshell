@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+name=${1:-"nix-shell"}
+
+cat << 'EOF' > shell.nix
+{ pkgs ? import <nixpkgs> { config = { allowUnfree = true; }; } }:
+
+let
+  python = pkgs.python311;
+
+  pythonWithPkgs = python.withPackages
+    (pythonPkgs: with pythonPkgs; [ ipython pip setuptools wheel ]);
+
+  hardware_pkgs = with pkgs; [
+    clang
+    llvmPackages_16.bintools
+    rustup
+    # cudatoolkit
+    # linuxPackages.nvidia_x11
+    # xorg.libXi
+    # xorg.libXmu
+    # freeglut
+    # xorg.libXext
+    # xorg.libX11
+    # xorg.libXv
+    # xorg.libXrandr
+    # zlib
+    # gcc
+  ];
+
+  python_pkgs = with pkgs.python311Packages; # make sure version matches above
+    [
+      numpy
+      # torch-bin
+      # pandas
+      # pillow
+      # opencv4
+    ];
+
+  deps = hardware_pkgs ++ python_pkgs;
+  lib-path = with pkgs; lib.makeLibraryPath deps;
+  extra-ldflags = "-L${pkgs.linuxPackages.nvidia_x11}/lib";
+
+in pkgs.mkShell {
+  name = "NAME";
+
+  buildInputs = deps ++ [
+    pythonWithPkgs
+    pkgs.readline
+    pkgs.libffi
+    pkgs.openssl
+    pkgs.git
+    pkgs.openssh
+    pkgs.rsync
+  ];
+
+  shellHook = ''
+    SOURCE_DATE_EPOCH=$(date +%s)
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib-path}
+    export CUDA_PATH=${pkgs.cudatoolkit}
+    export EXTRA_LDFLAGS=${extra-ldflags}
+    [[ ! -f .venv ]] && setvenv
+    VENV=$(cat .venv)
+    source $VIRTUALENV_HOME/$VENV/bin/activate
+    deactivate
+    exec zsh
+  '';
+}
+EOF
+
+sed -i "s/NAME/${name}/" shell.nix
