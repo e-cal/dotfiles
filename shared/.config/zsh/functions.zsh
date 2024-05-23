@@ -155,3 +155,7 @@ mvws() {
 diff() {
     wdiff -n $1 $2 | colordiff | less
 }
+
+cursor() {
+    runbg nix-shell -p appimage-run --run "appimage-run ~/.local/bin/cursor.appimage $@"
+}
