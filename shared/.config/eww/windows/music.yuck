@@ -17,7 +17,7 @@
       :space-evenly false
       :class "music-box"
     (button
-      :onclick "hyprctl dispatch workspace 6 && eww close music"
+      :onclick "focusws spotify && eww close music"
       (label ; title
         :class "music-title text"
         :limit-width 30
