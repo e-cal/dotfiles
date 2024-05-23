@@ -25,8 +25,8 @@
       package = pkgs.catppuccin-gtk;
     };
     cursorTheme = {
-      name = "Catppuccin-Macchiato-Dark-Cursors";
-      package = pkgs.catppuccin-cursors.macchiatoDark;
+      name = "Catppuccin-Mocha-Dark-Cursors";
+      package = pkgs.catppuccin-cursors.mochaDark;
     };
   };
   xdg.configFile = {

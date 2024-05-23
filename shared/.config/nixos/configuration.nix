@@ -40,6 +40,9 @@
     General = { Enable = "Source,Sink,Media,Socket"; };
   };
 
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
+
   services.xserver.libinput.enable = true;
   services.printing.enable = true;
   services.gvfs.enable = true;

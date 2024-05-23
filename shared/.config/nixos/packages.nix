@@ -67,6 +67,7 @@ in {
     slurp
     swappy
     feh
+    wev
 
     # tools
     nix-index
@@ -87,9 +88,11 @@ in {
     wkhtmltopdf-bin
 
     # aesthetics
+    lolcat
     starship
     hyprpaper
-    lolcat
+    hyprcursor
+    catppuccin-cursors.mochaDark
   ];
 
   fonts.packages = with pkgs; [
@@ -102,11 +105,10 @@ in {
     liberation_ttf
   ];
 
-
   # users and user packages (gui)
   users.users.ecal = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kitty
@@ -136,12 +138,14 @@ in {
       zathura
       masterpdfeditor4
 
+      obs-studio
+      gimp
+      vlc
+
       vscode.fhs
       (ollama.override { acceleration = "cuda"; })
     ];
   };
-
-  services.input-remapper.enable = true;
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
@@ -158,7 +162,6 @@ in {
   };
 
   services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
-
   # services.mullvad-vpn.enable = true;
   # services.postgresql.enable = true;
 
