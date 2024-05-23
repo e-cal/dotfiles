@@ -3,16 +3,16 @@
 targetws=$1
 
 case $targetws in
+spotify)
+	focusws 3
+	if ! pgrep spotify >/dev/null; then
+		spotify --disable-gpu --disable-software-rasterizer &
+	fi
+	;;
 email)
 	focusws 5
 	if ! pgrep thunderbird >/dev/null; then
 		thunderbird
-	fi
-	;;
-spotify)
-	focusws 6
-	if ! pgrep spotify >/dev/null; then
-		spotify --disable-gpu --disable-software-rasterizer &
 	fi
 	;;
 *)
