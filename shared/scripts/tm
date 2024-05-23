@@ -187,8 +187,9 @@ def del_project(name=None):
 @action
 def project(sel=None):
     if not sel:
+        proj_list = list(p for p in projects.keys() if p.replace(".", "_") not in ACTIVE_SESSIONS)
         sel = fzf_menu(
-            list(projects.keys()),
+            proj_list,
             title=PROJECT_DIR.name,
             binds={
                 "ctrl-d": "execute(tm del_project {})+reload(tm refresh projects)",
