@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [[ -f shell.nix ]]; then
+    echo "shell.nix already exists"
+    exit 1
+fi
+
 cat <<'EOF' >shell.nix
 { pkgs ? import <nixpkgs> { config = { allowUnfree = true; }; } }:
 
@@ -9,38 +14,26 @@ let
   pythonWithPkgs = python.withPackages
     (pythonPkgs: with pythonPkgs; [ ipython pip setuptools wheel ]);
 
-  hardware_pkgs = with pkgs; [
+  deps = with pkgs; [
     clang
     llvmPackages_16.bintools
     rustup
-    # cudatoolkit
-    # linuxPackages.nvidia_x11
-    # xorg.libXi
-    # xorg.libXmu
-    # freeglut
-    # xorg.libXext
-    # xorg.libX11
-    # xorg.libXv
-    # xorg.libXrandr
-    # zlib
-    # gcc
+    linuxPackages.nvidia_x11
+    freeglut
+    zlib
+    gcc
+    stdenv.cc.cc.lib
+    stdenv.cc
+    libGLU
+    libGL
+    glib
   ];
 
-  python_pkgs = with pkgs.python311Packages; # make sure version matches above
-    [
-      numpy
-      # torch-bin
-      # pandas
-      # pillow
-      # opencv4
-    ];
-
-  deps = hardware_pkgs ++ python_pkgs;
   lib-path = with pkgs; lib.makeLibraryPath deps;
   extra-ldflags = "-L${pkgs.linuxPackages.nvidia_x11}/lib";
 
 in pkgs.mkShell {
-  name = "NAME";
+  name = "stable-diffusion";
 
   buildInputs = deps ++ [
     pythonWithPkgs
