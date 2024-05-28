@@ -155,11 +155,20 @@ in {
   virtualisation.docker = {
     enable = true;
     enableOnBoot = false;
+    enableNvidia = true;
     rootless = {
       enable = true;
-      setSocketVariable = true;
+      setSocketVariable = false;
+      daemon.settings = {
+        runtimes = {
+          nvidia = {
+            path = "${pkgs.nvidia-docker}/bin/nvidia-container-runtime";
+          };
+        };
+      };
     };
   };
+  users.extraGroups.docker.members = [ "ecal" ];
 
   services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
   # services.mullvad-vpn.enable = true;

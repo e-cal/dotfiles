@@ -77,6 +77,12 @@
     enableSSHSupport = true;
   };
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   # Custom systemd services
   # https://nixos.wiki/wiki/Extend_NixOS
   # systemd.services.irc = {
