@@ -27,13 +27,16 @@ let
     libGLU
     libGL
     glib
+    pango
+    fontconfig
+    python311Packages.matplotlib
   ];
 
   lib-path = with pkgs; lib.makeLibraryPath deps;
   extra-ldflags = "-L${pkgs.linuxPackages.nvidia_x11}/lib";
 
 in pkgs.mkShell {
-  name = "stable-diffusion";
+  name = "NAME";
 
   buildInputs = deps ++ [
     pythonWithPkgs
