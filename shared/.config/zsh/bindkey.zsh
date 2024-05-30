@@ -60,7 +60,7 @@ function zvm_after_init() {
     bindkey "^t" _toggleterm
 
     # C-a -> get last arg
-    bindkey -s "^a" '!$^M' # last arg
+    bindkey -s "^a" '!$' # last arg
 }
 
 function zvm_after_lazy_keybindings() {
