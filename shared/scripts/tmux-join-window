@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+session_name=$(tmux display-message -p '#S')
+current_window_id=$(tmux display-message -p '#I')
+
+sel=$(tmux list-panes -s -t "$session_name" -F "(#{window_index}) #{window_name} : #{pane_index} : #{pane_current_command} : #{pane_current_path}" | sed 's/\/home\/ecal/~/' | grep -v "^($current_window_id)" | fzf --header="(id) window : pane : cmd : path")
+
+window_idx=$(echo $sel | awk -F '[() :]' '{print $2}')
+pane_idx=$(echo $sel | awk -F '[() :]' '{print $7}')
+
+if [[ -n "$pane_idx" ]]; then
+	if [[ $1 == "-v" ]]; then
+		tmux join-pane -s "$session_name:$window_idx.$pane_idx" -h
+	else
+		tmux join-pane -s "$session_name:$window_idx.$pane_idx"
+	fi
+
+fi
