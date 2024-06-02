@@ -46,7 +46,8 @@ def fzf_menu(options: list[str], title="menu", binds: dict[str, str] | None = No
     options = sorted(options, key=lambda x: (ACTION_ICON in x, x != "main", -len(x), x))
     options_str = "\n".join(options)
     try:
-        res = run_cmd(f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {fzf_binds}').strip()
+        res = run_cmd(f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {fzf_binds}'
+                     ).strip()
         if not res: exit()
         return res
     except:  # noqa
@@ -208,22 +209,31 @@ def project(sel=None):
         if name.startswith("http") or name.startswith("git"):
             url = name
             name = name.split("/")[-1].split(".")[0]
-            run_cmd(f"git clone {url} $HOME/projects/{name}")
+            run_cmd(f"git clone {url} {PROJECT_DIR / name}")
         elif "/" in name:
-            run_cmd(f"gh repo clone {name} $HOME/projects/{name.split('/')[-1]}")
+            run_cmd(f"gh repo clone {name} {PROJECT_DIR / name.split('/')[-1]}")
             name = name.split("/")[-1]
         else:
-            PROJECT_DIR.joinpath(name).mkdir(parents=True, exist_ok=True)
             if input("init git repo? ").lower() in ("y", "yes"):
+                (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
                 run_cmd(
-                    f"cd $HOME/projects/{name} && touch README.md && git init && git add . && git commit -m 'Batman' && gh repo create -s . --push --private"
+                    f"""cd {PROJECT_DIR / name} &&
+                        touch README.md &&
+                        git init &&
+                        git add . &&
+                        git commit -m 'init' &&
+                        gh repo create -s . --push --private
+                    """
                 )
                 print("Initialized a private repo.")
 
-        if input("init python nix shell? ").lower() in ("y", "yes"):
-            # with open(PROJECT_DIR.joinpath(name, "shell.nix"), "w") as f:
-            #     f.write(PYTHON_NIX_SHELL.replace("NAME", name))
-            # cd to the project and run mkshell
+            else:
+                (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
+
+        if (
+            not (PROJECT_DIR / name / "shell.nix").exists()
+            and input("init python nix shell? ").lower() in ("y", "yes")
+        ):
             run_cmd(f"cd $HOME/projects/{name} && mkshell {name}")
             print("Initialized python nix shell.")
 
