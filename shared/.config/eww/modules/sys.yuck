@@ -25,6 +25,7 @@
 
    (circular-progress
         :value {gpu.percent}
+        :visible {gpu.percent > 0}
         :class "gpubar"
         :thickness 3
         (button
