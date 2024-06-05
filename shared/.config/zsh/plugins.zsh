@@ -36,7 +36,7 @@ for plugin in "${(@k)plugins}"; do
 done
 
 # -----------------------------------------------------------------------------
-#                                   Autovenv
+#                                  Auto venv
 # -----------------------------------------------------------------------------
 function _virtualenv_auto_activate() {
     if [[ -f ".venv" ]]; then
@@ -61,6 +61,22 @@ function venvconnect (){
 
 chpwd_functions+=(_virtualenv_auto_activate)
 precmd_functions=(_virtualenv_auto_activate $precmd_functions)
+
+
+# -----------------------------------------------------------------------------
+#                                Auto nix-shell
+# -----------------------------------------------------------------------------
+function _nix_shell_auto_activate() {
+    if [[ -f "shell.nix" ]] || [[ -f "default.nix" ]]; then
+        if [[ -z "$IN_NIX_SHELL" ]]; then
+            echo "Entering nix-shell..."
+            nix-shell
+        fi
+    fi
+}
+
+chpwd_functions+=(_nix_shell_auto_activate)
+_nix_shell_auto_activate
 
 # -----------------------------------------------------------------------------
 #                                Git auto-fetch
