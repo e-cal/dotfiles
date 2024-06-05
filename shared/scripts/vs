@@ -1,16 +1,28 @@
 #!/usr/bin/env bash
 
-if [[ $# > 0 ]]; then
-    # Non-interactive search for args
+ignore_dirs=(
+	".local"
+	".git"
+	"node_modules"
+	".cache"
+	".zotero"
+	"Zotero"
+	".mozilla"
+	".steam"
+	".nix-*"
+)
+ignore=""
+for dir in "${ignore_dirs[@]}"; do
+	ignore="$ignore -o -path './$dir' -prune"
+done
+ignore="${ignore# -o}"
+find_cmd="find -L . $ignore -o -type f -print"
+
+if [[ $# > 0 ]]; then # got search arg, just grab the top result
 	pattern="$*"
-	file=$(find -L . -type f 2>/dev/null | grep -v ".git" | fzf --filter="$pattern" | head -n 1)
-else
-	# Interactive search
-	searchFrom="."
-	if [[ $searchFrom == "$HOME" || ($searchFrom == "." && $PWD == "$HOME") ]]; then
-		depth="-maxdepth 3"
-	fi
-	file=$(find -L $searchFrom $depth -type f 2>/dev/null | grep -v ".git" | sed 's/\.\///' | fzf --preview "bat -n --color=always {}" $FZF_INLINE)
+	file=$(eval "$find_cmd" 2>/dev/null | fzf --filter="$pattern" | head -n 1)
+else # no search arg, interactive menu
+	file=$(eval "$find_cmd" 2>/dev/null | sed 's/\.\///' | fzf --preview "bat -n --color=always {}" $FZF_INLINE)
 fi
 
 if [[ ! -z $file ]]; then
