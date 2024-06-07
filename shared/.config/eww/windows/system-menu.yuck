@@ -213,7 +213,7 @@
           :text {battery.icon})
         (label
           :class "text"
-          :text "${battery.percentage}% ")
+          :text "${battery.percent}% ")
         (label
           :class "battery-wattage text"
           :text {battery.status}))

@@ -2,6 +2,7 @@
 (include "./variables.yuck")
 
 ; various bar modules
+(include "./modules/battery.yuck")
 (include "./modules/bluetooth.yuck")
 (include "./modules/bright.yuck")
 (include "./modules/clock.yuck")
@@ -36,9 +37,10 @@
     :halign "end"
     (indicators)
     (bright)
-    (volume-module)
+    (volume)
     (bluetooth)
     (net)
+    (battery)
     (sys)
     (clock_module)))
 

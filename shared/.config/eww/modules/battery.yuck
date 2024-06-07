@@ -1,0 +1,12 @@
+(defwidget battery []
+  (box
+    :class "module icon"
+    (eventbox
+      :onclick "~/.config/eww/scripts/toggle system-menu"
+      ;; :class "batbar"
+      (label
+        :class "vol-icon"
+        :tooltip "${battery.percent}%"
+        :style "color: ${battery.color};"
+        :text {battery.icon}))
+))

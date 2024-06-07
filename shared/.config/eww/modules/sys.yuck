@@ -33,15 +33,23 @@
           :onclick "~/.config/eww/scripts/toggle system-menu"
           (label :class "icon-text" :text "")))
 
-    (circular-progress
-      :value {battery.percentage}
-      :visible {laptop}
-      :class "batbar"
-      :style "color: ${battery.color};"
-      :thickness 3
-      (button
-        :tooltip {"${battery.status}" == "Charging" ? "Charging (${battery.percentage}%)" : "Battery ${battery.percentage}%"}
-        :onclick "~/.config/eww/scripts/toggle system-menu"
-        (label :class "icon-text" :text "")))
+    ;; (circular-progress
+    ;;   :value {battery.percentage}
+    ;;   :visible {laptop}
+    ;;   :class "batbar"
+    ;;   :style "color: ${battery.color};"
+    ;;   :thickness 3
+    ;;   (button
+    ;;     :tooltip {"${battery.status}" == "Charging" ? "Charging (${battery.percentage}%)" : "Battery ${battery.percentage}%"}
+    ;;     :onclick "~/.config/eww/scripts/toggle system-menu"
+    ;;     (label :class "icon-text" :text "")))
 
+    ;; (eventbox
+    ;;   :onclick "~/.config/eww/scripts/toggle system-menu"
+    ;;   ;; :class "batbar"
+    ;;   (label
+    ;;     :class "vol-icon"
+    ;;     :tooltip "${battery.percent}%"
+    ;;     :style "color: ${battery.color};"
+    ;;     :text {battery.icon}))
 ))
