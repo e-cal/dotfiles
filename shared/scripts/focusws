@@ -4,7 +4,7 @@ targetws=$1
 
 case $targetws in
 spotify)
-	focusws 4
+	focusws 3
 	if ! pgrep spotify >/dev/null; then
         sleep 0.5
 		spotify --disable-gpu --disable-software-rasterizer &
