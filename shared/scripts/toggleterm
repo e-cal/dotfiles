@@ -2,52 +2,33 @@
 
 PERCENT=20
 
-term_hidden() {
-	tmux list-windows -F '#{window_name}' | grep -q ' '
-}
+TT_SESSION="tt"
+session=$(tmux display-message -p '#S')
+tt_pane="tt-$session"
+window=$(tmux display-message -p '#S:#I')
+# echo "window: $window"
 
-get_hid_term() {
-	tmux list-windows -F '#{window_name}::#{window_id}' | grep ' ' | awk -F '::' '{print $2}' | head -n1
-}
+if ! tmux has-session -t "$TT_SESSION" 2>/dev/null; then
+	# echo "starting tt session"
+	tmux new-session -d -s "$TT_SESSION"
+fi
 
-get_panes_below() {
-	if [[ $(tmux display-message -p '#{pane_at_top}') -ne 1 ]]; then tmux select-pane -U; fi
-	tmux list-panes -F '#{pane_id} #{pane_top} #{pane_bottom}' | awk -v top=$(tmux display -p '#{pane_top}') -v bottom=$(tmux display -p '#{pane_bottom}') '$2 > bottom'
-}
-
-get_panes_beside() {
-	tmux select-pane -L
-	tmux list-panes -F '#{pane_id} #{pane_left} #{pane_right}' | awk -v left=$(tmux display -p '#{pane_left}') -v right=$(tmux display -p '#{pane_right}') '$2 > right'
-}
-
-d=${1:-h}
-
-case $d in
-h)
-	if [[ $(get_panes_below | wc -l) -eq 0 ]]; then
-		if term_hidden; then
-			tmux join-pane -v -l "$PERCENT"% -s $(get_hid_term)
-		else
-			tmux split-window -c "#{pane_current_path}" -v -l "$PERCENT"%
-		fi
+if ! tmux list-panes -a -F '#{pane_title}' | grep -q "$tt_pane"; then
+	# echo "creating tt pane"
+	tmux split-window -c "#{pane_current_path}" -v -l "$PERCENT"% \; select-pane -T $tt_pane
+else
+	tt_pane_id=$(tmux list-panes -a -F '#S:#I.#P-#{pane_title}' | grep "$tt_pane" | cut -d- -f1)
+    # echo
+    # tmux list-panes -a -F '#S:#I.#P-#{pane_title}'
+    # echo
+	# echo "tt pane exists"
+    # echo "tt_pane_id: $tt_pane_id"
+    if tmux list-panes -F '#S:#I #{pane_title}' | grep -q "$window $tt_pane"; then
+		# echo "pane in current window, sending to tt session"
+		tmux join-pane -s "$tt_pane_id" -t "$TT_SESSION"
 	else
-		tmux select-pane -D
-		tmux break-pane -d -n ' ' -t $(($(tmux list-windows -F '#{window_index}' | tail -n1) + 1))
+		# echo "pane not in current window, joining"
+		tmux join-pane -s "$tt_pane_id"
 	fi
-	;;
-v)
-	if [[ $(get_panes_beside | wc -l) -eq 0 ]]; then
-		if term_hidden; then
-			tmux join-pane -h -l "$PERCENT"% -s $(get_hid_term)
-		else
-			tmux split-window -c "#{pane_current_path}" -v -l $PERCENT
-		fi
-	else
-		tmux select-pane -R
-		tmux break-pane -d -n ' ' -t $(($(tmux list-windows -F '#{window_index}' | tail -n1) + 1))
-	fi
-	;;
-*)
-	echo "invalid dir: h or v"
-	;;
-esac
+fi
+
