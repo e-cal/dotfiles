@@ -231,7 +231,7 @@
         (button
           :halign "end"
           :class "power-button icon"
-          :onclick "systemctl suspend"
+          :onclick "sleep 1 && systemctl suspend"
           "󰒲"))
       (box
         :space-evenly false
