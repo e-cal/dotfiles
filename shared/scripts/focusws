@@ -11,11 +11,13 @@ spotify)
 	fi
 	;;
 email)
-	focusws 5
-	if ! pgrep thunderbird >/dev/null; then
-        sleep 0.5
-		thunderbird
-	fi
+    if ! pgrep thunderbird >/dev/null; then
+        runbg thunderbird
+        sleep 1
+        hyprctl dispatch movetoworkspace 5
+    else
+        focusws 5
+    fi
 	;;
 *)
 	# monitor the target workspace is currently on
