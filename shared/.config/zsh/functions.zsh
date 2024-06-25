@@ -157,5 +157,14 @@ diff() {
 }
 
 cursor() {
-    runbg nix-shell -p appimage-run --run "appimage-run ~/.local/bin/cursor.appimage $@"
+    if ! [[ -f ~/.local/bin/cursor.appimage ]]; then
+        echo "Download cursor appimage to ~/.local/bin"
+    fi
+
+    runbg appimage-run ~/.local/bin/cursor.appimage $@
+    # if [[ -z $IN_NIX_SHELL ]]; then
+    # else
+    #     echo "Exiting nix shell, try again"
+    #     exit
+    # fi
 }
