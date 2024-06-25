@@ -29,7 +29,6 @@
   ],
   "editor.lineNumbers": "relative",
   "window.menuBarVisibility": "toggle",
-  "workbench.editor.showTabs": "single",
   "explorer.openEditors.visible": 1,
   "workbench.editor.revealIfOpen": true,
   "update.showReleaseNotes": false,
