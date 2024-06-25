@@ -27,10 +27,12 @@ in {
     zsh
     stow
     zoxide
+    (nnn.override { withNerdIcons = true; })
 
     # languages
     python3
     python311Packages.pip
+    uv
     poetry
     python311Packages.ipython
     cudaPackages.cudatoolkit
@@ -86,6 +88,8 @@ in {
     htop
     openfortivpn # queens
     wkhtmltopdf-bin
+    appimage-run
+    usbutils
 
     # aesthetics
     lolcat
@@ -113,8 +117,10 @@ in {
     packages = with pkgs; [
       kitty
       firefox
-      spotify
+      geckodriver
       chromium
+      spotify
+      youtube-music
 
       eww-wayland
       cinnamon.nemo
