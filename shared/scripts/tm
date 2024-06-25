@@ -81,12 +81,6 @@ def attach(session, work_dir: Path | None = None):
     attach_cmd = "tmux switch" if IN_TMUX else "tmux attach"
     run_cmd(f"{attach_cmd} -t {session}")
 
-    if work_dir and (work_dir / "shell.nix").exists():
-        run_cmd(f"tmux send-keys -t {session} 'nix-shell' ENTER")
-        if (work_dir / ".venv").exists():
-            run_cmd(f"tmux send-keys -t {session} 'clear; divider' ENTER")
-
-
 def startup(kind="main"):
     wtitles = run_cmd("hyprctl clients | rg -s title | awk '{ print $2 }'").splitlines()
 
@@ -276,6 +270,7 @@ def main():
         return
 
     options = ACTIVE_SESSIONS + [ACTION_ICON + a for a in actions]
+    if "tt" in options: options.remove("tt")
     sel = fzf_menu(
         options,
         "main menu",

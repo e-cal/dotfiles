@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-nvim "__tmp.$1"
-rm "__tmp.$1"
+# ext is .$1 if $1 is set, otherwise it is empty
+ext=${1:+.$1}
+nvim "/tmp/tmp$ext"
+rm "/tmp/tmp$ext"

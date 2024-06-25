@@ -28,7 +28,7 @@ else
 		tmux join-pane -s "$tt_pane_id" -t "$TT_SESSION"
 	else
 		# echo "pane not in current window, joining"
-		tmux join-pane -s "$tt_pane_id"
+		tmux join-pane -s "$tt_pane_id" -l "$PERCENT"%
 	fi
 fi
 

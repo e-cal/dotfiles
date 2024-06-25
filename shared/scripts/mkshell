@@ -12,7 +12,7 @@ let
   python = pkgs.python311;
 
   pythonWithPkgs = python.withPackages
-    (pythonPkgs: with pythonPkgs; [ ipython pip setuptools wheel ]);
+    (pythonPkgs: with pythonPkgs; [ pip setuptools wheel ipython jupyter ]);
 
   deps = with pkgs; [
     clang
@@ -70,3 +70,5 @@ else
 fi
 
 sed -i "s/NAME/${name}/" shell.nix
+
+echo "pip install jupynium for notebook support"
