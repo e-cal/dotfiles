@@ -7,7 +7,6 @@ export DOTFILES="$HOME/.dotfiles"
 export HOST_DOTFILES="$HOME/.dotfiles/$HOSTNAME"
 export SHARED_DOTFILES="$HOME/.dotfiles/shared"
 export EDITOR=nvim
-export PILOCAL="192.168.2.186"
 
 # XDG path spec
 export XDG_CONFIG_HOME=~/.config
