@@ -1,6 +1,22 @@
-# Configuration file for ipython.
+from pygments.styles import get_style_by_name
+from pygments.util import ClassNotFound
 
-c = get_config()  # type: ignore
+c = get_config()  # type: ignore # noqa
+
+c.TerminalInteractiveShell.editing_mode = "vi"
+c.TerminalInteractiveShell.editor = "nvim"
+c.TerminalInteractiveShell.shortcuts = [
+    {
+        "command": "IPython:auto_suggest.accept",
+        "match_keys": ["right"],
+    },
+
+]
+c.TerminalInteractiveShell.true_color = True
+try:
+    c.TerminalInteractiveShell.highlighting_style = get_style_by_name("catppuccin-mocha")
+except ClassNotFound as ex:
+    print(f"Failed to set theme: {ex}")
 
 # ------------------------------------------------------------------------------
 # InteractiveShellApp(Configurable) configuration
@@ -627,11 +643,11 @@ c = get_config()  # type: ignore
 
 ## Shortcut style to use at the prompt. 'vi' or 'emacs'.
 #  Default: 'emacs'
-c.TerminalInteractiveShell.editing_mode = "vi"
+# c.TerminalInteractiveShell.editing_mode = "vi"
 
 ## Set the editor used by IPython (default to $EDITOR/vi/notepad).
 #  Default: 'nvim'
-c.TerminalInteractiveShell.editor = "nvim"
+# c.TerminalInteractiveShell.editor = "nvim"
 
 ## Add shortcuts from 'emacs' insert mode to 'vi' insert mode.
 #  Default: True
@@ -811,13 +827,13 @@ c.TerminalInteractiveShell.editor = "nvim"
 #          command identifiers and filters is available under
 #          :ref:`terminal-shortcuts-list`.
 #  Default: []
-c.TerminalInteractiveShell.shortcuts = [
-    {
-        "command": "IPython:auto_suggest.accept",
-        "match_keys": ["right"],
-    },
-
-]
+# c.TerminalInteractiveShell.shortcuts = [
+#     {
+#         "command": "IPython:auto_suggest.accept",
+#         "match_keys": ["right"],
+#     },
+#
+# ]
 
 ## Show rewritten input, e.g. for autocall.
 #  See also: InteractiveShell.show_rewritten_input
