@@ -17,10 +17,42 @@ in {
   nixpkgs.config.permittedInsecurePackages =
     [ "electron-25.9.0" "qtwebkit-5.212.0-alpha4" "openssl-1.1.1w" ];
 
+  nixpkgs.overlays = [
+    (_: super: {
+      neovim-custom = pkgs.wrapNeovimUnstable
+        (super.neovim-unwrapped.overrideAttrs (oldAttrs: {
+          buildInputs = oldAttrs.buildInputs ++ [ super.tree-sitter ];
+        })) (pkgs.neovimUtils.makeNeovimConfig {
+          extraLuaPackages = p: with p; [ p.magick ];
+          extraPython3Packages = p:
+            with p; [
+              pynvim
+              jupyter-client
+              ipython
+              nbformat
+              cairosvg
+            ];
+          extraPackages = p: with p; [ imageMagick ];
+          withNodeJs = true;
+          withRuby = true;
+          withPython3 = true;
+          customRC = "luafile ~/.config/nvim/init.lua";
+        });
+
+    python3-custom = super.python3.withPackages (ps: with ps; [
+      (catppuccin.overridePythonAttrs (oldAttrs: {
+        propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [ pygments ];
+      }))
+      pygments
+      ipython
+    ]);
+  })
+];
+
   # Global
   environment.systemPackages = with pkgs; [
     # core
-    unstable.neovim
+    neovim-custom
     git
     wget
     tmux
@@ -30,11 +62,12 @@ in {
     (nnn.override { withNerdIcons = true; })
 
     # languages
-    python3
+    python3-custom
     python311Packages.pip
     uv
     poetry
     python311Packages.ipython
+    python311Packages.jupytext
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
     gcc
@@ -90,6 +123,8 @@ in {
     wkhtmltopdf-bin
     appimage-run
     usbutils
+    imagemagick
+    luajitPackages.magick
 
     # aesthetics
     lolcat
@@ -97,7 +132,15 @@ in {
     hyprpaper
     hyprcursor
     catppuccin-cursors.mochaDark
+
+    # libs
+    stdenv.cc.cc.lib
   ];
+
+  # environment.variables = {
+  #   LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.cudatoolkit}/lib";
+  #   CUDA_PATH = "${pkgs.cudatoolkit}";
+  # };
 
   fonts.packages = with pkgs; [
     (nerdfonts.override {
@@ -143,6 +186,7 @@ in {
       anki
       zathura
       masterpdfeditor4
+      quarto
 
       obs-studio
       gimp
