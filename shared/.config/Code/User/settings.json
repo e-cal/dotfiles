@@ -1,7 +1,6 @@
 {
   "window.titleBarStyle": "custom",
   "window.customMenuBarAltFocus": false,
-  "workbench.colorTheme": "Catppuccin Mocha",
   "workbench.startupEditor": "none",
   "[markdown]": {
     "editor.wordWrap": "off"
