@@ -125,6 +125,8 @@ in {
     usbutils
     imagemagick
     luajitPackages.magick
+    unstable.rbw
+    pinentry-tty
 
     # aesthetics
     lolcat
@@ -205,7 +207,7 @@ in {
   virtualisation.docker = {
     enable = true;
     enableOnBoot = false;
-    enableNvidia = true;
+    # enableNvidia = true;
     rootless = {
       enable = true;
       setSocketVariable = false;
