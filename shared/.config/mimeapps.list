@@ -1,8 +1,8 @@
 [Default Applications]
-x-scheme-handler/http=firefox.desktop
-x-scheme-handler/https=firefox.desktop
+x-scheme-handler/http=chromium-browser.desktop
+x-scheme-handler/https=chromium-browser.desktop
 x-scheme-handler/chrome=firefox.desktop
-text/html=firefox.desktop
+text/html=chromium-browser.desktop
 application/x-extension-htm=firefox.desktop
 application/x-extension-html=firefox.desktop
 application/x-extension-shtml=firefox.desktop
@@ -18,9 +18,9 @@ image/png=feh.desktop;
 image/jpeg=feh.desktop;
 image/webp=feh.desktop;
 image/avif=feh.desktop;
-x-scheme-handler/about=firefox.desktop
-x-scheme-handler/unknown=firefox.desktop
+x-scheme-handler/about=chromium-browser.desktop
+x-scheme-handler/unknown=chromium-browser.desktop
 application/pdf=org.pwmt.zathura.desktop
 x-scheme-handler/postman=Postman.desktop
-x-scheme-handler/webcal=firefox.desktop
+x-scheme-handler/webcal=chromium-browser.desktop
 x-scheme-handler/texts=texts.desktop
