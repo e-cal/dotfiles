@@ -24,10 +24,10 @@
       name = "Catppuccin-Macchiato-Standard-Blue-dark";
       package = pkgs.catppuccin-gtk;
     };
-    cursorTheme = {
-      name = "Catppuccin-Mocha-Dark-Cursors";
-      package = pkgs.catppuccin-cursors.mochaDark;
-    };
+    # cursorTheme = {
+    #   name = "Catppuccin-Mocha-Dark-Cursors";
+    #   package = pkgs.catppuccin-cursors.mochaDark;
+    # };
   };
   xdg.configFile = {
     "gtk-4.0/assets".source =
@@ -37,6 +37,30 @@
     "gtk-4.0/gtk-dark.css".source =
       "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
   };
+  dconf.settings = {
+    "org/gnome/desktop/interface" = { color-scheme = "prefer-dark"; };
+  };
+
+  home.pointerCursor = let
+    getFrom = url: hash: name: {
+      gtk.enable = true;
+      x11.enable = true;
+      name = name;
+      size = 24;
+      package = pkgs.runCommand "moveUp" { } ''
+        mkdir -p $out/share/icons
+        ln -s ${
+          pkgs.fetchzip {
+            url = url;
+            hash = hash;
+          }
+        } $out/share/icons/${name}
+      '';
+    };
+  in getFrom
+  # "https://github.com/ful1e5/fuchsia-cursor/releases/download/v2.0.0/Fuchsia-Pop.tar.gz"
+  "https://github.com/catppuccin/cursors/releases/download/v0.3.1/catppuccin-mocha-dark-cursors.zip"
+  "sha256-u2AaEXkiN0ACgGvYRjkkpsjByguhQehBoaxtIN1W2gg=" "Catppuccin-Mocha-Dark-Cursors";
 
   # Manage dotfiles
   home.file = {

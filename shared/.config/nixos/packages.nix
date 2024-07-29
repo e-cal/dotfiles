@@ -39,15 +39,17 @@ in {
           customRC = "luafile ~/.config/nvim/init.lua";
         });
 
-    python3-custom = super.python3.withPackages (ps: with ps; [
-      (catppuccin.overridePythonAttrs (oldAttrs: {
-        propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [ pygments ];
-      }))
-      pygments
-      ipython
-    ]);
-  })
-];
+      python3-custom = super.python3.withPackages (ps:
+        with ps; [
+          (catppuccin.overridePythonAttrs (oldAttrs: {
+            propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or [ ])
+              ++ [ pygments ];
+          }))
+          pygments
+          ipython
+        ]);
+    })
+  ];
 
   # Global
   environment.systemPackages = with pkgs; [
@@ -125,6 +127,7 @@ in {
     usbutils
     imagemagick
     luajitPackages.magick
+    ffmpeg
     unstable.rbw
     pinentry-tty
 
@@ -182,6 +185,7 @@ in {
 
       thunderbird
       slack
+      zoom
 
       obsidian
       zotero
@@ -198,6 +202,7 @@ in {
       (ollama.override { acceleration = "cuda"; })
     ];
   };
+  programs.chromium.extraOpts = { "SyncDisabled" = false; };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
