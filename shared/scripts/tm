@@ -56,7 +56,9 @@ def fzf_menu(options: Iterable[str], title="menu", binds: dict[str, str] | None 
 
 def refresh(menu):
     if menu == "main_menu":
-        print("\n".join(ACTIVE_SESSIONS + [ACTION_ICON + a for a in actions]))
+        options = ACTIVE_SESSIONS + [ACTION_ICON + a for a in actions]
+        if "tt" in options: options.remove("tt")
+        print("\n".join(options))
     elif menu == "projects":
         print("\n".join(projects.keys()))
 
