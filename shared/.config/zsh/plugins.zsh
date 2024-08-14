@@ -7,6 +7,7 @@ setopt globdots
 #                              Load git plugins
 # ------------------------------------------------------------------------------
 # custom plugin manager hell yea
+# search '#  ' to jump around
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'COLUMNS=$((`tput cols` / 2)) exa --group-directories-first --icons --color=always -a $realpath'
@@ -577,7 +578,6 @@ function gdv() { git diff -w "$@" | view - }
 compdef _git gdv=git-diff
 
 alias gf='git fetch'
-# --jobs=<n> was added in git 2.8
 is-at-least 2.8 "$git_version" \
   && alias gfa='git fetch --all --prune --jobs=10' \
   || alias gfa='git fetch --all --prune'

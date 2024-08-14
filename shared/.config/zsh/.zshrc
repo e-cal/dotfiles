@@ -6,6 +6,7 @@ source $HOME/.config/zsh/bindkey.zsh
 
 # Load zoxide and alias cd
 eval "$(zoxide init zsh --cmd cd)"
+eval "$(direnv hook zsh)"
 
 # Start display server
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
