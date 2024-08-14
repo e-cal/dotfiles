@@ -62,6 +62,7 @@ in {
     stow
     zoxide
     (nnn.override { withNerdIcons = true; })
+    direnv
 
     # languages
     python3-custom
@@ -105,6 +106,7 @@ in {
     swappy
     feh
     wev
+    kdenlive
 
     # tools
     nix-index
@@ -164,6 +166,7 @@ in {
     shell = pkgs.zsh;
     packages = with pkgs; [
       kitty
+      wezterm
       firefox
       geckodriver
       chromium
