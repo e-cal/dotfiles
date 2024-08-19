@@ -11,8 +11,19 @@ cat <<'EOF' >shell.nix
 let
   python = pkgs.python311;
 
-  pythonWithPkgs = python.withPackages
-    (pythonPkgs: with pythonPkgs; [ pip setuptools wheel ipython jupyter ]);
+  pythonWithPkgs = python.withPackages (ps:
+    with ps; [
+      pip
+      setuptools
+      wheel
+      ipython
+      jupyter
+      (catppuccin.overridePythonAttrs (oldAttrs: {
+        propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or [ ])
+          ++ [ pygments ];
+      }))
+      pygments
+    ]);
 
   deps = with pkgs; [
     clang
@@ -36,7 +47,7 @@ let
   extra-ldflags = "-L${pkgs.linuxPackages.nvidia_x11}/lib";
 
 in pkgs.mkShell {
-  name = "NAME";
+  name = "{name}";
 
   buildInputs = deps ++ [
     pythonWithPkgs
@@ -49,6 +60,24 @@ in pkgs.mkShell {
   ];
 
   shellHook = ''
+{shellHook}
+  '';
+}
+EOF
+
+def_shell_hook=$(
+    cat <<'EOF'
+    SOURCE_DATE_EPOCH=$(date +%s)
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib-path}
+    export CUDA_PATH=${pkgs.cudatoolkit}
+    export EXTRA_LDFLAGS=${extra-ldflags}
+    export TZ="America/Toronto"
+    exec zsh
+EOF
+)
+
+py_shell_hook=$(
+    cat <<'EOF'
     SOURCE_DATE_EPOCH=$(date +%s)
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${lib-path}
     export CUDA_PATH=${pkgs.cudatoolkit}
@@ -59,17 +88,48 @@ in pkgs.mkShell {
     source $VIRTUALENV_HOME/$VENV/bin/activate
     deactivate
     exec zsh
-  '';
-}
 EOF
+)
 
 if [[ -z "$1" ]]; then
-	read -p "Enter name [nix-shell]: " name
-	name=${name:-"nix-shell"}
+    read -p "Enter name [nix-shell]: " name
+    name=${name:-"nix-shell"}
+
+    read -p "Include python venv? [y/n]: " sel
+    if [[ $sel == "y" ]]; then
+        shell_hook=$py_shell_hook
+    else
+        shell_hook=$def_shell_hook
+    fi
 else
-	name=$1
+    name=$1
+
+    if [[ $2 == "py" || $2 == "python" ]]; then
+        shell_hook=$py_shell_hook
+    else
+        shell_hook=$def_shell_hook
+    fi
+
 fi
 
-sed -i "s/NAME/${name}/" shell.nix
+echo "$shell_hook" > shellhook.tmp
 
-echo "pip install jupynium for notebook support"
+awk '
+BEGIN {
+    while ((getline line < "shellhook.tmp") > 0) {
+        shellhook = shellhook line "\n"
+    }
+    close("shellhook.tmp")
+}
+/{shellHook}/ {
+    gsub(/{shellHook}/, shellhook)
+}
+/{name}/ {
+    gsub(/{name}/, "'"$name"'")
+}
+{
+    print
+}
+' shell.nix > shell.nix.tmp && mv shell.nix.tmp shell.nix
+
+rm shellhook.tmp

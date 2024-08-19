@@ -39,14 +39,18 @@ in {
           customRC = "luafile ~/.config/nvim/init.lua";
         });
 
-      python3-custom = super.python3.withPackages (ps:
+      pythonWithPkgs = super.python3.withPackages (ps:
         with ps; [
+          pip
+          setuptools
+          wheel
+          ipython
+          jupyter
           (catppuccin.overridePythonAttrs (oldAttrs: {
             propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or [ ])
               ++ [ pygments ];
           }))
           pygments
-          ipython
         ]);
     })
   ];
@@ -65,7 +69,7 @@ in {
     direnv
 
     # languages
-    python3-custom
+    pythonWithPkgs
     python311Packages.pip
     uv
     poetry
@@ -76,6 +80,9 @@ in {
     gcc
     gnumake
     cmake
+    emscripten
+    clang
+    clang-tools
     lua
     go
     nodejs_22
