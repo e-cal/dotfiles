@@ -20,20 +20,16 @@ projects = {x.name: x for x in PROJECT_DIR.iterdir() if x.is_dir()}
 projects[f"{ACTION_ICON}new"] = None  # type: ignore
 projects[f"{ACTION_ICON}remove"] = None  # type: ignore
 
-
 def run_cmd(cmd):
     return os.popen(cmd).read().strip()
-
 
 ACTIVE_SESSIONS = run_cmd("tmux ls 2>/dev/null | awk '{print $1}' | sed 's/://'").splitlines()
 
 actions: dict[str, Callable] = {}
 
-
 def action(func):
     actions[func.__name__] = func
     return func
-
 
 def fzf_menu(options: Iterable[str], title="menu", binds: dict[str, str] | None = None, fzf_options=""):
     fzf_binds = ""
@@ -46,13 +42,11 @@ def fzf_menu(options: Iterable[str], title="menu", binds: dict[str, str] | None 
     options = sorted(options, key=lambda x: (ACTION_ICON in x, x != "main", -len(x), x))
     options_str = "\n".join(options)
     try:
-        res = run_cmd(f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {fzf_binds}'
-                     ).strip()
+        res = run_cmd(f'echo "{options_str}" | fzf --header="{title}" --info="hidden" {fzf_options} {fzf_binds}').strip()
         if not res: exit()
         return res
     except:  # noqa
         exit(1)
-
 
 def refresh(menu):
     if menu == "main_menu":
@@ -62,10 +56,8 @@ def refresh(menu):
     elif menu == "projects":
         print("\n".join(projects.keys()))
 
-
 def session_exists(session):
     return os.popen(f"tmux has-session -t={session} &>/dev/null").close() is None
-
 
 def start_session(session, work_dir: Path | None = None, run=None):
     if work_dir and not work_dir.exists(): exit(1)
@@ -74,7 +66,6 @@ def start_session(session, work_dir: Path | None = None, run=None):
         cmd.insert(1, f"-c {work_dir}")
 
     run_cmd(" ".join(cmd))
-
 
 def attach(session, work_dir: Path | None = None):
     session = session.replace(".", "_")
@@ -98,8 +89,9 @@ def startup(kind="main"):
             main()
         else:
             print("attaching main")
+            # sys.argv = ["tm", "attach", "main"]
+            # main()
             attach("main")
-
 
 @action
 def new(name=None, work_dir=None):
@@ -137,7 +129,6 @@ def new(name=None, work_dir=None):
     print(work_dir)
     attach(name, work_dir)
 
-
 @action
 def kill(session=None):
     if not ACTIVE_SESSIONS:
@@ -159,7 +150,6 @@ def kill(session=None):
         if session == run_cmd("tmux display-message -p '#S'"): attach("main")
         run_cmd(f"tmux kill-session -t {session}")
 
-
 @action
 def reset():
     if not IN_TMUX:
@@ -167,10 +157,7 @@ def reset():
         exit()
     cur = run_cmd("tmux display-message -p '#S'")
     tmp = uuid()
-    run_cmd(
-        f'tmux new -s {tmp} -d && tmux switch -t {tmp} && tmux send-keys -t {tmp} "tm kill {cur} && tm attach {cur}; tm kill {tmp}" ENTER'
-    )
-
+    run_cmd(f'tmux new -s {tmp} -d && tmux switch -t {tmp} && tmux send-keys -t {tmp} "tm kill {cur} && tm attach {cur}; tm kill {tmp}" ENTER')
 
 def del_project(name=None):
     if not name:
@@ -179,7 +166,6 @@ def del_project(name=None):
         name = fzf_menu(list(projects.keys()), title=PROJECT_DIR.name)
     if name in ACTIVE_SESSIONS: run_cmd(f"tm kill {name}")
     run_cmd(f"rm -rf {projects[name]}")
-
 
 @action
 def project(sel=None):
@@ -209,45 +195,41 @@ def project(sel=None):
             run_cmd(f"gh repo clone {name} {PROJECT_DIR / name.split('/')[-1]}")
             name = name.split("/")[-1]
         else:
-            if input("init git repo? ").lower() in ("y", "yes"):
-                (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
-                run_cmd(
-                    f"""cd {PROJECT_DIR / name} &&
-                        touch README.md &&
-                        git init &&
-                        git add . &&
-                        git commit -m 'init' &&
-                        gh repo create -s . --push --private
-                    """
-                )
-                print("Initialized a private repo.")
+            # if input("init git repo? ").lower() in ("y", "yes"):
+            (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
+            run_cmd(
+                f"""cd {PROJECT_DIR / name} &&
+                    touch README.md &&
+                    git init &&
+                    git add . &&
+                    git commit -m 'init' &&
+                    gh repo create -s . --push --private
+                """
+            )
+            print("Initialized a private repo.")
 
+            # else:
+            #     (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
+
+        if not (PROJECT_DIR / name / "shell.nix").exists():
+            if (input("hook python in nix shell? ").lower() in ("y", "yes")):
+                run_cmd(f"cd $HOME/projects/{name} && mkshell {name} python")
+                print("initialized python nix shell.")
             else:
-                (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
-
-        if (
-            not (PROJECT_DIR / name / "shell.nix").exists()
-            and input("init python nix shell? ").lower() in ("y", "yes")
-        ):
-            run_cmd(f"cd $HOME/projects/{name} && mkshell {name}")
-            print("Initialized python nix shell.")
+                run_cmd(f"cd $HOME/projects/{name} && mkshell {name}")
+                print("initialized default nix shell.")
 
         attach(name, PROJECT_DIR.joinpath(name))
         return
 
     attach(sel.replace(".", "_"), projects[sel])
 
-
 def handle_args():
     op = sys.argv[1]
-    if op not in globals():
-        expand = {"a": "attach", "n": "new", "r": "reset", "k": "kill"}
-        op = expand.get(op, op)
+    if op not in globals(): op = {"a": "attach", "n": "new", "r": "reset", "k": "kill"}.get(op, op)
     if op in ("p", "project", "projects"):
-        if len(sys.argv) > 2:
-            project(sys.argv[2])
-        else:
-            project()
+        if len(sys.argv) > 2: project(sys.argv[2])
+        else: project()
         exit()
     elif op in globals():
         try:
@@ -258,7 +240,6 @@ def handle_args():
     else:
         print(f"invalid command: {op}")
         exit(1)
-
 
 def main():
     if len(sys.argv) > 1:
@@ -285,6 +266,5 @@ def main():
 
     if sel in ACTIVE_SESSIONS: attach(sel)
     else: actions[sel]()
-
 
 if __name__ == "__main__": main()
