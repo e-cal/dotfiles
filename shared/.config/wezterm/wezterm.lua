@@ -26,6 +26,7 @@ config.keys = {
 
 config.default_cursor_style = 'SteadyBlock'
 config.cursor_blink_rate = 0
+config.audible_bell = "Disabled"
 
 config.color_scheme = "Catppuccin Mocha"
 config.font = wezterm.font_with_fallback({
