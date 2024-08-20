@@ -11,57 +11,95 @@ declare -A o=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0)
 declare -A workspaces
 
 status() {
-	if [ "${o[$1]}" -eq 1 ]; then
-		if [[ $(isfocused $1) == "true" ]]; then
-			echo -n "$focused"
-		else
-			if [[ $(onmonitor $1) == "true" ]]; then
-				echo -n "$unfocused"
-			else
-				echo -n "$background"
-			fi
-		fi
-	else
-		echo -n "$empty"
-	fi
+    if [ "${o[$1]}" -eq 1 ]; then
+        if [[ $(isfocused $1) == "true" ]]; then
+            echo -n "$focused"
+        else
+            if [[ $(onmonitor $1) == "true" ]]; then
+                echo -n "$unfocused"
+            else
+                echo -n "$background"
+            fi
+        fi
+    else
+        echo -n "$empty"
+    fi
 }
 
 isfocused() {
-	[[ "$focusedws" == "$1" ]] && echo "true" || echo "false"
+    [[ "$focusedws" == "$1" ]] && echo "true" || echo "false"
 }
 
 onmonitor() {
-	res=$(hyprctl -j monitors | jq -r '.[] | select(.activeWorkspace.id == '"$1"') | .id')
-	[[ "$res" != "" ]] && echo "true" || echo "false"
+    res=$(hyprctl -j monitors | jq -r '.[] | select(.activeWorkspace.id == '"$1"') | .id')
+    [[ "$res" != "" ]] && echo "true" || echo "false"
 }
 
 workspace_event() {
-	# handle workspace create/destroy
-	while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | jq -jr '.[] | .id, " ", .monitor, "\n"')
+    # handle workspace create/destroy
+    while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | jq -jr '.[] | .id, " ", .monitor, "\n"')
 }
 
 # get all app titles in a workspace
 declare -A applist
 update_applist() {
-	lim=37
-	for ws in "${!workspaces[@]}"; do
+    lim=37
+    for ws in "${!workspaces[@]}"; do
         # apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | (if .class == "org.wezfurlong.wezterm" then "" else .class end) + (if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then "" else ": " + (if .class == "org.wezfurlong.wezterm" then .title | sub(":.*";"") else (.title | .[0:'"$lim"']) + (if .title | length > '"$lim"' then "..." else "" end) end) end) | gsub("\\\\"; "\\\\\\\\") + "\\n"' | sed 's/"/\\"/g')
-        apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | (if .class == "org.wezfurlong.wezterm" then "" else .class end) + (if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then "" else ": " + (if .class == "org.wezfurlong.wezterm" then .title | sub(":.*";"") else (.title | .[0:'"$lim"']) end) end) | gsub("\\\\"; "\\\\\\\\") + "\\n"' | sed 's/"/\\"/g')
-		applist[$ws]="${apps%\\n}"
-	done
+        # apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | (if .class == "org.wezfurlong.wezterm" then "" else .class end) + (if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then "" else ": " + (if .class == "org.wezfurlong.wezterm" then .title | sub(":.*";"") else (.title | .[0:'"$lim"']) end) end) | gsub("\\\\"; "\\\\\\\\") + "\\n"' | sed 's/"/\\"/g')
+
+        jq_script='
+.[]
+| select(.workspace.id == '"$ws"' and .title != "")
+| {
+  class: .class,
+  title: .title
+}
+| (
+  if .class == "org.wezfurlong.wezterm" then ""
+  elif .class == "chromium-browser" then "󰖟"
+  elif .class == "thunderbird" then ""
+  elif .class == "obsidian" then "󱞁"
+  elif .class == "Slack" then ""
+  elif .initialTitle == "Spotify Premium" then ""
+  else .class
+  end
+) as $class
+| (
+  if .class == "org.wezfurlong.wezterm" then
+    .title | sub(":.*";"")
+  elif .class == "obsidian" then
+    .title | sub("-.*";"")
+  else
+    .title | .[0:'"$lim"']
+  end
+) as $title
+| (
+  if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then
+    $class
+  else
+    $class + " " + $title
+  end
+)
+| gsub("\\\\"; "\\\\\\\\")
++ "\\n"
+'
+        apps=$(hyprctl -j clients | jq -jr "$jq_script" | sed 's/"/\\"/g')
+        applist[$ws]="${apps%\\n}"
+    done
 }
 applist() {
-	echo "${applist[$1]}"
+    echo "${applist[$1]}"
 }
 
 generate() {
-	echo -n '{"workspaces": ['
+    echo -n '{"workspaces": ['
 
-	for i in {1..9}; do
-		echo -n ''"$([ "$i" -eq 1 ] || echo ,)" '{"number": '"$i"', "color": "'"$(status "$i")"'", "focused": "'"$(isfocused "$i")"'", "tooltip": "'$(applist "$i")'" }'
-	done
+    for i in {1..9}; do
+        echo -n ''"$([ "$i" -eq 1 ] || echo ,)" '{"number": '"$i"', "color": "'"$(status "$i")"'", "focused": "'"$(isfocused "$i")"'", "tooltip": "'$(applist "$i")'" }'
+    done
 
-	echo '], "screencast": '"$screencast"'}'
+    echo '], "screencast": '"$screencast"'}'
 }
 
 # setup
@@ -71,32 +109,32 @@ screencast=false
 
 # check occupied workspaces
 for num in "${!workspaces[@]}"; do
-	o[$num]=1
+    o[$num]=1
 done
 generate
 
 # main loop
 socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | rg --line-buffered "workspace|mon(itor)?|screencast|openwindow|closewindow" | while read -r line; do
-	case ${line%>>*} in
-	"workspace")
-		workspace_event
-		focusedws=${line#*>>}
-		;;
-	"focusedmon")
-		focusedws=${line#*,}
-		;;
-	"createworkspace")
-		o[${line#*>>}]=1
-		;;
-	"destroyworkspace")
-		o[${line#*>>}]=0
-		;;
-	"screencast")
-		screencast=$([ "$(echo "${line#*>>}" | awk -F, '{print $1}')" -eq 1 ] && echo true || echo false)
-		;;
-	"openwindow" | "closewindow")
-		update_applist
-		;;
-	esac
-	generate
+    case ${line%>>*} in
+    "workspace")
+        workspace_event
+        focusedws=${line#*>>}
+        ;;
+    "focusedmon")
+        focusedws=${line#*,}
+        ;;
+    "createworkspace")
+        o[${line#*>>}]=1
+        ;;
+    "destroyworkspace")
+        o[${line#*>>}]=0
+        ;;
+    "screencast")
+        screencast=$([ "$(echo "${line#*>>}" | awk -F, '{print $1}')" -eq 1 ] && echo true || echo false)
+        ;;
+    "openwindow" | "closewindow")
+        update_applist
+        ;;
+    esac
+    generate
 done
