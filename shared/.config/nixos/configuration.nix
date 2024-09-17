@@ -24,6 +24,7 @@
     xwayland.enable = true;
   };
   hardware.opengl.enable = true;
+  hardware.opengl.setLdLibraryPath = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia.modesetting.enable = true;
   xdg.portal = {

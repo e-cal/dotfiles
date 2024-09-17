@@ -51,6 +51,7 @@ in {
               ++ [ pygments ];
           }))
           pygments
+          numpy
         ]);
     })
   ];
@@ -71,10 +72,11 @@ in {
     # languages
     pythonWithPkgs
     python311Packages.pip
-    uv
+    unstable.uv
     poetry
     python311Packages.ipython
     python311Packages.jupytext
+    python311Packages.pylatexenc
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
     gcc
@@ -86,6 +88,7 @@ in {
     lua
     go
     nodejs_22
+    tree-sitter
 
     # formatters
     yapf
@@ -139,6 +142,7 @@ in {
     ffmpeg
     unstable.rbw
     pinentry-tty
+    ydotool
 
     # aesthetics
     lolcat
@@ -150,11 +154,6 @@ in {
     # libs
     stdenv.cc.cc.lib
   ];
-
-  # environment.variables = {
-  #   LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib:${pkgs.cudatoolkit}/lib";
-  #   CUDA_PATH = "${pkgs.cudatoolkit}";
-  # };
 
   fonts.packages = with pkgs; [
     (nerdfonts.override {
@@ -176,7 +175,14 @@ in {
       wezterm
       firefox
       geckodriver
-      chromium
+      (chromium.override {
+        enableWideVine = true;
+        commandLineArgs = [
+          "--enable-features=VaapiVideoDecodeLinuxGL"
+          "--ignore-gpu-blocklist"
+          "--enable-zero-copy"
+        ];
+      })
       spotify
       youtube-music
 
@@ -203,6 +209,8 @@ in {
       zathura
       masterpdfeditor4
       quarto
+      qalculate-gtk
+      gnuplot
 
       obs-studio
       gimp
@@ -210,6 +218,8 @@ in {
 
       vscode.fhs
       (ollama.override { acceleration = "cuda"; })
+
+      prismlauncher
     ];
   };
   programs.chromium.extraOpts = { "SyncDisabled" = false; };
