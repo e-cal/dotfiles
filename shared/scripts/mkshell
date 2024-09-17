@@ -114,22 +114,29 @@ fi
 
 echo "$shell_hook" > shellhook.tmp
 
-awk '
-BEGIN {
-    while ((getline line < "shellhook.tmp") > 0) {
-        shellhook = shellhook line "\n"
-    }
-    close("shellhook.tmp")
-}
-/{shellHook}/ {
-    gsub(/{shellHook}/, shellhook)
-}
-/{name}/ {
-    gsub(/{name}/, "'"$name"'")
-}
-{
-    print
-}
-' shell.nix > shell.nix.tmp && mv shell.nix.tmp shell.nix
+# awk '
+# BEGIN {
+#     while ((getline line < "shellhook.tmp") > 0) {
+#         shellhook = shellhook line "\n"
+#     }
+#     close("shellhook.tmp")
+# }
+# /{shellHook}/ {
+#     gsub(/{shellHook}/, shellhook, $0)
+# }
+# /{name}/ {
+#     gsub(/{name}/, "'"$name"'", $0)
+# }
+# {
+#     print
+# }
+# ' shell.nix > shell.nix.tmp && mv shell.nix.tmp shell.nix
+
+sed "/{shellHook}/ {
+  r shellhook.tmp
+  d
+}" shell.nix > shell.nix.tmp && mv shell.nix.tmp shell.nix
+
+sed "s/{name}/$name/g" shell.nix > shell.nix.tmp && mv shell.nix.tmp shell.nix
 
 rm shellhook.tmp
