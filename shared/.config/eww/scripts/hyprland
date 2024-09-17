@@ -45,31 +45,33 @@ declare -A applist
 update_applist() {
     lim=37
     for ws in "${!workspaces[@]}"; do
-        # apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | (if .class == "org.wezfurlong.wezterm" then "" else .class end) + (if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then "" else ": " + (if .class == "org.wezfurlong.wezterm" then .title | sub(":.*";"") else (.title | .[0:'"$lim"']) + (if .title | length > '"$lim"' then "..." else "" end) end) end) | gsub("\\\\"; "\\\\\\\\") + "\\n"' | sed 's/"/\\"/g')
-        # apps=$(hyprctl -j clients | jq -jr '.[] | select(.workspace.id == '"$ws"' and .title != "") | (if .class == "org.wezfurlong.wezterm" then "" else .class end) + (if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then "" else ": " + (if .class == "org.wezfurlong.wezterm" then .title | sub(":.*";"") else (.title | .[0:'"$lim"']) end) end) | gsub("\\\\"; "\\\\\\\\") + "\\n"' | sed 's/"/\\"/g')
-
         jq_script='
 .[]
 | select(.workspace.id == '"$ws"' and .title != "")
 | {
   class: .class,
-  title: .title
+  title: .title,
+  initialTitle: .initialTitle
 }
 | (
-  if .class == "org.wezfurlong.wezterm" then ""
+  if .class == "org.wezfurlong.wezterm" or .class == "kitty" then ""
   elif .class == "chromium-browser" then "󰖟"
-  elif .class == "thunderbird" then ""
+  elif .class == "nemo" then ""
   elif .class == "obsidian" then "󱞁"
-  elif .class == "Slack" then ""
+  elif .class == "thunderbird" then " Email"
+  elif .class == "Slack" then " Slack"
   elif .initialTitle == "Spotify Premium" then ""
+  elif .class == "" then " "
   else .class
   end
 ) as $class
 | (
-  if .class == "org.wezfurlong.wezterm" then
+  if .class == "org.wezfurlong.wezterm" or .class == "kitty" then
     .title | sub(":.*";"")
   elif .class == "obsidian" then
     .title | sub("-.*";"")
+  elif .class == "chromium-browser" then
+    .title | sub(" - Chromium";"")
   else
     .title | .[0:'"$lim"']
   end
