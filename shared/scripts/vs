@@ -26,5 +26,5 @@ else # no search arg, interactive menu
 fi
 
 if [[ ! -z $file ]]; then
-	nvim $file
+	nvim "$file"
 fi
