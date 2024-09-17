@@ -106,3 +106,5 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export OPAMROOT="$XDG_DATA_HOME/opam"
 export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
 export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
+
+[[ -f $XDG_CONFIG_HOME/zsh/keys.zsh ]] && source $XDG_CONFIG_HOME/zsh/keys.zsh
