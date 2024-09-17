@@ -202,11 +202,13 @@ def project(sel=None):
                     touch README.md &&
                     git init &&
                     git add . &&
-                    git commit -m 'init' &&
-                    gh repo create -s . --push --private
+                    git commit -m 'init'
                 """
             )
-            print("Initialized a private repo.")
+
+            if input("push to github? ").lower() in ("y", "yes"):
+                run_cmd("gh repo create -s . --push --private")
+                print("pushed a private repo")
 
             # else:
             #     (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
@@ -214,10 +216,10 @@ def project(sel=None):
         if not (PROJECT_DIR / name / "shell.nix").exists():
             if (input("hook python in nix shell? ").lower() in ("y", "yes")):
                 run_cmd(f"cd $HOME/projects/{name} && mkshell {name} python")
-                print("initialized python nix shell.")
+                print("initialized python nix shell")
             else:
                 run_cmd(f"cd $HOME/projects/{name} && mkshell {name}")
-                print("initialized default nix shell.")
+                print("initialized default nix shell")
 
         attach(name, PROJECT_DIR.joinpath(name))
         return
