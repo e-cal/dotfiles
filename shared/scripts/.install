@@ -5,30 +5,30 @@ HOST_DOTFILES="$HOME/.dotfiles/$HOSTNAME"
 SHARED_DOTFILES="$HOME/.dotfiles/shared"
 
 confirm() {
-	if [[ $# > 0 ]]; then
-		message="$@ (y/n) "
-	else
-		message="Continue? (y/n) "
-	fi
+    if [[ $# > 0 ]]; then
+        message="$@ (y/n) "
+    else
+        message="Continue? (y/n) "
+    fi
 
-	printf "$message"
-	old_stty_cfg=$(stty -g)
-	stty raw -echo
-	answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
-	stty $old_stty_cfg
+    printf "$message"
+    old_stty_cfg=$(stty -g)
+    stty raw -echo
+    answer=$(while ! head -c 1 | grep -i '[ny]'; do true; done)
+    stty $old_stty_cfg
 
-	if [ "$answer" != "${answer#[Yy]}" ]; then
-		echo Yes
-		return 0
-	else
-		echo No
-		return 1
-	fi
+    if [ "$answer" != "${answer#[Yy]}" ]; then
+        echo Yes
+        return 0
+    else
+        echo No
+        return 1
+    fi
 }
 
 if confirm "Install submodules?"; then
     pushd $DOTFILES
-	git submodule update --init --recursive
+    git submodule update --init --recursive
     popd
 fi
 
@@ -42,7 +42,6 @@ if confirm "Prepare local .config?"; then
     [[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
     [[ -d "$HOME/.config/Code/User" ]] || mkdir -p $HOME/.config/Code/User
     [[ -d "$HOME/projects" ]] || mkdir $HOME/projects
-
 
     # Make files
     # [[ -f $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
@@ -59,124 +58,39 @@ if confirm "Prepare local .config?"; then
 fi
 
 if hostnamectl | grep -q "NixOS" && confirm "Stow config?"; then
-    [[ ! `command -v stow` ]] && echo "first install stow" && exit 1
+    [[ ! $(command -v stow) ]] && echo "first install stow" && exit 1
 
-    read -p "hostname (leave empty to use current $HOSTNAME): " hostname
+    read -p "hostname ($HOSTNAME): " hostname
     hostname="${hostname:-$HOSTNAME}"
     HOST_DOTFILES="$HOME/.dotfiles/$hostname"
     echo $HOST_DOTFILES
 
-    if [[ ! -d $HOST_DOTFILES ]] || confirm "Re-generate dotfiles for $hostname from shared?"; then # generate dotfiles for host
+    if [[ ! -d $HOST_DOTFILES ]] || confirm "Copy shared dotfiles to $hostname?"; then
         echo "Generating dotfiles for $hostname"
         mkdir -p $HOST_DOTFILES/.config/nixos
-        if [[ ! -f $HOST_DOTFILES/.config/nixos/host.nix ]] || confirm "Replace host.nix with blank template?"; then
+        if [[ ! -f $HOST_DOTFILES/.config/nixos/host.nix ]]; then
+            echo "Creating blank host.nix template..."
             cp $DOTFILES/shared/.config/nixos/host-template.nix $HOST_DOTFILES/.config/nixos/host.nix
         fi
         stow -R --dir=$SHARED_DOTFILES .config --target=$HOST_DOTFILES/.config --ignore=host-template.nix
         stow -R --dir=$DOTFILES shared --target=$HOST_DOTFILES --ignore=.config
     fi
     echo "Linking dotfiles to local system"
-    stow -R --dir=$DOTFILES $hostname --target=$HOME || exit 1
+    stow -R --dir=$DOTFILES $hostname --target=$HOME
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to link dotfiles"
+        if confirm "Try again with --adopt (overwrite shared dotfiles with conflicting local versions)?"; then
+            stow -R --dir=$DOTFILES $hostname --target=$HOME --adopt
+        else
+            exit
+        fi
+    fi
     bat cache --build
+
     if confirm "Rebuild nixos?"; then
         pushd ~/.config/nixos &>/dev/null
         sudo cp *.nix /etc/nixos/
         sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
         popd &>/dev/null
-    fi
-
-elif [[ `hostnamectl | grep -q "Arch Linux"` ]] && confirm "Install dependencies?"; then
-	if confirm "Install paru?"; then
-		git clone https://aur.archlinux.org/paru.git
-		cd paru
-		makepkg -si
-		cd ..
-		rm -rf paru
-	fi
-
-	if confirm "Install terminal programs?"; then
-		sudo pacman -S --noconfirm stow \
-			zsh \
-			tmux \
-			lua \
-			go \
-			npm \
-			zip \
-			unzip \
-			neovim \
-			python \
-			lolcat \
-			starship \
-			exa \
-			fzf \
-			ripgrep \
-			jq \
-			jc \
-			socat \
-			pamixer \
-			pulseaudio-alsa \
-			alsa-utils \
-			inetutils \
-			bat \
-			lazygit \
-			rclone \
-			fuse3 \
-			ntp \
-			wl-clipboard \
-			bat \
-			imagemagick \
-			github-cli \
-			wget
-
-		echo "export ZDOTDIR=$HOME/.config/zsh" | sudo tee -a /etc/zsh/zshenv
-		chsh -s /usr/bin/zsh
-	fi
-
-	if confirm "Sync clock?"; then
-		sudo systemctl enable ntpd.service
-		sudo systemctl start ntpd.service
-		sudo timedatectl set-ntp true
-	fi
-
-	if confirm "Install graphics programs?"; then
-		paru -S --noconfirm ttf-jetbrains-mono-nerd \
-			ttf-fantasque-nerd \
-			ttf-material-icons-git \
-			noto-fonts-emoji \
-			hyprland \
-			hyprpaper \
-			kitty \
-			firefox \
-			thunderbird \
-			eww-wayland \
-			pavucontrol \
-			slack \
-			anki \
-			obsidian \
-			blueberry \
-			dunst \
-			sweet-cursor-theme-git \
-			pipewire wireplumber \
-			qt5-wayland \
-			qt6-wayland \
-			nemo \
-			zathura \
-			zathura-pdf-mupdf \
-			polkit-kde-agent \
-			xdg-desktop-portal-hyprland \
-			playerctl \
-            rofi \
-            drun \
-            grim \
-            slurp \
-            flameshot-git
-	fi
-
-    if confirm "Generate dotfiles for $hostname?"; then
-     stow --dir=$DOTFILES --target=$HOST_DOTFILES shared --dotfiles -R
-    fi
-
-    if confirm "Link dotfiles to local .config?"; then
-     stow $hostname -R
     fi
 fi
