@@ -89,6 +89,7 @@ in {
     go
     nodejs_22
     tree-sitter
+    bazel
 
     # formatters
     yapf
@@ -211,6 +212,7 @@ in {
       quarto
       qalculate-gtk
       gnuplot
+      gromit-mpx
 
       obs-studio
       gimp
@@ -223,6 +225,12 @@ in {
     ];
   };
   programs.chromium.extraOpts = { "SyncDisabled" = false; };
+
+  programs.weylus = {
+    enable = true;
+    openFirewall = true;
+    users = [ "ecal" ];
+  };
 
   home-manager = {
     extraSpecialArgs = { inherit inputs; };
