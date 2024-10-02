@@ -1,19 +1,23 @@
 Antiderivative
+Arcsin
 Finetune
+Frobenius
 Iteratively
 LLMs
 LM
 LMs
 MLP
 OG
+asymptotes
 finetune
 finetuning
 interpretable
 iteratively
 logits
+parallelepiped
 performant
 sharded
 stateful
 stochastically
 whitespace
-checksum_v1 = fd4f33cdc9a7e7d88078b6a9294c83ad
+checksum_v1 = d9b663f52c479991af57330f7d29e681
