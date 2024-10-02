@@ -214,7 +214,7 @@ def project(sel=None):
             #     (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
 
         if not (PROJECT_DIR / name / "shell.nix").exists():
-            if (input("hook python in nix shell? ").lower() in ("y", "yes")):
+            if (input("setup python env in shell? ").lower() in ("y", "yes")):
                 run_cmd(f"cd $HOME/projects/{name} && mkshell {name} python")
                 print("initialized python nix shell")
             else:

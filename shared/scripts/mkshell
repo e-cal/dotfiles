@@ -6,7 +6,7 @@ if [[ -f shell.nix ]]; then
 fi
 
 cat <<'EOF' >shell.nix
-{ pkgs ? import <nixpkgs> { config = { allowUnfree = true; }; } }:
+{ pkgs ? import <nixpkgs> { config = { cudaSupport = true; allowUnfree = true; }; } }:
 
 let
   python = pkgs.python311;
