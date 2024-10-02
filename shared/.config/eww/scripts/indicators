@@ -19,7 +19,7 @@ gen_output() {
 			json+='{"name": "Microphone", "icon": "󰍬", "class": "micshare"}'
 		fi
 		if [ "$screenreveal" = "true" ]; then
-			json+="$([ "$json" == "[" ] || echo ',')"'{"name": "Screen", "icon": "󱒃 ", "class": "screenshare"}'
+			json+="$([ "$json" == "[" ] || echo ',')"'{"name": "Screen", "icon": "󱒃", "class": "screenshare"}'
 		fi
 		# if [ "$camerareveal" = "true" ]; then
 		#   json+='{"name": "Camera", "icon": "", "class": "camerashare"}'
