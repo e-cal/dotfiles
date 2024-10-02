@@ -47,6 +47,9 @@ function _virtualenv_auto_activate() {
             source $_VENV_PATH/bin/activate
         fi
 
+    elif [[ -d ".venv" ]]; then
+        source .venv/bin/activate
+
     elif (( ${+VIRTUAL_ENV} )); then
         deactivate
     fi

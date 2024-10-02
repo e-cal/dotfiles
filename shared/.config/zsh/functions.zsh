@@ -168,3 +168,8 @@ cursor() {
     #     exit
     # fi
 }
+
+uvinit() {
+    [[ -f .venv ]] && rm .venv
+    uv init .
+}

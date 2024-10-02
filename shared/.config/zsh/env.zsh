@@ -106,5 +106,11 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export OPAMROOT="$XDG_DATA_HOME/opam"
 export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
 export OLLAMA_MODELS="$XDG_DATA_HOME/ollama/models"
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
+export AZURE_CONFIG_DIR=$XDG_DATA_HOME/azure
+export EM_CONFIG="$XDG_CONFIG_HOME"/emscripten/config
+export EM_CACHE="$XDG_CACHE_HOME"/emscripten/cache
+export EM_PORTS="$XDG_DATA_HOME"/emscripten/cache
 
 [[ -f $XDG_CONFIG_HOME/zsh/keys.zsh ]] && source $XDG_CONFIG_HOME/zsh/keys.zsh
