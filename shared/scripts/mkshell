@@ -83,10 +83,12 @@ py_shell_hook=$(
     export CUDA_PATH=${pkgs.cudatoolkit}
     export EXTRA_LDFLAGS=${extra-ldflags}
     export TZ="America/Toronto"
-    [[ ! -f .venv ]] && setvenv
-    VENV=$(cat .venv)
-    source $VIRTUALENV_HOME/$VENV/bin/activate
-    deactivate
+    if [[ ! -f .venv ]] && [[ ! -d .venv ]]; then
+      setvenv
+      VENV=$(cat .venv)
+      source $VIRTUALENV_HOME/$VENV/bin/activate
+      deactivate
+    fi
     exec zsh
 EOF
 )
