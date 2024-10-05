@@ -38,5 +38,6 @@
   },
   "editor.suggest.selectionMode": "never",
   "notebook.output.scrolling": true,
-  "remote.SSH.connectTimeout": 30
+  "remote.SSH.connectTimeout": 30,
+  "workbench.colorTheme": "Catppuccin Mocha"
 }
