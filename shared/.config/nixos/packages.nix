@@ -71,7 +71,6 @@ in {
 
     # languages
     pythonWithPkgs
-    python311Packages.pip
     unstable.uv
     poetry
     python311Packages.ipython
@@ -88,6 +87,7 @@ in {
     lua
     go
     nodejs_22
+    bun
     tree-sitter
     bazel
 
@@ -209,6 +209,7 @@ in {
       anki
       zathura
       masterpdfeditor4
+      libreoffice-fresh
       quarto
       qalculate-gtk
       gnuplot

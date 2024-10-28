@@ -8,6 +8,7 @@
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.useOSProber = true;
   boot.loader.systemd-boot.enable = false;
+  boot.consoleLogLevel = lib.mkDefault 3;
 
   networking.networkmanager.enable = true;
   time.timeZone = "America/Toronto";
