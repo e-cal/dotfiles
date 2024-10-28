@@ -39,5 +39,10 @@
   "editor.suggest.selectionMode": "never",
   "notebook.output.scrolling": true,
   "remote.SSH.connectTimeout": 30,
-  "workbench.colorTheme": "Catppuccin Mocha"
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "terminal.external.linuxExec": "zsh",
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "editor.fontFamily": "'JetBrainsMono NF', 'monospace', monospace",
+  "files.autoSave": "onFocusChange",
+  "jupyter.askForKernelRestart": false
 }
