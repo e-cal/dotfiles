@@ -41,10 +41,14 @@ done
 # -----------------------------------------------------------------------------
 function _virtualenv_auto_activate() {
     if [[ -f ".venv" ]]; then
-        _VENV_PATH=$VIRTUALENV_HOME/$(cat .venv)
-
-        if [[ "$VIRTUAL_ENV" != $_VENV_PATH ]]; then
-            source $_VENV_PATH/bin/activate
+        venv=$(cat .venv)
+        if [[ -d "$venv" ]]; then
+            source "$venv/bin/activate"
+        else
+            _VENV_PATH=$VIRTUALENV_HOME/$venv
+            if [[ "$VIRTUAL_ENV" != $_VENV_PATH ]]; then
+                source $_VENV_PATH/bin/activate
+            fi
         fi
 
     elif [[ -d ".venv" ]]; then
