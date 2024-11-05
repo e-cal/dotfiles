@@ -1,13 +1,23 @@
+;; (defwidget volume []
+;;   (box
+;;     :class "module icon"
+;;     (eventbox
+;;       ; scroll over the icon to change volume
+;;       ; low increment so that scrolling with a touchpad doesn't shatter your eardrums
+;;       :onscroll "echo {} | sed -e 's/up/-/g' -e 's/down/+/g' | xargs volume {}"
+;;       :onclick "~/.config/eww/scripts/toggle system-menu"
+;;       :onrightclick "pavucontrol &" ; toggle mute on right click
+;;       (label
+;;         :class "vol-icon"
+;;         :tooltip "${volume.percent}%"
+;;         :text {volume.icon}))))
+
 (defwidget volume []
-  (box
-    :class "module icon"
-    (eventbox
-      ; scroll over the icon to change volume
-      ; low increment so that scrolling with a touchpad doesn't shatter your eardrums
-      :onscroll "echo {} | sed -e 's/up/-/g' -e 's/down/+/g' | xargs volume {}"
-      :onclick "~/.config/eww/scripts/toggle system-menu"
-      :onrightclick "pavucontrol &" ; toggle mute on right click
-      (label
-        :class "vol-icon"
-        :tooltip "${volume.percent}%"
-        :text {volume.icon}))))
+  (button
+    :class "module icon vol-icon"
+    :onscroll "echo {} | sed -e 's/up/-/g' -e 's/down/+/g' | xargs volume {}"
+    :onclick "~/.config/eww/scripts/toggle system-menu"
+    :onrightclick "pavucontrol &" ; toggle mute on right click
+    :tooltip "${volume.percent}%"
+    ; :style "color: "
+    "${volume.icon} "))

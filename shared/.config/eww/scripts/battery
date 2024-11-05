@@ -47,7 +47,7 @@ gen_output() {
     [[ -n $percent ]] || percent='100'
 	state="$(echo "$info" | jq -r '.state')"
 
-	echo '{"icon": "'"$(geticon) "'", "percent": '"$percent"', "status": "'"$(status)"'", "color": "'"$(color)"'"}'
+	echo '{"icon": "'"$(geticon)"'", "percent": '"$percent"', "status": "'"$(status)"'", "color": "'"$(color)"'"}'
 }
 
 while true; do
