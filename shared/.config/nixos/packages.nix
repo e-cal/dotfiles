@@ -85,6 +85,7 @@ in {
     clang
     clang-tools
     lua
+    luajitPackages.luarocks
     go
     nodejs_22
     bun
