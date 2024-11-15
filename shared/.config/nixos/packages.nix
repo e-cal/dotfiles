@@ -51,7 +51,6 @@ in {
               ++ [ pygments ];
           }))
           pygments
-          numpy
         ]);
     })
   ];
