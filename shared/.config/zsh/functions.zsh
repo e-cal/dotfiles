@@ -173,3 +173,14 @@ uvinit() {
     [[ -f .venv ]] && rm .venv
     uv init .
 }
+
+sourcevenv() {
+    if [[ -f .venv ]]; then
+        name=`cat .venv`
+        source $VIRTUALENV_HOME/$name/bin/activate
+    elif [[ -d .venv && -f .venv/bin/activate ]]; then
+        source .venv/bin/activate
+    else
+        echo "No virtualenv found"
+    fi
+}
