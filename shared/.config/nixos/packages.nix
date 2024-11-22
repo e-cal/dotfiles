@@ -205,7 +205,7 @@ in {
       zoom
 
       obsidian
-      zotero
+      zotero_7
       anki
       zathura
       masterpdfeditor4
