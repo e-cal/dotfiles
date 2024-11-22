@@ -4,14 +4,18 @@ focused="#F9A876"
 unfocused="#F1B89B"
 background="#e3c1c1"
 empty="#383646"
+urgent="#f38ba8"
 
 focusedws=$(hyprctl -j monitors | jq -r '.[] | select(.focused == true) | .activeWorkspace.id')
 
 declare -A o=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0)
 declare -A workspaces
+declare -A urgent_workspaces
 
 status() {
-    if [ "${o[$1]}" -eq 1 ]; then
+    if [ "${urgent_workspaces[$1]}" == "true" ]; then
+        echo -n "$urgent"
+    elif [ "${o[$1]}" -eq 1 ]; then
         if [[ $(isfocused $1) == "true" ]]; then
             echo -n "$focused"
         else
@@ -116,11 +120,13 @@ done
 generate
 
 # main loop
-socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | rg --line-buffered "workspace|mon(itor)?|screencast|openwindow|closewindow" | while read -r line; do
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | rg --line-buffered "workspace|mon(itor)?|screencast|openwindow|closewindow|windowtitle|urgent" | while read -r line; do
+# socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | while read -r line; do
     case ${line%>>*} in
     "workspace")
         workspace_event
         focusedws=${line#*>>}
+        urgent_workspaces[$focusedws]="false"
         ;;
     "focusedmon")
         focusedws=${line#*,}
@@ -134,9 +140,18 @@ socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.sock
     "screencast")
         screencast=$([ "$(echo "${line#*>>}" | awk -F, '{print $1}')" -eq 1 ] && echo true || echo false)
         ;;
-    "openwindow" | "closewindow")
+    "openwindow" | "closewindow" | "windowtitle")
         update_applist
         ;;
+    "urgent")
+        window=${line#*>>}
+        urgent_ws=$(hyprctl -j clients | jq -r '.[] | select(.address == "'"0x$window"'") | .workspace.id')
+        if [[ -n "$urgent_ws" ]] && [[ ! $urgent_ws == $focusedws ]]; then
+            urgent_workspaces[$urgent_ws]="true"
+            echo "urgent event at workspace $urgent_ws"
+        fi
+        ;;
+
     esac
     generate
 done
