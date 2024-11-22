@@ -158,31 +158,53 @@
 bindings = <
 &kp GRAVE     &n1           &n2           &n3            &n4              &n5         &tog 1                                                              &mo 3         &n6        &n7              &n8           &n9            &n0            &kp DELETE
 &kp TAB       &kp Q         &kp W         &kp E          &kp R            &kp T       &kp K_COPY                                                          &kp C_VOL_UP  &kp Y      &kp U            &kp I         &kp O          &kp P          &kp BSLH
-&lt 2 ESC     &kp A         &kp S         &hml LSHIFT D  &kp F            &kp G       &kp K_PASTE     &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS    &kp C_VOL_DN  &kp H      &kp J            &hmr RSHIFT K &kp L          &kp SEMI       &kp SQT
+&kp ESC       &kp A         &kp S         &hml LSHIFT D  &kp F            &kp G       &kp K_PASTE     &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS    &kp C_VOL_DN  &kp H      &kp J            &hmr RSHIFT K &kp L          &kp SEMI       &kp SQT
 &sticky_shift &hmr LALT Z   &kp X         &kp C          &kp V            &kp B                                   &none            &none                                &kp N      &kp M            &kp COMMA     &kp DOT        &hmr RALT FSLH &kp RSHFT
 &kp LCTRL     &kp LS(GRAVE) &kp LS(N2)    &kp LS(N5)     &kp LS(N7)                   &kp BACKSPACE   &kp LMETA   &mo 1            &mo 1      &kp ENTER   &kp SPACE                &kp MINUS        &kp LS(N6)    &kp LS(N4)     &kp LS(N1)     &kp RCTRL
 >;                                                                                                                                                                                                                     
+// &lt 2 ESC
         };                                                                                                                                                                                                             
                                                                                                                                                                                                                        
-        layer_1 {                                                                                                                                                                                                 
+//         layer_1_thumb {
+// bindings = <                                                                                                                                                                                               
+// &kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
+// &none       &none          &none         &kp LC(E)      &none          &none           &none                                                               &none         &kp LC(Y)      &none        &none         &none         &none        &none 
+// &tog 1      &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LA(H)      &kp LA(J)    &kp LA(K)     &kp LA(L)     &none        &none 
+// &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
+// &none       &none          &none         &none          &none                          &none           &none       &none            &none      &none       &none                        &none        &none         &none         &none        &none 
+// >;
+//         };
+
+//         layer_2_esc {
+// bindings = <                                                                                                                                                                                               
+// &kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
+// &none       &none          &none         &none          &none          &none           &none                                                               &none         &kp HOME       &kp LS(LEFT) &none         &kp LS(RIGHT) &kp END      &none     
+// &none       &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LEFT       &kp DOWN     &kp UP        &kp RIGHT     &none        &none  
+// &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
+// &none       &none          &none         &none          &none                          &kp DELETE      &none       &none            &none      &none       &none                        &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
+// >;
+//         };
+
+        layer_1_thumb {
 bindings = <                                                                                                                                                                                               
 &kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
-&none       &none          &none         &kp LC(E)      &none          &none           &none                                                               &none         &kp LC(Y)      &none        &none         &none         &none        &none 
-&tog 1      &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LA(H)      &kp LA(J)    &kp LA(K)     &kp LA(L)     &none        &none 
+&none       &none          &none         &kp LC(E)      &none          &none           &none                                                               &none         &kp LC(Y)      &kp LS(LEFT) &none         &kp LS(RIGHT) &kp END      &none     
+&none       &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LEFT       &kp DOWN     &kp UP        &kp RIGHT     &none        &none  
 &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
-&none       &none          &none         &none          &none                          &none           &none       &none            &none      &none       &none                        &none        &none         &none         &none        &none 
+&none       &none          &none         &none          &none                          &kp DELETE      &none       &none            &none      &none       &none                        &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
 >;
         };
 
-        layer_2 {
+        layer_2_unused { // just so i don't have to mess with the layer indecies above incase I want esc layer back
 bindings = <                                                                                                                                                                                               
-&none       &none          &none         &none          &none          &none           &none                                                               &none         &none          &none        &none         &none         &none        &none 
+&kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
 &none       &none          &none         &none          &none          &none           &none                                                               &none         &kp HOME       &kp LS(LEFT) &none         &kp LS(RIGHT) &kp END      &none     
 &none       &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LEFT       &kp DOWN     &kp UP        &kp RIGHT     &none        &none  
 &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
 &none       &none          &none         &none          &none                          &kp DELETE      &none       &none            &none      &none       &none                        &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
 >;
         };
+
 
         layer_3_bootloader {
 bindings = <
