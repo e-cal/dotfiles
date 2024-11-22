@@ -10,8 +10,13 @@ alias "ld"='LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:/run/opengl-dri
 
 # shortcuts
 alias "v"="nvim"
+alias "e"="nvim"
+alias "edit"="nvim"
 alias "vr"="nvim -c 'RestoreSession'"
-alias "vl"="nvim -c 'OpenLast'"
+alias "er"="nvim -c 'RestoreSession'"
+alias "vp"="nvim -c 'OpenLast'"
+alias "ep"="nvim -c 'OpenLast'"
+
 alias "md"="mkdir -p"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
 alias "cddl"="cd ~/Downloads"
