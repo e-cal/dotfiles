@@ -7,8 +7,13 @@
 	defaultBranch = main
 [alias]
     tree = log --graph --decorate --pretty=oneline --abbrev-commit
+    dl = -c diff.external=difft log -p --ext-diff
+    ds = -c diff.external=difft show --ext-diff
+    dft = -c diff.external=difft diff
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[diff]
+    external = difft
