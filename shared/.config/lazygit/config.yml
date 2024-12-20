@@ -17,3 +17,6 @@ theme:
     - "#89b4fa" # Blue
   unstagedChangesColor:
     - red # Red
+git:
+  paging:
+    externalDiffCommand: difft --color=always
