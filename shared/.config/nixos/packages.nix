@@ -144,6 +144,7 @@ in {
     unstable.rbw
     pinentry-tty
     ydotool
+    difftastic
 
     # aesthetics
     lolcat
