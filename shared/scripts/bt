@@ -2,12 +2,19 @@
 
 DEVFILE=$HOME/.config/bt/devices
 
+
 pid=$(pgrep "bluetoothctl")
 
 [[ -n $pid ]] && notify-send "bluetoothctl running" "PID: $pid" -i ~/.config/dunst/images/bluetooth.png && exit
 
 # Power on bluetooth controller
-[[ $(bluetoothctl show | rg "Powered" | awk '{print $2}') == "yes" ]] || bluetoothctl power on
+[[ $(bluetoothctl show | rg "Powered" | awk '{print $2}') == "yes" ]] || echo -e "\ndefault bluetooth controller is off (use commands: list and show)\n" # bluetoothctl power on
+
+
+if [[ $HOSTNAME == "talos" ]]; then
+    controller="00:1A:7D:DA:71:15"
+    echo -e "select 58:6D:67:30:F6:91\npower off" | bluetoothctl
+fi
 
 # Load associative array with device name -> mac address
 IFS="\n"
