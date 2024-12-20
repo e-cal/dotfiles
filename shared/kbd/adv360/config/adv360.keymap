@@ -164,26 +164,6 @@ bindings = <
 >;                                                                                                                                                                                                                     
 // &lt 2 ESC
         };                                                                                                                                                                                                             
-                                                                                                                                                                                                                       
-//         layer_1_thumb {
-// bindings = <                                                                                                                                                                                               
-// &kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
-// &none       &none          &none         &kp LC(E)      &none          &none           &none                                                               &none         &kp LC(Y)      &none        &none         &none         &none        &none 
-// &tog 1      &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LA(H)      &kp LA(J)    &kp LA(K)     &kp LA(L)     &none        &none 
-// &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
-// &none       &none          &none         &none          &none                          &none           &none       &none            &none      &none       &none                        &none        &none         &none         &none        &none 
-// >;
-//         };
-
-//         layer_2_esc {
-// bindings = <                                                                                                                                                                                               
-// &kp F1      &kp F2         &kp F3        &kp F4         &kp F5         &kp F6          &none                                                               &none         &kp F7         &kp F8       &kp F9        &kp F10       &kp F11      &kp F12
-// &none       &none          &none         &none          &none          &none           &none                                                               &none         &kp HOME       &kp LS(LEFT) &none         &kp LS(RIGHT) &kp END      &none     
-// &none       &none          &none         &none          &none          &none           &none           &none       &none            &none      &none       &none         &kp LEFT       &kp DOWN     &kp UP        &kp RIGHT     &none        &none  
-// &none       &kp LS(GRAVE)  &kp LS(N2)    &kp LS(N3)     &kp LS(N7)     &none                                       &none            &none                                &kp LS(MINUS)  &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
-// &none       &none          &none         &none          &none                          &kp DELETE      &none       &none            &none      &none       &none                        &kp MINUS    &kp LS(N6)    &kp LS(N4)    &kp LS(N1)   &none
-// >;
-//         };
 
         layer_1_thumb {
 bindings = <                                                                                                                                                                                               
