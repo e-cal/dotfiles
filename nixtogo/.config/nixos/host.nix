@@ -14,6 +14,8 @@ in
     wtype
   ];
 
+  programs.steam.enable = true;
+
   # fonts.packages = with pkgs; [ ];
 
   # users and user packages (gui)
