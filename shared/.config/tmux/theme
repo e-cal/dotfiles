@@ -158,7 +158,7 @@ main() {
 	setw window-status-current-format "${window_status_current_format}"
 
 	setw clock-mode-colour "${thm_blue}"
-	setw mode-style "fg=${thm_pink} bg=${thm_black4} bold"
+	setw mode-style "fg=default bg=${thm_black4} bold"
 
 	tmux "${tmux_commands[@]}"
 }
