@@ -1,7 +1,7 @@
 { config, lib, pkgs, inputs, ... }:
 let
   stable = import (builtins.fetchTarball
-    "https://github.com/nixos/nixpkgs/tarball/nixos-23.11") {
+    "https://github.com/nixos/nixpkgs/tarball/nixos-24.11") {
       config = config.nixpkgs.config;
     };
 
@@ -174,7 +174,7 @@ in {
     shell = pkgs.zsh;
     packages = with pkgs; [
       kitty
-      wezterm
+      unstable.ghostty
       firefox
       geckodriver
       (chromium.override {
