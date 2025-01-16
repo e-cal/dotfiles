@@ -80,8 +80,8 @@ with pkgs;
   lolcat
   starship
 
-  pythonWithPkgs
-  unstable.uv
+  # pythonWithPkgs
+  # unstable.uv
   # python312Packages.ipython
   # cudaPackages.cudatoolkit
   # cudaPackages.cudnn
@@ -98,12 +98,8 @@ with pkgs;
   stylua
   nodePackages.prettier
 
-
   ollama
 
   chromium
-  rustdesk-server
-
-  openblas
-  mpi
+  # rustdesk
 ]
