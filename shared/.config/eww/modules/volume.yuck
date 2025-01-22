@@ -13,11 +13,11 @@
 ;;         :text {volume.icon}))))
 
 (defwidget volume []
-  (button
-    :class "module icon vol-icon"
+  (eventbox
     :onscroll "echo {} | sed -e 's/up/-/g' -e 's/down/+/g' | xargs volume {}"
-    :onclick "~/.config/eww/scripts/toggle system-menu"
-    :onrightclick "pavucontrol &" ; toggle mute on right click
-    :tooltip "${volume.percent}%"
-    ; :style "color: "
-    "${volume.icon} "))
+    (button
+      :class "module icon vol-icon"
+      :onclick "~/.config/eww/scripts/toggle system-menu"
+      :onrightclick "pavucontrol &" ; toggle mute on right click
+      :tooltip "${volume.percent}%"
+      "${volume.icon} ")))
