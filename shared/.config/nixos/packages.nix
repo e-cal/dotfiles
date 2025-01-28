@@ -67,6 +67,7 @@ in {
     zoxide
     (nnn.override { withNerdIcons = true; })
     direnv
+    networkmanagerapplet
 
     # languages
     pythonWithPkgs
@@ -170,7 +171,7 @@ in {
   # users and user packages (gui)
   users.users.ecal = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" "keyd" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kitty
@@ -200,6 +201,7 @@ in {
       unstable.wally-cli
       qmk
       solaar
+      keyd
 
       thunderbird
       slack
@@ -256,6 +258,10 @@ in {
     };
   };
   users.extraGroups.docker.members = [ "ecal" ];
+
+
+  services.keyd.enable = true;
+  environment.etc."keyd/default.conf".source = /home/ecal/kbd/keyd.conf;
 
   services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
   # services.mullvad-vpn.enable = true;
