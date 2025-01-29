@@ -33,7 +33,9 @@ if ! hostnamectl | grep -q "NixOS"; then # not nixos, get nix and dependencies
     fi
 
     if hostnamectl | grep -q "Ubuntu" && confirm "Install dependencies?"; then
-        sudo apt install git stow bat
+        sudo apt install git stow bat python3 python3-venv
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        mkdir ~/.fonts && curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz && tar -xvf JetBrainsMono.tar.xz -C ~/.fonts
     fi
 
     # sudo apt install nvidia-jetson-services
