@@ -57,10 +57,10 @@ with pkgs;
   git
   wget
   tmux
-  zsh
   stow
   zoxide
   direnv
+  kitty
 
   eza
   bat
@@ -91,6 +91,7 @@ with pkgs;
   luajitPackages.luarocks
   nodejs_22
   tree-sitter
+  go
 
   yapf
   shfmt
