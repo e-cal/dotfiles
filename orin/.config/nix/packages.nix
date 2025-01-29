@@ -60,7 +60,6 @@ with pkgs;
   stow
   zoxide
   direnv
-  kitty
 
   eza
   bat
