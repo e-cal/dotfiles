@@ -57,7 +57,7 @@ def refresh(menu):
         print("\n".join(projects.keys()))
 
 def session_exists(session):
-    return os.popen(f"tmux has-session -t={session} &>/dev/null").close() is None
+    return os.popen(f"tmux has-session -t={session} >/dev/null").close() is None
 
 def start_session(session, work_dir: Path | None = None, run=None):
     if work_dir and not work_dir.exists(): exit(1)
