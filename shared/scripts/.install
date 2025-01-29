@@ -35,7 +35,9 @@ if ! hostnamectl | grep -q "NixOS"; then # not nixos, get nix and dependencies
     if hostnamectl | grep -q "Ubuntu" && confirm "Install dependencies?"; then
         sudo apt install zsh git stow bat python3 python3-venv python3-pip
         curl -LsSf https://astral.sh/uv/install.sh | sh
-        curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v1.0.0/install.py | python3 -
+        # jetson packages: https://pypi.jetson-ai-lab.dev/jp6/cu126
+        pip install https://pypi.jetson-ai-lab.dev/jp6/cu126/torch-2.1.0-cp38-cp38-linux_aarch64.whl # cuda 12.6 pytorch
+        curl -L https://raw.githubusercontent.com/catppuccin/gnome-terminal/v1.0.0/install.py | python -
         mkdir ~/.fonts && curl -OL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz && tar -xvf JetBrainsMono.tar.xz -C ~/.fonts
     fi
 

@@ -101,5 +101,4 @@ with pkgs;
   ollama
 
   chromium
-  # rustdesk
 ]
