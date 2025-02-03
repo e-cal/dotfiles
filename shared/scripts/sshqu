@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+user=18ecc6
+server=sl-user.engineering.queensu.ca
+
+case "$1" in
+    get)
+        if [[ -z "$3" ]]; then
+            scp "$user@$server:$2" .
+        else
+            scp "$user@$server:$2" "$3"
+        fi
+        ;;
+    push)
+        scp "$2" "$user@$server:$3"
+        ;;
+    run)
+        shift
+        ssh "$user@$server" "$@"
+        ;;
+    *)
+        ssh "$user@$server"
+        ;;
+esac
