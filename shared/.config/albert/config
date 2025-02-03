@@ -16,6 +16,7 @@ enabled=true
 
 [clipboard]
 enabled=true
+persistent=true
 
 [files]
 enabled=true
@@ -24,6 +25,9 @@ paths=@Invalid()
 [python]
 enabled=true
 watchSources=false
+
+[python.bitwarden]
+enabled=true
 
 [qmlboxmodel]
 windowPosition=@Point(2499 216)
