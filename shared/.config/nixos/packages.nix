@@ -171,7 +171,7 @@ in {
   # users and user packages (gui)
   users.users.ecal = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" "keyd" ];
+    extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kitty
@@ -201,7 +201,6 @@ in {
       unstable.wally-cli
       qmk
       solaar
-      keyd
 
       thunderbird
       slack
@@ -211,6 +210,7 @@ in {
       zotero_7
       anki
       zathura
+      calibre
       masterpdfeditor4
       libreoffice-fresh
       quarto
@@ -223,6 +223,7 @@ in {
       vlc
 
       vscode.fhs
+      unstable.zed-editor
       (ollama.override { acceleration = "cuda"; })
 
       prismlauncher
@@ -259,9 +260,6 @@ in {
   };
   users.extraGroups.docker.members = [ "ecal" ];
 
-
-  services.keyd.enable = true;
-  environment.etc."keyd/default.conf".source = /home/ecal/kbd/keyd.conf;
 
   services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
   # services.mullvad-vpn.enable = true;
@@ -300,6 +298,7 @@ in {
     libuuid
     libxkbcommon
     libxml2
+    mediastreamer-openh264
     mesa
     nspr
     nss

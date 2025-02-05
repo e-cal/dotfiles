@@ -12,18 +12,22 @@ in
     brillo
     acpi
     wtype
+    keyd
   ];
 
-  programs.steam.enable = true;
+  # programs.steam.enable = true;
+
+  services.keyd.enable = true;
+  environment.etc."keyd/default.conf".source = /home/ecal/kbd/keyd.conf;
 
   # fonts.packages = with pkgs; [ ];
 
   # users and user packages (gui)
-  # users.users.ecal = {
-  #   extraGroups = [];
+  users.users.ecal = {
+    extraGroups = [ "keyd" ];
   #   shell = pkgs.zsh;
   #   packages = with pkgs; [ ];
-  # };
+  };
 
   # install dynamic libraries for unpackaged programs
   # https://nix.dev/guides/faq.html
