@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+appimage-run ~/.local/bin/zen-x86_64.AppImage
