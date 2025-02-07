@@ -13,21 +13,6 @@ for mon in "${main_monitors[@]}"; do
 		mon=$(hyprctl monitors | grep "$mon" -B2 | head -n1 | awk '{print $4}' | head -c1)
 		hyprctl dispatch focusmonitor $mon
 		focusws 1
-
-		if [[ $(hostname) == "prometheus" ]]; then
-			bt recon adv
-			bt recon mouse
-		fi
-
 		exit
 	fi
 done
-
-# desktop portal
-# sleep 1
-# killall -e xdg-desktop-portal-hyprland
-# killall -e xdg-desktop-portal-wlr
-# killall xdg-desktop-portal
-# /usr/lib/xdg-desktop-portal-hyprland &
-# sleep 2
-# /usr/lib/xdg-desktop-portal &
