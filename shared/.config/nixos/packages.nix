@@ -52,6 +52,27 @@ in {
           }))
           pygments
         ]);
+
+      vscode-insiders =
+        (super.vscode.override { isInsiders = true; }).overrideAttrs
+        (oldAttrs: rec {
+          src = builtins.fetchTarball {
+            url =
+              "https://code.visualstudio.com/sha/download?build=insider&os=linux-x64";
+            sha256 =
+              "18lwfbqa8sbr5sw7wywl5s1857w820zw9yp301pqrqgccjkpmg0g"; # Update this
+          };
+          version = "latest";
+          buildInputs = oldAttrs.buildInputs ++ [ super.krb5 super.neovim ];
+        });
+
+      flameshot-grim = super.flameshot.overrideAttrs (oldAttrs: {
+        cmakeFlags = (oldAttrs.cmakeFlags or [ ])
+          ++ [ "-DUSE_WAYLAND_GRIM=ON" ];
+        buildInputs = (oldAttrs.buildInputs or [ ])
+          ++ [ super.wayland super.wayland-protocols super.grim ];
+      });
+
     })
   ];
 
@@ -135,6 +156,7 @@ in {
     unstable.github-cli
     podman
     htop
+    nvtop
     openfortivpn # queens
     wkhtmltopdf-bin
     appimage-run
@@ -193,7 +215,7 @@ in {
       cinnamon.nemo
       stable.albert
       hyprpicker
-      unstable.flameshot
+      flameshot-grim
       unstable.satty
 
       vial
@@ -223,6 +245,7 @@ in {
       vlc
 
       vscode.fhs
+      vscode-insiders.fhs
       unstable.zed-editor
       (ollama.override { acceleration = "cuda"; })
 
@@ -259,7 +282,6 @@ in {
     };
   };
   users.extraGroups.docker.members = [ "ecal" ];
-
 
   services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
   # services.mullvad-vpn.enable = true;
