@@ -28,6 +28,7 @@ alias "untar"="tar -xvf"
 alias "unstow"="stow -D --dir=$DOTFILES $HOSTNAME --target=$HOME"
 alias "expl"="gh copilot explain"
 alias "ask"="gh copilot explain"
+alias "diff"="difft"
 
 # arch
 alias "yeet"="paru -Rsn"

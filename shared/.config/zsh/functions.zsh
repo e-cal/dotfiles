@@ -152,10 +152,6 @@ mvws() {
     hyprctl dispatch moveworkspacetomonitor "$1 DP-$2"
 }
 
-diff() {
-    wdiff -n $1 $2 | colordiff | less
-}
-
 cursor() {
     if ! [[ -f ~/.local/bin/cursor.appimage ]]; then
         echo "Download cursor appimage to ~/.local/bin"
