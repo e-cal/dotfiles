@@ -29,7 +29,8 @@ echo "NixOS Rebuilding..."
 
 # Rebuild, output simplified errors, log trackebacks
 sudo cp *.nix /etc/nixos/
-sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
+# sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
+{ sudo nixos-rebuild switch --flake /etc/nixos#default --impure 2>&1 | tee nixos-switch.log; } || cat nixos-switch.log | grep --color error >&2
 
 
 # Get current generation metadata

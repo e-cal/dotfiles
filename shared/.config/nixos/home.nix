@@ -8,7 +8,7 @@
   home.packages = with pkgs; [
     gtk3
     gtk4
-    gnome.gnome-themes-extra
+    gnome-themes-extra
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your

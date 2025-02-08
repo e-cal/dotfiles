@@ -24,10 +24,14 @@
     enable = true;
     xwayland.enable = true;
   };
-  hardware.opengl.enable = true;
-  hardware.opengl.setLdLibraryPath = true;
+  # hardware.opengl.enable = true;
+  # hardware.opengl.setLdLibraryPath = true;
+  hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia = {
+    open = true;
+    modesetting.enable = true;
+  };
   xdg.portal = {
     enable = true;
     wlr.enable = true;
@@ -35,7 +39,7 @@
   };
   qt.enable = true;
 
-  sound.enable = true;
+  # sound.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   hardware.bluetooth.settings = {
@@ -45,7 +49,7 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
 
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
   services.printing.enable = true;
   services.gvfs.enable = true;
   services.udisks2.enable = true;

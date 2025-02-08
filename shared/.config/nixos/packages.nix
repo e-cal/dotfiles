@@ -116,7 +116,7 @@ in {
     # formatters
     yapf
     shfmt
-    nixfmt
+    nixfmt-classic
     stylua
     nodePackages.prettier
 
@@ -156,7 +156,7 @@ in {
     unstable.github-cli
     podman
     htop
-    nvtop
+    nvtopPackages.full
     openfortivpn # queens
     wkhtmltopdf-bin
     appimage-run
@@ -211,8 +211,8 @@ in {
       spotify
       youtube-music
 
-      eww-wayland
-      cinnamon.nemo
+      eww
+      nemo
       stable.albert
       hyprpicker
       flameshot-grim
