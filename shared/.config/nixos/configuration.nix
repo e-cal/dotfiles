@@ -24,12 +24,13 @@
     enable = true;
     xwayland.enable = true;
   };
-  # hardware.opengl.enable = true;
+  hardware.opengl.enable = true;
   # hardware.opengl.setLdLibraryPath = true;
-  hardware.graphics.enable = true;
+  # hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
-    open = true;
+    open = false; # do not fall for the lies that the os drivers are better
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
     modesetting.enable = true;
   };
   xdg.portal = {
@@ -39,7 +40,6 @@
   };
   qt.enable = true;
 
-  # sound.enable = true;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   hardware.bluetooth.settings = {
@@ -68,6 +68,7 @@
   users.users.reboot = { isNormalUser = true; };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [ "root" "ecal" ];
   programs.zsh = {
     enable = true;
     autosuggestions.enable = true;

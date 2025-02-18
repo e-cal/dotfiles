@@ -94,9 +94,9 @@ in {
     pythonWithPkgs
     unstable.uv
     poetry
-    python311Packages.ipython
-    python311Packages.jupytext
-    python311Packages.pylatexenc
+    python312Packages.ipython
+    python312Packages.jupytext
+    python312Packages.pylatexenc
     cudaPackages.cudatoolkit
     cudaPackages.cudnn
     gcc
@@ -143,6 +143,7 @@ in {
 
     # tools
     nix-index
+    cachix
     eza
     bat
     fzf
