@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# Configuration
+THRESHOLD=90  # Memory usage threshold in percentage
+PROCESS_THRESHOLD=10 # CPU usage threshold for killing processes
+SLEEP_INTERVAL=5   # Interval (in seconds) to check memory usage
+
+# Function to kill a process gracefully
+kill_process() {
+  pid="$1"
+  process_user="$2" # added process user as argument
+  process_command="$3" # added process command as argument for better logging
+  echo "Killing process PID: $pid (User: $process_user, Command: $process_command) due to high CPU usage."
+  kill "$pid" 2>/dev/null # Send SIGTERM first
+  sleep 2              # Wait a bit to allow process to terminate gracefully
+  if ps -p "$pid" > /dev/null; then
+    echo "Process $pid did not terminate gracefully. Sending SIGKILL."
+    kill -9 "$pid"  # Send SIGKILL if the process isn't responding
+  fi
+}
+
+# Main loop
+while true; do
+  # Get total RAM and used RAM in KB
+  total_ram=$(free | awk '/Mem:/ {print $2}')
+  used_ram=$(free | awk '/Mem:/ {print $3}')
+
+  # Calculate memory usage percentage
+  memory_usage_percentage=$(( ($used_ram * 100) / $total_ram ))
+
+  echo "Memory Usage: $memory_usage_percentage%"
+
+  # Check if memory usage exceeds the threshold
+  if (( memory_usage_percentage >= THRESHOLD )); then
+    echo "Memory usage exceeds $THRESHOLD%. Checking for processes using more than $PROCESS_THRESHOLD% CPU."
+
+    # Find processes using more than PROCESS_THRESHOLD% CPU and get the USER, PID, and command
+    processes=$(ps -eo user,pid,%cpu,command --sort=-%cpu | awk -v process_threshold="$PROCESS_THRESHOLD" '$3 > process_threshold {print $1, $2, $3, $4}')
+
+
+    # Iterate over matching processes and kill them.
+    while IFS= read -r line; do
+        user=$(echo "$line" | awk '{print $1}')
+        pid=$(echo "$line" | awk '{print $2}')
+        cpu_usage=$(echo "$line" | awk '{print $3}') # Not used within loop logic, keeping for potential use in more complex scenarios.
+        command=$(echo "$line" | awk '{$1=$1; shift 3; print $0}') #Reconstruct the command (starting from the fourth field)
+
+        if [[ "$pid" -ne "$$" ]]; then # Avoid killing this script itself
+          kill_process "$pid" "$user" "$command"
+        fi
+    done <<< "$processes"
+  fi
+
+  sleep "$SLEEP_INTERVAL"
+done
