@@ -97,7 +97,7 @@ def startup(kind="main"):
 def new(name=None, work_dir=None):
     if not work_dir:
         work_dir = run_cmd(
-            """find ~ -maxdepth 5 -type d \
+            r"""find ~ -maxdepth 5 -type d \
                 -not -path '*/.vscode-insiders/*' \
                 -not -path '*/.mozilla/*' \
                 -not -path '*/.cache/*' \
