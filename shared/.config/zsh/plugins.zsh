@@ -75,9 +75,14 @@ precmd_functions=(_virtualenv_auto_activate $precmd_functions)
 #                                Auto nix-shell
 # -----------------------------------------------------------------------------
 function _nix_shell_auto_activate() {
-    if [[ -f "shell.nix" ]] || [[ -f "default.nix" ]]; then
+    if [[ -f "flake.nix" ]]; then
         if [[ -z "$IN_NIX_SHELL" ]]; then
-            echo "Entering nix-shell..."
+            echo "Entering nix shell (flake)..."
+            nix develop
+        fi
+    elif [[ -f "shell.nix" ]] || [[ -f "default.nix" ]]; then
+        if [[ -z "$IN_NIX_SHELL" ]]; then
+            echo "Entering nix shell..."
             nix-shell
         fi
     fi
