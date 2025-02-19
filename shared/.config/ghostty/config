@@ -1,0 +1,39 @@
+initial-command = zsh -c 'tm startup; zsh'
+shell-integration = zsh
+
+confirm-close-surface = false
+clipboard-read = allow
+clipboard-paste-protection = false
+copy-on-select = true
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 0.25
+
+keybind = ctrl+shift+r=reload_config
+
+gtk-tabs-location = hidden
+window-decoration = false
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+window-padding-color = background
+window-step-resize = true
+gtk-adwaita = true
+
+font-size = 11
+font-family = JetBrainsMono Nerd Font
+font-style = Medium
+font-style-bold = ExtraBold
+bold-is-bright = true
+font-style-italic = Italic
+font-style-bold-italic = Bold Italic
+font-feature = +zero,+calt,+liga,+dlig
+font-thicken = true
+adjust-font-baseline = -1
+adjust-cell-height = 2
+
+theme = catppuccin-mocha
+background = #171724
+cursor-color = #CDD6F4
+cursor-text = #1E1E2E
+
+# vim: ft=conf
