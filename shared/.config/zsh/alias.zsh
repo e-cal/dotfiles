@@ -9,13 +9,10 @@ alias "bat"="bat -n"
 alias "ld"='LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:/run/opengl-driver/lib:$NIX_LD_LIBRARY_PATH'
 
 # shortcuts
-alias "v"="nvim"
-alias "e"="nvim"
+alias "nv"="nvim"
 alias "edit"="nvim"
-alias "vr"="nvim -c 'RestoreSession'"
-alias "er"="nvim -c 'RestoreSession'"
-alias "vp"="nvim -c 'OpenLast'"
-alias "ep"="nvim -c 'OpenLast'"
+alias "nvr"="nvim -c 'RestoreSession'"
+alias "nvp"="nvim -c 'OpenLast'"
 
 alias "md"="mkdir -p"
 alias "mvdl"="mv ~/Downloads/mv/* ./"

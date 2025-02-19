@@ -48,7 +48,7 @@ cdc() {
     fi
 }
 
-vc() {
+nvc() {
     file=`cfg file`
     if [[ ! -z $file ]]; then
         cd `dirname $file`
