@@ -18,6 +18,7 @@ window-padding-balance = true
 window-padding-color = background
 window-step-resize = true
 gtk-adwaita = true
+resize-overlay-position = bottom-right
 
 font-size = 11
 font-family = JetBrainsMono Nerd Font
