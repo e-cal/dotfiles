@@ -26,6 +26,7 @@ cat <<'EOF' >flake.nix
         wheel
         pkgs.catppuccin
         pygments
+        pyqt6
         pip
         uv
       ]);
@@ -46,6 +47,8 @@ cat <<'EOF' >flake.nix
         glib
         pango
         fontconfig
+        # matplotlib must be installed as an environment package for ui to work
+        # python312Packages.matplotlib
       ];
 
       ld-lib-path = pkgs.lib.makeLibraryPath deps;
@@ -68,6 +71,7 @@ cat <<'EOF' >flake.nix
 
       # nix develop
       devShells.${system}.default = pkgs.mkShell {
+        name = "{name}";
         buildInputs = deps ++ [ python ];
         shellHook = ''
           export LD_LIBRARY_PATH=${ld-lib-path}:$LD_LIBRARY_PATH
@@ -107,12 +111,14 @@ if [[ $name == "nix-shell" || $name == "fhs-shell" ]]; then
     name=${name:-"$def_name"}
 fi
 
-sed -i "s/{name}/$name/" flake.nix
+sed -i "s/{name}/$name/g" flake.nix
 
 if [[ $is_fhs == true ]]; then
     sed -i "s/{desc}/FHS Nix flake for run and dev shells with python \& cuda./" flake.nix
     sed -i 's/{defaultPackage}/defaultPackage.${system} = self.packages.${system}.fhsEnvironment;/' flake.nix
 else
-    sed -i "s/{desc}/Nix flake for dev shell with python & cuda./" flake.nix
+    sed -i "s/{desc}/Nix flake for dev shell with python \& cuda./" flake.nix
     sed -i '/{defaultPackage}/d' flake.nix
 fi
+
+git add flake.nix
