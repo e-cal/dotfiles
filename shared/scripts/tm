@@ -180,7 +180,7 @@ def project(sel=None):
 
     if sel == f"{ACTION_ICON}remove": del_project()
 
-    if sel == f"{ACTION_ICON}new":
+    if sel == f"{ACTION_ICON}new": # new project
         name = input("project: ")
         if not name: return
         if name in ["repo", "repos", "list", "search", "clone"]:
@@ -206,20 +206,14 @@ def project(sel=None):
                 """
             )
 
-            if input("push to github? ").lower() in ("y", "yes"):
-                run_cmd("gh repo create -s . --push --private")
-                print("pushed a private repo")
+            if input("push private repo to github (y/N)? ").lower() == "y":
+                run_cmd(f"cd {PROJECT_DIR / name} && gh repo create -s . --push --private")
 
-            # else:
-            #     (PROJECT_DIR / name).mkdir(parents=True, exist_ok=True)
-
-        if not (PROJECT_DIR / name / "shell.nix").exists():
-            if (input("setup python env in shell? ").lower() in ("y", "yes")):
-                run_cmd(f"cd $HOME/projects/{name} && mkshell {name} python")
-                print("initialized python nix shell")
-            else:
-                run_cmd(f"cd $HOME/projects/{name} && mkshell {name}")
-                print("initialized default nix shell")
+        if not ((PROJECT_DIR / name / "shell.nix").exists() or (PROJECT_DIR / name / "flake.nix").exists()):
+            if input("add nix flake (y/N)? ").lower() == "y":
+                run_cmd(f"cd {PROJECT_DIR / name} && mkflake {name}")
+            elif input("add nix shell (y/N)? ").lower() == "y":
+                run_cmd(f"cd {PROJECT_DIR / name} && mkshell {name} python")
 
         attach(name, PROJECT_DIR.joinpath(name))
         return
