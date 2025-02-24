@@ -10,7 +10,7 @@ let
       config = config.nixpkgs.config;
     };
 in {
-  imports = [ inputs.home-manager.nixosModules.default ];
+  imports = [ inputs.home-manager.nixosModules.default ./cachix.nix ];
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = (_: true);
@@ -41,16 +41,15 @@ in {
 
       pythonWithPkgs = super.python3.withPackages (ps:
         with ps; [
-          pip
           setuptools
           wheel
           ipython
           jupyter
-          (catppuccin.overridePythonAttrs (oldAttrs: {
-            propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or [ ])
-              ++ [ pygments ];
-          }))
+          catppuccin
           pygments
+          pyqt6
+          pip
+          uv
         ]);
 
       vscode-insiders =
