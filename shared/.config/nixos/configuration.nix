@@ -90,6 +90,11 @@
     options = "--delete-older-than 30d";
   };
 
+  swapDevices = [{
+    device = "/var/lib/swapfile";
+    size = 1024*8; # == 8GB
+  }];
+
   # Custom systemd services
   # https://nixos.wiki/wiki/Extend_NixOS
   # systemd.services.irc = {
