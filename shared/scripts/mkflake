@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+if [[ -f flake.nix ]]; then
+    echo "flake.nix already exists"
+    exit 1
+fi
+
+cat <<'EOF' >flake.nix
+{
+  description = "{desc}";
+
+  inputs = { nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11"; };
+
+  outputs = { self, nixpkgs }:
+    let
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        system = system;
+        config = {
+          allowUnfree = true;
+          cudaSupport = true;
+        };
+      };
+      python = pkgs.python312.withPackages (ps: with ps; [
+        setuptools
+        wheel
+        pkgs.catppuccin
+        pygments
+        pip
+        uv
+      ]);
+      deps = with pkgs; [
+        clang
+        llvmPackages_16.bintools
+        rustup
+        linuxPackages.nvidia_x11
+        cudatoolkit
+        cudaPackages.cudnn
+        freeglut
+        zlib
+        gcc
+        stdenv.cc.cc.lib
+        stdenv.cc
+        libGLU
+        libGL
+        glib
+        pango
+        fontconfig
+      ];
+
+      ld-lib-path = pkgs.lib.makeLibraryPath deps;
+      lib-path = pkgs.lib.makeLibraryPath [ pkgs.cudatoolkit ];
+    in {
+      packages.${system}.fhsEnvironment = pkgs.buildFHSUserEnv {
+        name = "{name}";
+
+        targetPkgs = pkgs: deps ++ [ python ];
+
+        # nix run
+        runScript = "zsh";
+        profile = ''
+          export LD_LIBRARY_PATH=${ld-lib-path}:$LD_LIBRARY_PATH;
+          export LIBRARY_PATH=${lib-path}:$LIBRARY_PATH;
+          export CUDA_PATH=${pkgs.cudatoolkit};
+          exec zsh
+        '';
+      };
+
+      # nix develop
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = deps ++ [ python ];
+        shellHook = ''
+          export LD_LIBRARY_PATH=${ld-lib-path}:$LD_LIBRARY_PATH
+          export LIBRARY_PATH=${lib-path}:$LIBRARY_PATH
+          export CUDA_PATH=${pkgs.cudatoolkit}
+          exec zsh
+        '';
+      };
+
+      {defaultPackage}
+    };
+}
+EOF
+
+name="nix-shell"
+is_fhs=false
+if [[ -z "$1" ]]; then
+    read -p "Make FHS environment [y/N]: " sel
+    if [[ $sel == "y" ]]; then
+        is_fhs=true
+        name="fhs-shell"
+    fi
+
+else
+    if [[ $1 == "fhs" ]]; then
+        is_fhs=true
+        name="fhs-shell"
+    else
+        name=$1
+        [[ $2 == "fhs" ]] && is_fhs=true
+    fi
+fi
+
+if [[ $name == "nix-shell" || $name == "fhs-shell" ]]; then
+    def_name=$name
+    read -p "Enter name [$def_name]: " name
+    name=${name:-"$def_name"}
+fi
+
+sed -i "s/{name}/$name/" flake.nix
+
+if [[ $is_fhs == true ]]; then
+    sed -i "s/{desc}/FHS Nix flake for run and dev shells with python \& cuda./" flake.nix
+    sed -i 's/{defaultPackage}/defaultPackage.${system} = self.packages.${system}.fhsEnvironment;/' flake.nix
+else
+    sed -i "s/{desc}/Nix flake for dev shell with python & cuda./" flake.nix
+    sed -i '/{defaultPackage}/d' flake.nix
+fi
