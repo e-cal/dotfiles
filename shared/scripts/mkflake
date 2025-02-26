@@ -9,18 +9,38 @@ cat <<'EOF' >flake.nix
 {
   description = "{desc}";
 
-  inputs = { nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11"; };
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+  };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-master }:
     let
       system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        system = system;
+      nixpkgsConfig = {
         config = {
           allowUnfree = true;
-          cudaSupport = true;
+          allowUnfreePredicate = (_: true);
+          permittedInsecurePackages = [
+            "electron-25.9.0"
+            "qtwebkit-5.212.0-alpha4"
+            "openssl-1.1.1w"
+          ];
         };
       };
+      pkgs = import nixpkgs ({
+        inherit system;
+        inherit (nixpkgsConfig) config;
+      });
+      unstable = import nixpkgs-unstable ({
+        inherit system;
+        inherit (nixpkgsConfig) config;
+      });
+      master = import nixpkgs-master ({
+        inherit system;
+        inherit (nixpkgsConfig) config;
+      });
       python = pkgs.python312.withPackages (ps: with ps; [
         setuptools
         wheel
@@ -39,7 +59,8 @@ cat <<'EOF' >flake.nix
         cudaPackages.cudnn
         freeglut
         zlib
-        gcc
+        master.gcc # for claude-code while its on master only
+        master.gcc.cc.lib # for claude-code while its on master only
         stdenv.cc.cc.lib
         stdenv.cc
         libGLU
@@ -47,6 +68,9 @@ cat <<'EOF' >flake.nix
         glib
         pango
         fontconfig
+        nodejs_22
+        master.claude-code
+        python
         # matplotlib must be installed as an environment package for ui to work
         # python312Packages.matplotlib
       ];
@@ -57,7 +81,7 @@ cat <<'EOF' >flake.nix
       packages.${system}.fhsEnvironment = pkgs.buildFHSUserEnv {
         name = "{name}";
 
-        targetPkgs = pkgs: deps ++ [ python ];
+        targetPkgs = pkgs: deps;
 
         # nix run
         runScript = "zsh";
@@ -72,7 +96,7 @@ cat <<'EOF' >flake.nix
       # nix develop
       devShells.${system}.default = pkgs.mkShell {
         name = "{name}";
-        buildInputs = deps ++ [ python ];
+        buildInputs = deps;
         shellHook = ''
           export LD_LIBRARY_PATH=${ld-lib-path}:$LD_LIBRARY_PATH
           export LIBRARY_PATH=${lib-path}:$LIBRARY_PATH
