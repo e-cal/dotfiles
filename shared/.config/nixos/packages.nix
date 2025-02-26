@@ -1,79 +1,6 @@
-{ config, lib, pkgs, inputs, ... }:
-let
-  stable = import (builtins.fetchTarball
-    "https://github.com/nixos/nixpkgs/tarball/nixos-24.11") {
-      config = config.nixpkgs.config;
-    };
-
-  unstable = import (builtins.fetchTarball
-    "https://github.com/nixos/nixpkgs/tarball/nixos-unstable") {
-      config = config.nixpkgs.config;
-    };
-in {
+{ config, lib, pkgs, unstable, master, inputs, ... }:
+{
   imports = [ inputs.home-manager.nixosModules.default ./cachix.nix ];
-
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.allowUnfreePredicate = (_: true);
-  nixpkgs.config.permittedInsecurePackages =
-    [ "electron-25.9.0" "qtwebkit-5.212.0-alpha4" "openssl-1.1.1w" ];
-
-  nixpkgs.overlays = [
-    (_: super: {
-      neovim-custom = pkgs.wrapNeovimUnstable
-        (super.neovim-unwrapped.overrideAttrs (oldAttrs: {
-          buildInputs = oldAttrs.buildInputs ++ [ super.tree-sitter ];
-        })) (pkgs.neovimUtils.makeNeovimConfig {
-          extraLuaPackages = p: with p; [ p.magick ];
-          extraPython3Packages = p:
-            with p; [
-              pynvim
-              jupyter-client
-              ipython
-              nbformat
-              cairosvg
-            ];
-          extraPackages = p: with p; [ imageMagick ];
-          withNodeJs = true;
-          withRuby = true;
-          withPython3 = true;
-          customRC = "luafile ~/.config/nvim/init.lua";
-        });
-
-      pythonWithPkgs = super.python3.withPackages (ps:
-        with ps; [
-          setuptools
-          wheel
-          ipython
-          jupyter
-          catppuccin
-          pygments
-          pyqt6
-          pip
-          uv
-        ]);
-
-      vscode-insiders =
-        (super.vscode.override { isInsiders = true; }).overrideAttrs
-        (oldAttrs: rec {
-          src = builtins.fetchTarball {
-            url =
-              "https://code.visualstudio.com/sha/download?build=insider&os=linux-x64";
-            sha256 =
-              "18lwfbqa8sbr5sw7wywl5s1857w820zw9yp301pqrqgccjkpmg0g"; # Update this
-          };
-          version = "latest";
-          buildInputs = oldAttrs.buildInputs ++ [ super.krb5 super.neovim ];
-        });
-
-      flameshot-grim = super.flameshot.overrideAttrs (oldAttrs: {
-        cmakeFlags = (oldAttrs.cmakeFlags or [ ])
-          ++ [ "-DUSE_WAYLAND_GRIM=ON" ];
-        buildInputs = (oldAttrs.buildInputs or [ ])
-          ++ [ super.wayland super.wayland-protocols super.grim ];
-      });
-
-    })
-  ];
 
   # Global
   environment.systemPackages = with pkgs; [
@@ -213,7 +140,7 @@ in {
 
       eww
       nemo
-      stable.albert
+      albert
       hyprpicker
       flameshot-grim
       unstable.satty
@@ -248,6 +175,7 @@ in {
       vscode-insiders.fhs
       unstable.zed-editor
       (ollama.override { acceleration = "cuda"; })
+      master.claude-code
 
       prismlauncher
     ];

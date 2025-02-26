@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
-# A rebuild script that commits on a successful build
-set -e
 
-# cd to your config dir
+# update only specific input (channel): sudo nix flake lock --update-input nixpkgs-unstable
+if [[ $1 == "update" ]]; then
+    cd /etc/nixos
+    sudo nix flake update
+    sudo nixos-rebuild switch --flake /etc/nixos#default
+    exit
+fi
+
+set -e
 pushd ~/.config/nixos &>/dev/null
 
 # Edit your config
@@ -29,17 +35,9 @@ echo "NixOS Rebuilding..."
 
 # Rebuild, output simplified errors, log trackebacks
 sudo cp *.nix /etc/nixos/
-# sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
-{ sudo nixos-rebuild switch --flake /etc/nixos#default --impure 2>&1 | tee nixos-switch.log; } || cat nixos-switch.log | grep --color error >&2
 
+{ sudo nixos-rebuild switch --flake /etc/nixos#default 2>&1 | tee nixos-switch.log; } || cat nixos-switch.log | grep --color error >&2
 
-# Get current generation metadata
-# current=$(nixos-rebuild list-generations | grep current)
-
-# Commit all changes within the generation metadata
-# git commit -am "$current"
-
-# Back to where you were
 popd &>/dev/null
 
 # Notify all OK!
