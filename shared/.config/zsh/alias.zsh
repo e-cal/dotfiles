@@ -4,11 +4,10 @@ alias "tmux"="tmux -2"
 alias "docker"="sudo docker"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "bat"="bat -n"
+alias "clear"="clear -x"
+alias "less"="bat --style=plain"
+alias "diff"="difft"
 
-
-alias "ld"='LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:/run/opengl-driver/lib:$NIX_LD_LIBRARY_PATH'
-
-# shortcuts
 alias "nv"="nvim"
 alias "edit"="nvim"
 alias "nvr"="nvim -c 'RestoreSession'"
@@ -25,14 +24,7 @@ alias "untar"="tar -xvf"
 alias "unstow"="stow -D --dir=$DOTFILES $HOSTNAME --target=$HOME"
 alias "expl"="gh copilot explain"
 alias "ask"="gh copilot explain"
-alias "diff"="difft"
 
-# arch
-alias "yeet"="paru -Rsn"
-alias "pacsearch"="pacman -Slq | fzf -m --preview 'cat <(pacman -Si {1}) <(pacman -Fl {1} | awk \"{print $2}\")' | xargs -ro sudo pacman -S"
-alias "aursearch"="paru -Slq | fzf -m --preview 'cat <(paru -Si {1}) <(paru -Fl {1} | awk \"{print $2}\")' | xargs -ro  paru -S"
-
-# python
 alias "py"="python"
 alias "pydb"="python -m pdb -c continue"
 alias "ipy"="ipython"
@@ -44,13 +36,6 @@ alias "venv"="python -m venv"
 alias "pynb"="jupytext --to ipynb"
 alias "nbpy"="jupytext --to py"
 
-# repurpose
-# alias "clear"="clear;divider"
-alias "celar"="clear"
-alias "less"="bat --style=plain"
-# alias "code"="NIXOS_OZONE_WL= code"
-
-# ls
 alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directories-first --icons'
 alias "la"="ls -a"
 alias "lr"="ls -R"
@@ -60,7 +45,6 @@ alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --col
 alias "tree"="exa -a --tree --group-directories-first --sort=size --color=always -I .git"
 alias ".ls"="/usr/bin/env ls"
 
-# git
 alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
 alias "gs"="git status"
 alias "gwa"="git worktree add"
@@ -71,6 +55,8 @@ alias "gprs"='git pull --rebase --autostash; echo; gpc'
 alias "gb"='git --no-pager branch'
 alias "gP"='git pull'
 alias "lg"="lazygit"
+
+alias "ld"='LD_LIBRARY_PATH=/opt/cuda/lib64:/opt/cuda-11.7/lib64:/run/opengl-driver/lib:$NIX_LD_LIBRARY_PATH'
 
 # Working with dirs
 setopt auto_cd
