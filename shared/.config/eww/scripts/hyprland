@@ -58,7 +58,7 @@ update_applist() {
   initialTitle: .initialTitle
 }
 | (
-  if .class == "org.wezfurlong.wezterm" or .class == "kitty" then ""
+  if .class == "org.wezfurlong.wezterm" or .class == "kitty" or .class == "com.mitchellh.ghostty" then ""
   elif .class == "chromium-browser" then "󰖟"
   elif .class == "nemo" then ""
   elif .class == "obsidian" then "󱞁"
@@ -70,7 +70,7 @@ update_applist() {
   end
 ) as $class
 | (
-  if .class == "org.wezfurlong.wezterm" or .class == "kitty" then
+  if .class == "org.wezfurlong.wezterm" or .class == "kitty" or .class == "com.mitchellh.ghostty" then
     .title | sub(":.*";"")
   elif .class == "obsidian" then
     .title | sub("-.*";"")
@@ -94,6 +94,7 @@ update_applist() {
         applist[$ws]="${apps%\\n}"
     done
 }
+
 applist() {
     echo "${applist[$1]}"
 }
