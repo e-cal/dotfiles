@@ -5,7 +5,7 @@
 if [[ $1 == "update" ]]; then
     cd /etc/nixos
     sudo nix flake update
-    sudo nixos-rebuild switch --flake /etc/nixos#default
+    sudo nixos-rebuild switch --flake /etc/nixos#default --impure
     exit
 fi
 
@@ -36,7 +36,7 @@ echo "NixOS Rebuilding..."
 # Rebuild, output simplified errors, log trackebacks
 sudo cp *.nix /etc/nixos/
 
-{ sudo nixos-rebuild switch --flake /etc/nixos#default 2>&1 | tee nixos-switch.log; } || cat nixos-switch.log | grep --color error >&2
+{ sudo nixos-rebuild switch --flake /etc/nixos#default --impure 2>&1 | tee nixos-switch.log; } || cat nixos-switch.log | grep --color error >&2
 
 popd &>/dev/null
 

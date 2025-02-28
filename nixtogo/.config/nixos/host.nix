@@ -18,6 +18,7 @@ in
   # programs.steam.enable = true;
 
   services.keyd.enable = true;
+  # absolute path means I need to build with --impure
   environment.etc."keyd/default.conf".source = /home/ecal/kbd/keyd.conf;
 
   # fonts.packages = with pkgs; [ ];
