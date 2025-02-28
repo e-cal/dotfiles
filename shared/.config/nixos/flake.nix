@@ -19,11 +19,8 @@
         config = {
           allowUnfree = true;
           allowUnfreePredicate = (_: true);
-          permittedInsecurePackages = [
-            "electron-25.9.0"
-            "qtwebkit-5.212.0-alpha4"
-            "openssl-1.1.1w"
-          ];
+          permittedInsecurePackages =
+            [ "electron-25.9.0" "qtwebkit-5.212.0-alpha4" "openssl-1.1.1w" ];
         };
       };
 
@@ -61,19 +58,6 @@
               pip
               uv
             ]);
-
-          vscode-insiders =
-            (super.vscode.override { isInsiders = true; }).overrideAttrs
-            (oldAttrs: rec {
-              src = builtins.fetchTarball {
-                url =
-                  "https://code.visualstudio.com/sha/download?build=insider&os=linux-x64";
-                sha256 =
-                  "18lwfbqa8sbr5sw7wywl5s1857w820zw9yp301pqrqgccjkpmg0g"; # Update this
-              };
-              version = "latest";
-              buildInputs = oldAttrs.buildInputs ++ [ super.krb5 super.neovim ];
-            });
 
           flameshot-grim = super.flameshot.overrideAttrs (oldAttrs: {
             cmakeFlags = (oldAttrs.cmakeFlags or [ ])

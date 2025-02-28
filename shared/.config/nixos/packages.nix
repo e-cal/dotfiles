@@ -161,7 +161,6 @@
       gromit-mpx
       vlc
 
-      vscode-insiders.fhs
       master.claude-code
     ];
   };
