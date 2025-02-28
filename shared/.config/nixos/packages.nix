@@ -1,10 +1,12 @@
-{ config, lib, pkgs, unstable, master, inputs, ... }:
-{
+{ config, lib, pkgs, unstable, master, inputs, ... }: {
   imports = [ inputs.home-manager.nixosModules.default ./cachix.nix ];
 
-  # Global
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = { "ecal" = import ./home.nix; };
+  };
+
   environment.systemPackages = with pkgs; [
-    # core
     neovim-custom
     git
     wget
@@ -14,12 +16,9 @@
     zoxide
     (nnn.override { withNerdIcons = true; })
     direnv
-    networkmanagerapplet
 
     # languages
     pythonWithPkgs
-    unstable.uv
-    poetry
     python312Packages.ipython
     python312Packages.jupytext
     python312Packages.pylatexenc
@@ -38,13 +37,7 @@
     bun
     tree-sitter
     bazel
-
-    # formatters
-    yapf
-    shfmt
-    nixfmt-classic
-    stylua
-    nodePackages.prettier
+    stdenv.cc.cc.lib
 
     # services
     socat
@@ -65,7 +58,6 @@
     swappy
     feh
     wev
-    kdenlive
 
     # tools
     nix-index
@@ -96,15 +88,19 @@
     ydotool
     difftastic
 
+    # formatters
+    yapf
+    shfmt
+    nixfmt-classic
+    stylua
+    nodePackages.prettier
+
     # aesthetics
     lolcat
     starship
     hyprpaper
     hyprcursor
     catppuccin-cursors.mochaDark
-
-    # libs
-    stdenv.cc.cc.lib
   ];
 
   fonts.packages = with pkgs; [
@@ -117,7 +113,6 @@
     liberation_ttf
   ];
 
-  # users and user packages (gui)
   users.users.ecal = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" ];
@@ -135,8 +130,8 @@
           "--enable-zero-copy"
         ];
       })
-      spotify
-      youtube-music
+      # spotify
+      # youtube-music
 
       eww
       nemo
@@ -145,7 +140,7 @@
       flameshot-grim
       unstable.satty
 
-      vial
+      # vial
       unstable.keymapp
       unstable.wally-cli
       qmk
@@ -153,45 +148,26 @@
 
       thunderbird
       slack
-      zoom
+      # zoom
 
       obsidian
       zotero_7
       anki
       zathura
-      calibre
       masterpdfeditor4
-      libreoffice-fresh
       quarto
       qalculate-gtk
       gnuplot
       gromit-mpx
-
-      obs-studio
-      gimp
       vlc
 
-      vscode.fhs
       vscode-insiders.fhs
-      unstable.zed-editor
-      (ollama.override { acceleration = "cuda"; })
       master.claude-code
-
-      prismlauncher
     ];
   };
-  programs.chromium.extraOpts = { "SyncDisabled" = false; };
 
-  programs.weylus = {
-    enable = true;
-    openFirewall = true;
-    users = [ "ecal" ];
-  };
-
-  home-manager = {
-    extraSpecialArgs = { inherit inputs; };
-    users = { "ecal" = import ./home.nix; };
-  };
+  # services.mullvad-vpn.enable = true;
+  # services.postgresql.enable = true;
 
   virtualisation.docker = {
     enable = true;
@@ -212,8 +188,6 @@
   users.extraGroups.docker.members = [ "ecal" ];
 
   services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
-  # services.mullvad-vpn.enable = true;
-  # services.postgresql.enable = true;
 
   # install dynamic libraries for unpackaged programs
   # https://nix.dev/guides/faq.html

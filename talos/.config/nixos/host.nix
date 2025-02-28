@@ -1,11 +1,21 @@
-{ config, lib, pkgs, ... }:
-let
-  unstable = import (builtins.fetchTarball
-    "https://github.com/nixos/nixpkgs/tarball/nixos-unstable") {
-      config = config.nixpkgs.config;
-    };
-in {
+{ config, lib, pkgs, unstable, master, inputs, ... }: {
   networking.hostName = "talos";
+
+  environment.systemPackages = with pkgs;
+    [
+      (ollama.override { acceleration = "cuda"; })
+      # other
+    ];
+
+  users.users.ecal = {
+    # extraGroups = [];
+    #   shell = pkgs.zsh;
+    packages = with pkgs; [
+      obs-studio
+      gimp
+      # kdenlive
+    ];
+  };
 
   programs.steam = {
     enable = true;
@@ -13,5 +23,9 @@ in {
     dedicatedServer.openFirewall = true;
   };
 
-
+  programs.weylus = {
+    enable = true;
+    openFirewall = true;
+    users = [ "ecal" ];
+  };
 }
