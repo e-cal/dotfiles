@@ -130,8 +130,8 @@
           "--enable-zero-copy"
         ];
       })
-      # spotify
-      # youtube-music
+      # tmp
+      inputs.zen-browser.packages.${pkgs.system}.default
 
       eww
       nemo
