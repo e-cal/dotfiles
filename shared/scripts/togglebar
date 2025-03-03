@@ -2,21 +2,20 @@
 
 eww ping &>/dev/null
 if ! [[ $? -eq 0 ]]; then
-	eww open bar
-	eww open bar2
-	exit 0
+    eww open bar
+    eww open bar2
+    exit 0
 fi
 
-# open=$(eww windows | grep bar | grep "*" | wc -l)
-open=`eww active-windows | grep bar | wc -l`
-echo "$open open"
+open=$(eww active-windows | grep bar | wc -l)
+# echo "$open open"
 
 if [[ $open -eq 0 ]]; then
-	echo "Opening"
-	eww open bar 2>/dev/null
-	eww open bar2 2>/dev/null
+    # echo "Opening"
+    eww open bar 2>/dev/null
+    eww open bar2 2>/dev/null
 else
-	echo "Closing"
-	eww close bar 2>/dev/null
-	eww close bar2 2>/dev/null
+    # echo "Closing"
+    eww close bar 2>/dev/null
+    eww close bar2 2>/dev/null
 fi

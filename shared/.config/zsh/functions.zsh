@@ -9,14 +9,12 @@ gco() {
 }
 
 cdc() {
-    dir=`cfg cd`
-    if [[ ! -z $dir ]]; then
-        cd $dir
-    fi
+    dir=`common`
+    [[ ! -z $dir ]] && cd $dir
 }
 
 nvc() {
-    file=`cfg file`
+    file=`common file`
     if [[ ! -z $file ]]; then
         cd `dirname $file`
         nvim $file

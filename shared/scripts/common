@@ -1,38 +1,31 @@
 #!/usr/bin/env zsh
 
-# list of top level config dirs
+# setup dirs
 dirs=(
-    "local" $XDG_CONFIG_HOME
+    .config $XDG_CONFIG_HOME
     scripts $HOST_DOTFILES/scripts
-    kbd ~/kbd
-    adv ~/kbd/adv360
-    shared $SHARED_DOTFILES
-    host $HOST_DOTFILES
-    dotfiles_root $DOTFILES
+    dotfiles $DOTFILES
+    nvim $XDG_CONFIG_HOME/nvim
+    chat.nvim ~/projects/chat.nvim
     projects ~/projects
+    kbd ~/kbd
 )
-
-# Add any untracked local config dirs
-for dir in "$XDG_CONFIG_HOME"/*; do
-    if [ -d "$dir" ]; then
-        dir_name=$(basename "$dir")
-        if [[ "$dir_name" == *" "* ]]; then
-            continue
+for location in "$XDG_CONFIG_HOME" "$HOME/projects"; do
+    for dir in "$location"/*; do
+        if [ -d "$dir" ]; then
+            dir_name=$(basename "$dir")
+            if [[ "$dir_name" == *" "* ]]; then
+                continue
+            fi
+            if [[ ! " ${dirs[@]} " =~ " ${dir_name} " ]]; then
+                dirs+=("$dir_name" "$dir")
+            fi
         fi
-        # Check if the directory name already exists in $dirs
-        if [[ ! " ${dirs[@]} " =~ " ${dir_name} " ]]; then
-            # Append the directory name and path to the $dirs array
-            dirs+=("$dir_name" "$dir")
-        fi
-    fi
+    done
 done
 
-# print everything in dirs (key and value)
-# for (( i=1; i<=$#dirs; i+=2 )); do
-#     echo "${dirs[$i]}: ${dirs[$i+1]}"
-# done
+# main script start
 
-# get args
 tmux=false
 file=false
 while [[ $# -gt 0 ]]; do
