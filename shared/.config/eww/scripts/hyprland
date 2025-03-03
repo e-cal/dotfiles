@@ -47,7 +47,7 @@ workspace_event() {
 # get all app titles in a workspace
 declare -A applist
 update_applist() {
-    lim=37
+    len_limit=37
     for ws in "${!workspaces[@]}"; do
         jq_script='
 .[]
@@ -59,7 +59,7 @@ update_applist() {
 }
 | (
   if .class == "org.wezfurlong.wezterm" or .class == "kitty" or .class == "com.mitchellh.ghostty" then ""
-  elif .class == "chromium-browser" then "󰖟"
+  elif .class == "chromium-browser" or .class == "zen" then "󰖟"
   elif .class == "nemo" then ""
   elif .class == "obsidian" then "󱞁"
   elif .class == "thunderbird" then " Email"
@@ -76,8 +76,10 @@ update_applist() {
     .title | sub("-.*";"")
   elif .class == "chromium-browser" then
     .title | sub(" - Chromium";"")
+  elif .class == "zen" then
+    .title | sub(" — Zen Browser";"")
   else
-    .title | .[0:'"$lim"']
+    .title | .[0:'"$len_limit"']
   end
 ) as $title
 | (
