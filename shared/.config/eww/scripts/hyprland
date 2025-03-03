@@ -74,13 +74,12 @@ update_applist() {
     .title | sub(":.*";"")
   elif .class == "obsidian" then
     .title | sub("-.*";"")
-  elif .class == "chromium-browser" then
-    .title | sub(" - Chromium";"")
-  elif .class == "zen" then
-    .title | sub(" — Zen Browser";"")
+  elif .class == "chromium-browser" or .class == "zen" then
+    .title | sub(" (-|—) (Chromium|Zen Browser)";""; "g")
   else
-    .title | .[0:'"$len_limit"']
+    .title 
   end
+  | (if length > '"$len_limit"' then .[0:'"$len_limit"'] + "..." else . end)
 ) as $title
 | (
   if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then
