@@ -51,7 +51,13 @@ dir=`echo "$sel" | awk '{print $2}'`
 if [[ $file == true ]] ; then
     [[ -z $dir ]] && exit
 
-    files=`find -L "$dir" -type f -printf "%f %p\n"`
+    files=`find -L "$dir" -type f \
+        -not -path '*/.git/*' \
+        -not -path '*/.venv/*' \
+        -not -path '*/node_modules/*' \
+        -not -path '*/__pycache__/*' \
+        -not -path '*/*egg-info*/*' \
+        -printf "%P %p\n"`
     sel=`printf "%s\n" $files | eval "$fzfcmd"`
     file=`echo "$sel" | awk '{print $2}'`
 
