@@ -1,5 +1,6 @@
 Antiderivative
 Arcsin
+Epipolar
 Finetune
 Frobenius
 Hough
@@ -10,9 +11,12 @@ LM
 LMs
 MLP
 OG
+Photogrammetric
+Photogrammetry
 Pre
 RANSAC
 asymptotes
+epipolar
 finetune
 finetuning
 homographies
@@ -26,6 +30,7 @@ parallelepiped
 performant
 sharded
 stateful
+stereopsis
 stochastically
 whitespace
-checksum_v1 = 04a00d3b9bea7c566a228fb38a7e1e95
+checksum_v1 = 731a09c22e67dde6b79732d935182580

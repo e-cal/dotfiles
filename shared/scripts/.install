@@ -44,79 +44,75 @@ if ! hostnamectl | grep -q "NixOS"; then # not nixos, get nix and dependencies
     # sudo apt install nvidia-jetson-services
 fi
 
-if confirm "Install submodules?"; then
+# if confirm "Install submodules (neovim config)?"; then
+if [[ ! -d $HOME/.config/nvim ]]; then
+    echo "Cloning neovim config..."
     pushd $DOTFILES
     git submodule update --init --recursive
     popd
 fi
 
-if confirm "Prepare local .config?"; then
-    # Make dirs that shouldn't be pure symlinks (i.e. stores local data in config)
-    [[ -d $HOME/.config ]] || mkdir $HOME/.config
-    [[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
-    [[ -d $HOME/.config/jupyter ]] || mkdir -p $HOME/.config/jupyter/profile_default
-    [[ -d $HOME/.config/obsidian ]] || mkdir -p $HOME/.config/obsidian
-    [[ -d $HOME/.config/lazygit ]] || mkdir $HOME/.config/lazygit
-    [[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
-    [[ -d "$HOME/.config/Code/User" ]] || mkdir -p $HOME/.config/Code/User
-    [[ -d "$HOME/projects" ]] || mkdir $HOME/projects
+# if confirm "Prepare local .config?"; then
+# Make dirs that shouldn't be pure symlinks (i.e. stores local data in config)
+[[ -d $HOME/.config ]] || mkdir $HOME/.config
+[[ -d $HOME/.config/zsh ]] || mkdir $HOME/.config/zsh
+[[ -d $HOME/.config/jupyter ]] || mkdir -p $HOME/.config/jupyter/profile_default
+[[ -d $HOME/.config/obsidian ]] || mkdir -p $HOME/.config/obsidian
+[[ -d $HOME/.config/lazygit ]] || mkdir $HOME/.config/lazygit
+[[ -d $HOME/.config/nixos ]] || mkdir $HOME/.config/nixos
+[[ -d "$HOME/.config/Code/User" ]] || mkdir -p $HOME/.config/Code/User
+[[ -d "$HOME/projects" ]] || mkdir $HOME/projects
 
-    # Make files
-    # [[ -f $HOME/.config/wgetrc ]] || touch $HOME/.config/wgetrc
-    # echo 'export ZDOTDIR=$HOME/.config/zsh' > ~/.zshenv
+# Remove common conflicts
+[[ ! -L $HOME/.config/wgetrc ]] && [[ -f $HOME/.config/wgetrc ]] && rm $HOME/.config/wgetrc
+[[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
+[[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
+[[ ! -L $HOME/.config/lazygit/config.yml ]] && [[ -f $HOME/.config/lazygit/config.yml ]] && rm $HOME/.config/lazygit/config.yml
+[[ ! -L $HOME/.config/obsidian/Custom\ Dictionary.txt ]] && [[ -f $HOME/.config/obsidian/Custom\ Dictionary.txt ]] && rm $HOME/.config/obsidian/Custom\ Dictionary.txt
+[[ ! -L $HOME/.zshenv ]] && [[ -f $HOME/.zshenv ]] && rm $HOME/.zshenv
+# fi
 
-    # Remove common conflicts
-    [[ ! -L $HOME/.config/wgetrc ]] && [[ -f $HOME/.config/wgetrc ]] && rm $HOME/.config/wgetrc
-    [[ ! -L $HOME/.config/mimeapps.list ]] && [[ -f $HOME/.config/mimeapps.list ]] && rm $HOME/.config/mimeapps.list
-    [[ ! -L $HOME/.config/user-dirs.dirs ]] && [[ -f $HOME/.config/user-dirs.dirs ]] && rm $HOME/.config/user-dirs.dirs
-    # [[ ! -L $HOME/.config/hypr/hyprland.conf ]] && [[ -f $HOME/.config/hypr/hyprland.conf ]] && rm $HOME/.config/hypr/hyprland.conf
-    [[ ! -L $HOME/.config/lazygit/config.yml ]] && [[ -f $HOME/.config/lazygit/config.yml ]] && rm $HOME/.config/lazygit/config.yml
-    [[ ! -L $HOME/.zshenv ]] && [[ -f $HOME/.zshenv ]] && rm $HOME/.zshenv
+# if confirm "Stow config?"; then
+[[ ! $(command -v stow) ]] && echo "first install stow" && exit 1
 
+read -p "hostname ($HOSTNAME): " hostname
+hostname="${hostname:-$HOSTNAME}"
+HOST_DOTFILES="$HOME/.dotfiles/$hostname"
+# echo $HOST_DOTFILES
+
+if [[ ! -d $HOST_DOTFILES ]] || confirm "Sync host ($hostname) with shared dotfiles?"; then
+    echo "Generating dotfiles for $hostname"
+    mkdir -p $HOST_DOTFILES/.config/nixos
+
+    if hostnamectl | grep -q "NixOS" && [[ ! -f $HOST_DOTFILES/.config/nixos/host.nix ]]; then
+        echo "Creating blank host.nix template..."
+        cp $DOTFILES/shared/.config/nixos/host-template.nix $HOST_DOTFILES/.config/nixos/host.nix
+    fi
+
+    stow -R --dir=$SHARED_DOTFILES .config --target=$HOST_DOTFILES/.config --ignore=host-template.nix --ignore="user-dirs.dirs"
+    stow -R --dir=$DOTFILES shared --target=$HOST_DOTFILES --ignore=.config
 fi
-
-if confirm "Stow config?"; then
-    [[ ! $(command -v stow) ]] && echo "first install stow" && exit 1
-
-    read -p "hostname ($HOSTNAME): " hostname
-    hostname="${hostname:-$HOSTNAME}"
-    HOST_DOTFILES="$HOME/.dotfiles/$hostname"
-    echo $HOST_DOTFILES
-
-    if [[ ! -d $HOST_DOTFILES ]] || confirm "Copy shared dotfiles to $hostname?"; then
-        echo "Generating dotfiles for $hostname"
-        mkdir -p $HOST_DOTFILES/.config/nixos
-
-        if hostnamectl | grep -q "NixOS" && [[ ! -f $HOST_DOTFILES/.config/nixos/host.nix ]]; then
-            echo "Creating blank host.nix template..."
-            cp $DOTFILES/shared/.config/nixos/host-template.nix $HOST_DOTFILES/.config/nixos/host.nix
-        fi
-
-        stow -R --dir=$SHARED_DOTFILES .config --target=$HOST_DOTFILES/.config --ignore=host-template.nix --ignore="user-dirs.dirs"
-        stow -R --dir=$DOTFILES shared --target=$HOST_DOTFILES --ignore=.config
-    fi
-    echo "Linking dotfiles to local system"
-    stow -R --dir=$DOTFILES $hostname --target=$HOME
-    if [[ $? -ne 0 ]]; then
-        echo "Failed to link dotfiles"
-        if confirm "Try again with --adopt (overwrite shared dotfiles with conflicting local versions)?"; then
-            stow -R --dir=$DOTFILES $hostname --target=$HOME --adopt
-        else
-            exit
-        fi
-    fi
-    command -v bat &>/dev/null && bat cache --build
-
-    if hostnamectl | grep -q "NixOS"; then
-        if confirm "Rebuild nixos?"; then
-            pushd ~/.config/nixos &>/dev/null
-            sudo cp *.nix /etc/nixos/
-            sudo nixos-rebuild switch --flake /etc/nixos#default --impure &>nixos-switch.log || (cat nixos-switch.log | grep --color error && false)
-            popd &>/dev/null
-        fi
+echo "Linking dotfiles to local system"
+stow -R --dir=$DOTFILES $hostname --target=$HOME
+if [[ $? -ne 0 ]]; then
+    echo "Failed to link dotfiles"
+    if confirm "Try again with --adopt (overwrites shared dotfiles with local)?"; then
+        stow -R --dir=$DOTFILES $hostname --target=$HOME --adopt
     else
-        if confirm "Install packages?"; then
-            nix-env -f ~/.config/nix/packages.nix -i
-        fi
+        exit
     fi
 fi
+
+if hostnamectl | grep -q "NixOS"; then
+    if confirm "Rebuild nixos?"; then
+        pushd ~/.config/nixos &>/dev/null
+        sudo cp *.nix /etc/nixos/
+        { sudo nixos-rebuild switch --flake /etc/nixos#default --impure 2>&1 | tee nixos-switch.log; } || cat nixos-switch.log | grep --color error >&2
+        popd &>/dev/null
+    fi
+else
+    if confirm "Install packages?"; then
+        nix-env -f ~/.config/nix/packages.nix -i
+    fi
+fi
+# fi
