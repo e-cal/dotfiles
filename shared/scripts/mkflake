@@ -11,11 +11,12 @@ cat <<'EOF' >flake.nix
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-master }:
+  outputs = { self, nixpkgs, nixpkgs-master }:
+  # outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-master }:
     let
       system = "x86_64-linux";
       nixpkgsConfig = {
@@ -33,10 +34,10 @@ cat <<'EOF' >flake.nix
         inherit system;
         inherit (nixpkgsConfig) config;
       });
-      unstable = import nixpkgs-unstable ({
-        inherit system;
-        inherit (nixpkgsConfig) config;
-      });
+      # unstable = import nixpkgs-unstable ({
+      #   inherit system;
+      #   inherit (nixpkgsConfig) config;
+      # });
       master = import nixpkgs-master ({
         inherit system;
         inherit (nixpkgsConfig) config;
