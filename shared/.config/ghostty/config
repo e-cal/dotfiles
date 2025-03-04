@@ -19,6 +19,7 @@ window-padding-color = background
 window-step-resize = true
 gtk-adwaita = true
 resize-overlay-position = bottom-right
+app-notifications = no-clipboard-copy
 
 font-size = 11
 font-family = JetBrainsMono Nerd Font
