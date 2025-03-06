@@ -24,3 +24,6 @@ application/pdf=org.pwmt.zathura.desktop
 x-scheme-handler/postman=Postman.desktop
 x-scheme-handler/webcal=zen.desktop
 x-scheme-handler/texts=texts.desktop
+text/plain=nvim-ghostty.desktop
+text/markdown=nvim-ghostty.desktop
+text/x-markdown=nvim-ghostty.desktop
