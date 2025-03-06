@@ -101,6 +101,15 @@
     hyprpaper
     hyprcursor
     catppuccin-cursors.mochaDark
+
+    (makeDesktopItem {
+      name = "nvim-ghostty";
+      exec = "ghostty -e nvim %F";
+      icon = "nvim";
+      desktopName = "nvim";
+      genericName = "Launches Neovim in Ghostty";
+      categories = [ "Utility" "TextEditor" ];
+    })
   ];
 
   fonts.packages = with pkgs; [
@@ -160,6 +169,8 @@
       gnuplot
       gromit-mpx
       vlc
+
+      blender
 
       unstable.claude-code
     ];
