@@ -11,12 +11,10 @@ cat <<'EOF' >flake.nix
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
-    # nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-master }:
-  # outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-master }:
+  outputs = { self, nixpkgs, nixpkgs-unstable }:
     let
       system = "x86_64-linux";
       nixpkgsConfig = {
@@ -34,11 +32,7 @@ cat <<'EOF' >flake.nix
         inherit system;
         inherit (nixpkgsConfig) config;
       });
-      # unstable = import nixpkgs-unstable ({
-      #   inherit system;
-      #   inherit (nixpkgsConfig) config;
-      # });
-      master = import nixpkgs-master ({
+      unstable = import nixpkgs-unstable ({
         inherit system;
         inherit (nixpkgsConfig) config;
       });
@@ -60,8 +54,8 @@ cat <<'EOF' >flake.nix
         cudaPackages.cudnn
         freeglut
         zlib
-        master.gcc # for claude-code while its on master only
-        master.gcc.cc.lib # for claude-code while its on master only
+        unstable.gcc # for claude-code while its on master only
+        unstable.gcc.cc.lib # for claude-code while its on master only
         stdenv.cc.cc.lib
         stdenv.cc
         libGLU
@@ -70,7 +64,7 @@ cat <<'EOF' >flake.nix
         pango
         fontconfig
         nodejs_22
-        master.claude-code
+        unstable.claude-code
         python
         # matplotlib must be installed as an environment package for ui to work
         # python312Packages.matplotlib

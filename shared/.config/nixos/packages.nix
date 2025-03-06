@@ -1,4 +1,4 @@
-{ config, lib, pkgs, unstable, master, inputs, ... }: {
+{ config, lib, pkgs, unstable, inputs, ... }: {
   imports = [ inputs.home-manager.nixosModules.default ./cachix.nix ];
 
   home-manager = {
@@ -161,7 +161,7 @@
       gromit-mpx
       vlc
 
-      master.claude-code
+      unstable.claude-code
     ];
   };
 
