@@ -17,6 +17,43 @@
     (nnn.override { withNerdIcons = true; })
     direnv
 
+    # tools
+    nix-index
+    cachix
+    eza
+    bat
+    fzf
+    ripgrep
+    jq
+    jc
+    zip
+    unzip
+    lazygit
+    rclone
+    unstable.github-cli
+    podman
+    htop
+    nvtopPackages.full
+    openfortivpn # queens
+    wkhtmltopdf-bin
+    appimage-run
+    usbutils
+    imagemagick
+    luajitPackages.magick
+    ffmpeg
+    unstable.rbw
+    pinentry-tty
+    ydotool
+    difftastic
+    sshfs
+
+    # formatters
+    yapf
+    shfmt
+    nixfmt-classic
+    stylua
+    nodePackages.prettier
+
     # languages
     pythonWithPkgs
     python312Packages.ipython
@@ -58,42 +95,6 @@
     swappy
     feh
     wev
-
-    # tools
-    nix-index
-    cachix
-    eza
-    bat
-    fzf
-    ripgrep
-    jq
-    jc
-    zip
-    unzip
-    lazygit
-    rclone
-    unstable.github-cli
-    podman
-    htop
-    nvtopPackages.full
-    openfortivpn # queens
-    wkhtmltopdf-bin
-    appimage-run
-    usbutils
-    imagemagick
-    luajitPackages.magick
-    ffmpeg
-    unstable.rbw
-    pinentry-tty
-    ydotool
-    difftastic
-
-    # formatters
-    yapf
-    shfmt
-    nixfmt-classic
-    stylua
-    nodePackages.prettier
 
     # aesthetics
     lolcat
