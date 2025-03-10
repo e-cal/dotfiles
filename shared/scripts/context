@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+find_project_root() {
+    local dir="$PWD"
+    while [[ "$dir" != "/" ]]; do
+        if [[ -d "$dir/.git" ]]; then
+            echo "$dir"
+            return 0
+        fi
+        dir="$(dirname "$dir")"
+    done
+    echo "$PWD"
+}
+
+PROJECT_ROOT=$(find_project_root)
+cd "$PROJECT_ROOT" || exit 1
+
+selected_files=$(find . -type f -not -path "*/\.*" -not -path "*/node_modules/*" |
+    sed 's|^\./||' |
+    fzf --multi --bind 'space:toggle' --preview 'bat --color=always --style=plain {}' --preview-window='right:60%')
+
+if [[ -z "$selected_files" ]]; then
+    echo "No files selected"
+    exit 0
+fi
+
+get_language() {
+    local file="$1"
+    local ext="${file##*.}"
+    case "$ext" in
+    py) echo "python" ;;
+    js) echo "javascript" ;;
+    ts) echo "typescript" ;;
+    rs) echo "rust" ;;
+    rb) echo "ruby" ;;
+    sh) echo "bash" ;;
+    md) echo "markdown" ;;
+    yml) echo "yaml" ;;
+    *) echo "$ext" ;;
+    esac
+}
+
+clipboard_content=""
+while IFS= read -r file; do
+    [[ -z "$file" ]] && continue
+
+    if [[ -n "$clipboard_content" ]]; then
+        clipboard_content+="\n\n"
+    fi
+
+    clipboard_content+="$file\n"
+    lang=$(get_language "$file")
+    clipboard_content+="\`\`\`$lang\n"
+    clipboard_content+="$(cat "$file")\n"
+    clipboard_content+="\`\`\`"
+
+done < <(echo "$selected_files")
+
+echo -e "$clipboard_content" | wl-copy
