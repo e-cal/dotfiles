@@ -1,4 +1,5 @@
 import threading
+import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from IPython import get_ipython
 from pygments import highlight
@@ -18,14 +19,16 @@ cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation
 class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
-        command = self.rfile.read(content_length).decode('utf-8')
-        syntax = highlight(command, PythonLexer(), formatter)
+        post_data = self.rfile.read(content_length)
+        data = json.loads(post_data.decode('utf-8'))
+        code = '\n'.join(data.get('code', []))
+        syntax = highlight(code, PythonLexer(), formatter)
         lines = syntax.rstrip().split("\n")
         display = f"{in_prompt}{lines[0]}"
         for line in lines[1:]:
             display += f"\n{cont_prompt}{line}"
         print(f"{display}")
-        result = ipython.run_cell(command)
+        result = ipython.run_cell(code)
         print()
 
         self.send_response(200)
