@@ -34,8 +34,9 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        if result.success: self.wfile.write(str(result.result).encode('utf-8'))
-        else: self.wfile.write(str(result.error_in_exec).encode('utf-8'))
+        # if result.success: self.wfile.write(str(result.result).encode('utf-8'))
+        if result.success: self.wfile.write(json.dumps({"output": result.result, "error": None}).encode('utf-8'))
+        else: self.wfile.write(json.dumps({"output": None, "error": result.error_in_exec}).encode('utf-8'))
 
     def log_message(self, format, *args):
         pass
