@@ -5,29 +5,31 @@ from pygments import highlight
 from pygments.styles import get_style_by_name
 from pygments.lexers import PythonLexer
 from pygments.formatters import TerminalTrueColorFormatter
+from IPython.terminal.prompts import Token as IPythonToken
 
 # formatting stuff
-
 GREEN = "\033[32m"
 RED = "\033[31m"
 RESET = "\033[0m"
-PROMPT = f"{GREEN}❯{RESET} "
-
-style = get_style_by_name("catppuccin-mocha")
+ipython = get_ipython()
+style = ipython.highlighting_style
 formatter = TerminalTrueColorFormatter(style=style)
+in_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.in_prompt_tokens()) + RESET
+cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation_prompt_tokens()) + RESET
 
 class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
-        # run
         content_length = int(self.headers['Content-Length'])
         command = self.rfile.read(content_length).decode('utf-8')
-        highlighted_code = highlight(command, PythonLexer(), formatter)
-        print(f"{PROMPT}{highlighted_code}", end='')
-        ipython = get_ipython()
+        syntax = highlight(command, PythonLexer(), formatter)
+        lines = syntax.rstrip().split("\n")
+        display = f"{in_prompt}{lines[0]}"
+        for line in lines[1:]:
+            display += f"\n{cont_prompt}{line}"
+        print(f"{display}")
         result = ipython.run_cell(command)
         print()
 
-        # respond
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()

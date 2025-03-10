@@ -5,7 +5,8 @@ class MyPrompt(Prompts):
         return [ ( Token.Prompt, "❯ ",), ]
 
     def continuation_prompt_tokens(self, width=None):
-        return [(Token.Prompt, '|')]
+        return [(Token.Prompt, '| ')]
+        # return []
 
     def out_prompt_tokens(self, cli=None):
         return []
