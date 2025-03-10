@@ -1,11 +1,9 @@
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from IPython import get_ipython  # type: ignore
+from IPython import get_ipython
 from pygments import highlight
-from pygments.styles import get_style_by_name
 from pygments.lexers import PythonLexer
 from pygments.formatters import TerminalTrueColorFormatter
-from IPython.terminal.prompts import Token as IPythonToken
 
 # formatting stuff
 GREEN = "\033[32m"
