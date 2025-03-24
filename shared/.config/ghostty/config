@@ -9,6 +9,7 @@ mouse-hide-while-typing = true
 mouse-scroll-multiplier = 0.25
 
 keybind = ctrl+shift+r=reload_config
+keybind = ctrl+1=increase_font_size:1
 
 gtk-tabs-location = hidden
 window-decoration = false
