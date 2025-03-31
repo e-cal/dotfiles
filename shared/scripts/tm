@@ -214,6 +214,8 @@ def project(sel=None):
                 run_cmd(f"cd {PROJECT_DIR / name} && mkflake {name}")
             elif input("add nix shell (y/N)? ").lower() == "y":
                 run_cmd(f"cd {PROJECT_DIR / name} && mkshell {name} python")
+        if (not (PROJECT_DIR / name / ".venv").exists()) and input("add python? (y/N)").lower() == "y":
+            run_cmd("echo 'layout uv' >> .envrc")
 
         attach(name, PROJECT_DIR.joinpath(name))
         return

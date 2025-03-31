@@ -142,3 +142,5 @@ sed "/{shellHook}/ {
 sed "s/{name}/$name/g" shell.nix > shell.nix.tmp && mv shell.nix.tmp shell.nix
 
 rm shellhook.tmp
+
+echo "use nix" >> .envrc

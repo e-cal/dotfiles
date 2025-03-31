@@ -141,3 +141,5 @@ else
 fi
 
 git add flake.nix
+
+echo "use flake" >> .envrc
