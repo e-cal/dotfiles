@@ -39,57 +39,57 @@ done
 # -----------------------------------------------------------------------------
 #                                  Auto venv
 # -----------------------------------------------------------------------------
-function _virtualenv_auto_activate() {
-    if [[ -f ".venv" ]]; then
-        venv=$(cat .venv)
-        if [[ -d "$venv" ]]; then
-            source "$venv/bin/activate"
-        else
-            _VENV_PATH=$VIRTUALENV_HOME/$venv
-            if [[ "$VIRTUAL_ENV" != $_VENV_PATH ]]; then
-                source $_VENV_PATH/bin/activate
-            fi
-        fi
-
-    elif [[ -d ".venv" ]]; then
-        source .venv/bin/activate
-
-    elif (( ${+VIRTUAL_ENV} )); then
-        deactivate
-    fi
-}
-
-function venvconnect (){
-    if [[ -n $VIRTUAL_ENV ]]; then
-        echo $(basename $VIRTUAL_ENV) > .venv
-    else
-        echo "Activate a virtualenv first"
-    fi
-}
-
-chpwd_functions+=(_virtualenv_auto_activate)
-precmd_functions=(_virtualenv_auto_activate $precmd_functions)
+# function _virtualenv_auto_activate() {
+#     if [[ -f ".venv" ]]; then
+#         venv=$(cat .venv)
+#         if [[ -d "$venv" ]]; then
+#             source "$venv/bin/activate"
+#         else
+#             _VENV_PATH=$VIRTUALENV_HOME/$venv
+#             if [[ "$VIRTUAL_ENV" != $_VENV_PATH ]]; then
+#                 source $_VENV_PATH/bin/activate
+#             fi
+#         fi
+#
+#     elif [[ -d ".venv" ]]; then
+#         source .venv/bin/activate
+#
+#     elif (( ${+VIRTUAL_ENV} )); then
+#         deactivate
+#     fi
+# }
+#
+# function venvconnect (){
+#     if [[ -n $VIRTUAL_ENV ]]; then
+#         echo $(basename $VIRTUAL_ENV) > .venv
+#     else
+#         echo "Activate a virtualenv first"
+#     fi
+# }
+#
+# chpwd_functions+=(_virtualenv_auto_activate)
+# precmd_functions=(_virtualenv_auto_activate $precmd_functions)
 
 
 # -----------------------------------------------------------------------------
 #                                Auto nix-shell
 # -----------------------------------------------------------------------------
-function _nix_shell_auto_activate() {
-    if [[ -f "flake.nix" ]]; then
-        if [[ -z "$IN_NIX_SHELL" ]]; then
-            echo "Entering nix shell (flake)..."
-            nix develop
-        fi
-    elif [[ -f "shell.nix" ]] || [[ -f "default.nix" ]]; then
-        if [[ -z "$IN_NIX_SHELL" ]]; then
-            echo "Entering nix shell..."
-            nix-shell
-        fi
-    fi
-}
-
-chpwd_functions+=(_nix_shell_auto_activate)
-_nix_shell_auto_activate
+# function _nix_shell_auto_activate() {
+#     if [[ -f "flake.nix" ]]; then
+#         if [[ -z "$IN_NIX_SHELL" ]]; then
+#             echo "Entering nix shell (flake)..."
+#             nix develop
+#         fi
+#     elif [[ -f "shell.nix" ]] || [[ -f "default.nix" ]]; then
+#         if [[ -z "$IN_NIX_SHELL" ]]; then
+#             echo "Entering nix shell..."
+#             nix-shell
+#         fi
+#     fi
+# }
+#
+# chpwd_functions+=(_nix_shell_auto_activate)
+# _nix_shell_auto_activate
 
 # -----------------------------------------------------------------------------
 #                                Git auto-fetch
