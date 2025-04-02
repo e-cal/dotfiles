@@ -84,7 +84,6 @@ cat <<'EOF' >flake.nix
           export LD_LIBRARY_PATH=${ld-lib-path}:$LD_LIBRARY_PATH;
           export LIBRARY_PATH=${lib-path}:$LIBRARY_PATH;
           export CUDA_PATH=${pkgs.cudatoolkit};
-          exec zsh
         '';
       };
 
@@ -96,7 +95,6 @@ cat <<'EOF' >flake.nix
           export LD_LIBRARY_PATH=${ld-lib-path}:$LD_LIBRARY_PATH
           export LIBRARY_PATH=${lib-path}:$LIBRARY_PATH
           export CUDA_PATH=${pkgs.cudatoolkit}
-          exec zsh
         '';
       };
 

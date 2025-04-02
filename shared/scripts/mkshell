@@ -72,7 +72,6 @@ def_shell_hook=$(
     export CUDA_PATH=${pkgs.cudatoolkit}
     export EXTRA_LDFLAGS=${extra-ldflags}
     export TZ="America/Toronto"
-    exec zsh
 EOF
 )
 
@@ -89,7 +88,6 @@ py_shell_hook=$(
       source $VIRTUALENV_HOME/$VENV/bin/activate
       deactivate
     fi
-    exec zsh
 EOF
 )
 
