@@ -3,7 +3,7 @@ source parseargs
 
 [[ -d ~/cloud ]] || mkdir ~/cloud
 [[ -d ~/cloud/box ]] || mkdir ~/cloud/box
-[[ -d ~/cloud/gdrive ]] || mkdir ~/cloud/gdrive
+# [[ -d ~/cloud/gdrive ]] || mkdir ~/cloud/gdrive
 
 case $1 in
 mount)
