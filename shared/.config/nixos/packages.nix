@@ -15,6 +15,7 @@
     stow
     zoxide
     (nnn.override { withNerdIcons = true; })
+    ranger
     direnv
 
     # tools
@@ -95,6 +96,7 @@
     swappy
     feh
     wev
+    cacert
 
     # aesthetics
     lolcat
@@ -143,6 +145,9 @@
       # tmp
       inputs.zen-browser.packages.${pkgs.system}.default
 
+      unstable.claude-code
+      code-cursor
+
       eww
       nemo
       albert
@@ -173,7 +178,6 @@
 
       blender
 
-      unstable.claude-code
     ];
   };
 
@@ -199,6 +203,10 @@
   users.extraGroups.docker.members = [ "ecal" ];
 
   services.udev.packages = with pkgs; [ unstable.zsa-udev-rules vial ];
+
+  security.pki.certificateFiles = [
+    "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" # Default CA bundle
+  ];
 
   # install dynamic libraries for unpackaged programs
   # https://nix.dev/guides/faq.html

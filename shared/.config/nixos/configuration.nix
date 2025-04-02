@@ -68,6 +68,7 @@
   users.users.reboot = { isNormalUser = true; };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.use-xdg-base-directories = true;
   nix.settings.trusted-users = [ "root" "ecal" ];
   programs.zsh = {
     enable = true;
