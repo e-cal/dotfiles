@@ -17,11 +17,14 @@ formatter = TerminalTrueColorFormatter(style=style)
 in_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.in_prompt_tokens()) + RESET  # type: ignore
 cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation_prompt_tokens()) + RESET  # type: ignore
 
+a = 1
+
 class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         data = json.loads(post_data.decode('utf-8'))
+        if isinstance(data, list): return self.data_error()
         code = '\n'.join(data.get('code', []))
         syntax = highlight(code, PythonLexer(), formatter)
         lines = syntax.rstrip().split("\n")
@@ -35,9 +38,14 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        # if result.success: self.wfile.write(str(result.result).encode('utf-8'))
         if result.success: self.wfile.write(json.dumps({"output": result.result, "error": None}).encode('utf-8'))
         else: self.wfile.write(json.dumps({"output": None, "error": result.error_in_exec}).encode('utf-8'))
+
+    def data_error(self):
+        self.send_response(400)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
+        self.wfile.write(json.dumps({"output": None, "error": "Invalid data format. Expected a dictionary, got a list."}).encode('utf-8'))
 
     def log_message(self, format, *args):
         pass
