@@ -79,7 +79,7 @@ update_applist() {
   else
     .title 
   end
-  | (if length > '"$len_limit"' then .[0:'"$len_limit"'] + "..." else . end)
+  | (if length > '"$len_limit"' then .[0:'"$len_limit"'] + "-" else . end)
 ) as $title
 | (
   if .class == "Spotify" or .class == "thunderbird" or .class == "Slack" then
