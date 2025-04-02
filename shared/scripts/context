@@ -15,9 +15,19 @@ find_project_root() {
 PROJECT_ROOT=$(find_project_root)
 cd "$PROJECT_ROOT" || exit 1
 
+if [[ $1 == "tree" ]]; then
+    eza --tree --group-directories-last --sort=size --color=never -I '.git|.venv' | wl-copy
+    exit 0
+fi
+
+initial_query=""
+if [[ -n $1 ]]; then
+    initial_query=$(printf "%s " "$@")
+fi
+
 selected_files=$(find . -type f -not -path "*/\.*" -not -path "*/node_modules/*" |
     sed 's|^\./||' |
-    fzf --multi --bind 'space:toggle' --preview 'bat --color=always --style=plain {}' --preview-window='right:60%')
+    fzf --multi --bind 'space:toggle' --preview 'bat --color=always --style=plain {}' --preview-window='right:60%' --query="$initial_query")
 
 if [[ -z "$selected_files" ]]; then
     echo "No files selected"
