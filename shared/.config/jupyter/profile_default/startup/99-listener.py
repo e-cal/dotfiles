@@ -1,7 +1,7 @@
 import threading
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from IPython import get_ipython
+from IPython import get_ipython  # type: ignore
 from pygments import highlight
 from pygments.lexers import PythonLexer
 from pygments.formatters import TerminalTrueColorFormatter
@@ -11,10 +11,11 @@ GREEN = "\033[32m"
 RED = "\033[31m"
 RESET = "\033[0m"
 ipython = get_ipython()
-style = ipython.highlighting_style
+assert ipython is not None, "D:"
+style = ipython.highlighting_style  # type: ignore
 formatter = TerminalTrueColorFormatter(style=style)
-in_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.in_prompt_tokens()) + RESET
-cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation_prompt_tokens()) + RESET
+in_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.in_prompt_tokens()) + RESET  # type: ignore
+cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation_prompt_tokens()) + RESET  # type: ignore
 
 class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -44,6 +45,7 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
 def start_server():
     try:
         server = HTTPServer(('localhost', 5000), IPythonHTTPHandler)
+        print(f"{GREEN}Remote execution server started successfully on port 5000{RESET}\n")
         server.serve_forever()
     except OSError as ex:
         print(f"{RED}Failed to start remote execution server: {ex}{RESET}\n")
