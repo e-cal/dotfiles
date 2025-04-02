@@ -19,8 +19,6 @@ formatter = TerminalTrueColorFormatter(style=style)
 in_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.in_prompt_tokens()) + RESET  # type: ignore
 cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation_prompt_tokens()) + RESET  # type: ignore
 
-a = 1
-
 class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
@@ -28,8 +26,8 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
-        except:  # noqa: E722
-            return self.data_error()
+        except Exception as e: 
+            return self.data_error(e)
 
         code = '\n'.join(data.get('code', []))
         syntax = highlight(code, PythonLexer(), formatter)
@@ -64,13 +62,13 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
                 "stderr": stderr,
             }).encode('utf-8'))
 
-    def data_error(self):
+    def data_error(self, e):
         self.send_response(400)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
         self.wfile.write(json.dumps({
             "result": None,
-            "error": "Bad request",
+            "error": f"Bad request: {e}",
             "stdout": None,
             "stderr": None,
         }).encode('utf-8'))
