@@ -39,7 +39,10 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
         if result.success: self.wfile.write(json.dumps({"output": result.result, "error": None}).encode('utf-8'))
-        else: self.wfile.write(json.dumps({"output": None, "error": result.error_in_exec}).encode('utf-8'))
+        else:
+            err_obj = result.error_in_exec if result.error_in_exec is not None else result.error_before_exec
+            err_msg = f"{err_obj.__class__.__name__}: {err_obj.args[0]}"  # type: ignore
+            self.wfile.write(json.dumps({"output": None, "error": err_msg}).encode('utf-8'))
 
     def data_error(self):
         self.send_response(400)
