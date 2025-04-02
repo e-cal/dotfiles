@@ -1,10 +1,12 @@
-import threading
+import io
 import json
+import threading
+from contextlib import redirect_stderr, redirect_stdout
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from IPython import get_ipython  # type: ignore
 from pygments import highlight
-from pygments.lexers import PythonLexer
 from pygments.formatters import TerminalTrueColorFormatter
+from pygments.lexers import PythonLexer
 
 # formatting stuff
 GREEN = "\033[32m"
@@ -21,10 +23,14 @@ a = 1
 
 class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
-        content_length = int(self.headers['Content-Length'])
-        post_data = self.rfile.read(content_length)
-        data = json.loads(post_data.decode('utf-8'))
-        if isinstance(data, list): return self.data_error()
+        try:
+            assert ipython is not None, "D:"
+            content_length = int(self.headers['Content-Length'])
+            post_data = self.rfile.read(content_length)
+            data = json.loads(post_data.decode('utf-8'))
+        except:  # noqa: E722
+            return self.data_error()
+
         code = '\n'.join(data.get('code', []))
         syntax = highlight(code, PythonLexer(), formatter)
         lines = syntax.rstrip().split("\n")
@@ -32,23 +38,42 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
         for line in lines[1:]:
             display += f"\n{cont_prompt}{line}"
         print(f"{display}")
-        result = ipython.run_cell(code)
+        stdout_capture, stderr_capture = io.StringIO(), io.StringIO()
+        with redirect_stdout(stdout_capture), redirect_stderr(stderr_capture):
+            result = ipython.run_cell(code)
+        stdout, stderr = stdout_capture.getvalue(), stderr_capture.getvalue()
+        print(stdout)
         print()
 
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        if result.success: self.wfile.write(json.dumps({"output": result.result, "error": None}).encode('utf-8'))
+        if result.success: self.wfile.write(json.dumps({
+            "result": result.result,
+            "error": None,
+            "stdout": stdout,
+            "stderr": stderr,
+        }).encode('utf-8'))
         else:
             err_obj = result.error_in_exec if result.error_in_exec is not None else result.error_before_exec
             err_msg = f"{err_obj.__class__.__name__}: {err_obj.args[0]}"  # type: ignore
-            self.wfile.write(json.dumps({"output": None, "error": err_msg}).encode('utf-8'))
+            self.wfile.write(json.dumps({
+                "result": None,
+                "error": err_msg,
+                "stdout": stdout,
+                "stderr": stderr,
+            }).encode('utf-8'))
 
     def data_error(self):
         self.send_response(400)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        self.wfile.write(json.dumps({"output": None, "error": "Invalid data format. Expected a dictionary, got a list."}).encode('utf-8'))
+        self.wfile.write(json.dumps({
+            "result": None,
+            "error": "Bad request",
+            "stdout": None,
+            "stderr": None,
+        }).encode('utf-8'))
 
     def log_message(self, format, *args):
         pass
