@@ -76,6 +76,7 @@
     tree-sitter
     bazel
     stdenv.cc.cc.lib
+    texpresso
 
     # services
     socat
@@ -147,6 +148,7 @@
 
       unstable.claude-code
       code-cursor
+      unstable.windsurf
 
       eww
       nemo
@@ -164,6 +166,7 @@
       thunderbird
       slack
       # zoom
+      spotify
 
       obsidian
       zotero_7

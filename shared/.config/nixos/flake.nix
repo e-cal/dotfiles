@@ -50,6 +50,7 @@
 
           pythonWithPkgs = super.python3.withPackages (ps:
             with ps; [
+              requests
               setuptools
               wheel
               ipython

@@ -61,6 +61,39 @@ function zvm_after_init() {
 
     # C-a -> get last arg
     bindkey -s "^a" '!$' # last arg
+
+
+    # C-f -> fix command
+    _fix() {
+      # # Get the current command line text
+      # BUFFER="fix \"${BUFFER}\""
+      # # Move cursor to the end
+      # CURSOR=${#BUFFER}
+      # # Accept the command (equivalent to pressing Enter)
+      # zle accept-line
+
+      echo -e "\n\033[1;33mFixing command...\033[0m"
+      
+      # Run the fix command
+      local result=$(fix "$cmd")
+      
+      # Clear the line with the message (moves cursor up and clears line)
+      local result=$(fix "$BUFFER")
+
+      # echo -e "\033[3A\033[2K\033[3B" # Move up 3 lines, clear line, move back down
+      # zle reset-prompt
+      # echo -e "\033[2K\033[1A\033[2K\033[1A\033[2K\033[2B" # Clear 3 lines
+      # zle redisplay
+      echo -e "\033[1A\033[2K"
+      # zle reset-prompt
+
+      BUFFER="$result"
+      CURSOR=${#BUFFER}
+      zle redisplay
+    }
+    zle -N _fix
+    bindkey "^f" _fix
+    bindkey -M vicmd "^f" _fix
 }
 
 function zvm_after_lazy_keybindings() {

@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import requests
+import argparse
+import json
+
+key = os.getenv("RB_OPENROUTER_API_KEY")
+
+model = "cohere/command-a"
+
+def fix_shell_command(command):
+    """Use LLM to fix or improve a shell command."""
+    headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
+
+    payload = { # fmt: skip  # noqa: RUF028
+        "model": model,
+        "messages": [
+            {"role": "system", "content": "You are an expert in shell commands. Fix or improve the user's command. Only respond with the corrected command, no explanations."},
+            {"role": "user", "content": f"Fix this shell command: {command}"},
+        ]
+    }
+
+    # print(payload)
+
+    response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload)
+
+    if response.status_code == 200:
+        result = response.json()
+        fixed_command = result["choices"][0]["message"]["content"].strip()
+        return fixed_command
+    else:
+        return f"Error: {response.status_code} - {response.text}"
+
+def main():
+    parser = argparse.ArgumentParser(description="Fix shell commands using LLM")
+    parser.add_argument("command", nargs="+", help="The shell command to fix")
+
+    args = parser.parse_args()
+    command = " ".join(args.command)
+
+    if not key:
+        print("Error: RB_OPENROUTER_API_KEY environment variable not set")
+        sys.exit(1)
+
+    fixed_command = fix_shell_command(command)
+    print(fixed_command)
+
+if __name__ == "__main__":
+    main()
