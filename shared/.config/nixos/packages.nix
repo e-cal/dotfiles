@@ -77,6 +77,7 @@
     bazel
     stdenv.cc.cc.lib
     texpresso
+    ueberzugpp
 
     # services
     socat
@@ -148,7 +149,6 @@
 
       unstable.claude-code
       code-cursor
-      unstable.windsurf
 
       eww
       nemo
