@@ -1,5 +1,5 @@
-export TERM="xterm-256color"
-export TERMINAL="wezterm"
+# export TERM="kitty"
+# export TERMINAL="wezterm"
 
 # Useful vars
 [[ -z $HOSTNAME ]] && [[ -n $HOST ]] && export HOSTNAME=$HOST
