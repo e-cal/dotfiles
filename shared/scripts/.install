@@ -70,6 +70,9 @@ fi
 [[ ! -L $HOME/.config/lazygit/config.yml ]] && [[ -f $HOME/.config/lazygit/config.yml ]] && rm $HOME/.config/lazygit/config.yml
 [[ ! -L $HOME/.config/obsidian/Custom\ Dictionary.txt ]] && [[ -f $HOME/.config/obsidian/Custom\ Dictionary.txt ]] && rm $HOME/.config/obsidian/Custom\ Dictionary.txt
 [[ ! -L $HOME/.zshenv ]] && [[ -f $HOME/.zshenv ]] && rm $HOME/.zshenv
+[[ ! -L $HOME/.zen/profiles.ini ]] && [[ -f $HOME/.zen/profiles.ini ]] && rm $HOME/.zen/profiles.ini
+[[ ! -L $HOME/.zen/3um7h8ae.default/settings ]] && [[ -d $HOME/.zen/3um7h8ae.default/settings ]] && rm -rf $HOME/.zen/3um7h8ae.default/settings
+[[ ! -L $HOME/.zen/7hnfcd9b.redbit/settings ]] && [[ -d $HOME/.zen/7hnfcd9b.redbit/settings ]] && rm -rf $HOME/.zen/7hnfcd9b.redbit/settings
 # fi
 
 # if confirm "Stow config?"; then
