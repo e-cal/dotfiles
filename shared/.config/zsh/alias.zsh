@@ -40,9 +40,9 @@ alias "ls"='COLUMNS=$((`tput cols` - (`tput cols` / 10))) exa --group-directorie
 alias "la"="echo ls -a"
 alias "lr"="ls -R"
 alias "ll"="exa -la --group-directories-first --git --color=always"
-alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=always -I '.git|.venv'"
-alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always -I '.git|.venv'"
-alias "tree"="exa --tree --group-directories-first --sort=size --color=always -I '.git|.venv'"
+alias "lt"="exa --tree --level=2 --group-directories-first --sort=size --color=always -I '.git|.venv|.direnv|__pycache__'"
+alias "lta"="exa -a --tree --level=2 --group-directories-first --sort=size --color=always -I '.git|.venv|.direnv|__pycache__'"
+alias "tree"="exa --tree --group-directories-first --sort=size --color=always -I '.git|.venv|.direnv|__pycache__'"
 alias ".ls"="/usr/bin/env ls"
 
 alias "gitalias"="alias | rg 'git' | fzf $FZF_INLINE"
