@@ -66,4 +66,4 @@ while IFS= read -r file; do
 
 done < <(echo "$selected_files")
 
-echo -e "$clipboard_content" | wl-copy
+printf "%s" "$clipboard_content" | wl-copy
