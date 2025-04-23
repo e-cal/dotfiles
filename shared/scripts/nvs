@@ -3,6 +3,7 @@
 ignore_dirs=(
 	".local"
 	".git"
+    ".venv"
 	"node_modules"
 	".cache"
 	".zotero"
