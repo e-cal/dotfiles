@@ -147,8 +147,9 @@
       # tmp
       inputs.zen-browser.packages.${pkgs.system}.default
 
-      unstable.claude-code
       code-cursor
+      unstable.claude-code
+      unstable.codex
 
       eww
       nemo
