@@ -27,3 +27,5 @@ x-scheme-handler/texts=texts.desktop
 text/plain=nvim-ghostty.desktop
 text/markdown=nvim-ghostty.desktop
 text/x-markdown=nvim-ghostty.desktop
+image/svg+xml=zen.desktop
+application/xml=zen.desktop
