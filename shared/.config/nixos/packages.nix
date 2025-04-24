@@ -149,7 +149,6 @@
 
       code-cursor
       unstable.claude-code
-      unstable.codex
 
       eww
       nemo

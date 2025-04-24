@@ -1,3 +1,6 @@
+# tmp
+alias "codex"="~/.local/bin/node_modules/.bin/codex"
+
 # Auto add flags
 alias "rg"="rg -S"
 alias "tmux"="tmux -2"
