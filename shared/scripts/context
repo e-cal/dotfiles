@@ -46,7 +46,32 @@ get_language() {
     sh) echo "bash" ;;
     md) echo "markdown" ;;
     yml) echo "yaml" ;;
-    *) echo "$ext" ;;
+    *)
+        # Check for shebang on the first line
+        if [[ -f "$file" ]]; then
+            first_line=$(head -n 1 "$file")
+            if [[ "$first_line" =~ ^#! ]]; then
+                # Handle shebangs with /usr/bin/env
+                if [[ "$first_line" =~ ^#!/usr/bin/env[[:space:]]+([^[:space:]]+) ]]; then
+                    interpreter="${BASH_REMATCH[1]}"
+                else
+                    # Extract the interpreter from standard shebang
+                    interpreter=$(echo "$first_line" | sed -E 's|^#!.*/([^/ ]+).*|\1|')
+                fi
+                case "$interpreter" in
+                bash) echo "bash" ;;
+                python|python3) echo "python" ;;
+                ruby) echo "ruby" ;;
+                node) echo "javascript" ;;
+                *) echo "" ;;
+                esac
+            else
+                echo ""
+            fi
+        else
+            echo ""
+        fi
+        ;;
     esac
 }
 
@@ -55,14 +80,14 @@ while IFS= read -r file; do
     [[ -z "$file" ]] && continue
 
     if [[ -n "$clipboard_content" ]]; then
-        clipboard_content+="\n\n"
+        printf -v clipboard_content '%s\n\n' "$clipboard_content"
     fi
 
-    clipboard_content+="$file\n"
+    printf -v clipboard_content '%s%s\n' "$clipboard_content" "$file"
     lang=$(get_language "$file")
-    clipboard_content+="\`\`\`$lang\n"
-    clipboard_content+="$(cat "$file")\n"
-    clipboard_content+="\`\`\`"
+    printf -v clipboard_content '%s```%s\n' "$clipboard_content" "$lang"
+    printf -v clipboard_content '%s%s\n' "$clipboard_content" "$(cat "$file")"
+    printf -v clipboard_content '%s```\n' "$clipboard_content"
 
 done < <(echo "$selected_files")
 
