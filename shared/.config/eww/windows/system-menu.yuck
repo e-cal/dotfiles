@@ -140,7 +140,15 @@
           ;;   :halign "start"
           ;;   :class "sys-text-sub")
           (label
-            :text "${EWW_CPU.cores[0].freq}MHz"
+  :text "${round(
+    (EWW_CPU.cores[0].freq + EWW_CPU.cores[1].freq + EWW_CPU.cores[2].freq + EWW_CPU.cores[3].freq + 
+      EWW_CPU.cores[4].freq + EWW_CPU.cores[5].freq + EWW_CPU.cores[6].freq + EWW_CPU.cores[7].freq +
+      EWW_CPU.cores[8].freq + EWW_CPU.cores[9].freq + EWW_CPU.cores[10].freq + EWW_CPU.cores[11].freq +
+      EWW_CPU.cores[12].freq + EWW_CPU.cores[13].freq + EWW_CPU.cores[14].freq + EWW_CPU.cores[15].freq +
+      EWW_CPU.cores[16].freq + EWW_CPU.cores[17].freq + EWW_CPU.cores[18].freq + EWW_CPU.cores[19].freq +
+      EWW_CPU.cores[20].freq + EWW_CPU.cores[21].freq + EWW_CPU.cores[22].freq + EWW_CPU.cores[23].freq
+    ) / arraylength(EWW_CPU.cores), 0)}MHz"
+            ;; :text "${round(EWW_CPU.avg,1)}"
             :halign "center"
             :class "sys-text-sub")
         ))
