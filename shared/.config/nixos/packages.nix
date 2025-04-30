@@ -184,7 +184,7 @@
     ];
   };
 
-  # services.mullvad-vpn.enable = true;
+  services.mullvad-vpn.enable = true;
   # services.postgresql.enable = true;
 
   virtualisation.docker = {
