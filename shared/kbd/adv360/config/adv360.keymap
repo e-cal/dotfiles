@@ -156,7 +156,7 @@
 
         layer_0 {
 bindings = <
-&kp GRAVE     &n1           &n2           &n3            &n4              &n5         &tog 1                                                              &mo 3         &n6        &n7              &n8           &n9            &n0            &kp DELETE
+&kp GRAVE     &n1           &n2           &n3            &n4              &n5         &none                                                               &mo 3         &n6        &n7              &n8           &n9            &n0            &kp DELETE
 &kp TAB       &kp Q         &kp W         &kp E          &kp R            &kp T       &kp K_COPY                                                          &kp C_VOL_UP  &kp Y      &kp U            &kp I         &kp O          &kp P          &kp BSLH
 &kp ESC       &kp A         &kp S         &hml LSHIFT D  &kp F            &kp G       &kp K_PASTE     &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS    &kp C_VOL_DN  &kp H      &kp J            &hmr RSHIFT K &kp L          &kp SEMI       &kp SQT
 &sticky_shift &hmr LALT Z   &kp X         &kp C          &kp V            &kp B                                   &none            &none                                &kp N      &kp M            &kp COMMA     &kp DOT        &hmr RALT FSLH &kp RSHFT
