@@ -97,18 +97,9 @@ def startup(kind="main"):
 def new(name=None, work_dir=None):
     if not work_dir:
         work_dir = run_cmd(
-            r"""find ~ -maxdepth 5 -type d \
-                -not -path '*/.vscode-insiders/*' \
-                -not -path '*/.mozilla/*' \
-                -not -path '*/.cache/*' \
-                -not -path '*/.local/*' \
-                -not -path '*/.minecraft/*' \
-                -not -path '*/.thunderbird/*' \
-                -not -path '*/.config/*/*' \
-                -not -path '*/.dotfiles/global/dot-config/*/*' \
-                -not -path '*/projects/*/*' \
-                -not -path '*/notes/*/*' \
-                -not -path '*/.git/*' \
+            r"""find ~ ~/projects/  -maxdepth 1 -type d \
+                -not -name ".*" \
+                -not -name "Zotero" \
                 2>/dev/null |\
             sed 's/\.\///' |\
             sed 's/\/home\/ecal/~/' |\
