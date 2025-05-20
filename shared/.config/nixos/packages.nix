@@ -101,7 +101,7 @@
     cacert
 
     # aesthetics
-    lolcat
+    clolcat
     starship
     hyprpaper
     hyprcursor

@@ -4,9 +4,9 @@ singleline() {
 	symbols="═ ▃ ▀▄ 󱨊󱨉 ▀▄ 󱨊󱨉"
 	symbol=$(echo $symbols | tr " " "\n" | shuf -n 1)
     symbol_len=$(python -c "print(len('$symbol'))")
-    yes "$symbol" | head -n $(($(tput cols) / $symbol_len)) | tr "\n" "," | sed "s/,//g" | lolcat -F 0.04
+    yes "$symbol" | head -n $(($(tput cols) / $symbol_len)) | tr "\n" "," | sed "s/,//g" | clolcat -F 0.04
     rem=$(($(tput cols) % $symbol_len))
-	[[ $rem != 0 ]] && echo -n "$symbol" | head -c $rem | lolcat -F 0.04
+	[[ $rem != 0 ]] && echo -n "$symbol" | head -c $rem | clolcat -F 0.04
 }
 
 multiline() {
@@ -16,12 +16,12 @@ multiline() {
 
     symbols="╮╭╮╭"
     extra=$(echo -n $symbols | head -c $(($rem * 3)))
-    echo "$(yes $symbols | head -n $(($(tput cols) / 4)) | tr "\n" "," | sed "s/,//g")$extra" | lolcat -F 0.04 -S $seed
+    echo "$(yes $symbols | head -n $(($(tput cols) / 4)) | tr "\n" "," | sed "s/,//g")$extra" | clolcat -F 0.04 -S $seed
 
 
     symbols="╰╯╰╯"
     extra=$(echo -n $symbols | head -c $(($rem * 3)))
-    echo "$(yes $symbols | head -n $(($(tput cols) / 4)) | tr "\n" "," | sed "s/,//g")$extra" | lolcat -F 0.04 -S $seed
+    echo "$(yes $symbols | head -n $(($(tput cols) / 4)) | tr "\n" "," | sed "s/,//g")$extra" | clolcat -F 0.04 -S $seed
 }
 
 rand=$(echo -e "0\n1" | shuf -n 1)
