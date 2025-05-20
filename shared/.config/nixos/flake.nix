@@ -43,7 +43,7 @@
                 ];
               extraPackages = p: with p; [ imageMagick ];
               withNodeJs = true;
-              withRuby = true;
+              withRuby = false;
               withPython3 = true;
               customRC = "luafile ~/.config/nvim/init.lua";
             });
