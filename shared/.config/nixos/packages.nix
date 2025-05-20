@@ -14,7 +14,7 @@
     zsh
     stow
     zoxide
-    (nnn.override { withNerdIcons = true; })
+    # (nnn.override { withNerdIcons = true; })
     ranger
     direnv
 
@@ -118,9 +118,9 @@
   ];
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [ "JetBrainsMono" "FantasqueSansMono" "FiraCode" ];
-    })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fantasque-sans-mono
+    nerd-fonts.fira-code
     material-icons
     noto-fonts
     dejavu_fonts

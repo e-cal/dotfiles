@@ -11,6 +11,7 @@
   boot.consoleLogLevel = lib.mkDefault 3;
 
   networking.networkmanager.enable = true;
+  systemd.network.wait-online.enable = false;
   time.timeZone = "America/Toronto";
 
   i18n.defaultLocale = "en_US.UTF-8";
