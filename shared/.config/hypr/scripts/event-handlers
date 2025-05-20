@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
 handle() {
-	case $1 in
-	openwindow*)
-		if [[ $1 == *"albert"* ]]; then
-			hyprctl dispatch focuswindow class:albert
-		fi
-		;;
-	esac
+    case $1 in
+    openwindow*)
+        if [[ $1 == *"albert"* ]]; then
+            hyprctl dispatch focuswindow class:albert
+            sleep 0.3
+            if [[ $(hyprctl activewindow -j | jq '.class') != '"albert"' ]]; then
+                hyprctl dispatch focuswindow class:albert
+            fi
+        fi
+        ;;
+    esac
 }
 
 socat - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock | while read -r line; do handle "$line"; done
