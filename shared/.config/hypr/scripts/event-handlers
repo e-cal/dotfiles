@@ -3,11 +3,8 @@
 handle() {
 	case $1 in
 	openwindow*)
-		# focus albert when it opens
 		if [[ $1 == *"albert"* ]]; then
-			hyprctl dispatch focuswindow "albert"
-			sleep 0.5
-			hyprctl dispatch focuswindow "albert"
+			hyprctl dispatch focuswindow class:albert
 		fi
 		;;
 	esac
