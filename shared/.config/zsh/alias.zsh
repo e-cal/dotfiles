@@ -7,6 +7,7 @@ alias "tmux"="tmux -2"
 alias "docker"="sudo docker"
 alias "yarn"="yarn --use-yarnrc $XDG_CONFIG_HOME/yarn/config"
 alias "clear"="clear -x"
+alias ".clear"="/usr/bin/env clear"
 alias "less"="bat --style=plain"
 alias "diff"="difft"
 
