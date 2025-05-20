@@ -39,6 +39,7 @@ get_language() {
     local ext="${file##*.}"
     case "$ext" in
     py) echo "python" ;;
+    nix) echo "nix" ;;
     js) echo "javascript" ;;
     ts) echo "typescript" ;;
     rs) echo "rust" ;;
