@@ -8,14 +8,14 @@ urgent="#f38ba8"
 
 focusedws=$(hyprctl -j monitors | jq -r '.[] | select(.focused == true) | .activeWorkspace.id')
 
-declare -A o=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0)
+declare -A occupied=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0)
 declare -A workspaces
 declare -A urgent_workspaces
 
 status() {
     if [ "${urgent_workspaces[$1]}" == "true" ]; then
         echo -n "$urgent"
-    elif [ "${o[$1]}" -eq 1 ]; then
+    elif [ "${occupied[$1]}" -eq 1 ]; then
         if [[ $(isfocused $1) == "true" ]]; then
             echo -n "$focused"
         else
@@ -121,26 +121,27 @@ update_applist
 screencast=false
 
 for num in "${!workspaces[@]}"; do
-    o[$num]=1
+    occupied[$num]=1
 done
 generate
 
 socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | rg --line-buffered "workspace|mon(itor)?|screencast|openwindow|closewindow|windowtitlev2|urgent" | while read -r line; do
     should_update=true
+    # echo "$line"
     case ${line%>>*} in
     "workspace")
         workspace_event
         focusedws=${line#*>>}
         urgent_workspaces[$focusedws]="false"
         ;;
-    "focusedmon")
-        focusedws=${line#*,}
-        ;;
     "createworkspace")
-        o[${line#*>>}]=1
+        occupied[${line#*>>}]=1
         ;;
     "destroyworkspace")
-        o[${line#*>>}]=0
+        occupied[${line#*>>}]=0
+        ;;
+    "focusedmon")
+        focusedws=${line#*,}
         ;;
     "screencast")
         screencast=$([ "$(echo "${line#*>>}" | awk -F, '{print $1}')" -eq 1 ] && echo true || echo false)
@@ -160,8 +161,12 @@ socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.sock
         # don't update if its a terminal
         if $(echo "$line" | grep -q ">>[a-zA-Z0-9]\+,[a-zA-Z0-9]\+:[0-9]\+:[a-zA-Z0-9]\+"); then
             should_update=false
+        else
+            update_applist
         fi
         ;;
     esac
-    generate
+    if $should_update; then
+        generate
+    fi
 done
