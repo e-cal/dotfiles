@@ -9,10 +9,10 @@ urgent="#f38ba8"
 focusedws=$(hyprctl -j monitors | jq -r '.[] | select(.focused == true) | .activeWorkspace.id')
 
 declare -A occupied=([1]=0 [2]=0 [3]=0 [4]=0 [5]=0 [6]=0 [7]=0 [8]=0 [9]=0)
-declare -A workspaces
+declare -A workspace_monitor
 declare -A urgent_workspaces
 
-status() {
+get_status_color() {
     if [ "${urgent_workspaces[$1]}" == "true" ]; then
         echo -n "$urgent"
     elif [ "${occupied[$1]}" -eq 1 ]; then
@@ -40,15 +40,25 @@ onmonitor() {
 }
 
 workspace_event() {
-    # handle workspace create/destroy
-    while read -r k v; do workspaces[$k]="$v"; done < <(hyprctl -j workspaces | jq -jr '.[] | .id, " ", .monitor, "\n"')
+    valid_workspaces=()
+    # collect the active workspaces and their monitors
+    while read -r k v; do 
+        workspace_monitor[$k]="$v"
+        valid_workspaces+=("$k")
+    done < <(hyprctl -j workspaces | jq -jr '.[] | .id, " ", .monitor, "\n"')
+    # destroy workspaces that are no longer occupied
+    for i in "${!occupied[@]}"; do
+        if [[ "${occupied[$i]}" -ne 0 && ! " ${valid_workspaces[@]} " =~ " ${i} " ]]; then
+            occupied[$i]=0
+        fi
+    done
 }
 
 # get all app titles in a workspace
 declare -A applist
 update_applist() {
     len_limit=37
-    for ws in "${!workspaces[@]}"; do
+    for ws in "${!workspace_monitor[@]}"; do
         jq_script='
 .[]
 | select(.workspace.id == '"$ws"' and .title != "")
@@ -109,7 +119,7 @@ generate() {
     echo -n '{"workspaces": ['
 
     for i in {1..9}; do
-        echo -n ''"$([ "$i" -eq 1 ] || echo ,)" '{"number": '"$i"', "color": "'"$(status "$i")"'", "focused": "'"$(isfocused "$i")"'", "tooltip": "'$(applist "$i")'" }'
+        echo -n ''"$([ "$i" -eq 1 ] || echo ,)" '{"number": '"$i"', "color": "'"$(get_status_color "$i")"'", "focused": "'"$(isfocused "$i")"'", "tooltip": "'$(applist "$i")'" }'
     done
 
     echo '], "screencast": '"$screencast"'}'
@@ -120,14 +130,14 @@ workspace_event
 update_applist
 screencast=false
 
-for num in "${!workspaces[@]}"; do
+for num in "${!workspace_monitor[@]}"; do
     occupied[$num]=1
 done
 generate
 
-socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | rg --line-buffered "workspace|mon(itor)?|screencast|openwindow|closewindow|windowtitlev2|urgent" | while read -r line; do
+socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.socket2.sock - | rg --line-buffered "workspace|mon(itor)?|screencast|openwindow|closewindow|windowtitlev2|urgent" | rg --line-buffered -v "workspacev2|destroy" | while read -r line; do
     should_update=true
-    # echo "$line"
+    echo "$line"
     case ${line%>>*} in
     "workspace")
         workspace_event
@@ -136,10 +146,11 @@ socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.sock
         ;;
     "createworkspace")
         occupied[${line#*>>}]=1
+        should_update=false
         ;;
-    "destroyworkspace")
-        occupied[${line#*>>}]=0
-        ;;
+    # "destroyworkspace")
+    #     occupied[${line#*>>}]=0
+    #     ;;
     "focusedmon")
         focusedws=${line#*,}
         ;;
@@ -154,11 +165,10 @@ socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.sock
         urgent_ws=$(hyprctl -j clients | jq -r '.[] | select(.address == "'"0x$window"'") | .workspace.id')
         if [[ -n "$urgent_ws" ]] && [[ ! $urgent_ws == $focusedws ]]; then
             urgent_workspaces[$urgent_ws]="true"
-            echo "urgent event at workspace $urgent_ws"
         fi
         ;;
     "windowtitlev2")
-        # don't update if its a terminal
+        # don't update if its a terminal title change
         if $(echo "$line" | grep -q ">>[a-zA-Z0-9]\+,[a-zA-Z0-9]\+:[0-9]\+:[a-zA-Z0-9]\+"); then
             should_update=false
         else
