@@ -40,6 +40,12 @@
   dconf.settings = {
     "org/gnome/desktop/interface" = { color-scheme = "prefer-dark"; };
   };
+  xdg.desktopEntries = {
+    feh = {
+      name = "Feh";
+      exec = "feh -w %u";
+    };
+  };
 
   home.pointerCursor = let
     getFrom = url: hash: name: {
