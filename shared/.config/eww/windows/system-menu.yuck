@@ -15,9 +15,8 @@
         (label
           :class "date"
           :text {time.date})
-        (label
-          :class "day"
-          :text {time.day})))
+      )
+    )
 
     (centerbox ; wifi/bluetooth/cloud buttons
       :class "system-row"
