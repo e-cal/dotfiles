@@ -2,31 +2,48 @@
 
 (defwidget clock_module []
   (eventbox
-    :onhover "eww update date_rev=true"
-    :onhoverlost "eww update date_rev=false"
+    ;; :onhover "eww update date_rev=true"
+    ;; :onhoverlost "eww update date_rev=false"
     (overlay
       :class "module clock"
-      ; the styles make the clock invisible while hovered, and the date is shown instead
+      (button
+      :onclick "~/.config/eww/scripts/toggle calendar"
       (box
         :space-evenly false
         :class "text clock"
+
         (label
-          :text {time.hour}
-          :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}
-          :class "hour")
-        (label
-          :text ":"
-          :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""})
-        (label
-          :text {time.minute}
-          :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}
-          :class "minute"))
-      (revealer
-        :reveal date_rev
-        :transition "crossfade"
-        (button
+          :text {time.date}
           :class "date"
-          :onclick "~/.config/eww/scripts/toggle calendar"
-          :onrightclick "open https://calendar.cron.com"
-          {time.date})
-      ))))
+        )
+          (box
+          :style "margin-left: 0.5rem;"
+          )
+
+          (label
+            :text {time.hour}
+            :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}
+            :class "hour"
+          )
+          (label
+            :text ":"
+            :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}
+          )
+          (label
+            :text {time.minute}
+            :style {date_rev ? "color: rgba(0,0,0,0); text-shadow: none;" : ""}
+            :class "minute")
+        )
+      ;; (revealer
+      ;;   :reveal date_rev
+      ;;   :transition "crossfade"
+      ;;   (button
+      ;;     :class "date"
+      ;;     :onclick "~/.config/eww/scripts/toggle calendar"
+      ;;     {time.date}
+      ;;   )
+      ;; )
+    )
+  )
+)
+)

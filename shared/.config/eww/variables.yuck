@@ -7,7 +7,7 @@
 (defvar osd-brightness false)
 (defvar osd-volume false)
 
-(defpoll time :interval "5s" `date +'{"date": "%b %d", "hour": "%H", "minute": "%M", "day": "%A"}'`)
+(defpoll time :interval "5s" `date +'{"date": "%a %b %d", "hour": "%H", "minute": "%M", "day": "%A"}'`)
 (defpoll laptop :interval "24h" `command -v acpi && echo "true" || echo "false"`)
 
 (deflisten cloud "scripts/cloud")
