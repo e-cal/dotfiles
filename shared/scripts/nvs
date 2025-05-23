@@ -11,6 +11,7 @@ ignore_dirs=(
 	".mozilla"
 	".steam"
 	".nix-*"
+    ".svelte-kit"
 )
 ignore=""
 for dir in "${ignore_dirs[@]}"; do
