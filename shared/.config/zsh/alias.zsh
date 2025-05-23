@@ -15,6 +15,7 @@ alias "nv"="nvim"
 alias "edit"="nvim"
 alias "nvr"="nvim -c 'RestoreSession'"
 alias "nvp"="nvim -c 'OpenLast'"
+alias "nvs"="nvim -c 'Telescope find_files'"
 
 alias "md"="mkdir -p"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
