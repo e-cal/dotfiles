@@ -20,4 +20,4 @@
       :onclick "~/.config/eww/scripts/toggle system-menu"
       :onrightclick "pavucontrol &" ; toggle mute on right click
       :tooltip "${volume.percent}%"
-      "${volume.icon} ")))
+      "${volume.icon}")))

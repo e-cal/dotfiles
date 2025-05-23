@@ -3,7 +3,7 @@
 # shellcheck source=/dev/null
 source "$(dirname "$0")"/utils
 
-volicons=("󰕿" "󰖀" "󰕾" "")
+volicons=("" "" "")
 date="$XDG_CACHE_HOME/eww/osd_vol.date"
 
 gen_output() {
@@ -11,7 +11,7 @@ gen_output() {
 	lvl=$(awk -v n="$percent" 'BEGIN{print int(n/25)}')
 
 	if volume ismuted; then
-		icon="󰸈"
+		icon=""
 	else
 		icon="${volicons[$lvl]}"
 		[[ -z $icon ]] && icon="${volicons[-1]}"
