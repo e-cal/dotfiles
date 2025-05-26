@@ -6,7 +6,7 @@ import requests
 import argparse
 import json
 
-key = os.getenv("RB_OPENROUTER_API_KEY")
+key = os.getenv("OPENROUTER_API_KEY")
 
 model = "cohere/command-a"
 
@@ -41,7 +41,7 @@ def main():
     command = " ".join(args.command)
 
     if not key:
-        print("Error: RB_OPENROUTER_API_KEY environment variable not set")
+        print("Error: OPENROUTER_API_KEY environment variable not set")
         sys.exit(1)
 
     fixed_command = fix_shell_command(command)
