@@ -1,6 +1,6 @@
 (defvar date_rev false)
 
-(defwidget clock_module []
+(defwidget clock []
   (eventbox
     ;; :onhover "eww update date_rev=true"
     ;; :onhoverlost "eww update date_rev=false"

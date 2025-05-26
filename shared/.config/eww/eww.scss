@@ -71,8 +71,7 @@ tooltip {
 /* date & time */
 .clock {
   padding-left: 1rem;
-  padding-right: 0.5rem;
-  padding-top: 0.2rem;
+  padding-top: 0.138rem;
 }
 
 .date {
@@ -123,4 +122,9 @@ scale trough {
   border-radius: 2rem;
   margin: 0.7rem 0.3rem;
   padding: 0.45rem;
+}
+
+.power-icon {
+  color: $red;
+  padding-right: 0.7rem;
 }

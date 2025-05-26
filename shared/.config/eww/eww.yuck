@@ -12,6 +12,7 @@
 (include "./modules/sys.yuck")
 (include "./modules/volume.yuck")
 (include "./modules/workspaces.yuck")
+(include "./modules/power.yuck")
 
 ; individual windows; bar is in this file
 (include "./windows/calendar.yuck")
@@ -42,7 +43,9 @@
     (net)
     (battery)
     (sys)
-    (clock_module)))
+    (clock)
+    (power)
+  ))
 
 (defwidget bar-box []
   (centerbox
