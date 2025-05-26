@@ -31,6 +31,13 @@ font-style-italic = Italic
 font-style-bold-italic = Bold Italic
 font-feature = +zero,+calt,+liga,+dlig
 
+keybind = ctrl+shift+n=unbind
+keybind = ctrl+enter=unbind
+keybind = ctrl+shift+q=unbind
+keybind = ctrl+shift+t=unbind
+keybind = ctrl+shift+w=unbind
+keybind = ctrl+tab=unbind
+keybind = ctrl+shift+tab=unbind
 keybind = alt+1=unbind
 keybind = alt+2=unbind
 keybind = alt+3=unbind
@@ -41,6 +48,13 @@ keybind = alt+7=unbind
 keybind = alt+8=unbind
 keybind = alt+9=unbind
 keybind = alt+0=unbind
+keybind = ctrl+,=unbind
+keybind = ctrl+shift+o=unbind
+keybind = ctrl+shift+e=unbind
+keybind = ctrl+shift+enter=unbind
+keybind = ctrl+shift+i=unbind
+keybind = ctrl+shift+j=unbind
+keybind = ctrl+shift+alt+j=unbind
 
 theme = catppuccin-mocha
 background = #171724
