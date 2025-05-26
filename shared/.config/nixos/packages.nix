@@ -148,7 +148,6 @@
       inputs.zen-browser.packages.${pkgs.system}.default
 
       code-cursor
-      unstable.claude-code
 
       eww
       nemo

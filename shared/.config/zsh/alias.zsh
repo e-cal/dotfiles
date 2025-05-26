@@ -1,6 +1,3 @@
-# tmp
-alias "codex"="~/.local/bin/node_modules/.bin/codex"
-
 # Auto add flags
 alias "rg"="rg -S"
 alias "tmux"="tmux -2"
@@ -16,6 +13,9 @@ alias "edit"="nvim"
 alias "nvr"="nvim -c 'RestoreSession'"
 alias "nvp"="nvim -c 'OpenLast'"
 alias "nvs"="nvim -c 'Telescope find_files'"
+
+alias "codex"="~/.local/bin/node_modules/.bin/codex"
+alias "claude"="~/.local/bin/node_modules/.bin/claude"
 
 alias "md"="mkdir -p"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
