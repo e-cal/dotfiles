@@ -27,6 +27,7 @@ enabled=true
 watchSources=false
 
 [python.bitwarden]
+cache_timeout=5
 enabled=true
 
 [qmlboxmodel]
