@@ -54,9 +54,8 @@ workspace_event() {
     done
 }
 
-# get all app titles in a workspace
-declare -A applist
-update_applist() {
+declare -A windows
+update_windows() {
     len_limit=37
     for ws in "${!workspace_monitor[@]}"; do
         jq_script='
@@ -107,12 +106,12 @@ update_applist() {
 + "\\n"
 '
         apps=$(hyprctl -j clients | jq -jr "$jq_script" | sed 's/"/\\"/g')
-        applist[$ws]="${apps%\\n}"
+        windows[$ws]="${apps%\\n}"
     done
 }
 
 applist() {
-    echo "${applist[$1]}"
+    echo "${windows[$1]}"
 }
 
 generate() {
@@ -127,7 +126,7 @@ generate() {
 
 # setup
 workspace_event
-update_applist
+update_windows
 screencast=false
 
 for num in "${!workspace_monitor[@]}"; do
@@ -154,7 +153,7 @@ socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.sock
         screencast=$([ "$(echo "${line#*>>}" | awk -F, '{print $1}')" -eq 1 ] && echo true || echo false)
         ;;
     "openwindow" | "closewindow" | "windowtitle" | "movewindow")
-        update_applist
+        update_windows
         ;;
     "urgent")
         window=${line#*>>}
@@ -168,7 +167,7 @@ socat -u UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/"$HYPRLAND_INSTANCE_SIGNATURE"/.sock
         if $(echo "$line" | grep -q ">>[a-zA-Z0-9]\+,[a-zA-Z0-9]\+:[0-9]\+:[a-zA-Z0-9]\+"); then
             should_update=false
         else
-            update_applist
+            update_windows
         fi
         ;;
     esac
