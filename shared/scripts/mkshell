@@ -40,6 +40,7 @@ let
     glib
     pango
     fontconfig
+    cacert
   ];
 
   lib-path = with pkgs; lib.makeLibraryPath deps;
@@ -71,6 +72,7 @@ def_shell_hook=$(
     export CUDA_PATH=${pkgs.cudatoolkit}
     export EXTRA_LDFLAGS=${extra-ldflags}
     export TZ="America/Toronto"
+    export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
 EOF
 )
 
@@ -81,6 +83,7 @@ py_shell_hook=$(
     export CUDA_PATH=${pkgs.cudatoolkit}
     export EXTRA_LDFLAGS=${extra-ldflags}
     export TZ="America/Toronto"
+    export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt
     if [[ ! -f .venv ]] && [[ ! -d .venv ]]; then
       setvenv
       VENV=$(cat .venv)
