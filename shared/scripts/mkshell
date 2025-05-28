@@ -40,7 +40,6 @@ let
     glib
     pango
     fontconfig
-    python311Packages.matplotlib
   ];
 
   lib-path = with pkgs; lib.makeLibraryPath deps;

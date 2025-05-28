@@ -54,8 +54,8 @@ cat <<'EOF' >flake.nix
         cudaPackages.cudnn
         freeglut
         zlib
-        unstable.gcc # for claude-code while its on master only
-        unstable.gcc.cc.lib # for claude-code while its on master only
+        gcc
+        gcc.cc.lib
         stdenv.cc.cc.lib
         stdenv.cc
         libGLU
@@ -64,10 +64,7 @@ cat <<'EOF' >flake.nix
         pango
         fontconfig
         nodejs_22
-        unstable.claude-code
         python
-        # matplotlib must be installed as an environment package for ui to work
-        # python312Packages.matplotlib
       ];
 
       ld-lib-path = pkgs.lib.makeLibraryPath deps;
