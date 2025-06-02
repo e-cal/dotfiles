@@ -78,6 +78,7 @@
     stdenv.cc.cc.lib
     texpresso
     ueberzugpp
+    pandoc
 
     # services
     socat
