@@ -29,6 +29,7 @@ alias "unstow"="stow -D --dir=$DOTFILES $HOSTNAME --target=$HOME"
 alias "expl"="gh copilot explain"
 alias "ask"="gh copilot explain"
 alias "kat"="bat -n"
+alias "fakefullscreen"="sleep 1; hyprctl dispatch fullscreenstate 0 2"
 
 alias "py"="python"
 alias "pydb"="python -m pdb -c continue"
