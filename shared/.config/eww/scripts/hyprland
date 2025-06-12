@@ -79,6 +79,7 @@ update_windows() {
   elif .initialTitle == "flameshot-pin" then "󱦧"
   elif .class == "flameshot" then "󰄀"
   elif .class == "feh" then "󰋩"
+  elif .class == "org.pwmt.zathura" then ""
   elif .class == "" then " "
   else .class
   end
