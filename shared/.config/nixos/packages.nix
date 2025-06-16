@@ -79,6 +79,7 @@
     texpresso
     ueberzugpp
     pandoc
+    texlive.combined.scheme-medium
 
     # services
     socat
