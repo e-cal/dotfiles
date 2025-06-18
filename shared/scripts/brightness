@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+command -v brillo >/dev/null 2>&1 || exit 1
+
 case $1 in
 up)
     sudo brillo -A 2
