@@ -8,21 +8,19 @@ import json
 
 key = os.getenv("OPENROUTER_API_KEY")
 
-model = "cohere/command-a"
+MODEL = "cohere/command-r"
 
 def fix_shell_command(command):
     """Use LLM to fix or improve a shell command."""
     headers = {"Authorization": f"Bearer {key}", "Content-Type": "application/json"}
 
     payload = { # fmt: skip  # noqa: RUF028
-        "model": model,
+        "model": MODEL,
         "messages": [
             {"role": "system", "content": "You are an expert in shell commands. Fix or improve the user's command. Only respond with the corrected command, no explanations."},
             {"role": "user", "content": f"Fix this shell command: {command}"},
         ]
     }
-
-    # print(payload)
 
     response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload)
 
