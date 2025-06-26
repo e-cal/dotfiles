@@ -16,6 +16,7 @@ alias "nvs"="nvim -c 'Telescope find_files'"
 
 alias "codex"="~/.local/bin/node_modules/.bin/codex"
 alias "claude"="~/.local/bin/node_modules/.bin/claude"
+alias "gemini"="~/.local/bin/node_modules/.bin/gemini"
 
 alias "md"="mkdir -p"
 alias "mvdl"="mv ~/Downloads/mv/* ./"
