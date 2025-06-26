@@ -8,7 +8,7 @@ import json
 
 key = os.getenv("OPENROUTER_API_KEY")
 
-MODEL = "cohere/command-r"
+MODEL = "cohere/command-a"
 
 def fix_shell_command(command):
     """Use LLM to fix or improve a shell command."""
