@@ -8,8 +8,8 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # tmp
-    zen-browser.url = "github:gurjaka/zen-browser-nix";
+    # WARNING: temp while zen not in nixpkgs
+    zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
 
