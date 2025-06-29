@@ -6,7 +6,7 @@ if [[ $1 == "update" ]]; then
     cd /etc/nixos
     sudo nix-collect-garbage --delete-older-than 7d
     sudo nix flake update
-    sudo nixos-rebuild switch --flake /etc/nixos#default --impure
+    sudo nixos-rebuild switch --flake /etc/nixos#default --impure --upgrade
     exit
 fi
 
