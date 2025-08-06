@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+tmux split-window -h -l 30% -c '#{pane_current_path}'
+SPLIT_PANE=$(tmux display-message -p '#{pane_id}')
+tmux send-keys -t $SPLIT_PANE '~/.local/bin/node_modules/.bin/claude' Enter
