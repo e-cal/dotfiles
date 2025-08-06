@@ -41,6 +41,7 @@ cat <<'EOF' >flake.nix
         wheel
         pkgs.catppuccin
         pygments
+        requests
         pyqt6
         pip
         uv

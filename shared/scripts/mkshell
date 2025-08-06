@@ -18,6 +18,7 @@ let
       wheel
       ipython
       jupyter
+      requests
       (catppuccin.overridePythonAttrs (oldAttrs: {
         propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or [ ])
           ++ [ pygments ];
