@@ -173,6 +173,7 @@
       zotero_7
       anki
       zathura
+      sioyek
       masterpdfeditor4
       quarto
       qalculate-gtk
