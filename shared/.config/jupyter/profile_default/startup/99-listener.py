@@ -1,6 +1,7 @@
 import io
 import json
 import threading
+import warnings
 from contextlib import redirect_stderr, redirect_stdout
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from IPython import get_ipython  # type: ignore
@@ -8,21 +9,21 @@ from pygments import highlight
 from pygments.formatters import TerminalTrueColorFormatter
 from pygments.lexers import PythonLexer
 
-# formatting stuff
+try:
+    formatter = TerminalTrueColorFormatter(style='catppuccin-mocha')
+except:  # noqa: E722
+    warnings.warn("Missing catppuccin-mocha theme, falling back to default")
+    formatter = TerminalTrueColorFormatter(style='default')
+
 GREEN = "\033[32m"
 RED = "\033[31m"
 RESET = "\033[0m"
 ipython = get_ipython()
 assert ipython is not None, "D:"
-# Use the new theme system - IPython 9.0+ uses 'colors' instead of 'highlighting_style'
-# We'll use catppuccin-mocha for the pygments formatter
-try:
-    formatter = TerminalTrueColorFormatter(style='catppuccin-mocha')
-except:
-    # Fallback to default if catppuccin-mocha is not available
-    formatter = TerminalTrueColorFormatter(style='default')
+
 in_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.in_prompt_tokens()) + RESET  # type: ignore
 cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation_prompt_tokens()) + RESET  # type: ignore
+
 
 class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -31,7 +32,7 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length)
             data = json.loads(post_data.decode('utf-8'))
-        except Exception as e: 
+        except Exception as e:
             return self.data_error(e)
 
         code = '\n'.join(data.get('code', []))
@@ -81,6 +82,7 @@ class IPythonHTTPHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+
 def start_server():
     try:
         server = HTTPServer(('localhost', 5000), IPythonHTTPHandler)
@@ -88,5 +90,6 @@ def start_server():
         server.serve_forever()
     except OSError as ex:
         print(f"{RED}Failed to start remote execution server: {ex}{RESET}\n")
+
 
 threading.Thread(target=start_server, daemon=True).start()

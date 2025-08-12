@@ -31,6 +31,9 @@ c.TerminalInteractiveShell.editing_mode = "vi"
 c.TerminalInteractiveShell.editor = "nvim"
 c.TerminalInteractiveShell.emacs_bindings_in_vi_insert_mode = False
 c.TerminalInteractiveShell.confirm_exit = False
+c.TerminalInteractiveShell.enable_tip = False
+c.TerminalInteractiveShell.banner1 = ''
+c.TerminalInteractiveShell.banner2 = ''
 
 c.TerminalInteractiveShell.shortcuts = [
     {
