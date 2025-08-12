@@ -1,5 +1,5 @@
-from pygments.styles import get_style_by_name
-from pygments.util import ClassNotFound
+from IPython.utils.PyColorize import linux_theme, theme_table
+from copy import deepcopy
 import warnings
 import os
 
@@ -40,7 +40,8 @@ c.TerminalInteractiveShell.shortcuts = [
 ]
 
 c.TerminalInteractiveShell.true_color = True
-try:
-    c.TerminalInteractiveShell.highlighting_style = get_style_by_name("catppuccin-mocha")
-except ClassNotFound as ex:
-    print(f"Failed to set theme: {ex}")
+theme = deepcopy(linux_theme)
+catppuccin_theme = "catppuccin-mocha"
+theme.base = catppuccin_theme
+theme_table[catppuccin_theme] = theme
+c.TerminalInteractiveShell.colors = catppuccin_theme

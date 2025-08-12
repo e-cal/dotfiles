@@ -14,8 +14,13 @@ RED = "\033[31m"
 RESET = "\033[0m"
 ipython = get_ipython()
 assert ipython is not None, "D:"
-style = ipython.highlighting_style  # type: ignore
-formatter = TerminalTrueColorFormatter(style=style)
+# Use the new theme system - IPython 9.0+ uses 'colors' instead of 'highlighting_style'
+# We'll use catppuccin-mocha for the pygments formatter
+try:
+    formatter = TerminalTrueColorFormatter(style='catppuccin-mocha')
+except:
+    # Fallback to default if catppuccin-mocha is not available
+    formatter = TerminalTrueColorFormatter(style='default')
 in_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.in_prompt_tokens()) + RESET  # type: ignore
 cont_prompt = GREEN + ''.join(token[1] for token in ipython.prompts.continuation_prompt_tokens()) + RESET  # type: ignore
 
