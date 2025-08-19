@@ -14,7 +14,10 @@ set scroll-step 50
 set scroll-hstep 20
 
 # Dark mode
-set recolor true
+# set recolor true
+
+# hide the statusbar
+set guioptions none
 
 # set font "JetBrainsMonoNerdFont 15"
 # set recolor
