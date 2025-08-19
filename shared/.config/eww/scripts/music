@@ -29,16 +29,27 @@ sanitize() {
 	echo "${1//\"/\\\"}"
 }
 
-prevCover=''
-prevArtist=''
-prevTitle=''
+prev_cover=''
+prev_artist=''
+prev_title=''
 
-playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status cover; do
+player_arg=""
+if pgrep "spotify" >/dev/null; then
+    player_arg="-p spotify"
+fi
+
+echo $player_arg
+
+playerctl $player_arg -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}' 2>/dev/null | while IFS="$(printf '\')" read -r title artist status cover; do
+    player_arg=""
+    if pgrep "spotify" >/dev/null; then
+        player_arg="-p spotify"
+    fi
 	if [[ -z "$title" ]]; then
-		IFS="$(printf '\')" read -r title artist status cover <<<$(playerctl metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}')
+		IFS="$(printf '\')" read -r title artist status cover <<<$(playerctl $player_arg metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}')
 	fi
 
-	if [ "$cover" != "$prevCover" ]; then
+	if [ "$cover" != "$prev_cover" ]; then
 		COVER=$(get_cover "$cover")
 
 		if [ "$COVER" != "" ]; then
@@ -63,13 +74,13 @@ playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}' 2>/d
 		fi
 	fi
 
-	if [ "$prevArtist" != "$artist" ]; then
-		prevArtist="$artist"
+	if [ "$prev_artist" != "$artist" ]; then
+		prev_artist="$artist"
 		thisArtist="$(sanitize "$artist")"
 	fi
 
-	if [ "$prevTitle" != "$title" ]; then
-		prevTitle="$title"
+	if [ "$prev_title" != "$title" ]; then
+		prev_title="$title"
 		thisTitle="$(sanitize "$title")"
 	fi
 
@@ -88,5 +99,5 @@ playerctl -F metadata -f '{{title}}\{{artist}}\{{status}}\{{mpris:artUrl}}' 2>/d
 	fi
 	echo '{"artist": "'"$thisArtist"'", "title": "'"$thisTitle"'", "full": "'"$full"'", "status": "'"$thisStatus"'", "cover": "'"$COVER"'", "border": "'"$border"'", "bg": "'"$bg"'", "prevIcon": "'"$prevIcon"'", "nextIcon": "'"$nextIcon"'"}'
 
-	prevCover=$cover
+	prev_cover=$cover
 done
