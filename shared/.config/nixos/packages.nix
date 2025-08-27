@@ -47,6 +47,7 @@
     ydotool
     difftastic
     sshfs
+    lsof
 
     # formatters
     yapf
