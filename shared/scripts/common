@@ -69,7 +69,11 @@ if [[ $file == true ]] ; then
         tmux select-window -t "cfg-$name"
         echo $?
     else
-        echo "$file"
+        if [[ -n $file ]]; then
+            echo "$file"
+        else
+            echo "$dir"
+        fi
     fi
 
 else
