@@ -17,6 +17,8 @@ alias "nvs"="nvim -c 'Telescope find_files'"
 alias "codex"="~/.local/bin/node_modules/.bin/codex"
 alias "claude"="~/.local/bin/node_modules/.bin/claude"
 alias "gemini"='GOOGLE_CLOUD_PROJECT="gen-lang-client-0253902590" ~/.local/bin/node_modules/.bin/gemini'
+alias "opencode"="~/.local/bin/node_modules/.bin/opencode"
+alias "oc"="~/.local/bin/node_modules/.bin/opencode"
 
 alias "md"="mkdir -p"
 alias "mvdl"="mv ~/Downloads/mv/* ./"

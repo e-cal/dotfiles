@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+PROGRAM="~/.local/bin/node_modules/.bin/opencode"
+TERMINAL="ghostty"
+TERMINAL_CLASS="com.mitchellh.ghostty"
+
+window=$(hyprctl activewindow -j)
+window_class=$(echo $window | jq -r '.class')
+
+dir="~"
+if [[ $window_class == $TERMINAL_CLASS ]]; then
+    window_title=$(echo $window | jq -r '.title')
+    tmux_session=""
+    if [[ $window_title == *:*:* ]]; then
+        tmux_session=$(echo $window_title | cut -d':' -f1)
+        dir=$(tmux list-panes -t $tmux_session -F '#{pane_current_path} #{pane_active}' | awk '$2 == 1 {print $1}')
+        notify-send "tmux session: $tmux_session" "dir: $dir"
+    fi
+fi
+
+$TERMINAL --working-directory="$dir" -e $PROGRAM
