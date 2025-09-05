@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-PROGRAM="~/.local/bin/node_modules/.bin/opencode"
+CMD="$HOME/.local/bin/node_modules/.bin/opencode"
 TERMINAL="ghostty"
 TERMINAL_CLASS="com.mitchellh.ghostty"
 
 window=$(hyprctl activewindow -j)
 window_class=$(echo $window | jq -r '.class')
 
-dir="~"
+dir="$HOME"
 if [[ $window_class == $TERMINAL_CLASS ]]; then
     window_title=$(echo $window | jq -r '.title')
     tmux_session=""
@@ -17,4 +17,36 @@ if [[ $window_class == $TERMINAL_CLASS ]]; then
     fi
 fi
 
-$TERMINAL --working-directory="$dir" -e $PROGRAM
+$TERMINAL --working-directory="$dir" -e "if [[ -f flake.nix ]]; then nix develop -c zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; \\\"$CMD\\\"; exec zsh\"; else zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; \\\"$CMD\\\"; exec zsh\"; fi" &
+sleep 0.5
+
+if [[ -n $tmux_session ]]; then
+    active_pane=$(tmux list-panes -t $tmux_session -F '#{session_name}:#{window_index}.#{pane_index} #{pane_active}' | awk '$2 == 1 {print $1}')
+
+    # pure socket
+    nvim_pid=$(tmux display-message -p -t $active_pane -F "#{pane_pid}" | xargs -I{} ps -o pid= -o comm= --ppid {} | awk '$2=="nvim"{print $1}')
+    if [[ -n $nvim_pid ]]; then
+        inner_nvim_pid=$(ps -o pid= -o comm= --ppid $nvim_pid | awk '$2=="nvim"{print $1}')
+        [[ -n $inner_nvim_pid ]] && nvim_pid=$inner_nvim_pid
+        nvim_socket="/run/user/$(id -u)/nvim.$nvim_pid.0"
+        # nvim --server $nvim_socket --remote-send ':echo "hi"<CR>'
+        nvim --server "$nvim_socket" --remote-send ':lua local ok,err=pcall(function() local cfg=require("opencode.config"); local opts=cfg.opts; local s_port=vim.g.__opencode_sse_port; require("opencode.server").get_port(function(ok,res) if not ok then vim.notify(res,vim.log.levels.ERROR,{ title = "opencode" }); return end if opts.auto_reload then pcall(require("opencode.reload").setup) end if res~=s_port then require("opencode.client").listen_to_sse(res,function(r) vim.api.nvim_exec_autocmds("User",{ pattern = "OpencodeEvent", data = r }) end); vim.g.__opencode_sse_port=res end end) end); if not ok then vim.notify(err,vim.log.levels.ERROR,{ title = "opencode" }) end<CR>'
+    fi
+
+    # tmux send-keys way
+    # tmux display -pF "#{pane_tty}" -t "$active_pane" |
+    #     xargs -I{} tmux send-keys -t "$active_pane" " :lua local ok,err=pcall(function() local cfg=require(\"opencode.config\"); local opts=cfg.opts; local s_port=vim.g.__opencode_sse_port; require(\"opencode.server\").get_port(function(ok,res) if not ok then vim.notify(res,vim.log.levels.ERROR,{title=\"opencode\"}); return end if opts.auto_reload then pcall(require(\"opencode.reload\").setup) end if res~=s_port then require(\"opencode.client\").listen_for_sse(res,function(r) vim.api.nvim_exec_autocmds(\"User\",{pattern=\"OpencodeEvent\",data=r}) end); vim.g.__opencode_sse_port=res end end) end); if not ok then vim.notify(err,vim.log.levels.ERROR,{title=\"opencode\"}) end" 'C-m'
+    # tmux display -pF "#{pane_tty}" -t "$active_pane" |
+    #     xargs -I{} tmux send-keys -t "$active_pane" " :echo 'test'"
+
+    # get socket with send-keys then use socket
+    # tmux display -pF "#{pane_tty}" -t "$active_pane" |
+    #     xargs -I{} tmux send-keys -t "$active_pane" ':call system("echo ".v:servername.">/tmp/nvim.sock")' 'C-m'
+    # sleep 0.1
+    # nvim_socket=$(cat /tmp/nvim.sock)
+    # rm /tmp/nvim.sock
+    # notify-send "$nvim_socket"
+
+    # nvim --server "$nvim_socket" --remote-send ':lua local ok,err=pcall(function() local cfg=require("opencode.config"); local opts=cfg.opts; local s_port=vim.g.__opencode_sse_port; require("opencode.server").get_port(function(ok,res) if not ok then vim.notify(res,vim.log.levels.ERROR,{ title = "opencode" }); return end if opts.auto_reload then pcall(require("opencode.reload").setup) end if res~=s_port then require("opencode.client").listen_for_sse(res,function(r) vim.api.nvim_exec_autocmds("User",{pattern:"OpencodeEvent",data:r}) end); vim.g.__opencode_sse_port=res end end) end); if not ok then vim.notify(err,vim.log.levels.ERROR,{title:"opencode"}) end<CR>'
+
+fi
