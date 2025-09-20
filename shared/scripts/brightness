@@ -12,6 +12,21 @@ down)
 set)
     sudo brillo -S $2
 	;;
+next)
+    current=$(sudo brillo)
+    levels=(1 5 20 50 75 90 100)
+    current_int=${current%.*}
+    echo "current: $current_int"
+    next_level=1
+    for level in "${levels[@]}"; do
+        if (( current_int < level )); then
+            next_level=$level
+            break
+        fi
+    done
+    echo "new: $next_level"
+    sudo brillo -S $next_level
+	;;
 *)
     sudo brillo
 	;;

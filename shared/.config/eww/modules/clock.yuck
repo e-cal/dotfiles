@@ -7,7 +7,7 @@
     (overlay
       :class "module clock"
       (button
-      :onclick "~/.config/eww/scripts/toggle calendar"
+      :onclick "~/.config/eww/scripts/toggle system-menu"
       (box
         :space-evenly false
         :class "text clock"
