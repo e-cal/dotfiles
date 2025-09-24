@@ -132,7 +132,7 @@
 
   users.users.ecal = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "plugdev" "docker" "ydotool" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kitty
@@ -154,7 +154,7 @@
 
       eww
       nemo
-      albert
+      unstable.albert
       hyprpicker
       flameshot-grim
       unstable.satty
