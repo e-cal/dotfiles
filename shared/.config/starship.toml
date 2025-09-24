@@ -64,8 +64,6 @@ success_symbol = "[](bold green)"
 vicmd_symbol = "[](bold #fab387)"
 error_symbol = "[󱎘](bold red)"
 
-
-
 [fill]
 symbol = " "
 
