@@ -15,7 +15,9 @@ fi
 # Load prompt
 eval "$(starship init zsh)"
 
-TRANSIENT_PROMPT_TRANSIENT_PROMPT='$(starship module time)$(starship module character)'
-# TRANSIENT_PROMPT_TRANSIENT_RPROMPT='$(starship module time)'
+TRANSIENT_PROMPT_TRANSIENT_PROMPT='
+$(starship module time) $(starship module cmd_duration)
+$(starship module directory)$(starship module git_branch)
+$(starship module character)'
 
 source $HOME/.config/zsh/plugins.zsh
