@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+CMD="$HOME/.local/bin/node_modules/.bin/opencode"
+TERMINAL="ghostty"
+TERMINAL_CLASS="com.mitchellh.ghostty"
+
+window=$(hyprctl activewindow -j)
+window_class=$(echo $window | jq -r '.class')
+
+dir="$HOME"
+if [[ $window_class == $TERMINAL_CLASS ]]; then
+    window_title=$(echo $window | jq -r '.title')
+    tmux_session=""
+    if [[ $window_title == *:*:* ]]; then
+        tmux_session=$(echo $window_title | cut -d':' -f1)
+        dir=$(tmux list-panes -t $tmux_session -F '#{pane_current_path} #{pane_active}' | awk '$2 == 1 {print $1}')
+    fi
+fi
+
+SYNC_FILE="/tmp/launch-code-agent.$$.ready"
+rm -f "$SYNC_FILE"
+
+# launch code agent
+$TERMINAL --working-directory="$dir" -e "if [[ -f flake.nix ]]; then nix develop -c zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; touch $SYNC_FILE; \\\"$CMD\\\"; exec zsh\"; else zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; touch $SYNC_FILE; \\\"$CMD\\\"; exec zsh\"; fi" &
+
+timedout=true
+for i in {1..120}; do # up to ~1m
+    if [[ -f $SYNC_FILE ]]; then
+        timedout=false
+        rm -f "$SYNC_FILE"
+        break
+    fi
+    sleep 0.5
+done
+
+if $timedout; then
+    notify-send "Code agent launch timed out"
+    exit 1
+else
+    # wait a moment for opencode to finish launching
+    sleep 0.5
+fi
+
+if [[ -n $tmux_session ]]; then
+    active_pane=$(tmux list-panes -t $tmux_session -F '#{session_name}:#{window_index}.#{pane_index} #{pane_active}' | awk '$2 == 1 {print $1}')
+    nvim_pid=$(tmux display-message -p -t $active_pane -F "#{pane_pid}" | xargs -I{} ps -o pid= -o comm= --ppid {} | awk '$2=="nvim"{print $1}')
+    if [[ -n $nvim_pid ]]; then
+        inner_nvim_pid=$(ps -o pid= -o comm= --ppid $nvim_pid | awk '$2=="nvim"{print $1}')
+        [[ -n $inner_nvim_pid ]] && nvim_pid=$inner_nvim_pid
+        nvim_socket="/run/user/$(id -u)/nvim.$nvim_pid.0"
+        nvim --server "$nvim_socket" --remote-send ':OpencodeConnect<CR>'
+    fi
+fi
