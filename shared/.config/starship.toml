@@ -1,4 +1,6 @@
+# use $fill ... $line_break to add right aligned components
 format = """
+$cmd_duration\
 $nix_shell\
 $hg_branch\
 $docker_context\
@@ -35,8 +37,6 @@ $crystal\
 $lua\
 $jobs\
 
-    $fill\
-    $cmd_duration\
     $line_break\
 
 $directory\
@@ -45,8 +45,6 @@ $git_commit\
 $git_state\
 $git_status\
 
-    $fill\
-    $time\
     $line_break\
 
 $username\
@@ -69,8 +67,9 @@ symbol = " "
 
 [cmd_duration]
 min_time = 1_000
-style = "#72778C"
-format = "[󱦟 $duration]($style) "
+# style = "#72778C"
+style = "bright-black"
+format = "[󱦟 $duration]($style)\n"
 
 [time]
 time_format = "%H:%M"
