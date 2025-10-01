@@ -70,7 +70,7 @@ update_windows() {
   if .class == "org.wezfurlong.wezterm" or .class == "kitty" or .class == "com.mitchellh.ghostty" then ""
   elif .title | contains("YouTube") then "󰗃"
   elif .class == "chromium-browser" then ""
-  elif .class == "zen" then "󰺕"
+  elif .class == "zen-beta" then "󰺕"
   elif .class == "nemo" then ""
   elif .class == "obsidian" then "󱞁"
   elif .class == "thunderbird" then " Email"
