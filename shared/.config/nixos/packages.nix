@@ -16,6 +16,7 @@
     zoxide
     # (nnn.override { withNerdIcons = true; })
     ranger
+    yazi
     direnv
 
     # tools
