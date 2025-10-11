@@ -5,7 +5,7 @@ if ! command -v acpi &>/dev/null; then
     exit
 fi
 
-icons=("󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹")
+icons=("󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" "󰁹")
 num_icons=$(awk -v n="${#icons[@]}" 'BEGIN{print 100 / n}')
 
 geticon() {
