@@ -58,9 +58,9 @@ $character\
 command_timeout = 500
 
 [character]
-success_symbol = "[](bold green)"
-vicmd_symbol = "[](bold #fab387)"
-error_symbol = "[󱎘](bold red)"
+success_symbol = '[\$](bold green)'
+vicmd_symbol = '[\$](bold #fab387)'
+error_symbol = "[X](bold red)"
 
 [fill]
 symbol = " "
