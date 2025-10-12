@@ -8,6 +8,7 @@
       :class "module clock"
       (button
       :onclick "~/.config/eww/scripts/toggle system-menu"
+      :onrightclick "~/.config/eww/scripts/toggle calendar"
       (box
         :space-evenly false
         :class "text clock"
