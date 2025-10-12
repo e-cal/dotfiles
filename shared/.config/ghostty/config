@@ -18,7 +18,7 @@ window-padding-y = 0
 window-padding-balance = true
 window-padding-color = background
 window-step-resize = true
-gtk-adwaita = true
+# gtk-adwaita = true
 resize-overlay-position = bottom-right
 app-notifications = no-clipboard-copy
 
@@ -56,7 +56,7 @@ keybind = ctrl+shift+i=unbind
 keybind = ctrl+shift+j=unbind
 keybind = ctrl+shift+alt+j=unbind
 
-theme = catppuccin-mocha
+theme = Catppuccin Mocha
 background = #171724
 cursor-color = #CDD6F4
 cursor-text = #1E1E2E
