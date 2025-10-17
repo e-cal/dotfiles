@@ -6,7 +6,7 @@ clipboard-read = allow
 clipboard-paste-protection = false
 copy-on-select = true
 mouse-hide-while-typing = true
-mouse-scroll-multiplier = 0.25
+mouse-scroll-multiplier = 1
 
 keybind = ctrl+shift+r=reload_config
 keybind = ctrl+1=increase_font_size:1
