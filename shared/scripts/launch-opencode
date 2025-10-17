@@ -21,7 +21,7 @@ SYNC_FILE="/tmp/launch-code-agent.$$.ready"
 rm -f "$SYNC_FILE"
 
 # launch code agent
-$TERMINAL --working-directory="$dir" -e "if [[ -f flake.nix ]]; then nix develop -c zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; touch $SYNC_FILE; \\\"$CMD\\\"; exec zsh\"; else zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; touch $SYNC_FILE; \\\"$CMD\\\"; exec zsh\"; fi" &
+$TERMINAL --working-directory="$dir" -e zsh -c "if [[ -f flake.nix ]]; then nix develop -c zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; touch $SYNC_FILE; \\\"$CMD\\\"; exec zsh\"; else zsh -lc \"[[ -d .venv ]] && source .venv/bin/activate; touch $SYNC_FILE; \\\"$CMD\\\"; exec zsh\"; fi" &
 
 timedout=true
 for i in {1..120}; do # up to ~1m
