@@ -1,4 +1,5 @@
-initial-command = zsh -c 'tm startup; zsh'
+command = zsh -c 'tm startup; zsh'
+# initial-command = zsh -c 'tm startup; zsh'
 shell-integration = zsh
 
 confirm-close-surface = false
