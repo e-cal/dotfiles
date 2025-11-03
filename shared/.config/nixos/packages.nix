@@ -18,6 +18,10 @@
     ranger
     yazi
     direnv
+    nix-direnv
+    inputs.direnv-instant.packages.${pkgs.system}.default
+
+    uxplay
 
     # tools
     nix-index
@@ -120,6 +124,17 @@
       categories = [ "Utility" "TextEditor" ];
     })
   ];
+  services.avahi = {
+    enable = true;
+    nssmdns = true; # printing
+    publish = {
+      enable = true;
+      addresses = true;
+      workstation = true;
+      userServices = true;
+    };
+  };
+  networking.firewall.enable = lib.mkForce false;
 
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono

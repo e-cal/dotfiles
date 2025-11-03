@@ -11,6 +11,7 @@
     # WARNING: temp while zen not in nixpkgs
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
+    direnv-instant.url = "github:Mic92/direnv-instant";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs:
