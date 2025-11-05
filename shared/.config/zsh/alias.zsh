@@ -34,6 +34,8 @@ alias "ask"="gh copilot explain"
 alias "kat"="bat -n"
 alias "fakefullscreen"="sleep 1; hyprctl dispatch fullscreenstate 0 2"
 
+alias "mirror"="uxplay"
+
 alias "py"="python"
 alias "pydb"="python -m pdb -c continue"
 alias "ipy"="ipython"
