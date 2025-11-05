@@ -1,0 +1,10 @@
+[project]
+name = "pdf2text"
+version = "0.1.0"
+description = "Convert PDF files to plain text."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipython>=9.6.0",
+    "mistralai>=1.9.11",
+]

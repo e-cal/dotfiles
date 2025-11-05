@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cd ~/scripts/_pdf2text
+uv run pdf2text.py "$@"
