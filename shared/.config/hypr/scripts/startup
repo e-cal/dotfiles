@@ -6,13 +6,13 @@ eww open bar
 n_monitors=$(hyprctl monitors -j | jq '. | length')
 [[ $n_monitors -gt 1 ]] && eww open bar2
 
-main_monitors=("Dell S2716DG" "LC32T55")
-
-for mon in "${main_monitors[@]}"; do
-	if $(hyprctl monitors | grep -q "$mon"); then
-		mon=$(hyprctl monitors | grep "$mon" -B2 | head -n1 | awk '{print $4}' | head -c1)
-		hyprctl dispatch focusmonitor $mon
-		focusws 1
-		exit
-	fi
-done
+# main_monitors=("Dell S2716DG" "LC32T55")
+#
+# for mon in "${main_monitors[@]}"; do
+# 	if $(hyprctl monitors | grep -q "$mon"); then
+# 		mon=$(hyprctl monitors | grep "$mon" -B2 | head -n1 | awk '{print $4}' | head -c1)
+# 		hyprctl dispatch focusmonitor $mon
+# 		focusws 1
+# 		exit
+# 	fi
+# done
