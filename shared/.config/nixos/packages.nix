@@ -38,7 +38,8 @@
     rclone
     unstable.github-cli
     podman
-    htop
+    btop
+    bottom
     nvtopPackages.full
     openfortivpn # queens
     wkhtmltopdf-bin
@@ -101,12 +102,10 @@
     wl-clipboard
     pipewire
     wireplumber
-    grim
-    slurp
-    swappy
     feh
     wev
     cacert
+    geeqie
 
     # aesthetics
     clolcat
@@ -174,6 +173,7 @@
       hyprpicker
       flameshot-grim
       unstable.satty
+      hyprshot
 
       # vial
       unstable.keymapp

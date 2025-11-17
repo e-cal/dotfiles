@@ -22,8 +22,12 @@
         config = {
           allowUnfree = true;
           allowUnfreePredicate = (_: true);
-          permittedInsecurePackages =
-            [ "electron-25.9.0" "qtwebkit-5.212.0-alpha4" "openssl-1.1.1w" ];
+          permittedInsecurePackages = [
+            "electron-25.9.0"
+            "qtwebkit-5.212.0-alpha4"
+            "openssl-1.1.1w"
+            "mbedtls-2.28.10"
+          ];
         };
       };
 

@@ -10,6 +10,17 @@
   boot.loader.systemd-boot.enable = false;
   boot.consoleLogLevel = lib.mkDefault 3;
 
+  boot.kernelPackages = pkgs.linuxPackagesFor (pkgs.linux_6_12.override {
+    argsOverride = rec {
+      src = pkgs.fetchurl {
+        url = "mirror://kernel/linux/kernel/v6.x/linux-${version}.tar.xz";
+        sha256 = "sha256-W/nrZ2dRv0iXjjg2PHcimLQadTNtUDjtbTcBI5lHHbI=";
+      };
+      version = "6.12.48";
+      modDirVersion = "6.12.48";
+    };
+  });
+
   networking.networkmanager.enable = true;
   systemd.network.wait-online.enable = false;
   boot.initrd.systemd.network.wait-online.enable = false;
@@ -26,14 +37,19 @@
     enable = true;
     xwayland.enable = true;
   };
-  hardware.opengl.enable = true;
   # hardware.opengl.setLdLibraryPath = true;
-  # hardware.graphics.enable = true;
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
-    open = false; # do not fall for the lies that the os drivers are better
+    open = false;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    prime = {
+      offload.enable = false;
+    };
   };
   xdg.portal = {
     enable = true;
@@ -95,7 +111,7 @@
 
   swapDevices = [{
     device = "/var/lib/swapfile";
-    size = 1024*8; # == 8GB
+    size = 1024 * 8; # == 8GB
   }];
 
   # Custom systemd services
