@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+
+top=$1
+right=$2
+bottom=$3
+left=$4
+ws=$(hyprctl activeworkspace -j | jq -r '.id')
+
+if [[ $# -eq 1 ]]; then
+    top=$1
+    right=$1
+    bottom=$1
+    left=$1
+fi
+
+hyprctl keyword workspace "$ws, gapsout:$top,$right,$bottom,$left"
+
+
