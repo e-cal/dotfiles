@@ -11,13 +11,14 @@ handle() {
             fi
         fi
         ;;
-    monitoradded)
-        hyprctl dispatch dpms off
-        sleep 0.5
-        hyprctl dispatch dpms on
-        eww open bar 2>/dev/null
-        eww open bar2 2>/dev/null
-        ;;
+    # monitoradded)
+    #     notify-send "$1"
+    #     hyprctl dispatch dpms off
+    #     sleep 0.5
+    #     hyprctl dispatch dpms on
+    #     eww open bar 2>/dev/null
+    #     eww open bar2 2>/dev/null
+    #     ;;
     esac
 }
 
