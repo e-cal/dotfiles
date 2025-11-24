@@ -1,19 +1,78 @@
 #!/usr/bin/env bash
 
-command -v brillo >/dev/null 2>&1 || exit 1
+# Function to get temperature based on brightness level
+get_temperature() {
+    local brightness=$1
+    local temp=6000
+    
+    if (( brightness >= 90 )); then
+        temp=6500
+    elif (( brightness >= 80 )); then
+        temp=6000
+    elif (( brightness >= 70 )); then
+        temp=5900
+    elif (( brightness >= 60 )); then
+        temp=5750
+    elif (( brightness >= 50 )); then
+        temp=5550
+    elif (( brightness >= 40 )); then
+        temp=5300
+    elif (( brightness >= 30 )); then
+        temp=4950
+    elif (( brightness >= 20 )); then
+        temp=4500
+    elif (( brightness >= 15 )); then
+        temp=4200
+    elif (( brightness >= 10 )); then
+        temp=3800
+    elif (( brightness >= 5 )); then
+        temp=3300
+    else
+        temp=2800
+    fi
+    
+    echo $temp
+}
+
+# Function to set temperature based on brightness level
+set_temperature() {
+    local brightness=$1
+    local temp=$(get_temperature $brightness)
+    hyprctl hyprsunset temperature $temp
+}
+
+# Function to send notification with brightness bar and temperature
+send_notification() {
+    local brightness=$1
+    local temp=$2
+    local brightness_int=${brightness%.*}
+    
+    notify-send "Brightness" "${temp}K" -h int:value:"$brightness_int" --icon ~/.config/dunst/images/brightness.png -r 5678
+}
 
 case $1 in
 up)
-    sudo brillo -A 2
+    hyprctl hyprsunset gamma +10
+    current=$(hyprctl hyprsunset gamma)
+    current_int=${current%.*}
+    set_temperature $current_int
+    temp=$(get_temperature $current_int)
+    send_notification $current $temp
 	;;
 down)
-    sudo brillo -U 2
+    hyprctl hyprsunset gamma -10
+    current=$(hyprctl hyprsunset gamma)
+    current_int=${current%.*}
+    set_temperature $current_int
+    temp=$(get_temperature $current_int)
+    send_notification $current $temp
 	;;
 set)
-    sudo brillo -S $2
+    hyprctl hyprsunset gamma $2
+    set_temperature $2
 	;;
 next)
-    current=$(sudo brillo)
+    current=$(hyprctl hyprsunset gamma)
     levels=(1 5 20 50 75 90 100)
     current_int=${current%.*}
     echo "current: $current_int"
@@ -25,9 +84,10 @@ next)
         fi
     done
     echo "new: $next_level"
-    sudo brillo -S $next_level
+    hyprctl hyprsunset gamma $next_level
+    set_temperature $next_level
 	;;
 *)
-    sudo brillo
+    hyprctl hyprsunset gamma
 	;;
 esac

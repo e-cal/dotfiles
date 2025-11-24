@@ -4,6 +4,11 @@ function get_volume {
 	amixer get Master | grep '%' | head -n 1 | cut -d '[' -f 2 | cut -d '%' -f 1
 }
 
+function get_channel_volumes {
+	# Returns space-separated volumes for left and right channels
+	pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+(?=%)' | head -n 2 | tr '\n' ' '
+}
+
 function is_mute {
 	amixer get Master | grep '%' | grep -oE '[^ ]+$' | grep off >/dev/null
 }
@@ -14,10 +19,20 @@ function send_notification {
 	if is_mute; then
 		dunstify "Muted" --icon ~/.config/dunst/images/mute.png -r 1234
 	else
-		volume=$(get_volume)
-		bar=$(seq --separator="─" 0 "$((volume / 3))" | sed 's/[0-9]//g')
-		# Send the notification
-		dunstify "Volume" -h int:value:"$volume" --icon ~/.config/dunst/images/volume.png -r 1234
+		# Check if channels have different volumes
+		read -r left_vol right_vol <<< "$(get_channel_volumes)"
+		
+		if [[ -n "$right_vol" && "$left_vol" != "$right_vol" ]]; then
+			# Different volumes - show two bars
+			left_bar=$(seq --separator="─" 0 "$((left_vol / 3))" | sed 's/[0-9]//g')
+			right_bar=$(seq --separator="─" 0 "$((right_vol / 3))" | sed 's/[0-9]//g')
+			notify-send "Volume" "L: ${left_vol}% ${left_bar}\nR: ${right_vol}% ${right_bar}" --icon ~/.config/dunst/images/volume.png -r 1234
+		else
+			# Same volumes or mono - show single bar
+			volume=$(get_volume)
+			bar=$(seq --separator="─" 0 "$((volume / 3))" | sed 's/[0-9]//g')
+			notify-send "Volume" -h int:value:"$volume" --icon ~/.config/dunst/images/volume.png -r 1234
+		fi
 	fi
 }
 
@@ -46,6 +61,46 @@ down)
 		pactl set-sink-volume @DEFAULT_SINK@ -5%
     else
 		pactl set-sink-volume @DEFAULT_SINK@ 0%
+	fi
+	send_notification
+	;;
+left-up)
+	pactl set-sink-mute @DEFAULT_SINK@ 0
+	read -r left_vol right_vol <<< "$(get_channel_volumes)"
+	if [[ $left_vol -le 95 ]]; then
+		pactl set-sink-volume @DEFAULT_SINK@ +5% +0%
+	else
+		pactl set-sink-volume @DEFAULT_SINK@ 100% +0%
+	fi
+	send_notification
+	;;
+left-down)
+	pactl set-sink-mute @DEFAULT_SINK@ 0
+	read -r left_vol right_vol <<< "$(get_channel_volumes)"
+	if [[ $left_vol -ge 5 ]]; then
+		pactl set-sink-volume @DEFAULT_SINK@ -5% -0%
+	else
+		pactl set-sink-volume @DEFAULT_SINK@ 0% +0%
+	fi
+	send_notification
+	;;
+right-up)
+	pactl set-sink-mute @DEFAULT_SINK@ 0
+	read -r left_vol right_vol <<< "$(get_channel_volumes)"
+	if [[ $right_vol -le 95 ]]; then
+		pactl set-sink-volume @DEFAULT_SINK@ +0% +5%
+	else
+		pactl set-sink-volume @DEFAULT_SINK@ +0% 100%
+	fi
+	send_notification
+	;;
+right-down)
+	pactl set-sink-mute @DEFAULT_SINK@ 0
+	read -r left_vol right_vol <<< "$(get_channel_volumes)"
+	if [[ $right_vol -ge 5 ]]; then
+		pactl set-sink-volume @DEFAULT_SINK@ -0% -5%
+	else
+		pactl set-sink-volume @DEFAULT_SINK@ +0% 0%
 	fi
 	send_notification
 	;;
