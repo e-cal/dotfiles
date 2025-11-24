@@ -21,8 +21,6 @@
     nix-direnv
     inputs.direnv-instant.packages.${pkgs.system}.default
 
-    uxplay
-
     # tools
     nix-index
     cachix
@@ -106,22 +104,15 @@
     wev
     cacert
     geeqie
+    uxplay
 
     # aesthetics
     clolcat
     starship
     hyprpaper
     hyprcursor
+    hyprsunset
     catppuccin-cursors.mochaDark
-
-    (makeDesktopItem {
-      name = "nvim-ghostty";
-      exec = "ghostty -e nvim %F";
-      icon = "nvim";
-      desktopName = "nvim";
-      genericName = "Launches Neovim in Ghostty";
-      categories = [ "Utility" "TextEditor" ];
-    })
   ];
   services.avahi = {
     enable = true;
@@ -133,6 +124,7 @@
       userServices = true;
     };
   };
+  services.dbus.enable = true;
   networking.firewall.enable = lib.mkForce false;
 
   fonts.packages = with pkgs; [
@@ -164,12 +156,14 @@
       })
       # tmp
       inputs.zen-browser.packages.${pkgs.system}.default
+      nur.repos.Ev357.helium
 
       code-cursor
 
       eww
       nemo
       unstable.albert
+      unstable.quickshell
       hyprpicker
       flameshot-grim
       unstable.satty

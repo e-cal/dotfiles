@@ -5,18 +5,27 @@
   home.homeDirectory = "/home/ecal";
 
   # Install packages through home-manager
-  home.packages = with pkgs; [
-    gtk3
-    gtk4
-    gnome-themes-extra
+  home.packages = with pkgs; [ gtk3 gtk4 gnome-themes-extra ];
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-  ];
+  systemd.user.services.ghostty = {
+    Unit = {
+      Description = "Ghostty terminal emulator";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" ];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.ghostty}/bin/ghostty";
+      Restart = "on-failure";
+      Type = "dbus";
+      BusName = "com.mitchellh.ghostty";
+    };
+
+    Install = { WantedBy = [ "graphical-session.target" ]; };
+  };
+
+  # (makeDesktopItem {
+  # })
 
   gtk = {
     enable = true;
@@ -24,10 +33,6 @@
       name = "Catppuccin-Macchiato-Standard-Blue-dark";
       package = pkgs.catppuccin-gtk;
     };
-    # cursorTheme = {
-    #   name = "Catppuccin-Mocha-Dark-Cursors";
-    #   package = pkgs.catppuccin-cursors.mochaDark;
-    # };
   };
   xdg.configFile = {
     "gtk-4.0/assets".source =
@@ -42,8 +47,28 @@
   };
   xdg.desktopEntries = {
     feh = {
-      name = "Feh";
-      exec = "feh -w %u";
+      name = "feh";
+      genericName = "Image Viewer";
+      exec = "${pkgs.feh}/bin/feh --auto-zoom --scale-down --image-bg black %F";
+      icon = "feh";
+      type = "Application";
+      categories = [ "Graphics" "Viewer" ];
+      mimeType = [
+        "image/bmp"
+        "image/gif"
+        "image/jpeg"
+        "image/jpg"
+        "image/png"
+        "image/tiff"
+        "image/webp"
+      ];
+    };
+    nvim-ghostty = {
+      name = "nvim-ghostty";
+      exec = "ghostty -e nvim %F";
+      icon = "nvim";
+      genericName = "Launches Neovim in Ghostty";
+      categories = [ "Utility" "TextEditor" ];
     };
   };
 
@@ -66,7 +91,8 @@
   in getFrom
   # "https://github.com/ful1e5/fuchsia-cursor/releases/download/v2.0.0/Fuchsia-Pop.tar.gz"
   "https://github.com/catppuccin/cursors/releases/download/v0.3.1/catppuccin-mocha-dark-cursors.zip"
-  "sha256-u2AaEXkiN0ACgGvYRjkkpsjByguhQehBoaxtIN1W2gg=" "Catppuccin-Mocha-Dark-Cursors";
+  "sha256-u2AaEXkiN0ACgGvYRjkkpsjByguhQehBoaxtIN1W2gg="
+  "Catppuccin-Mocha-Dark-Cursors";
 
   # Manage dotfiles
   home.file = {

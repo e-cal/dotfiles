@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,7 +18,7 @@
     direnv-instant.url = "github:Mic92/direnv-instant";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nur, ... }@inputs:
     let
       system = "x86_64-linux";
 
@@ -32,6 +36,7 @@
       };
 
       overlays = [
+        nur.overlays.default
         (_: super: {
           neovim-custom = pkgs.wrapNeovimUnstable
             (super.neovim-unwrapped.overrideAttrs (oldAttrs: {
