@@ -2,15 +2,13 @@ command = zsh -c 'tm startup; zsh'
 # initial-command = zsh -c 'tm startup; zsh'
 shell-integration = zsh
 
+quit-after-last-window-closed = false
 confirm-close-surface = false
 clipboard-read = allow
 clipboard-paste-protection = false
 copy-on-select = true
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = 1
-
-keybind = ctrl+shift+r=reload_config
-keybind = ctrl+1=increase_font_size:1
 
 gtk-tabs-location = hidden
 window-decoration = false
@@ -31,6 +29,18 @@ bold-is-bright = true
 font-style-italic = Italic
 font-style-bold-italic = Bold Italic
 font-feature = +zero,+calt,+liga,+dlig
+
+keybind = ctrl+shift+r=reload_config
+keybind = ctrl+1=increase_font_size:1
+
+keybind = ctrl+b>v=new_split:right
+keybind = ctrl+b>s=new_split:down
+keybind = ctrl+b>w=close_surface
+keybind = ctrl+b>h=goto_split:left
+keybind = ctrl+b>j=goto_split:down
+keybind = ctrl+b>k=goto_split:up
+keybind = ctrl+b>l=goto_split:right
+
 
 keybind = ctrl+shift+n=unbind
 keybind = ctrl+enter=unbind
