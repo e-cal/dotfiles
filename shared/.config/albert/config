@@ -5,6 +5,9 @@ showTray=true
 telemetry=false
 terminal=Kitty
 
+[application]
+enabled=true
+
 [applications]
 enabled=true
 
@@ -25,6 +28,9 @@ paths=@Invalid()
 [python]
 enabled=true
 watchSources=false
+
+[python.aur]
+enabled=false
 
 [python.bitwarden]
 cache_timeout=5
