@@ -33,6 +33,7 @@ alias "expl"="gh copilot explain"
 alias "ask"="gh copilot explain"
 alias "kat"="bat -n"
 alias "fakefullscreen"="sleep 1; hyprctl dispatch fullscreenstate 0 2"
+alias "fixmonitors"='hyprctl keyword monitor "DP-1,3840x2160@120,0x0,1.25";hyprctl keyword monitor "DP-2,2560x1440@144,auto-left,1"'
 
 alias "mirror"="uxplay"
 
