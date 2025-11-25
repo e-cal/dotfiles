@@ -52,6 +52,7 @@
     difftastic
     sshfs
     lsof
+    brotli
 
     # formatters
     yapf
@@ -232,6 +233,7 @@
     at-spi2-atk
     at-spi2-core
     atk
+    brotli
     cairo
     cups
     curl
