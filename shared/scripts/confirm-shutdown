@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# first time this is run, notify to click again to shutdown
+# mark that its been clicked once by creating a temp file
+# after 3 seconds, remove the temp file
+# if clicked again within 3 seconds (temp file exists), proceed to shutdown
+
+TEMP_FILE="/tmp/confirm_shutdown"
+if [[ -f "$TEMP_FILE" ]]; then
+    rm "$TEMP_FILE"
+    notify-send "Shutting down..."
+    shutdown now
+else
+    touch "$TEMP_FILE"
+    notify-send "Power" "Double click to shutdown" -t 1000
+    
+    ( sleep 1 && rm -f "$TEMP_FILE" ) &
+fi
+

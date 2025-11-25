@@ -3,6 +3,5 @@
     (button
       :class "module icon power-icon"
       :onclick "~/.config/eww/scripts/toggle system-menu"
-      :onrightclick "systemctl suspend"
-      :tooltip "suspend"
+      :onclick "confirm-shutdown"
       "󰐥")))
