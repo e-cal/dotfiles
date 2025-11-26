@@ -1,21 +1,31 @@
 #!/usr/bin/env bash
 
-eww ping &>/dev/null
-if ! [[ $? -eq 0 ]]; then
-    eww open bar
-    eww open bar2
+monitor_id=$(hyprctl activeworkspace -j | jq -r ".monitorID")
+
+# Map monitor ID to bar window name
+# 0 -> bar, 1 -> bar2
+case "$monitor_id" in
+    0)
+        bar_window="bar"
+        ;;
+    1)
+        bar_window="bar2"
+        ;;
+    *)
+        echo "Unknown monitor ID: $monitor_id"
+        exit 1
+        ;;
+esac
+
+if ! eww ping &>/dev/null; then
+    eww open "$bar_window"
     exit 0
 fi
 
-open=$(eww active-windows | grep bar | wc -l)
-# echo "$open open"
-
-if [[ $open -eq 0 ]]; then
-    # echo "Opening"
-    eww open bar 2>/dev/null
-    eww open bar2 2>/dev/null
+if eww active-windows | grep -q "^${bar_window}:"; then
+    # Bar is open, close it
+    eww close "$bar_window" 2>/dev/null
 else
-    # echo "Closing"
-    eww close bar 2>/dev/null
-    eww close bar2 2>/dev/null
+    # Bar is closed, open it
+    eww open "$bar_window" 2>/dev/null
 fi
