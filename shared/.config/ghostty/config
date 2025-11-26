@@ -2,7 +2,7 @@ command = zsh -c 'tm startup; zsh'
 # initial-command = zsh -c 'tm startup; zsh'
 shell-integration = zsh
 
-background-opacity = 0.92
+background-opacity = 0.97
 
 quit-after-last-window-closed = false
 confirm-close-surface = false
