@@ -2,6 +2,8 @@ command = zsh -c 'tm startup; zsh'
 # initial-command = zsh -c 'tm startup; zsh'
 shell-integration = zsh
 
+background-opacity = 0.92
+
 quit-after-last-window-closed = false
 confirm-close-surface = false
 clipboard-read = allow
@@ -68,7 +70,8 @@ keybind = ctrl+shift+j=unbind
 keybind = ctrl+shift+alt+j=unbind
 
 theme = Catppuccin Mocha
-background = #171724
+# background = #171724
+background = #1e1e2e
 cursor-color = #CDD6F4
 cursor-text = #1E1E2E
 
