@@ -32,6 +32,7 @@ font-style-italic = Italic
 font-style-bold-italic = Bold Italic
 font-feature = +zero,+calt,+liga,+dlig
 
+keybind = shift+enter=text:\n
 keybind = ctrl+shift+r=reload_config
 keybind = ctrl+1=increase_font_size:1
 
