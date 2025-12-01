@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 monitor_id=$(hyprctl activeworkspace -j | jq -r ".monitorID")
+monitor_name=$(hyprctl activeworkspace -j | jq -r ".monitor")
 
 # Map monitor ID to bar window name
 # 0 -> bar, 1 -> bar2
@@ -27,5 +28,5 @@ if eww active-windows | grep -q "^${bar_window}:"; then
     eww close "$bar_window" 2>/dev/null
 else
     # Bar is closed, open it
-    eww open "$bar_window" 2>/dev/null
+    eww open --screen "$monitor_name" "$bar_window" 2>/dev/null
 fi

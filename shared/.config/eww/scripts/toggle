@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-sleep 0.1
-eww open --toggle --screen 0 $1
+monitor_name=$(hyprctl activeworkspace -j | jq -r ".monitor")
+eww open --toggle --screen "$monitor_name" $1
