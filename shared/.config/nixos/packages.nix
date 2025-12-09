@@ -53,6 +53,7 @@
     sshfs
     lsof
     brotli
+    xorg.xrandr
 
     # formatters
     yapf
