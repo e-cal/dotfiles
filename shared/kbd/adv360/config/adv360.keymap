@@ -157,8 +157,8 @@
         layer_0 {
 bindings = <
 &kp GRAVE     &n1           &n2           &n3            &n4              &n5         &kp C_PLAY                                                          &mo 3         &n6        &n7              &n8           &n9            &n0            &kp DELETE
-&kp TAB       &kp Q         &kp W         &kp E          &kp R            &kp T       &kp C_BRI_INC                                                       &kp C_VOL_UP  &kp Y      &kp U            &kp I         &kp O          &kp P          &kp BSLH
-&kp ESC       &kp A         &kp S         &hml LSHIFT D  &kp F            &kp G       &kp C_BRI_DEC   &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS    &kp C_VOL_DN  &kp H      &kp J            &hmr RSHIFT K &kp L          &kp SEMI       &kp SQT
+&kp TAB       &kp Q         &kp W         &kp E          &kp R            &kp T       &kp C_VOL_UP                                                        &kp C_BRI_INC  &kp Y      &kp U            &kp I         &kp O          &kp P          &kp BSLH
+&kp ESC       &kp A         &kp S         &hml LSHIFT D  &kp F            &kp G       &kp C_VOL_DN   &kp LALT    &kp LCTRL        &kp RCTRL  &kp CAPS     &kp C_BRI_DEC  &kp H      &kp J            &hmr RSHIFT K &kp L          &kp SEMI       &kp SQT
 &sticky_shift &hmr LALT Z   &kp X         &kp C          &kp V            &kp B                                   &none            &none                                &kp N      &kp M            &kp COMMA     &kp DOT        &hmr RALT FSLH &kp RSHFT
 &kp LCTRL     &kp LS(GRAVE) &kp LS(N2)    &kp LS(N5)     &kp LS(N7)                   &kp BACKSPACE   &kp LMETA   &mo 1            &mo 1      &kp ENTER   &kp SPACE                &kp MINUS        &kp LS(N6)    &kp LS(N4)     &kp LS(N1)     &kp RCTRL
 >;                                                                                                                                                                                                                     
