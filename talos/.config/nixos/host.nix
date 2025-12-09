@@ -8,6 +8,7 @@
       obs-studio
       gimp
       # kdenlive
+      protonup-qt
     ];
   };
 
@@ -15,7 +16,15 @@
     enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
+    gamescopeSession.enable = true;
+    package = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [
+        libkrb5
+        keyutils
+      ];
+    };
   };
+  programs.gamemode.enable = true;
 
   programs.weylus = {
     enable = true;
