@@ -1,84 +1,48 @@
 #!/usr/bin/env bash
 
-# Function to get temperature based on brightness level
-get_temperature() {
-    local brightness=$1
-    local temp=6000
-
-    if ((brightness >= 90)); then
-        temp=6500
-    elif ((brightness >= 70)); then
-        temp=6250
-    elif ((brightness >= 60)); then
-        temp=5800
-    elif ((brightness >= 50)); then
-        temp=5500
-    elif ((brightness >= 45)); then
-        temp=5250
-    elif ((brightness >= 40)); then
-        temp=4500
-    elif ((brightness >= 35)); then
-        temp=4000
-    elif ((brightness >= 20)); then
-        temp=3500
-    elif ((brightness >= 15)); then
-        temp=3000
-    elif ((brightness >= 10)); then
-        temp=2500
-    elif ((brightness >= 5)); then
-        temp=2000
-    else
-        temp=1500
-    fi
-
-    echo $temp
-}
-
-# Function to set temperature based on brightness level
-set_temperature() {
-    local brightness=$1
-    local temp=$(get_temperature $brightness)
-    if ((temp >= 6500)); then
-        hyprctl hyprsunset identity
-    else
-        hyprctl hyprsunset temperature $temp
-    fi
-}
-
-# Function to send notification with brightness bar and temperature
 send_notification() {
     local brightness=$1
     local temp=$2
-    local brightness_int=${brightness%.*}
 
-    notify-send "Brightness" "${temp}K" -h int:value:"$brightness_int" --icon ~/.config/dunst/images/brightness.png -r 5678
+    notify-send "Brightness" "${temp}K" -h int:value:"$brightness" --icon ~/.config/dunst/images/brightness.png -r 5678
 }
+
+get_brightness() {
+    local gamma=$(hyprctl hyprsunset gamma)
+    echo ${gamma%.*}
+}
+
+get_temperature() {
+    local temp=$(hyprctl hyprsunset temperature)
+    echo ${temp%.*}
+}
+    
 
 case $1 in
 up)
     hyprctl hyprsunset gamma +5
-    current=$(hyprctl hyprsunset gamma)
-    current_int=${current%.*}
-    set_temperature $current_int
-    temp=$(get_temperature $current_int)
-    send_notification $current $temp
+    send_notification $(get_brightness) $(get_temperature)
     ;;
 down)
     hyprctl hyprsunset gamma -5
-    current=$(hyprctl hyprsunset gamma)
-    current_int=${current%.*}
-    set_temperature $current_int
-    temp=$(get_temperature $current_int)
-    send_notification $current $temp
+    send_notification $(get_brightness) $(get_temperature)
+    ;;
+temp-up)
+    hyprctl hyprsunset temperature +250
+    send_notification $(get_brightness) $(get_temperature)
+    ;;
+temp-down)
+    hyprctl hyprsunset temperature -250
+    send_notification $(get_brightness) $(get_temperature)
     ;;
 set)
     hyprctl hyprsunset gamma $2
     set_temperature $2
     ;;
 next)
-    current=$(hyprctl hyprsunset gamma)
+    gamma=$(hyprctl hyprsunset gamma)
     levels=(1 5 20 50 75 90 100)
-    current_int=${current%.*}
+    current_int=${gamma%.*}
     echo "current: $current_int"
     next_level=1
     for level in "${levels[@]}"; do
@@ -89,9 +53,9 @@ next)
     done
     echo "new: $next_level"
     hyprctl hyprsunset gamma $next_level
-    set_temperature $next_level
     ;;
 *)
     hyprctl hyprsunset gamma
+    hyprctl hyprsunset temperature
     ;;
 esac
