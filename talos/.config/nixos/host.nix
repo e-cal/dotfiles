@@ -12,6 +12,11 @@
     ];
   };
 
+  boot.kernelParams = [ "nvidia-drm.modeset=1" ];
+  boot.extraModprobeConfig = ''
+    softdep nvidia pre: i915
+  '';
+
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true;
