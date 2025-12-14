@@ -97,7 +97,7 @@ def startup(kind="main"):
 def new(name=None, work_dir=None):
     if not work_dir:
         work_dir = run_cmd(
-            r"""find ~ ~/projects/  -maxdepth 1 -type d \
+            r"""find -L ~ ~/projects/ ~/.config  -maxdepth 1 -type d \
                 -not -name ".*" \
                 -not -name "Zotero" \
                 2>/dev/null |\
