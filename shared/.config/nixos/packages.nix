@@ -40,6 +40,7 @@
     bottom
     nvtopPackages.full
     openfortivpn # queens
+    tailscale
     wkhtmltopdf-bin
     appimage-run
     usbutils
