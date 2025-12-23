@@ -18,10 +18,10 @@ in
     acpi
     wtype
     keyd
-    prismlauncher # minecraft
+    # prismlauncher # minecraft
   ];
 
-  # programs.steam.enable = true;
+  programs.steam.enable = true;
 
   services.keyd.enable = true;
   # absolute path means I need to build with --impure

@@ -41,7 +41,7 @@
     nvtopPackages.full
     openfortivpn # queens
     tailscale
-    wkhtmltopdf-bin
+    wkhtmltopdf
     appimage-run
     usbutils
     imagemagick
@@ -261,7 +261,7 @@
     libuuid
     libxkbcommon
     libxml2
-    mediastreamer-openh264
+    linphonePackages.msopenh264
     mesa
     nspr
     nss
@@ -271,7 +271,6 @@
     stdenv.cc.cc
     systemd
     vulkan-loader
-    webkitgtk
     zlib
   ];
 }
