@@ -8,7 +8,12 @@ send_notification() {
 }
 
 get_brightness() {
-    local gamma=$(hyprctl hyprsunset gamma)
+    local gamma
+    if command -v brillo &>/dev/null; then
+        gamma=$(brillo -G)
+    else
+        gamma=$(hyprctl hyprsunset gamma)
+    fi
     echo ${gamma%.*}
 }
 
@@ -16,15 +21,22 @@ get_temperature() {
     local temp=$(hyprctl hyprsunset temperature)
     echo ${temp%.*}
 }
-    
 
 case $1 in
 up)
-    hyprctl hyprsunset gamma +5
+    if command -v brillo &>/dev/null; then
+        sudo brillo -A 5
+    else
+        hyprctl hyprsunset gamma +5
+    fi
     send_notification $(get_brightness) $(get_temperature)
     ;;
 down)
-    hyprctl hyprsunset gamma -5
+    if command -v brillo &>/dev/null; then
+        sudo brillo -U 5
+    else
+        hyprctl hyprsunset gamma -5
+    fi
     send_notification $(get_brightness) $(get_temperature)
     ;;
 temp-up)
@@ -36,11 +48,15 @@ temp-down)
     send_notification $(get_brightness) $(get_temperature)
     ;;
 set)
-    hyprctl hyprsunset gamma $2
-    set_temperature $2
+    if command -v brillo &>/dev/null; then
+        sudo brillo -S $2
+    else
+        hyprctl hyprsunset gamma $2
+    fi
+    send_notification $(get_brightness) $(get_temperature)
     ;;
 next)
-    gamma=$(hyprctl hyprsunset gamma)
+    gamma=$(get_brightness)
     levels=(1 5 20 50 75 90 100)
     current_int=${gamma%.*}
     echo "current: $current_int"
@@ -51,8 +67,7 @@ next)
             break
         fi
     done
-    echo "new: $next_level"
-    hyprctl hyprsunset gamma $next_level
+    brightness set $next_level
     ;;
 *)
     hyprctl hyprsunset gamma
